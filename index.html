@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html>
 	<head>
+	
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+		
 		<title>Bachelor - Physical Web</title>
 		
 		<style>
@@ -15,14 +18,26 @@
 			
 			}
 			
-			p {
+			.info {
 				display: block;
 				margin: 20px auto 20px auto;
 				padding: 20px;
 				width: 400px;
 				text-align: center;
 				border: 1px solid #DDD;
-				box-shadow:  0px 5px 20px rgba(0, 0, 0, 0.2);
+				box-shadow:  1px 5px 10px rgba(0, 0, 0, 0.1);
+				background-color: white;
+			}
+			
+			#expand {
+				display: none;
+				margin: 30px auto 0 auto;
+				padding: 20px;
+				width: 400px;
+				height: 200px;
+				text-align: center;
+				border: 1px solid #DDD;
+				box-shadow:  1px 5px 10px rgba(0, 0, 0, 0.1);
 				background-color: white;
 			}
 			
@@ -31,6 +46,16 @@
 	
 	<body>
 		<h1>Bachelor - Physical Web</h1>
-		<p>Test site</p>
+		<div class="info">Test site</div>
+		<div id="expand">
+			&
+		</div>
+		
+		
+		<script>
+			$(".info").click(function() {
+				$("#expand").slideToggle("slow");	
+			});
+		</script>
 	</body>
 </html>
