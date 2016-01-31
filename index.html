@@ -140,12 +140,12 @@
 							  navigator.bluetooth.requestDevice(
 								{filters: [{services: ['battery_service']}]})
 							  .then(device => {
-								log('> Found ' + device.name);
+								log('> Fant ' + device.name);
 								log('Kobler til GATT-server...');
 								return device.connectGATT();
 							  })
 							  .then(server => {
-								log('Getting Battery Service...');
+								log('Henter battery-service...');
 								return server.getPrimaryService('battery_service');
 							  })
 							  .then(service => {
