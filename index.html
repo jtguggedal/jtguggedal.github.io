@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<meta charset="utf-8" />
 	
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 		
@@ -42,15 +43,138 @@
 			}
 			
 		</style>
+		
+		
+		
+		<script>
+			  // If we're running on a real web server (as opposed to localhost, which is whitelisted),
+			  // then change the protocol to HTTPS.
+			  // See https://goo.gl/lq4gCo for an explanation as to why this is needed for some features.
+			  (function() {
+				var isLocalhost = !!(window.location.hostname === 'localhost' ||
+				  // [::1] is the IPv6 localhost address.
+				  window.location.hostname === '[::1]' ||
+				  // 127.0.0.1/8 is considered localhost for IPv4.
+				  window.location.hostname.match(/^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/));
+				if (window.location.protocol === 'http:' && !isLocalhost) {
+				  // Redirect to https: if we're currently using http: and we're not on localhost.
+				  window.location.protocol = 'https:';
+				}
+			  })();
+
+			  // Add a global error event listener early on in the page load, to help ensure that browsers
+			  // which don't support specific functionality still end up displaying a meaningful message.
+			  window.addEventListener('error', function(error) {
+				if (ChromeSamples && ChromeSamples.setStatus) {
+				  ChromeSamples.setStatus(error.message + ' (Det er ikke sikkert at nettleseren din støtter Web Bluetooth)');
+				  error.preventDefault();
+				}
+			  });
+		</script>
 	</head>
 	
 	<body>
 		<h1>Bachelor - Physical Web</h1>
-		<div class="info">Test site</div>
+		<div class="info">
+				Test site
+				<br>
+				
+				<button>Hent batteri-nivå</button>
+
+				<script>
+				  var ChromeSamples = {
+					log: function() {
+					  var line = Array.prototype.slice.call(arguments).map(function(argument) {
+						return typeof argument === 'string' ? argument : JSON.stringify(argument);
+					  }).join(' ');
+
+					  document.querySelector('#log').textContent += line + '\n';
+					},
+
+					clearLog: function() {
+					  document.querySelector('#log').textContent = '';
+					},
+
+					setStatus: function(status) {
+					  document.querySelector('#status').textContent = status;
+					},
+
+					setContent: function(newContent) {
+					  var content = document.querySelector('#content');
+					  while(content.hasChildNodes()) {
+						content.removeChild(content.lastChild);
+					  }
+					  content.appendChild(newContent);
+					}
+				  };
+				</script>
+
+			
+  
+    
+				  <script>
+				  		function onButtonClick() {
+								'use strict';
+
+							  log('Søker etter Bluetooth-enheter...');
+							  navigator.bluetooth.requestDevice(
+								{filters: [{services: ['battery_service']}]})
+							  .then(device => {
+								log('> Found ' + device.name);
+								log('Kobler til GATT-server...');
+								return device.connectGATT();
+							  })
+							  .then(server => {
+								log('Getting Battery Service...');
+								return server.getPrimaryService('battery_service');
+							  })
+							  .then(service => {
+								log('Henter batterinivå-karakteristikk...');
+								return service.getCharacteristic('battery_level');
+							  })
+							  .then(characteristic => {
+								log('Leser batterinivå...');
+								return characteristic.readValue();
+							  })
+							  .then(value => {
+								// In Chrome 50+, a DataView is returned instead of an ArrayBuffer.
+								value = value.buffer ? value : new DataView(value);
+								let batteryLevel = value.getUint8(0);
+								log('> Battery Level is ' + batteryLevel + '%');
+							  })
+							  .catch(error => {
+								log('Argh! ' + error);
+							  });
+							}
+					</script>
+	
+
+  
+		
+		</div>
 		<div id="expand">
-			&
+				<h3>Output fra oppkoblingen</h3>
+				<div id="output" class="output">
+				  <div id="content"></div>
+				  <div id="status"></div>
+				  <pre id="log"></pre>
+				</div>
+
 		</div>
 		
+		<script>
+		  document.querySelector('button').addEventListener('click', function() {
+			if (!navigator.bluetooth) {
+			  ChromeSamples.setStatus('Web Bluetooth API er ikke tilgjengelig.\n' +
+				'Sjekk at Web Bluetooth, om mulig, er aktivert i nettleseren.');
+			} else {
+			  ChromeSamples.clearLog();
+			  onButtonClick();
+			}
+		  });
+		  log = ChromeSamples.log;
+		</script>
+
 		
 		<script>
 			$(".info").click(function() {
