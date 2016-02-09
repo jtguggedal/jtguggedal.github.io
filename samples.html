@@ -1,0 +1,253 @@
+
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Bluetooth</title>
+    
+    <style>
+    	@import url(https://fonts.googleapis.com/css?family=Open+Sans|Roboto:400,500,700,300);
+    	body {
+    		font-family: "Roboto";
+    	}
+    	div {
+    		margin: 10px;
+    	}
+    	
+    	h1, h3 {
+    		text-align: center;
+    	}
+    	
+    	ul {
+    		margin-top: 10px;
+    		margin-bottom: 30px;
+    		font-size: 14px;
+    	}
+    	
+    	label {
+    		display: inline-block;
+    		width: 120px;
+    		font-weight: 500;
+    	}
+    	
+    	input[type="text"] {
+    		width: 220px;
+    		padding: 5px;
+    	}
+    	
+    	button {
+    		padding: 10px;
+    		margin-right: 30px;
+    		border: 1px solid white;
+    		font-weight: 700;
+    		box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.1);
+    	}
+    	
+    	#main {
+    		max-width: 500px;
+    		margin: 20px auto;
+    		border: 1px solid #DDD;
+    		padding: 20px;
+    		box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.1);
+    	}
+    	
+    	.button-container {
+    		margin: 0 auto;
+			width: 300px;
+			text-align: center;		
+    	}
+    	
+    	#ledon, #ledoff {
+    		color: white;
+    		margin-top: 20px;
+    		margin-bottom: 20px;
+    	}
+    	
+    	#ledon {
+    		background-color: #006600;
+    	}
+    	
+    	#ledoff {
+    		background-color: #cc0000;
+    	}
+    
+    </style>
+    <script>
+      // If we're running on a real web server (as opposed to localhost, which is whitelisted),
+      // then change the protocol to HTTPS.
+      // See https://goo.gl/lq4gCo for an explanation as to why this is needed for some features.
+      (function() {
+        var isLocalhost = !!(window.location.hostname === 'localhost' ||
+          // [::1] is the IPv6 localhost address.
+          window.location.hostname === '[::1]' ||
+          // 127.0.0.1/8 is considered localhost for IPv4.
+          window.location.hostname.match(/^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/));
+        if (window.location.protocol === 'http:' && !isLocalhost) {
+          // Redirect to https: if we're currently using http: and we're not on localhost.
+          window.location.protocol = 'https:';
+        }
+      })();
+
+      window.addEventListener('error', function(error) {
+        if (ChromeSamples && ChromeSamples.setStatus) {
+          ChromeSamples.setStatus(error.message + ' (Nettleseren din støtter ikke Web Bluetooth.)');
+          error.preventDefault();
+        }
+      });
+    </script>
+
+  </head>
+
+  <body>
+  	<div id="main">
+		<h1>LED-test</h1>
+		For å bruke Web Bluetooth til å styre LED på kit:
+		<ul>
+			<li>Last inn "Experimental-ble-app-blinky" på kitet</li>
+			<li>Åpne denne nettsiden i Chromium på Android L/M</li>
+		</ul>
+		<form>
+		  <div><label for="service">Service: </label><input id="service" type="text" list="services" autofocus placeholder="Bluetooth Service" value="00001523-1212-efde-1523-785feabcd123"></div>
+		  <div><label for="service">Characteristic: </label><input id="characteristic" type="text" list="characteristics" placeholder="Bluetooth Characteristic" value="00001525-1212-efde-1523-785feabcd123"></div>
+		  <div><button id="connect" >Koble til enhet</button></div>
+		</form>
+		  <div class="button-container">
+			<button id="ledon" onclick="ledOn()">Slå LED PÅ</button>
+			<button id="ledoff" onclick="ledOff()">Slå LED AV</button>
+		  </div>
+
+
+
+		<script>
+		  var ChromeSamples = {
+			log: function() {
+			  var line = Array.prototype.slice.call(arguments).map(function(argument) {
+				return typeof argument === 'string' ? argument : JSON.stringify(argument);
+			  }).join(' ');
+
+			  document.querySelector('#log').textContent += line + '\n';
+			},
+
+			clearLog: function() {
+			  document.querySelector('#log').textContent = '';
+			},
+
+			setStatus: function(status) {
+			  document.querySelector('#status').textContent = status;
+			},
+
+			setContent: function(newContent) {
+			  var content = document.querySelector('#content');
+			  while(content.hasChildNodes()) {
+				content.removeChild(content.lastChild);
+			  }
+			  content.appendChild(newContent);
+			}
+		  };
+		</script>
+
+		<h3>Logg</h3>
+		<div id="output" class="output">
+		  <div id="content"></div>
+		  <div id="status"></div>
+		  <pre id="log"></pre>
+		</div>
+		
+		
+		
+		
+		
+	<!-- // END OF MAIN -->
+	</div>
+
+  
+    
+      <script>
+      
+      			
+      			var myCharacteristic;
+      			
+      			 // Søker etter enheter
+
+      			function onFormSubmit() {
+				  'use strict';
+
+				  let serviceUuid = document.getElementById('service').value;
+				  if (serviceUuid.startsWith('0x')) {
+					serviceUuid = parseInt(serviceUuid, 16);
+				  }
+
+				  let characteristicUuid = document.getElementById('characteristic').value;
+				  if (characteristicUuid.startsWith('0x')) {
+					characteristicUuid = parseInt(characteristicUuid, 16);
+				  }
+
+				  log('Søker etter enheter med valgt service og characteristic...');
+				  navigator.bluetooth.requestDevice({filters: [{services: [serviceUuid]}]})
+				  .then(device => device.connectGATT())
+				  .then(server => server.getPrimaryService(serviceUuid))
+				  .then(service => service.getCharacteristic(characteristicUuid))
+				  .then(characteristic => {
+				  		myCharacteristic = characteristic;
+				  		log('> Tilkoblet enhet. LED kan nå styres.');
+
+					})
+				  .catch(error => {
+					log('Argh! ' + error);
+				  });
+				}
+				
+				// Funksjon for å skru LED på
+				
+				function ledOn() {
+					if(myCharacteristic) {
+						log('> Skrur LED på...');
+						let ledValue = new Uint8Array([1]);
+						
+						myCharacteristic.writeValue(ledValue);
+						
+					}
+				
+				};
+				
+				// Funksjon for å skru LED av
+				
+				function ledOff() {
+				
+					if(myCharacteristic) {
+						log('> Skrur LED av...');
+						let ledValue = new Uint8Array([0]);
+						
+						myCharacteristic.writeValue(ledValue);
+						
+					}
+				
+				};
+				
+
+</script>
+    
+  
+
+
+<script>
+  document.querySelector('form').addEventListener('submit', function(event) {
+    event.stopPropagation();
+    event.preventDefault();
+
+    if (!navigator.bluetooth) {
+      ChromeSamples.setStatus('Web Bluetooth API er ikke tilgjengelig.\n' +
+        'Husk å aktivere Web Bluetooth-flagget: chrome://flags');
+    } else {
+      ChromeSamples.clearLog();
+      onFormSubmit();
+    }
+  });
+  log = ChromeSamples.log;
+</script>
+
+    
+  </body>
+</html>
