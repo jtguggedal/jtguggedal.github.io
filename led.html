@@ -202,6 +202,8 @@
 				// Funksjon for å skru LED på
 				
 				function ledOn() {
+					'use strict';
+
 					if(myCharacteristic) {
 						log('> Skrur LED på...');
 						let ledValue = new Uint8Array([1]);
@@ -215,6 +217,8 @@
 				// Funksjon for å skru LED av
 				
 				function ledOff() {
+				  'use strict';
+
 				
 					if(myCharacteristic) {
 						log('> Skrur LED av...');
