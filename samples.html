@@ -354,9 +354,7 @@ Play Store</a>.</p>
       characteristic.properties.authenticatedSignedWrites);
     log('> Queued Write:         ' + characteristic.properties.reliableWrite);
     log('> Writable Auxiliaries: ' + characteristic.properties.writableAuxiliaries);
-  })
-  .then(characteristic => {
-    log('Writing Heart Rate Control Point Characteristic...');
+    log('Writing LED value...');
 
     // Writing 1 is the signal to reset energy expended.
     let ledValue = new Uint8Array([1]);
