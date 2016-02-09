@@ -41,7 +41,7 @@
   </head>
 
   <body>
-    <h1>K</h1>
+    <h1>LED-test</h1>
     <p>
 
 <form>
@@ -99,6 +99,8 @@
       
       			// Søker etter enheter
       			
+      			var myCharacteristic;
+      			
       			function onFormSubmit() {
 				  'use strict';
 
@@ -117,6 +119,12 @@
 				  .then(device => device.connectGATT())
 				  .then(server => server.getPrimaryService(serviceUuid))
 				  .then(service => service.getCharacteristic(characteristicUuid))
+				  .then(characteristic => {
+				  myCharacteristic = characteristic;
+				  log('> Skrur LED på...');
+					let ledValue = new Uint8Array([1]);
+					return characteristic.writeValue(ledValue);
+					})
 				  .catch(error => {
 					log('Argh! ' + error);
 				  });
@@ -125,10 +133,14 @@
 				// Funksjon for å skru LED på
 				
 				function ledOn() {
-				
-					log('> Skrur LED på...');
-					let ledValue = new Uint8Array([1]);
-					return navigator.bluetooth.characteristic.writeValue(ledValue);
+					if(myCharacteristic) {
+						log('> Skrur LED på...');
+						let ledValue = new Uint8Array([1]);
+						
+						myCharacteristic.writeValue(ledValue);
+						
+						//return navigator.bluetooth.characteristic.writeValue(ledValue);
+					}
 				
 				};
 				
