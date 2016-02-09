@@ -1,0 +1,443 @@
+
+<!doctype html>
+<!--
+Copyright 2016 Google Inc. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Sample illustrating the use of Web Bluetooth / Characteristic Properties.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Web Bluetooth / Characteristic Properties Sample</title>
+    <script>
+      // If we're running on a real web server (as opposed to localhost, which is whitelisted),
+      // then change the protocol to HTTPS.
+      // See https://goo.gl/lq4gCo for an explanation as to why this is needed for some features.
+      (function() {
+        var isLocalhost = !!(window.location.hostname === 'localhost' ||
+          // [::1] is the IPv6 localhost address.
+          window.location.hostname === '[::1]' ||
+          // 127.0.0.1/8 is considered localhost for IPv4.
+          window.location.hostname.match(/^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/));
+        if (window.location.protocol === 'http:' && !isLocalhost) {
+          // Redirect to https: if we're currently using http: and we're not on localhost.
+          window.location.protocol = 'https:';
+        }
+      })();
+
+      // Add a global error event listener early on in the page load, to help ensure that browsers
+      // which don't support specific functionality still end up displaying a meaningful message.
+      window.addEventListener('error', function(error) {
+        if (ChromeSamples && ChromeSamples.setStatus) {
+          ChromeSamples.setStatus(error.message + ' (Your browser may not support this feature.)');
+          error.preventDefault();
+        }
+      });
+    </script>
+    
+    
+    <link rel="icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/main.css">
+    
+    
+  </head>
+
+  <body>
+    <h1>Web Bluetooth / Characteristic Properties Sample</h1>
+    <p>
+      Available in <a target="_blank" href="https://www.chromestatus.com/feature/5264933985976320">Chrome 48+</a> |
+      <a target="_blank" href="view-source:https://googlechrome.github.io/samples/web-bluetooth/characteristic-properties.html">View Source</a> |
+      <a target="_blank" href="https://github.com/googlechrome/samples/blob/gh-pages/web-bluetooth/characteristic-properties.html">View on GitHub</a> |
+      <a target="_blank" href="https://www.chromestatus.com/samples">Browse Samples</a>
+    </p>
+    <p>The <a href="https://github.com/WebBluetoothCG/web-bluetooth">Web Bluetooth
+  API</a> discovers and communicates with devices over the Bluetooth 4 wireless
+standard using the Generic Attribute Profile (GATT). It is currently only
+partially implemented in Chrome OS and Android M behind the experimental flag
+<code>chrome://flags/#enable-web-bluetooth</code>. Check out all <a href="
+https://googlechrome.github.io/samples/web-bluetooth/">Web Bluetooth Samples</a>.</p>
+
+
+<p>This sample illustrates the use of the Web Bluetooth API to display all
+properties of a specific characteristic from a nearby Bluetooth Low Energy
+Device. You may want to try this demo with the BLE Peripheral Simulator App
+from the <a target="_blank"
+href="https://play.google.com/store/apps/details?id=io.github.webbluetoothcg.bletestperipheral">Google
+Play Store</a>.</p>
+
+<form>
+  <input id="service" type="text" list="services" autofocus placeholder="Bluetooth Service">
+  <input id="characteristic" type="text" list="characteristics" placeholder="Bluetooth Characteristic">
+  <button>Get Bluetooth characteristic properties</button>
+</form>
+
+<datalist id="services">
+  <option value="alert_notification">alert_notification</option>
+  <option value="automation_io">automation_io</option>
+  <option value="battery_service">battery_service</option>
+  <option value="blood_pressure">blood_pressure</option>
+  <option value="body_composition">body_composition</option>
+  <option value="bond_management">bond_management</option>
+  <option value="continuous_glucose_monitoring">continuous_glucose_monitoring</option>
+  <option value="current_time">current_time</option>
+  <option value="cycling_power">cycling_power</option>
+  <option value="cycling_speed_and_cadence">cycling_speed_and_cadence</option>
+  <option value="device_information">device_information</option>
+  <option value="environmental_sensing">environmental_sensing</option>
+  <option value="generic_access">generic_access (blacklisted)</option>
+  <option value="generic_attribute">generic_attribute (blacklisted)</option>
+  <option value="glucose">glucose</option>
+  <option value="health_thermometer">health_thermometer</option>
+  <option value="heart_rate">heart_rate</option>
+  <option value="human_interface_device">human_interface_device</option>
+  <option value="immediate_alert">immediate_alert</option>
+  <option value="indoor_positioning">indoor_positioning</option>
+  <option value="internet_protocol_support">internet_protocol_support</option>
+  <option value="link_loss">link_loss</option>
+  <option value="location_and_navigation">location_and_navigation</option>
+  <option value="next_dst_change">next_dst_change</option>
+  <option value="phone_alert_status">phone_alert_status</option>
+  <option value="pulse_oximeter">pulse_oximeter</option>
+  <option value="reference_time_update">reference_time_update</option>
+  <option value="running_speed_and_cadence">running_speed_and_cadence</option>
+  <option value="scan_parameters">scan_parameters</option>
+  <option value="tx_power">tx_power</option>
+  <option value="user_data">user_data</option>
+  <option value="weight_scale">weight_scale</option>
+</datalist>
+
+<datalist id="characteristics">
+  <option value="aerobic_heart_rate_lower_limit">aerobic_heart_rate_lower_limit</option>
+  <option value="aerobic_heart_rate_upper_limit">aerobic_heart_rate_upper_limit</option>
+  <option value="aerobic_threshold">aerobic_threshold</option>
+  <option value="age">age</option>
+  <option value="aggregate">aggregate</option>
+  <option value="alert_category_id">alert_category_id</option>
+  <option value="alert_category_id_bit_mask">alert_category_id_bit_mask</option>
+  <option value="alert_level">alert_level</option>
+  <option value="alert_notification_control_point">alert_notification_control_point</option>
+  <option value="alert_status">alert_status</option>
+  <option value="altitude">altitude</option>
+  <option value="anaerobic_heart_rate_lower_limit">anaerobic_heart_rate_lower_limit</option>
+  <option value="anaerobic_heart_rate_upper_limit">anaerobic_heart_rate_upper_limit</option>
+  <option value="anaerobic_threshold">anaerobic_threshold</option>
+  <option value="analog">analog</option>
+  <option value="apparent_wind_direction">apparent_wind_direction</option>
+  <option value="apparent_wind_speed">apparent_wind_speed</option>
+  <option value="gap.appearance">gap.appearance</option>
+  <option value="barometric_pressure_trend">barometric_pressure_trend</option>
+  <option value="battery_level">battery_level</option>
+  <option value="blood_pressure_feature">blood_pressure_feature</option>
+  <option value="blood_pressure_measurement">blood_pressure_measurement</option>
+  <option value="body_composition_feature">body_composition_feature</option>
+  <option value="body_composition_measurement">body_composition_measurement</option>
+  <option value="body_sensor_location">body_sensor_location</option>
+  <option value="bond_management_control_point">bond_management_control_point</option>
+  <option value="bond_management_feature">bond_management_feature</option>
+  <option value="boot_keyboard_input_report">boot_keyboard_input_report</option>
+  <option value="boot_keyboard_output_report">boot_keyboard_output_report</option>
+  <option value="boot_mouse_input_report">boot_mouse_input_report</option>
+  <option value="gap.central_address_resolution_support">gap.central_address_resolution_support</option>
+  <option value="cgm_feature">cgm_feature</option>
+  <option value="cgm_measurement">cgm_measurement</option>
+  <option value="cgm_session_run_time">cgm_session_run_time</option>
+  <option value="cgm_session_start_time">cgm_session_start_time</option>
+  <option value="cgm_specific_ops_control_point">cgm_specific_ops_control_point</option>
+  <option value="cgm_status">cgm_status</option>
+  <option value="csc_feature">csc_feature</option>
+  <option value="csc_measurement">csc_measurement</option>
+  <option value="current_time">current_time</option>
+  <option value="cycling_power_control_point">cycling_power_control_point</option>
+  <option value="cycling_power_feature">cycling_power_feature</option>
+  <option value="cycling_power_measurement">cycling_power_measurement</option>
+  <option value="cycling_power_vector">cycling_power_vector</option>
+  <option value="database_change_increment">database_change_increment</option>
+  <option value="date_of_birth">date_of_birth</option>
+  <option value="date_of_threshold_assessment">date_of_threshold_assessment</option>
+  <option value="date_time">date_time</option>
+  <option value="day_date_time">day_date_time</option>
+  <option value="day_of_week">day_of_week</option>
+  <option value="descriptor_value_changed">descriptor_value_changed</option>
+  <option value="gap.device_name">gap.device_name</option>
+  <option value="dew_point">dew_point</option>
+  <option value="digital">digital</option>
+  <option value="dst_offset">dst_offset</option>
+  <option value="elevation">elevation</option>
+  <option value="email_address">email_address</option>
+  <option value="exact_time_256">exact_time_256</option>
+  <option value="fat_burn_heart_rate_lower_limit">fat_burn_heart_rate_lower_limit</option>
+  <option value="fat_burn_heart_rate_upper_limit">fat_burn_heart_rate_upper_limit</option>
+  <option value="firmware_revision_string">firmware_revision_string</option>
+  <option value="first_name">first_name</option>
+  <option value="five_zone_heart_rate_limits">five_zone_heart_rate_limits</option>
+  <option value="floor_number">floor_number</option>
+  <option value="gender">gender</option>
+  <option value="glucose_feature">glucose_feature</option>
+  <option value="glucose_measurement">glucose_measurement</option>
+  <option value="glucose_measurement_context">glucose_measurement_context</option>
+  <option value="gust_factor">gust_factor</option>
+  <option value="hardware_revision_string">hardware_revision_string</option>
+  <option value="heart_rate_control_point">heart_rate_control_point</option>
+  <option value="heart_rate_max">heart_rate_max</option>
+  <option value="heart_rate_measurement">heart_rate_measurement</option>
+  <option value="heat_index">heat_index</option>
+  <option value="height">height</option>
+  <option value="hid_control_point">hid_control_point</option>
+  <option value="hid_information">hid_information</option>
+  <option value="hip_circumference">hip_circumference</option>
+  <option value="humidity">humidity</option>
+  <option value="ieee_11073-20601_regulatory_certification_data_list">
+  <option value="indoor_positioning_configuration">indoor_positioning_configuration</option>
+  <option value="intermediate_blood_pressure">intermediate_blood_pressure</option>
+  <option value="intermediate_temperature">intermediate_temperature</option>
+  <option value="irradiance">irradiance</option>
+  <option value="language">language</option>
+  <option value="last_name">last_name</option>
+  <option value="latitude">latitude</option>
+  <option value="ln_control_point">ln_control_point</option>
+  <option value="ln_feature">ln_feature</option>
+  <option value="local_east_coordinate.xml">local_east_coordinate.xml</option>
+  <option value="local_north_coordinate">local_north_coordinate</option>
+  <option value="local_time_information">local_time_information</option>
+  <option value="location_and_speed">location_and_speed</option>
+  <option value="location_name">location_name</option>
+  <option value="longitude">longitude</option>
+  <option value="magnetic_declination">magnetic_declination</option>
+  <option value="magnetic_flux_density_2D">magnetic_flux_density_2D</option>
+  <option value="magnetic_flux_density_3D">magnetic_flux_density_3D</option>
+  <option value="manufacturer_name_string">manufacturer_name_string</option>
+  <option value="maximum_recommended_heart_rate">maximum_recommended_heart_rate</option>
+  <option value="measurement_interval">measurement_interval</option>
+  <option value="model_number_string">model_number_string</option>
+  <option value="navigation">navigation</option>
+  <option value="new_alert">new_alert</option>
+  <option value="gap.peripheral_preferred_connection_parameters">gap.peripheral_preferred_connection_parameters</option>
+  <option value="gap.peripheral_privacy_flag">gap.peripheral_privacy_flag</option>
+  <option value="plx_continuous_measurement">plx_continuous_measurement</option>
+  <option value="plx_features">plx_features</option>
+  <option value="plx_spot_check_measurement">plx_spot_check_measurement</option>
+  <option value="pnp_id">pnp_id</option>
+  <option value="pollen_concentration">pollen_concentration</option>
+  <option value="position_quality">position_quality</option>
+  <option value="pressure">pressure</option>
+  <option value="protocol_mode">protocol_mode</option>
+  <option value="rainfall">rainfall</option>
+  <option value="gap.reconnection_address">gap.reconnection_address</option>
+  <option value="record_access_control_point">record_access_control_point</option>
+  <option value="reference_time_information">reference_time_information</option>
+  <option value="report">report</option>
+  <option value="report_map">report_map</option>
+  <option value="resting_heart_rate">resting_heart_rate</option>
+  <option value="ringer_control_point">ringer_control_point</option>
+  <option value="ringer_setting">ringer_setting</option>
+  <option value="rsc_feature">rsc_feature</option>
+  <option value="rsc_measurement">rsc_measurement</option>
+  <option value="sc_control_point">sc_control_point</option>
+  <option value="scan_interval_window">scan_interval_window</option>
+  <option value="scan_refresh">scan_refresh</option>
+  <option value="sensor_location">sensor_location</option>
+  <option value="serial_number_string">serial_number_string</option>
+  <option value="gatt.service_changed">gatt.service_changed</option>
+  <option value="software_revision_string">software_revision_string</option>
+  <option value="sport_type_for_aerobic_and_anaerobic_thresholds">sport_type_for_aerobic_and_anaerobic_thresholds</option>
+  <option value="supported_new_alert_category">supported_new_alert_category</option>
+  <option value="supported_unread_alert_category">supported_unread_alert_category</option>
+  <option value="system_id">system_id</option>
+  <option value="temperature">temperature</option>
+  <option value="temperature_measurement">temperature_measurement</option>
+  <option value="temperature_type">temperature_type</option>
+  <option value="three_zone_heart_rate_limits">three_zone_heart_rate_limits</option>
+  <option value="time_accuracy">time_accuracy</option>
+  <option value="time_source">time_source</option>
+  <option value="time_update_control_point">time_update_control_point</option>
+  <option value="time_update_state">time_update_state</option>
+  <option value="time_with_dst">time_with_dst</option>
+  <option value="time_zone">time_zone</option>
+  <option value="true_wind_direction">true_wind_direction</option>
+  <option value="true_wind_speed">true_wind_speed</option>
+  <option value="two_zone_heart_rate_limit">two_zone_heart_rate_limit</option>
+  <option value="tx_power_level">tx_power_level</option>
+  <option value="uncertainty">uncertainty</option>
+  <option value="unread_alert_status">unread_alert_status</option>
+  <option value="user_control_point">user_control_point</option>
+  <option value="user_index">user_index</option>
+  <option value="uv_index">uv_index</option>
+  <option value="vo2_max">vo2_max</option>
+  <option value="waist_circumference">waist_circumference</option>
+  <option value="weight">weight</option>
+  <option value="weight_measurement">weight_measurement</option>
+  <option value="weight_scale_feature">weight_scale_feature</option>
+  <option value="wind_chill">wind_chill</option>
+</datalist>
+
+
+<script>
+  var ChromeSamples = {
+    log: function() {
+      var line = Array.prototype.slice.call(arguments).map(function(argument) {
+        return typeof argument === 'string' ? argument : JSON.stringify(argument);
+      }).join(' ');
+
+      document.querySelector('#log').textContent += line + '\n';
+    },
+
+    clearLog: function() {
+      document.querySelector('#log').textContent = '';
+    },
+
+    setStatus: function(status) {
+      document.querySelector('#status').textContent = status;
+    },
+
+    setContent: function(newContent) {
+      var content = document.querySelector('#content');
+      while(content.hasChildNodes()) {
+        content.removeChild(content.lastChild);
+      }
+      content.appendChild(newContent);
+    }
+  };
+</script>
+
+<h3>Live Output</h3>
+<div id="output" class="output">
+  <div id="content"></div>
+  <div id="status"></div>
+  <pre id="log"></pre>
+</div>
+
+
+
+  
+    
+      <script>function onFormSubmit() {
+  'use strict';
+
+  let serviceUuid = document.getElementById('service').value;
+  if (serviceUuid.startsWith('0x')) {
+    serviceUuid = parseInt(serviceUuid, 16);
+  }
+
+  let characteristicUuid = document.getElementById('characteristic').value;
+  if (characteristicUuid.startsWith('0x')) {
+    characteristicUuid = parseInt(characteristicUuid, 16);
+  }
+
+  log('Requesting Bluetooth Device...');
+  navigator.bluetooth.requestDevice({filters: [{services: [serviceUuid]}]})
+  .then(device => device.connectGATT())
+  .then(server => server.getPrimaryService(serviceUuid))
+  .then(service => service.getCharacteristic(characteristicUuid))
+  .then(characteristic => {
+    log('> Characteristic UUID:  ' + characteristic.uuid);
+    log('> Broadcast:            ' + characteristic.properties.broadcast);
+    log('> Read:                 ' + characteristic.properties.read);
+    log('> Write w/o response:   ' +
+      characteristic.properties.writeWithoutResponse);
+    log('> Write:                ' + characteristic.properties.write);
+    log('> Notify:               ' + characteristic.properties.notify);
+    log('> Indicate:             ' + characteristic.properties.indicate);
+    log('> Signed Write:         ' +
+      characteristic.properties.authenticatedSignedWrites);
+    log('> Queued Write:         ' + characteristic.properties.reliableWrite);
+    log('> Writable Auxiliaries: ' +
+      characteristic.properties.writableAuxiliaries);
+  })
+  .catch(error => {
+    log('Argh! ' + error);
+  });
+}
+</script>
+    
+  
+
+  
+    <h3>JavaScript Snippet</h3>
+  
+
+  
+    <figure class="highlight"><pre><code class="language-js" data-lang="js">      <span class="kd">function</span> <span class="nx">onFormSubmit</span><span class="p">()</span> <span class="p">{</span>
+  <span class="s1">'use strict'</span><span class="p">;</span>
+
+  <span class="kd">let</span> <span class="nx">serviceUuid</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">'service'</span><span class="p">).</span><span class="nx">value</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">serviceUuid</span><span class="p">.</span><span class="nx">startsWith</span><span class="p">(</span><span class="s1">'0x'</span><span class="p">))</span> <span class="p">{</span>
+    <span class="nx">serviceUuid</span> <span class="o">=</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">serviceUuid</span><span class="p">,</span> <span class="mi">16</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="kd">let</span> <span class="nx">characteristicUuid</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">'characteristic'</span><span class="p">).</span><span class="nx">value</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">characteristicUuid</span><span class="p">.</span><span class="nx">startsWith</span><span class="p">(</span><span class="s1">'0x'</span><span class="p">))</span> <span class="p">{</span>
+    <span class="nx">characteristicUuid</span> <span class="o">=</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">characteristicUuid</span><span class="p">,</span> <span class="mi">16</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="nx">log</span><span class="p">(</span><span class="s1">'Requesting Bluetooth Device...'</span><span class="p">);</span>
+  <span class="nx">navigator</span><span class="p">.</span><span class="nx">bluetooth</span><span class="p">.</span><span class="nx">requestDevice</span><span class="p">({</span><span class="na">filters</span><span class="p">:</span> <span class="p">[{</span><span class="na">services</span><span class="p">:</span> <span class="p">[</span><span class="nx">serviceUuid</span><span class="p">]}]})</span>
+  <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">device</span> <span class="o">=&gt;</span> <span class="nx">device</span><span class="p">.</span><span class="nx">connectGATT</span><span class="p">())</span>
+  <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">server</span> <span class="o">=&gt;</span> <span class="nx">server</span><span class="p">.</span><span class="nx">getPrimaryService</span><span class="p">(</span><span class="nx">serviceUuid</span><span class="p">))</span>
+  <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">service</span> <span class="o">=&gt;</span> <span class="nx">service</span><span class="p">.</span><span class="nx">getCharacteristic</span><span class="p">(</span><span class="nx">characteristicUuid</span><span class="p">))</span>
+  <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">characteristic</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">(</span><span class="s1">'&gt; Characteristic UUID:  '</span> <span class="o">+</span> <span class="nx">characteristic</span><span class="p">.</span><span class="nx">uuid</span><span class="p">);</span>
+    <span class="nx">log</span><span class="p">(</span><span class="s1">'&gt; Broadcast:            '</span> <span class="o">+</span> <span class="nx">characteristic</span><span class="p">.</span><span class="nx">properties</span><span class="p">.</span><span class="nx">broadcast</span><span class="p">);</span>
+    <span class="nx">log</span><span class="p">(</span><span class="s1">'&gt; Read:                 '</span> <span class="o">+</span> <span class="nx">characteristic</span><span class="p">.</span><span class="nx">properties</span><span class="p">.</span><span class="nx">read</span><span class="p">);</span>
+    <span class="nx">log</span><span class="p">(</span><span class="s1">'&gt; Write w/o response:   '</span> <span class="o">+</span>
+      <span class="nx">characteristic</span><span class="p">.</span><span class="nx">properties</span><span class="p">.</span><span class="nx">writeWithoutResponse</span><span class="p">);</span>
+    <span class="nx">log</span><span class="p">(</span><span class="s1">'&gt; Write:                '</span> <span class="o">+</span> <span class="nx">characteristic</span><span class="p">.</span><span class="nx">properties</span><span class="p">.</span><span class="nx">write</span><span class="p">);</span>
+    <span class="nx">log</span><span class="p">(</span><span class="s1">'&gt; Notify:               '</span> <span class="o">+</span> <span class="nx">characteristic</span><span class="p">.</span><span class="nx">properties</span><span class="p">.</span><span class="nx">notify</span><span class="p">);</span>
+    <span class="nx">log</span><span class="p">(</span><span class="s1">'&gt; Indicate:             '</span> <span class="o">+</span> <span class="nx">characteristic</span><span class="p">.</span><span class="nx">properties</span><span class="p">.</span><span class="nx">indicate</span><span class="p">);</span>
+    <span class="nx">log</span><span class="p">(</span><span class="s1">'&gt; Signed Write:         '</span> <span class="o">+</span>
+      <span class="nx">characteristic</span><span class="p">.</span><span class="nx">properties</span><span class="p">.</span><span class="nx">authenticatedSignedWrites</span><span class="p">);</span>
+    <span class="nx">log</span><span class="p">(</span><span class="s1">'&gt; Queued Write:         '</span> <span class="o">+</span> <span class="nx">characteristic</span><span class="p">.</span><span class="nx">properties</span><span class="p">.</span><span class="nx">reliableWrite</span><span class="p">);</span>
+    <span class="nx">log</span><span class="p">(</span><span class="s1">'&gt; Writable Auxiliaries: '</span> <span class="o">+</span>
+      <span class="nx">characteristic</span><span class="p">.</span><span class="nx">properties</span><span class="p">.</span><span class="nx">writableAuxiliaries</span><span class="p">);</span>
+  <span class="p">})</span>
+  <span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="nx">error</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">log</span><span class="p">(</span><span class="s1">'Argh! '</span> <span class="o">+</span> <span class="nx">error</span><span class="p">);</span>
+  <span class="p">});</span>
+<span class="p">}</span>
+
+    </code></pre></figure>
+  
+
+
+
+<script>
+  document.querySelector('form').addEventListener('submit', function(event) {
+    event.stopPropagation();
+    event.preventDefault();
+
+    if (!navigator.bluetooth) {
+      ChromeSamples.setStatus('Web Bluetooth API is not available.\n' +
+        'Please make sure the Web Bluetooth flag is enabled.');
+    } else {
+      ChromeSamples.clearLog();
+      onFormSubmit();
+    }
+  });
+  log = ChromeSamples.log;
+</script>
+
+    
+    <script>
+      /* jshint ignore:start */
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-53563471-1', 'auto');
+      ga('send', 'pageview');
+      /* jshint ignore:end */
+    </script>
+  </body>
+</html>
