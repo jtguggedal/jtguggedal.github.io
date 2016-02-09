@@ -353,13 +353,55 @@ Play Store</a>.</p>
     log('> Signed Write:         ' +
       characteristic.properties.authenticatedSignedWrites);
     log('> Queued Write:         ' + characteristic.properties.reliableWrite);
-    log('> Writable Auxiliaries: ' +
-      characteristic.properties.writableAuxiliaries);
+    log('> Writable Auxiliaries: ' + characteristic.properties.writableAuxiliaries);
+  })
+  .then(characteristic => {
+    log('Writing Heart Rate Control Point Characteristic...');
+
+    // Writing 1 is the signal to reset energy expended.
+    let ledValue = new Uint8Array([1]);
+    return characteristic.writeValue(ledValue);
+	})
+  .catch(error => {
+    log('Argh! ' + error);
+  });
+}
+
+   /*   function onButtonClick() {
+  'use strict';
+
+  log('Requesting Bluetooth Device...');
+  navigator.bluetooth.requestDevice({filters: [{services: ['heart_rate']}]})
+  .then(device => {
+    log('> Found ' + device.name);
+    log('Connecting to GATT Server...');
+    return device.connectGATT();
+  })
+  .then(server => {
+    log('Getting Heart Rate Service...');
+    return server.getPrimaryService('heart_rate');
+  })
+  .then(service => {
+    log('Getting Heart Rate Control Point Characteristic...');
+    return service.getCharacteristic('heart_rate_control_point');
+  })
+  .then(characteristic => {
+    log('Writing Heart Rate Control Point Characteristic...');
+
+    // Writing 1 is the signal to reset energy expended.
+    let ledValue = new Uint8Array([1]);
+    return characteristic.writeValue(ledValue);
+  })
+  .then(() => {
+    log('> Energy expended has been reset.');
   })
   .catch(error => {
     log('Argh! ' + error);
   });
 }
+
+*/
+
 </script>
     
   
@@ -429,15 +471,5 @@ Play Store</a>.</p>
 </script>
 
     
-    <script>
-      /* jshint ignore:start */
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-      ga('create', 'UA-53563471-1', 'auto');
-      ga('send', 'pageview');
-      /* jshint ignore:end */
-    </script>
   </body>
 </html>
