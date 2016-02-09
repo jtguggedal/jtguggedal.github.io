@@ -11,6 +11,16 @@
     	div {
     		margin: 10px;
     	}
+    	
+    	label {
+    		display: inline-block;
+    		width: 120px;
+    	}
+    	
+    	input[type="text"] {
+    		width: 220px;
+    		padding: 5px;
+    	}
     
     
     </style>
@@ -148,9 +158,14 @@
 				
 				function ledOff() {
 				
-					log('> Skrur LED av');
-					let ledValue = new Uint8Array([1]);
-					return navigator.bluetooth.characteristic.writeValue(ledValue);
+					if(myCharacteristic) {
+						log('> Skrur LED av...');
+						let ledValue = new Uint8Array([0]);
+						
+						myCharacteristic.writeValue(ledValue);
+						
+						//return navigator.bluetooth.characteristic.writeValue(ledValue);
+					}
 				
 				};
 				
