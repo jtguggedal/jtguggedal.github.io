@@ -183,6 +183,13 @@
 				  if (characteristicUuid.startsWith('0x')) {
 					characteristicUuid = parseInt(characteristicUuid, 16);
 				  }
+				  
+				  
+				  let characteristicButtonUuid = '00001524-1212-efde-1523-785feabcd123';
+				  if (characteristicButtonUuid.startsWith('0x')) {
+					characteristicButtonUuid = parseInt(characteristicButtonUuid, 16);
+				  }
+
 
 				  log('Søker etter enheter med valgt service og characteristic...');
 				  navigator.bluetooth.requestDevice({filters: [{services: [serviceUuid]}]})
@@ -192,13 +199,15 @@
 				  .then(characteristic => {
 				  		myCharacteristic = characteristic;
 				  		log('> Tilkoblet enhet. LED kan nå styres.');
-						return myCharacteristic.startNotifications().then(() => {
-						  log('> Notifications started');
-						  myCharacteristic.addEventListener('characteristicvaluechanged',
-							handleNotifications);
-						});
 
 					})
+				  .then(characteristic => {
+					myButtonCharacteristic = buttonCharacteristic;
+					return myButtonCharacteristic.startNotifications().then(() => {
+					  log('> Notifications started');
+					  myButtonCharacteristic.addEventListener('characteristicvaluechanged',
+						handleNotifications);
+					});
 				  .catch(error => {
 					log('Argh! ' + error);
 				  });
@@ -234,21 +243,23 @@
 				};
 				
 				
-					
+				
+				
+				
 
-					function handleNotifications(event) {
-					  let value = event.target.value;
-					  // In Chrome 50+, a DataView is returned instead of an ArrayBuffer.
-					  value = value.buffer ? value : new DataView(value);
-					  let a = [];
-					  // Convert raw data bytes to hex values just for the sake of showing something.
-					  // In the "real" world, you'd use data.getUint8, data.getUint16 or even
-					  // TextDecoder to process raw data bytes.
-					  for (var i = 0; i < value.byteLength; i++) {
-						a.push(('00' + value.getUint8(i).toString(16)).slice(-2));
-					  }
-					  log('> ' + a.join(''));
-					}
+				function handleNotifications(event) {
+				  let value = event.target.value;
+				  // In Chrome 50+, a DataView is returned instead of an ArrayBuffer.
+				  value = value.buffer ? value : new DataView(value);
+				  let a = [];
+				  // Convert raw data bytes to hex values just for the sake of showing something.
+				  // In the "real" world, you'd use data.getUint8, data.getUint16 or even
+				  // TextDecoder to process raw data bytes.
+				  for (var i = 0; i < value.byteLength; i++) {
+					a.push(('00' + value.getUint8(i).toString(16)).slice(-2));
+				  }
+				  log('> ' + a.join(''));
+				}
 				
 
 </script>
