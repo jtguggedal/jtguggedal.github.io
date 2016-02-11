@@ -102,22 +102,25 @@
 
   <body>
   	<div id="main">
-		<h1>LED-test</h1>
+		<h1>Notification-test</h1>
 		For å bruke Web Bluetooth til å styre LED på kit:
 		<ul>
 			<li>Last inn "Experimental-ble-app-blinky" på kitet</li>
-			<li>Åpne denne nettsiden i Chromium på Android L/M</li>
+			<li>Åpne denne nettsiden i Chrome Dev eller Chromium på Android L/M</li>
 		</ul>
 		<form>
 		  <div><label for="service">Service: </label><input id="service" type="text" list="services" autofocus placeholder="Bluetooth Service" value="00001523-1212-efde-1523-785feabcd123"></div>
 		  <div><label for="service">Characteristic: </label><input id="characteristic" type="text" list="characteristics" placeholder="Bluetooth Characteristic" value="00001524-1212-efde-1523-785feabcd123"></div>
 		  <div><button id="connect" >Koble til enhet</button></div>
 		</form>
-		  <div class="button-container">
+		 <!-- 
+		 <div class="button-container">
 			<button id="ledon" onclick="ledOn()">Slå LED PÅ</button>
 			<button id="ledoff" onclick="ledOff()">Slå LED AV</button>
 		  </div>
-
+		  -->
+		<div class="signal-box"> 
+		</div>
 
 
 		<script>
@@ -200,17 +203,25 @@
 			}
 
 			function handleNotifications(event) {
-			  let value = event.target.value;
-			  // In Chrome 50+, a DataView is returned instead of an ArrayBuffer.
-			  value = value.buffer ? value : new DataView(value);
-			  let a = [];
-			  // Convert raw data bytes to hex values just for the sake of showing something.
-			  // In the "real" world, you'd use data.getUint8, data.getUint16 or even
-			  // TextDecoder to process raw data bytes.
-			  for (var i = 0; i < value.byteLength; i++) {
-				a.push(('00' + value.getUint8(i).toString(16)).slice(-2));
-			  }
-			  log('> ' + a.join(''));
+			
+				if (typeof count === 'undefined') {
+					var count = 0;
+				}				
+				
+				count++;
+				
+				let value = event.target.value;
+				// In Chrome 50+, a DataView is returned instead of an ArrayBuffer.
+				value = value.buffer ? value : new DataView(value);
+				let a = [];
+				// Convert raw data bytes to hex values just for the sake of showing something.
+				// In the "real" world, you'd use data.getUint8, data.getUint16 or even
+				// TextDecoder to process raw data bytes.
+				for (var i = 0; i < value.byteLength; i++) {
+				a.push(('00' + value.getUint8(i).toString(16)).slice(-2) + ' - ' + count);
+				}
+				log('> ' + a.join(''));
+
 			}
 				// Funksjon for å skru LED på
 			
@@ -225,19 +236,19 @@
 
 
 <script>
-  document.querySelector('form').addEventListener('submit', function(event) {
-    event.stopPropagation();
-    event.preventDefault();
+	  document.querySelector('form').addEventListener('submit', function(event) {
+		event.stopPropagation();
+		event.preventDefault();
 
-    if (!navigator.bluetooth) {
-      ChromeSamples.setStatus('Web Bluetooth API er ikke tilgjengelig.\n' +
-        'Husk å aktivere Web Bluetooth-flagget: chrome://flags');
-    } else {
-      ChromeSamples.clearLog();
-      onFormSubmit();
-    }
-  });
-  log = ChromeSamples.log;
+		if (!navigator.bluetooth) {
+		  ChromeSamples.setStatus('Web Bluetooth API er ikke tilgjengelig.\n' +
+			'Husk å aktivere Web Bluetooth-flagget: chrome://flags');
+		} else {
+		  ChromeSamples.clearLog();
+		  onFormSubmit();
+		}
+	  });
+	  log = ChromeSamples.log;
 </script>
 
     
