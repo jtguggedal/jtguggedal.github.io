@@ -199,16 +199,6 @@
 			  });
 			}
 
-			function onStopButtonClick() {
-			  if (myCharacteristic) {
-				myCharacteristic.stopNotifications().then(() => {
-				  log('> Notifications stopped');
-				  myCharacteristic.removeEventListener('characteristicvaluechanged',
-					handleNotifications);
-				});
-			  }
-			}
-
 			function handleNotifications(event) {
 			  let value = event.target.value;
 			  // In Chrome 50+, a DataView is returned instead of an ArrayBuffer.
@@ -223,35 +213,7 @@
 			  log('> ' + a.join(''));
 			}
 				// Funksjon for å skru LED på
-				
-				function ledOn() {
-					'use strict';
-
-					if(myCharacteristic) {
-						log('> Skrur LED på...');
-						let ledValue = new Uint8Array([1]);
-						
-						myCharacteristic.writeValue(ledValue);
-						
-					}
-				
-				};
-				
-				// Funksjon for å skru LED av
-				
-				function ledOff() {
-				  'use strict';
-
-				
-					if(myCharacteristic) {
-						log('> Skrur LED av...');
-						let ledValue = new Uint8Array([0]);
-						
-						myCharacteristic.writeValue(ledValue);
-						
-					}
-				
-				};
+			
 				
 				
 
