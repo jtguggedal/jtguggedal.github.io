@@ -198,7 +198,7 @@
 			  
 			  let led_characteristicUuid = document.getElementById('led-characteristic').value;
 			  if (led_characteristicUuid.startsWith('0x')) {
-				ledcharacteristicUuid = parseInt(led_characteristicUuid, 16);
+				led_characteristicUuid = parseInt(led_characteristicUuid, 16);
 			  }
 
 			  log('Requesting Bluetooth Device...');
