@@ -182,7 +182,8 @@
       
       			
       		'use strict';
-			var myCharacteristic;
+			var my_button_characteristic;
+			var my_led_characteristic
 
 			function onFormSubmit() {
 			  let serviceUuid = document.getElementById('service').value;
@@ -193,6 +194,11 @@
 			  let button_characteristicUuid = document.getElementById('button-characteristic').value;
 			  if (button_characteristicUuid.startsWith('0x')) {
 				button_characteristicUuid = parseInt(button_characteristicUuid, 16);
+			  }
+			  
+			  let led_characteristicUuid = document.getElementById('led-characteristic').value;
+			  if (led_characteristicUuid.startsWith('0x')) {
+				ledcharacteristicUuid = parseInt(led_characteristicUuid, 16);
 			  }
 
 			  log('Requesting Bluetooth Device...');
@@ -208,6 +214,12 @@
 					handleNotifications);
 				});
 			  })
+			  .then(service => service.getCharacteristic(led_characteristicUuid))
+			  .then(characteristic => {
+					my_led_characteristic = led_characteristic;
+					log('> Tilkoblet enhet. LED kan nå styres.');
+
+				})
 			  .catch(error => {
 				log('Argh! ' + error);
 			  });
@@ -239,7 +251,7 @@
 			}
 				// Funksjon for å skru LED på
 							
-			/*	function ledOn() {
+				function ledOn() {
 					'use strict';
 
 					if(my_led_charateristic) {
@@ -267,7 +279,7 @@
 					}
 				
 				};
-				*/
+				
 
 </script>
     
