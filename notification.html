@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web Bluetooth</title>
+    <title>Notification</title>
     
     <style>
     	@import url(https://fonts.googleapis.com/css?family=Open+Sans|Roboto:400,500,700,300);
@@ -113,7 +113,7 @@
   <body>
   	<div id="main">
 		<h1>Notification-test</h1>
-		For å bruke Web Bluetooth til å styre LED på kit:
+		For å bruke Web Bluetooth til å telle antall knappetrykk på kitet:
 		<ul>
 			<li>Last inn "Experimental-ble-app-blinky" på kitet</li>
 			<li>Åpne denne nettsiden i Chrome Dev eller Chromium på Android L/M</li>
@@ -202,7 +202,7 @@
 			  .then(characteristic => {
 				myCharacteristic = characteristic;
 				return myCharacteristic.startNotifications().then(() => {
-				  log('> Notifications started');
+				  log('> Tilkobling oppretta...');
 				  myCharacteristic.addEventListener('characteristicvaluechanged',
 					handleNotifications);
 				});
@@ -213,7 +213,6 @@
 			}
 		
 			var count = 0;
-			document.getElementById("signal-box").innerHTML = "0";
 
 			
 			function handleNotifications(event) {
@@ -222,7 +221,7 @@
 				count++;
 				
 				
-				document.getElementById("signal-box").innerHTML = floor(count/2);
+				document.getElementById("signal-box").innerHTML = Math.floor(count/2);
 				
 				let value = event.target.value;
 				// In Chrome 50+, a DataView is returned instead of an ArrayBuffer.
@@ -232,7 +231,7 @@
 				// In the "real" world, you'd use data.getUint8, data.getUint16 or even
 				// TextDecoder to process raw data bytes.
 				for (var i = 0; i < value.byteLength; i++) {
-				a.push(('00' + value.getUint8(i).toString(16)).slice(-2) + ' - ' + count);
+				a.push(('Event  nr. ' + count + ': 00' + value.getUint8(i).toString(16)).slice(-2));
 				}
 				log('> ' + a.join(''));
 
