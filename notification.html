@@ -222,7 +222,7 @@
 				count++;
 				
 				
-				document.getElementById("signal-box").innerHTML = count/2;
+				document.getElementById("signal-box").innerHTML = floor(count/2);
 				
 				let value = event.target.value;
 				// In Chrome 50+, a DataView is returned instead of an ArrayBuffer.
