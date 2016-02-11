@@ -76,8 +76,12 @@
     	#signal-box {
     		margin: 20px auto;
     		width: 100px;
-    		height: 100px;
 			border: 1px solid #EEE;
+			font-size: 40px;
+			font-weight: 700;
+			text-align: center;
+			padding: 20px;
+			vertical-align: middle;
     	}
     </style>
     <script>
@@ -209,6 +213,8 @@
 			}
 		
 			var count = 0;
+			document.getElementById("signal-box").innerHTML = "0";
+
 			
 			function handleNotifications(event) {
 			
@@ -216,7 +222,7 @@
 				count++;
 				
 				
-				document.getElementById("signal-box").style.color = "blue";
+				document.getElementById("signal-box").innerHTML = count/2;
 				
 				let value = event.target.value;
 				// In Chrome 50+, a DataView is returned instead of an ArrayBuffer.
