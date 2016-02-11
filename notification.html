@@ -72,7 +72,13 @@
     	#ledoff {
     		background-color: #cc0000;
     	}
-    
+    	
+    	#signal-box {
+    		margin: 20px auto;
+    		width: 100px;
+    		height: 100px;
+			border: 1px solid #EEE;
+    	}
     </style>
     <script>
       // If we're running on a real web server (as opposed to localhost, which is whitelisted),
@@ -119,7 +125,7 @@
 			<button id="ledoff" onclick="ledOff()">Slå LED AV</button>
 		  </div>
 		  -->
-		<div class="signal-box"> 
+		<div id="signal-box"> 
 		</div>
 
 
@@ -201,14 +207,16 @@
 				log('Argh! ' + error);
 			  });
 			}
-
+		
+			var count = 0;
+			
 			function handleNotifications(event) {
 			
-				if (typeof count === 'undefined') {
-					var count = 0;
-				}				
-				
+			
 				count++;
+				
+				
+				document.getElementById("signal-box").style.color = "blue";
 				
 				let value = event.target.value;
 				// In Chrome 50+, a DataView is returned instead of an ArrayBuffer.
