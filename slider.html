@@ -35,6 +35,7 @@
     	}
     	
     	input[type="text"] {
+            width: 300px;
     		padding: 5px;
     	}
     	
@@ -75,8 +76,17 @@
     	}
 
         input[type=range] {
-            width: 300px;
+            width: 20px;
+            height: 300px;
             margin-top: 40px;
+            -webkit-appearance: slider-vertical;
+
+        }
+
+        #slider-value {
+            text-align: center;
+            font-size: 25px;
+            font-weight: 700;
 
         }
     
@@ -113,7 +123,7 @@
 
   <body>
   	<div id="main">
-		<h1>LED-test</h1>
+		<h1>Styring av LED med slider</h1>
 		For å bruke Web Bluetooth til å styre LED på kit med slider:
 		<form>
 		  <div><label for="service">Service: </label><input id="service" type="text" list="services" autofocus placeholder="Bluetooth Service" value="00001523-1212-efde-1523-785feabcd123"></div>
@@ -154,7 +164,7 @@
 		  };
 		</script>
 
-        <p id="slider-value"></p>
+        <p id="slider-value">0</p>
 
 		<h3>Logg</h3>
 		<div id="output" class="output">
@@ -213,13 +223,13 @@
                     var sliderVal = $(this).val();
 
 				    if(myCharacteristic) {
-                        if(sliderVal > 0 && sliderVal <= 25)
+                        if(sliderVal > 20 && sliderVal <= 40)
                             var charVal = new Uint8Array([1]);
-                        else if(sliderVal > 25 && sliderVal <= 50)
+                        else if(sliderVal > 40 && sliderVal <= 60)
                             var charVal = new Uint8Array([2]);
-                        else if(sliderVal > 50 && sliderVal <= 75)
+                        else if(sliderVal > 60 && sliderVal <= 80)
                             var charVal = new Uint8Array([3]);
-                        else if(sliderVal > 75)
+                        else if(sliderVal > 80)
                             var charVal = new Uint8Array([4]);                    
                         myCharacteristic.writeValue(charVal);
                     }
