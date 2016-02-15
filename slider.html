@@ -209,13 +209,10 @@
 				
 				// Funksjon for å skru LED på
 
-                $('#slider').on("change mousemove", function() {
+                $('#slider').on("change mousemove touchmove", function() {
                     var sliderVal = $(this).val();
 
 				    if(myCharacteristic) {
-
-                    
-
                         if(sliderVal <= 25)
                             var charVal = new Uint8Array([1]);
                         else if(sliderVal > 25 && sliderVal <= 50)
@@ -226,7 +223,7 @@
                             var charVal = new Uint8Array([4]);                    
                         myCharacteristic.writeValue(charVal);
                     }
-                                            $('#slider-value').html(sliderVal);
+                    $('#slider-value').html(sliderVal);
 
                 });
 				
