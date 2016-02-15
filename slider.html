@@ -208,10 +208,11 @@
 				}
 				
 				// Funksjon for å skru LED på
-				if(myCharacteristic) {
 
-                    $('#slider').on("change mousemove", function() {
-                        var sliderVal = $(this).val();
+                $('#slider').on("change mousemove", function() {
+                    var sliderVal = $(this).val();
+
+				    if(myCharacteristic) {
 
                     
 
@@ -222,12 +223,12 @@
                         else if(sliderVal > 50 && sliderVal <= 75)
                             var charVal = new Uint8Array([3]);
                         else if(sliderVal > 75)
-                            var charVal = new Uint8Array([4]);
-
-                        $('#slider-value').html(sliderVal);
-                    });
+                            var charVal = new Uint8Array([4]);                    
                         myCharacteristic.writeValue(charVal);
-                }
+                    }
+                                            $('#slider-value').html(sliderVal);
+
+                });
 				
 				// Funksjon for å skru LED av
 				
