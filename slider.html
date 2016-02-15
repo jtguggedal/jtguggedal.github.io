@@ -6,8 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
-    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
-    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-beta1/jquery.js"></script>
     <title>Web Bluetooth</title>
     
     <style>
@@ -201,12 +200,12 @@
 				}
 				
 				// Funksjon for å skru LED på
-				
+				if(myCharacteristic) {
 
-                $('#slider').on("change mousemove", function() {
-                    var sliderVal = $(this).val();
+                    $('#slider').on("change mousemove", function() {
+                        var sliderVal = $(this).val();
 
-                    if(myCharacteristic) {
+                    
 
                         if(sliderVal <= 25)
                             var charVal = new Uint8Array([1]);
@@ -216,9 +215,9 @@
                             var charVal = new Uint8Array([3]);
                         else if(sliderVal > 75)
                             var charVal = new Uint8Array([4]);
-                    }
+                    });
                         myCharacteristic.writeValue(charVal);
-                });
+                }
 				
 				// Funksjon for å skru LED av
 				
