@@ -130,9 +130,11 @@
 		  <div><label for="service">Characteristic: </label><input id="characteristic" type="text" list="characteristics" placeholder="Bluetooth Characteristic" value="00001525-1212-efde-1523-785feabcd123"></div>
 		  <div><button id="connect" >Koble til enhet</button></div>
 		</form>
-		  <div class="button-container">
-			<input type="range" id="slider" min="0" max="100" value="0" width="300px">
-		  </div>
+
+
+        <div class="button-container">
+            <input type="range" id="slider" min="0" max="100" value="0" width="300px">
+        </div>
 
 
 
@@ -183,46 +185,69 @@
   
     
       <script>
-      
+                /******  START WEB BLUETOOTH-KODE   *****/
       			
+                // Setter en variabel for å lagre karakteristikken som skal brukes videre
+                // i funksjoner utenfor selve tilkoblingen til enheten.
+                // Variabelen settes utenfor alle funksjoner slik at den skal være global, 
+                // og tilgjengelig i alle funksjoner.
       			var myCharacteristic;
       			
-      			 // Søker etter enheter
 
+
+                // Funksjonen 'onFormSubmit' trigges når 'Koble til enhet'-knappen trykkes
+                // Se egen funksjon for dette rett før </body>-taggen i denne filen
       			function onFormSubmit() {
 				  'use strict';
 
-				  let serviceUuid = document.getElementById('service').value;
-				  if (serviceUuid.startsWith('0x')) {
-					serviceUuid = parseInt(serviceUuid, 16);
-				  }
+                    // Henter service-UUID som er oppgitt i tekstboksen for dette
+                    let serviceUuid = document.getElementById('service').value;
+                    if (serviceUuid.startsWith('0x')) {
+                        serviceUuid = parseInt(serviceUuid, 16);
+                    }
 
-				  let characteristicUuid = document.getElementById('characteristic').value;
-				  if (characteristicUuid.startsWith('0x')) {
-					characteristicUuid = parseInt(characteristicUuid, 16);
-				  }
+                    // Henter karakteristikk-UUID som er oppgitt i tekstboksen for dette
+                    let characteristicUuid = document.getElementById('characteristic').value;
+                    if (characteristicUuid.startsWith('0x')) {
+                    characteristicUuid = parseInt(characteristicUuid, 16);
+                    }
 
-				  log('Søker etter enheter med valgt service og characteristic...');
-				  navigator.bluetooth.requestDevice({filters: [{services: [serviceUuid]}]})
-				  .then(device => device.connectGATT())
-				  .then(server => server.getPrimaryService(serviceUuid))
-				  .then(service => service.getCharacteristic(characteristicUuid))
-				  .then(characteristic => {
-				  		myCharacteristic = characteristic;
-				  		log('> Tilkoblet enhet. LED kan nå styres.');
+                    // Søker etter enheter som matcher valgt service-UUID
+                    log('Søker etter enheter med valgt service og characteristic...');
+                    navigator.bluetooth.requestDevice({filters: [{services: [serviceUuid]}]})
+                    .then(device => device.connectGATT())
+                    .then(server => server.getPrimaryService(serviceUuid))
 
-					})
-				  .catch(error => {
-					log('Argh! ' + error);
-				  });
-				}
-				
-				// Funksjon for å skru LED på
+                    // Enhetene er nå koblet sammen, og nettleseren leter etter karakteristikk som matcher den ønskede UUID
+                    .then(service => service.getCharacteristic(characteristicUuid))
+                    .then(characteristic => {
+                        // Lagrer karakteristikken som matcher i variabel slik at den kan brukes i andre funksjoner.
+                    		myCharacteristic = characteristic;
+                    		log('> Tilkoblet enhet. LED kan nå styres.');
 
+                    })
+                    // Dersom feil skjer i løpet av oppkoblingen, skrives feilen til loggen
+                    .catch(error => {
+                    log('Argh! ' + error);
+                    });
+                    }
+    			
+
+
+				//******** Funksjon for å styre LEDene   ******/
+
+                // Bruker jQuery for å registrere når HTML-elementet med ID 'slider' endres.
+                // Når endring skjer, kjøres funksjonen.
                 $('#slider').on("change mousemove touchmove", function() {
+
+                    // Lagrer nå-verdien fra slideren i variabelen 'sliderVal' (med jQuery-selector)
                     var sliderVal = $(this).val();
 
+                    // Sjekker at tilkobling ble opprettet tidligere
 				    if(myCharacteristic) {
+
+                        // Sjekker i hvilket intervall slider-verdien er, og sender korresponderende verdi
+                        // via GATT til firmware
                         if(sliderVal > 20 && sliderVal <= 40)
                             var charVal = new Uint8Array([1]);
                         else if(sliderVal > 40 && sliderVal <= 60)
@@ -236,6 +261,8 @@
 
                         myCharacteristic.writeValue(charVal);
                     }
+
+                    // Skriver veriden fra slideren til HTML-elementet med ID 'slider-value'
                     $('#slider-value').html(sliderVal);
 
                 });
