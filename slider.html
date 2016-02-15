@@ -213,7 +213,7 @@
                     var sliderVal = $(this).val();
 
 				    if(myCharacteristic) {
-                        if(sliderVal <= 25)
+                        if(sliderVal > 0 && sliderVal <= 25)
                             var charVal = new Uint8Array([1]);
                         else if(sliderVal > 25 && sliderVal <= 50)
                             var charVal = new Uint8Array([2]);
