@@ -230,7 +230,10 @@
                         else if(sliderVal > 60 && sliderVal <= 80)
                             var charVal = new Uint8Array([3]);
                         else if(sliderVal > 80)
-                            var charVal = new Uint8Array([4]);                    
+                            var charVal = new Uint8Array([4]);  
+                        else 
+                            var charVal = new Uint8Array([0]);  
+
                         myCharacteristic.writeValue(charVal);
                     }
                     $('#slider-value').html(sliderVal);
