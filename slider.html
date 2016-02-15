@@ -73,6 +73,12 @@
     	#ledoff {
     		background-color: #cc0000;
     	}
+
+        input[type=range] {
+            width: 300px;
+            margin-top: 40px;
+
+        }
     
     </style>
     <script>
@@ -115,7 +121,7 @@
 		  <div><button id="connect" >Koble til enhet</button></div>
 		</form>
 		  <div class="button-container">
-			<input type="range" id="slider" min="0" max="100" value="0" width="300"/>
+			<input type="range" id="slider" min="0" max="100" value="0" width="300px">
 		  </div>
 
 
@@ -147,6 +153,8 @@
 			}
 		  };
 		</script>
+
+        <p id="slider-value"></p>
 
 		<h3>Logg</h3>
 		<div id="output" class="output">
@@ -215,6 +223,8 @@
                             var charVal = new Uint8Array([3]);
                         else if(sliderVal > 75)
                             var charVal = new Uint8Array([4]);
+
+                        $('#slider-value').html(sliderVal);
                     });
                         myCharacteristic.writeValue(charVal);
                 }
