@@ -307,13 +307,13 @@
                         var charVal = new Uint8Array(2);
 
                         if(sliderVal > 20)
-                            charVal[1] += 1;    // 0001
+                            charVal[0] += 1;    // 0001
                         if(sliderVal > 40)      
-                            charVal[1] += 2;    // 0010
+                            charVal[0] += 2;    // 0010
                         if(sliderVal > 60)
-                            charVal[1] += 4;    // 0100
+                            charVal[0] += 4;    // 0100
                         if(sliderVal > 80)
-                            charVal[1] += 8;    // 1000
+                            charVal[0] += 8;    // 1000
 
                         //myCharacteristic.writeValue(charVal);
                         console.log(charVal);
