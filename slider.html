@@ -13,6 +13,8 @@
     	@import url(https://fonts.googleapis.com/css?family=Open+Sans|Roboto:400,500,700,300);
     	body {
     		font-family: "Roboto";
+            margin: 0;
+            padding: 0;
     	}
     	div {
     		margin: 10px;
@@ -35,29 +37,35 @@
     	}
     	
     	input[type="text"] {
-            width: 300px;
-    		padding: 5px;
+            width: 225px;
+    		padding: 3px;
+            font-size: 12px;
     	}
     	
     	button {
     		padding: 10px;
-    		margin-right: 30px;
+    		margin-left: 120px;
     		border: 1px solid white;
     		font-weight: 700;
     		box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.1);
+            float: 
     	}
     	
     	#main {
-    		max-width: 500px;
-    		margin: 20px auto;
+    		width: 100%;
+            max-width: 800px;
+            height: 100%;
     		border: 1px solid #DDD;
     		padding: 20px;
-    		box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.1);
+            font-size: 14px;
+            margin: 0;
     	}
     	
-    	.button-container {
+    	.slider-container {
+            display: inline-block;
+            float: left;
 	        margin: 0 auto;
-			width: 300px;
+			width: 120px;
 			text-align: center;		
     	}
     	
@@ -77,17 +85,40 @@
 
         input[type=range] {
             width: 20px;
-            height: 300px;
-            margin-top: 40px;
+            height: 150px;
+            margin-top: 0px;
             -webkit-appearance: slider-vertical;
 
         }
 
         #slider-value {
             text-align: center;
-            font-size: 25px;
+            font-size: 20px;
             font-weight: 700;
 
+        }
+        #orientation-message {
+                display: none;
+
+        }
+        @media screen and (orientation:portrait)
+        {
+           #orientation-message {
+                position: fixed;
+                width: 100%;
+                height: 100%;
+                font-size: 35px;
+                background-color: rgba(0, 0, 0, 0.8);
+                color: white;
+                margin: 0;
+                padding: 0;
+                margin-top: -20px;
+                vertical-align: middle;
+                text-align: center;
+                font-weight: 700;
+                padding-top: 200px;
+
+           }
         }
     
     </style>
@@ -122,18 +153,24 @@
   </head>
 
   <body>
+    <div id="orientation-message">
+        <div>Vennligst snu enheten 90&#176;</div>
+    </div>
   	<div id="main">
-		<h1>Styring av LED med slider</h1>
-		For å bruke Web Bluetooth til å styre LED på kit med slider:
-		<form>
-		  <div><label for="service">Service: </label><input id="service" type="text" list="services" autofocus placeholder="Bluetooth Service" value="00001523-1212-efde-1523-785feabcd123"></div>
-		  <div><label for="service">Characteristic: </label><input id="characteristic" type="text" list="characteristics" placeholder="Bluetooth Characteristic" value="00001525-1212-efde-1523-785feabcd123"></div>
-		  <div><button id="connect" >Koble til enhet</button></div>
-		</form>
+        <div class="slider-container">
+            <p id="slider-value">0%</p>
 
-
-        <div class="button-container">
             <input type="range" id="slider" min="0" max="100" value="0" width="300px">
+        </div>
+
+        <div id="config">
+    		<h1>Styring av LED med slider</h1>
+    		For å bruke Web Bluetooth til å styre LED på kit med slider:
+    		<form>
+    		  <div><label for="service">Service: </label><input id="service" type="text" list="services" autofocus placeholder="Bluetooth Service" value="00001523-1212-efde-1523-785feabcd123"></div>
+    		  <div><label for="service">Characteristic: </label><input id="characteristic" type="text" list="characteristics" placeholder="Bluetooth Characteristic" value="00001525-1212-efde-1523-785feabcd123"></div>
+    		  <div><button id="connect" >Koble til enhet</button></div>
+    		</form>
         </div>
 
 
@@ -166,8 +203,6 @@
 		  };
 		</script>
 
-        <p id="slider-value">0</p>
-
 		<h3>Logg</h3>
 		<div id="output" class="output">
 		  <div id="content"></div>
@@ -192,13 +227,14 @@
                 // Variabelen settes utenfor alle funksjoner slik at den skal være global, 
                 // og tilgjengelig i alle funksjoner.
       			var myCharacteristic;
+                var status = 0;
       			
 
 
                 // Funksjonen 'onFormSubmit' trigges når 'Koble til enhet'-knappen trykkes
                 // Se egen funksjon for dette rett før </body>-taggen i denne filen
       			function onFormSubmit() {
-				  'use strict';
+				    'use strict';
 
                     // Henter service-UUID som er oppgitt i tekstboksen for dette
                     let serviceUuid = document.getElementById('service').value;
@@ -209,7 +245,7 @@
                     // Henter karakteristikk-UUID som er oppgitt i tekstboksen for dette
                     let characteristicUuid = document.getElementById('characteristic').value;
                     if (characteristicUuid.startsWith('0x')) {
-                    characteristicUuid = parseInt(characteristicUuid, 16);
+                        characteristicUuid = parseInt(characteristicUuid, 16);
                     }
 
                     // Søker etter enheter som matcher valgt service-UUID
@@ -222,15 +258,15 @@
                     .then(service => service.getCharacteristic(characteristicUuid))
                     .then(characteristic => {
                         // Lagrer karakteristikken som matcher i variabel slik at den kan brukes i andre funksjoner.
-                    		myCharacteristic = characteristic;
-                    		log('> Tilkoblet enhet. LED kan nå styres.');
+                		myCharacteristic = characteristic;
+                        status = 2;
 
                     })
                     // Dersom feil skjer i løpet av oppkoblingen, skrives feilen til loggen
                     .catch(error => {
-                    log('Argh! ' + error);
+                        log('Argh! ' + error);
                     });
-                    }
+                }
     			
 
 
@@ -263,27 +299,15 @@
                     }
 
                     // Skriver veriden fra slideren til HTML-elementet med ID 'slider-value'
-                    $('#slider-value').html(sliderVal);
+                    $('#slider-value').html(sliderVal + '%');
 
                 });
 				
-				// Funksjon for å skru LED av
-				
-				function ledOff() {
-				  'use strict';
+                
 
-				
-					if(myCharacteristic) {
-						log('> Skrur LED av...');
-						let ledValue = new Uint8Array([0]);
-						
-						myCharacteristic.writeValue(ledValue);
-						
-					}
-				
-				};
-				
-
+                Object.defineProperty(window, "status", { set: function(v) { 
+                      
+                } } );
 </script>
     
   
@@ -293,6 +317,8 @@
   document.querySelector('form').addEventListener('submit', function(event) {
     event.stopPropagation();
     event.preventDefault();
+
+    status = 1;
 
     if (!navigator.bluetooth) {
       ChromeSamples.setStatus('Web Bluetooth API er ikke tilgjengelig.\n' +
