@@ -304,7 +304,9 @@
                         // via BLE til firmware. 
                         // Setter 1. bit lik 1 for å tenne 1. LED osv.
 
-                        var charVal = new Uint8Array([0], [0]);
+                        var charVal = new Uint8Array(2);
+
+                        charVal[0] = 0;
 
                         if(sliderVal > 20)
                             charVal[0] += 1;    // 0001
