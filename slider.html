@@ -56,7 +56,7 @@
     		width: 100%;
             max-width: 800px;
             height: 100%;
-    		border: 1px solid #DDD;
+    		border: px solid #DDD;
     		padding: 20px;
             font-size: 14px;
             margin: 0;
@@ -172,7 +172,7 @@
         <div>Vennligst snu enheten 90&#176;</div>
     </div>
   	<div id="main">
-        <div id="fullscreen" onclick="launchIntoFullscreen();">Klikk for fullskjerm</div>
+        <div id="fullscreen" onclick="">Klikk for fullskjerm</div>
         <div class="slider-container">
             <p id="slider-value">0%</p>
 
@@ -330,7 +330,7 @@
 
         <script>
             // Funksjon får vise siden i fullskjerm
-           function launchIntoFullscreen(element) {
+           /*function launchIntoFullscreen(element) {
               
                 var el = document.documentElement;
 
@@ -343,8 +343,40 @@
                     rfs.call(el);
                 }
             }  
-
+*/
             
+            function toggleFullscreen(elem) {
+              elem = elem || document.documentElement;
+              if (!document.fullscreenElement && !document.mozFullScreenElement &&
+                !document.webkitFullscreenElement && !document.msFullscreenElement) {
+                if (elem.requestFullscreen) {
+                  elem.requestFullscreen();
+                } else if (elem.msRequestFullscreen) {
+                  elem.msRequestFullscreen();
+                } else if (elem.mozRequestFullScreen) {
+                  elem.mozRequestFullScreen();
+                } else if (elem.webkitRequestFullscreen) {
+                  elem.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+                }
+                $('#fullscreen').html("Avslutt fullskjerm");
+              } else {
+                if (document.exitFullscreen) {
+                  document.exitFullscreen();
+                } else if (document.msExitFullscreen) {
+                  document.msExitFullscreen();
+                } else if (document.mozCancelFullScreen) {
+                  document.mozCancelFullScreen();
+                } else if (document.webkitExitFullscreen) {
+                  document.webkitExitFullscreen();
+                }
+                $('#fullscreen').html("Klikk for fullskjerm");
+              }
+            }
+
+            document.getElementById('fullscreen').addEventListener('click', function() {
+              toggleFullscreen();
+            });
+
             
 
         </script>
