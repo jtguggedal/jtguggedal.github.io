@@ -15,6 +15,7 @@
     		font-family: "Roboto";
             margin: 0;
             padding: 0;
+            overflow: hidden;
     	}
     	div {
     		margin: 10px;
@@ -103,8 +104,14 @@
         }
 
         #fullscreen {
-            display: inline-block;
+            display: block;
             cursor: pointer;
+            position: fixed;
+            top: 0px;
+            right: 0px;
+            padding: 2px;
+            background-color: #222;
+            color: white;
 
 
         }
@@ -164,8 +171,8 @@
     <div id="orientation-message">
         <div>Vennligst snu enheten 90&#176;</div>
     </div>
-    <div id="fullscreen" onclick="launchIntoFullscreen();">Klikk for fullskjerm</div>
   	<div id="main">
+        <div id="fullscreen" onclick="launchIntoFullscreen();">Klikk for fullskjerm</div>
         <div class="slider-container">
             <p id="slider-value">0%</p>
 
@@ -318,47 +325,51 @@
                 Object.defineProperty(window, "status", { set: function(v) { 
                       
                 } } );
-</script>
+        </script>
 
 
-<script>
-    // Funksjon får vise siden i fullskjerm
-    function launchIntoFullscreen(element) {
-      
-    var el = document.documentElement
-        , rfs =
-           el.requestFullScreen
-        || el.webkitRequestFullScreen
-        || el.mozRequestFullScreen;
-        rfs.call(el);
-    }
+        <script>
+            // Funksjon får vise siden i fullskjerm
+           function launchIntoFullscreen(element) {
+              
+                var el = document.documentElement;
 
-    
-    
+                if (window.screenTop && window.screenY) {
+                    var rfs = el.webkitExitFullScreen;
+                    rfs.call(el);
+                    $('#fullscreen').html("j");
+                } else {
+                    var rfs = el.webkitRequestFullscreen;
+                    rfs.call(el);
+                }
+            }  
 
-</script>
+            
+            
 
-    
-  
+        </script>
+
+            
+          
 
 
-<script>
-  document.querySelector('form').addEventListener('submit', function(event) {
-    event.stopPropagation();
-    event.preventDefault();
+        <script>
+          document.querySelector('form').addEventListener('submit', function(event) {
+            event.stopPropagation();
+            event.preventDefault();
 
-    status = 1;
+            status = 1;
 
-    if (!navigator.bluetooth) {
-      ChromeSamples.setStatus('Web Bluetooth API er ikke tilgjengelig.\n' +
-        'Husk å aktivere Web Bluetooth-flagget: chrome://flags');
-    } else {
-      ChromeSamples.clearLog();
-      onFormSubmit();
-    }
-  });
-  log = ChromeSamples.log;
-</script>
+            if (!navigator.bluetooth) {
+              ChromeSamples.setStatus('Web Bluetooth API er ikke tilgjengelig.\n' +
+                'Husk å aktivere Web Bluetooth-flagget: chrome://flags');
+            } else {
+              ChromeSamples.clearLog();
+              onFormSubmit();
+            }
+          });
+          log = ChromeSamples.log;
+        </script>
 
     
   </body>
