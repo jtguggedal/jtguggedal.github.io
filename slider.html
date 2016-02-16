@@ -181,7 +181,7 @@
 
         <div id="config">
     		<h1>Styring av LED med slider</h1>
-    		For å bruke Web Bluetooth til å styre LED på kit med slider:
+    		For å bruke Web Bluetooth til å styre LED med slider:
     		<form>
     		  <div><label for="service">Service: </label><input id="service" type="text" list="services" autofocus placeholder="Bluetooth Service" value="00001523-1212-efde-1523-785feabcd123"></div>
     		  <div><label for="service">Characteristic: </label><input id="characteristic" type="text" list="characteristics" placeholder="Bluetooth Characteristic" value="00001525-1212-efde-1523-785feabcd123"></div>
@@ -301,18 +301,19 @@
 				    if(myCharacteristic) {
 
                         // Sjekker i hvilket intervall slider-verdien er, og sender korresponderende verdi
-                        // via GATT til firmware
+                        // via BLE til firmware. 
+                        // Setter 1. bit lik 1 for å tenne 1. LED osv.
 
-                        var charVal = new Uint8Array([0]);
+                        var charVal = new Uint8Array([0], [0]);
 
                         if(sliderVal > 20)
-                            charVal[0] += 1;
-                        if(sliderVal > 40)
-                            charVal[0] += 2;
+                            charVal[1] += 1;    // 0001
+                        if(sliderVal > 40)      
+                            charVal[1] += 2;    // 0010
                         if(sliderVal > 60)
-                            charVal[0] += 4;
+                            charVal[1] += 4;    // 0100
                         if(sliderVal > 80)
-                            charVal[0] += 8; 
+                            charVal[1] += 8;    // 1000
 
                         myCharacteristic.writeValue(charVal);
                     }
