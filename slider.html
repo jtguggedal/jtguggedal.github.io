@@ -101,6 +101,14 @@
                 display: none;
 
         }
+
+        #fullscreen {
+            display: inline-block;
+            cursor: pointer;
+
+
+        }
+
         @media screen and (orientation:portrait)
         {
            #orientation-message {
@@ -156,6 +164,7 @@
     <div id="orientation-message">
         <div>Vennligst snu enheten 90&#176;</div>
     </div>
+    <div id="fullscreen" onclick="launchIntoFullscreen();">Klikk for fullskjerm</div>
   	<div id="main">
         <div class="slider-container">
             <p id="slider-value">0%</p>
@@ -170,6 +179,7 @@
     		  <div><label for="service">Service: </label><input id="service" type="text" list="services" autofocus placeholder="Bluetooth Service" value="00001523-1212-efde-1523-785feabcd123"></div>
     		  <div><label for="service">Characteristic: </label><input id="characteristic" type="text" list="characteristics" placeholder="Bluetooth Characteristic" value="00001525-1212-efde-1523-785feabcd123"></div>
     		  <div><button id="connect" >Koble til enhet</button></div>
+
     		</form>
         </div>
 
@@ -309,6 +319,25 @@
                       
                 } } );
 </script>
+
+
+<script>
+    // Funksjon får vise siden i fullskjerm
+    function launchIntoFullscreen(element) {
+      
+    var el = document.documentElement
+        , rfs =
+           el.requestFullScreen
+        || el.webkitRequestFullScreen
+        || el.mozRequestFullScreen;
+        rfs.call(el);
+    }
+
+    
+    
+
+</script>
+
     
   
 
