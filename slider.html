@@ -119,6 +119,7 @@
         @media screen and (orientation:portrait)
         {
            #orientation-message {
+                display: block;
                 position: fixed;
                 width: 100%;
                 height: 100%;
@@ -277,6 +278,7 @@
                         // Lagrer karakteristikken som matcher i variabel slik at den kan brukes i andre funksjoner.
                 		myCharacteristic = characteristic;
                         status = 2;
+                        log('Tilkoblet, LED kan nå styres.');
 
                     })
                     // Dersom feil skjer i løpet av oppkoblingen, skrives feilen til loggen
