@@ -15,7 +15,6 @@
     		font-family: "Roboto";
             margin: 0;
             padding: 0;
-            overflow: hidden;
     	}
     	div {
     		margin: 10px;
@@ -66,7 +65,7 @@
             display: inline-block;
             float: left;
 	        margin: 0 auto;
-			width: 120px;
+			width: 100px;
 			text-align: center;		
     	}
     	
@@ -123,7 +122,7 @@
                 position: fixed;
                 width: 100%;
                 height: 100%;
-                font-size: 35px;
+                font-size: 25px;
                 background-color: rgba(0, 0, 0, 0.8);
                 color: white;
                 margin: 0;
@@ -303,16 +302,17 @@
 
                         // Sjekker i hvilket intervall slider-verdien er, og sender korresponderende verdi
                         // via GATT til firmware
+
+                        var charVal = new Uint8Array([0]);
+
                         if(sliderVal > 20 && sliderVal <= 40)
-                            var charVal = new Uint8Array([1]);
-                        else if(sliderVal > 40 && sliderVal <= 60)
-                            var charVal = new Uint8Array([2]);
-                        else if(sliderVal > 60 && sliderVal <= 80)
-                            var charVal = new Uint8Array([3]);
-                        else if(sliderVal > 80)
-                            var charVal = new Uint8Array([4]);  
-                        else 
-                            var charVal = new Uint8Array([0]);  
+                            charVal[0] += 1;
+                        if(sliderVal > 40 && sliderVal <= 60)
+                            charVal[0] += 2;
+                        if(sliderVal > 60 && sliderVal <= 80)
+                            charVal[0] += 4;
+                        if(sliderVal > 80)
+                            charVal[0] += 8; 
 
                         myCharacteristic.writeValue(charVal);
                     }
@@ -332,21 +332,6 @@
 
         <script>
             // Funksjon får vise siden i fullskjerm
-           /*function launchIntoFullscreen(element) {
-              
-                var el = document.documentElement;
-
-                if (window.screenTop && window.screenY) {
-                    var rfs = el.webkitExitFullScreen;
-                    rfs.call(el);
-                    $('#fullscreen').html("j");
-                } else {
-                    var rfs = el.webkitRequestFullscreen;
-                    rfs.call(el);
-                }
-            }  
-*/
-            
             function toggleFullscreen(elem) {
               elem = elem || document.documentElement;
               if (!document.fullscreenElement && !document.mozFullScreenElement &&
