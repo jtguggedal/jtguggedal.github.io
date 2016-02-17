@@ -26,6 +26,6 @@
 				 if (value == 1) {
 					charVal[byteOffset] += bitMask[bitOffset];
 				}
-			}
+			} 
 		}
 	};
