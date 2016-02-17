@@ -71,7 +71,7 @@
 
         #config {
             display: inline-block;
-            width: 400px;
+            width: 300px;
             vertical-align: top;
         }
     	
@@ -319,7 +319,7 @@
                     }
 
                     // Søker etter enheter som matcher valgt service-UUID
-                    log('Søker etter enheter med valgt service og characteristic...');
+                    log('Søker etter enheter med valgt \nservice og characteristic...');
                     navigator.bluetooth.requestDevice({filters: [{services: [serviceUuid]}]})
                     .then(device => device.connectGATT())
                     .then(server => server.getPrimaryService(serviceUuid))
