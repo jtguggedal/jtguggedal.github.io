@@ -294,29 +294,6 @@
 			}	
 
 
-/*
-
-			function handleLedCharacteristic(characteristic) {
-			  if (characteristic === null) {
-			    console.log("Ukjent karakteristikk.");
-			    return Promise.resolve();
-			  }
-			  return characteristic.readValue()
-			  .then(sensorLocationData => {
-			    let sensorLocation = sensorLocationData.getUint8(0);
-			    switch (sensorLocation) {
-			      case 0: return 'Other';
-			      case 1: return 'Chest';
-			      case 2: return 'Wrist';
-			      case 3: return 'Finger';
-			      case 4: return 'Hand';
-			      case 5: return 'Ear Lobe';
-			      case 6: return 'Foot';
-			      default: return 'Unknown';
-			    }
-			  }).then(location => console.log(location));
-			}
-		*/
 
 				// Funksjon for å skru LED på
 							
