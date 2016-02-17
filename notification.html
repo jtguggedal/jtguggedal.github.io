@@ -185,6 +185,7 @@
       		'use strict';
 			var my_button_characteristic;
 			var my_led_characteristic;
+			var charVal = new Uint8Array(20);
 
 			function onFormSubmit() {
 			  let serviceUuid = document.getElementById('service').value;
@@ -210,7 +211,7 @@
 			  .then(button_characteristic => {
 				my_button_characteristic = button_characteristic;
 				return my_button_characteristic.startNotifications().then(() => {
-				  log('> Tilkobling oppretta...');
+				  log('> Tilkobling oppretta');
 				  my_button_characteristic.addEventListener('characteristicvaluechanged',
 					handleNotifications);
 				});
@@ -258,7 +259,7 @@
 
 					if(my_led_charateristic) {
 						log('> Skrur LED på...');
-						let ledValue = new Uint8Array([1]);
+						let ledValue = new Uint8Array([1], [240]);
 						
 						my_led_charateristic.writeValue(ledValue);
 						
@@ -274,7 +275,7 @@
 				
 					if(my_led_charateristic) {
 						log('> Skrur LED av...');
-						let ledValue = new Uint8Array([0]);
+						let ledValue = new Uint8Array([0], [0]);
 						
 						my_led_charateristic.writeValue(ledValue);
 						
