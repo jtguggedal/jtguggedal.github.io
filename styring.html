@@ -1,0 +1,94 @@
+<!doctype html>
+
+<html>
+	<head>
+		<style>
+			html, body {
+				margin: 0;
+				padding: 0;
+			}
+			.demo {
+			  background: #f3eee6;
+			  width: 300px;
+			  height: 300px;
+			  display: inline-block;
+			  border-radius: 150px;
+			}
+
+			div {
+			  display: inline-block;
+			}
+
+			.ball {
+			  width: 100px;
+			  height: 100px;
+			  background: red;
+			  position: absolute;
+			  top: 100px;
+			  left: 100px;
+			  border-radius: 100px;
+			}
+			.ball.outline {
+			  background: #eee;
+			}
+			.ball.ease {
+			  -moz-transition: all 0.2s ease;
+			  -o-transition: all 0.2s ease;
+			  -webkit-transition: all 0.2s ease;
+			  transition: all 0.2s ease;
+			}
+		</style>
+		
+    	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-beta1/jquery.js"></script> 
+    	<script src="js/pep.js"></script>   
+	</head>
+	<body>
+
+		<div class='demo constrain-to-parent'>
+		  <div class='ball outline'></div>
+		  <div class='ball moveable'></div>
+		</div>
+		<div>
+		<p id="pos-x"></p>
+		<p id="pos-y"></p>
+		</div>
+		
+		<script>
+			
+			var REVERT_THRESHOLD = 1000;
+			var $ball = $('.ball.moveable');
+			var initialOffset = $ball.offset();
+
+
+			$('.ball').on("change mousemove touchmove", function() {
+				  var offset = $ball.offset();
+				  var offsetY = initialOffset.top - offset.top;
+				  var offsetX = -1*(initialOffset.left - offset.left)
+	  
+				 $('#pos-x').html('x: ' + offsetX + 'px');
+				 $('#pos-y').html('y: ' + offsetY + 'px');
+			});
+
+			$ball.pep({
+  
+			  useCSSTranslation: false,
+			  shouldEase: false,
+			  constrainTo: 'parent',
+			   initiate: function(){
+				 this.$el.removeClass('ease')
+			   },
+			  stop: function(){
+				var offset = this.$el.offset();    
+				var diffTop  = initialOffset.top - offset.top;
+				var diffLeft = -1*(initialOffset.left - offset.left);
+
+				if ( diffTop < REVERT_THRESHOLD && diffLeft < REVERT_THRESHOLD ){
+				  this.$el.css( initialOffset ).addClass('ease') 
+				}
+			  }
+			})
+
+
+		</script>
+	</body>
+</html>
