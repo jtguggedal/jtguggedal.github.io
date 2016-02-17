@@ -301,7 +301,7 @@
                     var sliderVal = $(this).val();
 
                     // Sjekker at tilkobling ble opprettet tidligere
-				    if(myCharacteristic) {
+				    //if(myCharacteristic) {
 
                         // Sjekker i hvilket intervall slider-verdien er, og sender korresponderende verdi
                         // via BLE til firmware. 
@@ -310,16 +310,26 @@
 
                         if(sliderVal > 20)
                             setBit(1, 3, 1);        // 0001
+                        else 
+                            setBit(1, 3, 0);
                         if(sliderVal > 40)      
                             setBit(1, 2, 1);        // 0010
+                        else
+                            setBit(1, 2, 0);
                         if(sliderVal > 60)
                             setBit(1, 1, 1);        // 0100
+                        else
+                            setBit(1, 1, 0);
                         if(sliderVal > 80)
                             setBit(1, 0, 1);        // 1000
+                        else
+                            setBit(1, 0, 0)
 
-                        myCharacteristic.writeValue(charVal);
+                        console.log(charVal);
+
+                        //myCharacteristic.writeValue(charVal);
                         //console.log(charVal);
-                    }
+                   // }
                     // Skriver veriden fra slideren til HTML-elementet med ID 'slider-value'
                     $('#slider-value').html(sliderVal + '%');
 
