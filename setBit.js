@@ -4,7 +4,8 @@
 //			bitOffset: 		int 0 - 7, 		eller 	char 'b' dersom hel byte skal settes 
 //											posisjon 0 er mest signifkante bit
 //			value: 			int 0 - 255
-//
+// ******
+
 	// Setter bitmaske. Satt med utgangspunkt i posisjonen lengst til venstre, den mest signifikante, som 0.
 	var bitMask = [128, 64, 32, 16, 8, 4, 2, 1];
 
@@ -22,7 +23,7 @@
 					charVal[byteOffset] -= bitMask[bitOffset];
 				}
 			} else {
-					/// Dersom biten er lav og ny verdi er høy, byttes denne
+					// Dersom biten er lav og ny verdi er høy, byttes denne
 				 if (value == 1) {
 					charVal[byteOffset] += bitMask[bitOffset];
 				}
