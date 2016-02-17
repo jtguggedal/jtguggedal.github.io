@@ -183,6 +183,8 @@
       
       			
       		'use strict';
+
+      		var customService = null;
 			var my_button_characteristic;
 			var my_led_characteristic;
 			var charVal = new Uint8Array(20);
@@ -207,7 +209,11 @@
 			  navigator.bluetooth.requestDevice({filters: [{services: [serviceUuid]}]})
 			  .then(device => device.connectGATT())
 			  .then(server => server.getPrimaryService(serviceUuid))
-			  .then(service => service.getCharacteristic(button_characteristicUuid))
+			  /*.then(service => 
+
+
+
+			  	service.getCharacteristic(button_characteristicUuid))
 			  .then(button_characteristic => {
 				my_button_characteristic = button_characteristic;
 				return my_button_characteristic.startNotifications().then(() => {
@@ -216,6 +222,33 @@
 					handleNotifications);
 				});
 			  })
+
+				*/
+
+
+
+				.then(service => {
+				  customService = service;
+				  return Promise.all([
+				    service.getCharacteristic(button_characteristicUuid)
+				      .then(handleButtonCharacteristic),
+				    service.getCharacteristic(led_characteristicUuid))
+			      .then(handleLedCharacteristic => {
+						my_led_characteristic = led_characteristic;
+						log('> Tilkoblet enhet. LED kan nå styres.');
+					})
+				  ]);
+				});
+
+			  .catch(error => {
+				log('Argh! ' + error);
+			  });
+			}
+
+
+
+
+
 			  /*
 			  .then(service => service.getCharacteristic(led_characteristicUuid))
 			  .then(led_characteristic => {
@@ -223,15 +256,22 @@
 					log('> Tilkoblet enhet. LED kan nå styres.');
 
 				})*/
-			  .catch(error => {
-				log('Argh! ' + error);
-			  });
-			}
-		
-			var count = 0;
 
+
+
+			function handleButtonCharacteristic(characteristic) {
+			  characteristic.addEventListener('characteristicvaluechanged', onButtonChange);
+			  return characteristic.startNotifications();
+			}
+			/*
+			function (event) {
+			  let characteristic = event.target;
+			  console.log(parseHeartRate(characteristic.value));
+			}*/
+
+			var count = 0;
 			
-			function handleNotifications(event) {
+			function onButtonChange(event) {
 			
 			
 				count++;
@@ -251,7 +291,33 @@
 				}
 				log('> ' + a.join(''));
 
+			}	
+
+
+
+
+			function handleLedCharacteristic(characteristic) {
+			  if (characteristic === null) {
+			    console.log("Ukjent karakteristikk.");
+			    return Promise.resolve();
+			  }
+			  return characteristic.readValue()
+			  .then(sensorLocationData => {
+			    let sensorLocation = sensorLocationData.getUint8(0);
+			    switch (sensorLocation) {
+			      case 0: return 'Other';
+			      case 1: return 'Chest';
+			      case 2: return 'Wrist';
+			      case 3: return 'Finger';
+			      case 4: return 'Hand';
+			      case 5: return 'Ear Lobe';
+			      case 6: return 'Foot';
+			      default: return 'Unknown';
+			    }
+			  }).then(location => console.log(location));
 			}
+		
+
 				// Funksjon for å skru LED på
 							
 				function ledOn() {
