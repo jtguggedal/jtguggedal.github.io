@@ -124,12 +124,12 @@
 		  <div><label for="service">LED-char.: </label><input id="led-characteristic" type="text"  value="00001525-1212-efde-1523-785feabcd123"></div>
 		  <div><button id="connect" >Koble til enhet</button></div>
 		</form>
-		 <!--
+		 
 		 <div class="button-container">
 			<button id="ledon" onclick="ledOn()">Slå LED PÅ</button>
 			<button id="ledoff" onclick="ledOff()">Slå LED AV</button>
 		  </div>
-		  -->
+		  
 		  
 		<div id="signal-box"> 
 		</div>
@@ -216,13 +216,13 @@
 					handleNotifications);
 				});
 			  })
-			  /*
+			  
 			  .then(service => service.getCharacteristic(led_characteristicUuid))
 			  .then(characteristic => {
 					my_led_characteristic = led_characteristic;
 					log('> Tilkoblet enhet. LED kan nå styres.');
 
-				})*/
+				})
 			  .catch(error => {
 				log('Argh! ' + error);
 			  });
