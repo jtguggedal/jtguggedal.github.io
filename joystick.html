@@ -341,7 +341,7 @@
                       var offsetX = -1*(initialOffset.left - offset.left)
 
                     // Sjekker at tilkobling ble opprettet tidligere
-				    //if(myCharacteristic) {
+				    if(myCharacteristic) {
 
                         // Sjekker i hvilket intervall slider-verdien er, og sender korresponderende verdi
                         // via BLE til firmware. 
@@ -367,9 +367,9 @@
 
                         console.log(charVal);
 
-                        //myCharacteristic.writeValue(charVal);
+                        myCharacteristic.writeValue(charVal);
                         console.log(charVal);
-                   // }
+                    }
                     // Skriver veriden fra slideren til HTML-elementet med ID 'slider-value'
                     //$('#slider-value').html(sliderVal + '%');
 
@@ -471,7 +471,11 @@
                 var diffLeft = -1*(initialOffset.left - offset.left);
 
                 if ( diffTop < REVERT_THRESHOLD && diffLeft < REVERT_THRESHOLD ){
-                  this.$el.css( initialOffset ).addClass('ease') 
+                  this.$el.css( initialOffset ).addClass('ease') ;
+
+
+                 $('#pos-x').html('x: ' + diffLeft + 'px');
+                 $('#pos-y').html('y: ' + diffTop + 'px');
                 }
               }
             })
