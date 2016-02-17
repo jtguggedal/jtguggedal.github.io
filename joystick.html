@@ -21,7 +21,7 @@
             padding: 0;
     	}
     	div {
-    		margin: 10px;
+    		margin: 0px;
     	}
     	
     	h1, h3 {
@@ -341,7 +341,7 @@
                       var offsetX = -1*(initialOffset.left - offset.left)
 
                     // Sjekker at tilkobling ble opprettet tidligere
-				    if(myCharacteristic) {
+				    //if(myCharacteristic) {
 
                         // Sjekker i hvilket intervall slider-verdien er, og sender korresponderende verdi
                         // via BLE til firmware. 
@@ -367,9 +367,9 @@
 
                         console.log(charVal);
 
-                        myCharacteristic.writeValue(charVal);
-                        //console.log(charVal);
-                    }
+                        //myCharacteristic.writeValue(charVal);
+                        console.log(charVal);
+                   // }
                     // Skriver veriden fra slideren til HTML-elementet med ID 'slider-value'
                     //$('#slider-value').html(sliderVal + '%');
 
@@ -450,8 +450,8 @@
 
             $('.ball').on("change mousemove touchmove", function() {
                   var offset = $ball.offset();
-                  var offsetY = initialOffset.top - offset.top;
-                  var offsetX = -1*(initialOffset.left - offset.left)
+                  var offsetY = initialOffset.top - offset.top + 20;
+                  var offsetX = -1*(initialOffset.left - offset.left + 20)
       
                  $('#pos-x').html('x: ' + offsetX + 'px');
                  $('#pos-y').html('y: ' + offsetY + 'px');
