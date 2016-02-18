@@ -512,7 +512,9 @@
                 if ( diffTop < REVERT_THRESHOLD && diffLeft < REVERT_THRESHOLD ){
                   this.$el.css( initialOffset ).addClass('ease') ;
 
-                resetCharByte(1);
+                //resetCharByte(1);
+                var myVar = setInterval(resetCharByte(1), 1000);
+
 
                 }
               }
