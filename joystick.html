@@ -395,7 +395,7 @@
 
                 function resetCharByte(byte) {
 
-                    setBit(byte, 'b', 0);
+                    charVal[1] = 0;
 
                     if(myCharacteristic) {
                         myCharacteristic.writeValue(charVal);
