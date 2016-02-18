@@ -363,6 +363,12 @@
                     }
 
 
+                    };
+                    // Skriver veriden fra slideren til HTML-elementet med ID 'slider-value'
+                    //$('#slider-value').html(sliderVal + '%');
+
+                });
+
                     function timeFrameWrite() {
                         if(myCharacteristic) {
 
@@ -405,12 +411,6 @@
 
                             return myCharacteristic.writeValue(charVal);
                         }
-                    };
-                    // Skriver veriden fra slideren til HTML-elementet med ID 'slider-value'
-                    //$('#slider-value').html(sliderVal + '%');
-
-                });
-
 
 
                 function resetCharByte(byte) {
