@@ -349,7 +349,7 @@
 
                 var touchHasHappened = 0;
 
-                $('.ball').on("change mousemove touchmove", function() {
+                $('.ball').on("mousemove touchmove", function() {
 
                     // Lagrer nå-verdien fra slideren i variabelen 'sliderVal' (med jQuery-selector)
 
@@ -399,10 +399,10 @@
 
                     if(myCharacteristic) {
                         myCharacteristic.writeValue(charVal);
-
-                            console.log(charVal);
-                         $('#pos-x').html('x: 0px');
-                         $('#pos-y').html('y: 0px -> reset');
+    
+                        console.log(charVal);
+                        $('#pos-x').html('x: 0px');
+                        $('#pos-y').html('y: 0px -> reset');
                     }
 
                 };
