@@ -371,10 +371,10 @@
                         // Sjekker i hvilket intervall slider-verdien er, og sender korresponderende verdi
                         // via BLE til firmware. 
                         // Setter 1. bit lik 1 for å tenne 1. LED osv.
-                        
+
                           var offset = $ball.position();
                           var offsetY = initialOffset.top - offset.top;
-                          var offsetX = -1*(initialOffset.left - offset.left)
+                          var offsetX = -1*(initialOffset.left - offset.left);
                         k = 0;
 
                         if(offsetX < 0 && offsetY < 0)
