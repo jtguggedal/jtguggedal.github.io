@@ -329,7 +329,6 @@
                     .then(characteristic => {
                         // Lagrer karakteristikken som matcher i variabel slik at den kan brukes i andre funksjoner.
                 		myCharacteristic = characteristic;
-                        status = 2;
                         log('Tilkoblet, LED kan nå styres.');
 
                     })
@@ -347,7 +346,6 @@
                 // Bruker jQuery for å registrere når HTML-elementet med ID 'slider' endres.
                 // Når endring skjer, kjøres funksjonen.
 
-                var touchHasHappened = 0;
 
                 $('.ball').on("mousemove touchmove", function() {
 
@@ -387,13 +385,24 @@
                         if((offsetX == 0) && (offsetY == 0))
                             setBit(1, 'b', 0);
 
-                        myCharacteristic.writeValue(charVal);
+                        //myCharacteristic.writeValue(charVal);
                         console.log(charVal);
+
+                        /*
+                          return chosenHeartRateService.getCharacteristic('heart_rate_control_point'))
+                          .then(controlPoint => {
+                            let resetEnergyExpended = new Uint8Array([1]);
+                            return controlPoint.writeValue(resetEnergyExpended);
+                          });*/
+
+                        return myCharacteristic.writeValue(charVal);
                     }
                     // Skriver veriden fra slideren til HTML-elementet med ID 'slider-value'
                     //$('#slider-value').html(sliderVal + '%');
 
                 });
+
+
 
                 function resetCharByte(byte) {
 
