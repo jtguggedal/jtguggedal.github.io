@@ -384,7 +384,7 @@
 
                         console.log(charVal);
 
-                        if(offsetX == offsetY == 0) 
+                        if((offsetX == 0) && (offsetY == 0) 
                             setBit(1, 'b', 0);
 
                         myCharacteristic.writeValue(charVal);
