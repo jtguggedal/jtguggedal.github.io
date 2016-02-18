@@ -346,7 +346,6 @@
                 // Bruker jQuery for å registrere når HTML-elementet med ID 'slider' endres.
                 // Når endring skjer, kjøres funksjonen.
 
-                var k = 0; 
 
                 $('.ball').on("mousemove touchmove", function() {
 
@@ -354,27 +353,15 @@
 
                       var offset = $ball.position();
                       var offsetY = initialOffset.top - offset.top;
-                      var offsetX = -1*(initialOffset.left - offset.left);
+                      var offsetX = -1*(initialOffset.left - offset.left)
 
                     // Sjekker at tilkobling ble opprettet tidligere
-				    
-                    if(k == 0) {
-                        setTimeout(timeFrameWrite(offsetX, offsetY), 200);
-                        k = 1;
-                    }
-
-                    // Skriver veriden fra slideren til HTML-elementet med ID 'slider-value'
-                    //$('#slider-value').html(sliderVal + '%');
-
-                });
-
-                function timeFrameWrite(offsetX, offsetY) {
-                    if(myCharacteristic) {
+				    if(myCharacteristic) {
 
                         // Sjekker i hvilket intervall slider-verdien er, og sender korresponderende verdi
                         // via BLE til firmware. 
                         // Setter 1. bit lik 1 for å tenne 1. LED osv.
-                        k = 0;
+
 
                         if(offsetX < 0 && offsetY < 0)
                             setBit(1, 0, 1);        // 0001
@@ -410,8 +397,11 @@
 
                         return myCharacteristic.writeValue(charVal);
                     }
+                    // Skriver veriden fra slideren til HTML-elementet med ID 'slider-value'
+                    //$('#slider-value').html(sliderVal + '%');
 
-                };  
+                });
+
 
 
                 function resetCharByte(byte) {
@@ -530,7 +520,7 @@
 
                 if ( diffTop < REVERT_THRESHOLD && diffLeft < REVERT_THRESHOLD ){
                   this.$el.css( initialOffset ).addClass('ease') ;
-                resetCharByte(1);
+                setTimeout(resetCharByte(1), 2000);
                 
 
 
