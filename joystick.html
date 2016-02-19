@@ -13,89 +13,89 @@
     <title>Web Bluetooth</title>
     
     <style>
-    	@import url(https://fonts.googleapis.com/css?family=Open+Sans|Roboto:400,500,700,300);
-    	body {
-    		font-family: "Roboto";
+        @import url(https://fonts.googleapis.com/css?family=Open+Sans|Roboto:400,500,700,300);
+        body {
+            font-family: "Roboto";
             margin: 0;
             padding: 0;
-    	}
-    	div {
-    		margin: 0px;
-    	}
-    	
-    	h1, h3 {
-    		text-align: center;
-    	}
+        }
+        div {
+            margin: 0px;
+        }
+        
+        h1, h3 {
+            text-align: center;
+        }
         h1 {
             font-size: 20px;
 
         }
-    	
-    	ul {
-    		margin-top: 10px;
-    		margin-bottom: 30px;
-    		font-size: 14px;
-    	}
-    	
-    	label {
-    		display: inline-block;
-    		width: 120px;
-    		font-weight: 500;
-    	}
-    	
-    	input[type="text"] {
+        
+        ul {
+            margin-top: 10px;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        
+        label {
+            display: inline-block;
+            width: 120px;
+            font-weight: 500;
+        }
+        
+        input[type="text"] {
             width: 225px;
-    		padding: 3px;
+            padding: 3px;
             font-size: 12px;
-    	}
-    	
-    	button {
+        }
+        
+        button {
             display: block;
-    		padding: 10px;
+            padding: 10px;
             margin: 0 auto;
-    		border: 1px solid white;
-    		font-weight: 700;
-    		box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.1);
+            border: 1px solid white;
+            font-weight: 700;
+            box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.1);
             background-color: #DDD;
-    	}
-    	
-    	#main {
-    		width: 100%;
+        }
+        
+        #main {
+            width: 100%;
             max-width: 800px;
             height: 100%;
-    		border: px solid #DDD;
-    		padding: 20px;
+            border: px solid #DDD;
+            padding: 20px;
             font-size: 14px;
             margin: 0;
-    	}
+        }
 
         #config {
             display: inline-block;
             width: 300px;
             vertical-align: top;
         }
-    	
-    	.slider-container {
+        
+        .slider-container {
             display: inline-block;
             float: left;
-	        margin: 0 auto;
-			width: 100px;
-			text-align: center;		
-    	}
-    	
-    	#ledon, #ledoff {
-    		color: white;
-    		margin-top: 20px;
-    		margin-bottom: 20px;
-    	}
-    	
-    	#ledon {
-    		background-color: #006600;
-    	}
-    	
-    	#ledoff {
-    		background-color: #cc0000;
-    	}
+            margin: 0 auto;
+            width: 100px;
+            text-align: center;     
+        }
+        
+        #ledon, #ledoff {
+            color: white;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        
+        #ledon {
+            background-color: #006600;
+        }
+        
+        #ledoff {
+            background-color: #cc0000;
+        }
 
         input[type=range] {
             width: 20px;
@@ -202,6 +202,12 @@
         }
       })();
 
+      window.addEventListener('error', function(error) {
+        if (ChromeSamples && ChromeSamples.setStatus) {
+          ChromeSamples.setStatus(error.message + ' (Nettleseren din støtter ikke Web Bluetooth.)');
+          error.preventDefault();
+        }
+      });
     </script>
 
 
@@ -214,7 +220,7 @@
     <div id="orientation-message">
         <div>Vennligst snu enheten 90&#176;</div>
     </div>
-  	<div id="main">
+    <div id="main">
         <div id="fullscreen" onclick="">Klikk for fullskjerm</div>
         
         <div class='demo constrain-to-parent'>
@@ -243,60 +249,60 @@
 
 
 
-		<script>
-		  var ChromeSamples = {
-			log: function() {
-			  var line = Array.prototype.slice.call(arguments).map(function(argument) {
-				return typeof argument === 'string' ? argument : JSON.stringify(argument);
-			  }).join(' ');
+        <script>
+          var ChromeSamples = {
+            log: function() {
+              var line = Array.prototype.slice.call(arguments).map(function(argument) {
+                return typeof argument === 'string' ? argument : JSON.stringify(argument);
+              }).join(' ');
 
-			  document.querySelector('#log').textContent += line + '\n';
-			},
+              document.querySelector('#log').textContent += line + '\n';
+            },
 
-			clearLog: function() {
-			  document.querySelector('#log').textContent = '';
-			},
+            clearLog: function() {
+              document.querySelector('#log').textContent = '';
+            },
 
-			setStatus: function(status) {
-			  document.querySelector('#status').textContent = status;
-			},
+            setStatus: function(status) {
+              document.querySelector('#status').textContent = status;
+            },
 
-			setContent: function(newContent) {
-			  var content = document.querySelector('#content');
-			  while(content.hasChildNodes()) {
-				content.removeChild(content.lastChild);
-			  }
-			  content.appendChild(newContent);
-			}
-		  };
-		</script>
+            setContent: function(newContent) {
+              var content = document.querySelector('#content');
+              while(content.hasChildNodes()) {
+                content.removeChild(content.lastChild);
+              }
+              content.appendChild(newContent);
+            }
+          };
+        </script>
 
-		
-		
-		
-		
-		
-	<!-- // END OF MAIN -->
-	</div>
+        
+        
+        
+        
+        
+    <!-- // END OF MAIN -->
+    </div>
 
   
     
       <script>
                 /******  START WEB BLUETOOTH-KODE   *****/
-      			
+                
                 // Setter en variabel for å lagre karakteristikken som skal brukes videre
                 // i funksjoner utenfor selve tilkoblingen til enheten.
                 // Variabelen settes utenfor alle funksjoner slik at den skal være global, 
                 // og tilgjengelig i alle funksjoner.
-      			var myCharacteristic;
+                var myCharacteristic;
                 var status = 0;
-      			
+                
 
 
                 // Funksjonen 'onFormSubmit' trigges når 'Koble til enhet'-knappen trykkes
                 // Se egen funksjon for dette rett før </body>-taggen i denne filen
-      			function onFormSubmit() {
-				    'use strict';
+                function onFormSubmit() {
+                    'use strict';
 
                     // Henter service-UUID som er oppgitt i tekstboksen for dette
                     //let serviceUuid = document.getElementById('service').value;
@@ -321,19 +327,9 @@
                     // Enhetene er nå koblet sammen, og nettleseren leter etter karakteristikk som matcher den ønskede UUID
                     .then(service => service.getCharacteristic(characteristicUuid))
                     .then(characteristic => {
-
-
-
-
-                          return characteristic.readValue()
-                          .then(charData => {
-                            let sensorLocation = charData.getUint8(0);
-
-
-                          // Lagrer karakteristikken som matcher i variabel slik at den kan brukes i andre funksjoner.
-                            myCharacteristic = characteristic;
-                            log('Tilkoblet, LED kan nå styres.');
-                          }).then(location => console.log(location));
+                        // Lagrer karakteristikken som matcher i variabel slik at den kan brukes i andre funksjoner.
+                        myCharacteristic = characteristic;
+                        log('Tilkoblet, LED kan nå styres.');
 
                     })
                     // Dersom feil skjer i løpet av oppkoblingen, skrives feilen til loggen
@@ -341,11 +337,11 @@
                         log('Argh! ' + error);
                     });
                 }
-    			
+                
 
                 var charVal = new Uint8Array(20);
 
-				//******** Funksjon for å styre LEDene   ******/
+                //******** Funksjon for å styre LEDene   ******/
 
                 // Bruker jQuery for å registrere når HTML-elementet med ID 'slider' endres.
                 // Når endring skjer, kjøres funksjonen.
@@ -360,7 +356,7 @@
                       var offsetX = -1*(initialOffset.left - offset.left)
 
                     // Sjekker at tilkobling ble opprettet tidligere
-				    if(myCharacteristic) {
+                    if(myCharacteristic) {
 
                         // Sjekker i hvilket intervall slider-verdien er, og sender korresponderende verdi
                         // via BLE til firmware. 
@@ -409,7 +405,7 @@
 
 
                 function resetCharByte(byte) {
-                    'use strict';
+
                     charVal[1] = 0;
 
                     if(myCharacteristic) {
@@ -419,23 +415,22 @@
                         $('#pos-x').html('x: 0px');
                         $('#pos-y').html('y: 0px -> reset');
 
-                            var valueCheck = new Uint8Array(20);
-                            myCharacteristic.readValue()
-                            .then( value =>  {
-                                console.log(' value: ' + value);
-                                let temp = value.buffer ? value : new DataView(value);
-                                console.log(temp);
-                                /*
-                                let returnedValue = value.getUint8(0);
-                                console.log(value);
-                                console.log("Sjekk utført.");*/
-                            });
+                        var valueCheck = new Uint8Array(20);
+                        valueCheck = mycharacteristic.readValue;
+
+                        if(valueCheck[1] != 0) 
+                            resetCharByte();
+                        else 
+                            return 1;
                     }
 
                 };
                 
 
                 
+                Object.defineProperty(window, "status", { set: function(v) { 
+                      
+                } } );
         </script>
 
 
@@ -531,13 +526,11 @@
                 var diffTop  = initialOffset.top - offset.top;
                 var diffLeft = -1*(initialOffset.left - offset.left);
 
-
-
-
                 if ( diffTop < REVERT_THRESHOLD && diffLeft < REVERT_THRESHOLD ) {
                   this.$el.css( initialOffset ).addClass('ease') ;
 
 
+                setTimeout(resetCharByte(1), 2000);
                 
 
 
