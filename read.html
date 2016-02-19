@@ -177,25 +177,22 @@ limitations under the License.
         let value = event.target.value;
         value = value.buffer ? value : new DataView(value);
 
-        if(value.getUint8(0) == 1)
+        if(value.getUint8(0) != 0)
             bg_1 = 'blue';
         else
             bg_1 = 'red';
-        if(value.getUint8(1) == 1)
+        if(value.getUint8(1) != 0)
             bg_2 = 'blue';
         else
             bg_2 = 'red';
-        
-        if(value.getUint8(2) == 1)
+        if(value.getUint8(2) != 0)
             bg_3 = 'blue';
         else
             bg_3 = 'red';
-        
-        if(value.getUint8(3) == 1)
+        if(value.getUint8(3) != 0)
             bg_4 = 'blue';
         else
             bg_4 = 'red';
-
 
         // Push received value to #notification for testing purposes
         document.getElementById("notification_1").backgroundColor = bg_1
@@ -203,6 +200,8 @@ limitations under the License.
         document.getElementById("notification_3").backgroundColor = bg_3;
         document.getElementById("notification_4").backgroundColor = bg_4;
 
+        console.log(value);
+        
         return value;
     }
 
