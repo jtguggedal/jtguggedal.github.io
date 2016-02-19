@@ -145,6 +145,7 @@ Play Store</a>.</p>
   .then(value => {
     // In Chrome 50+, a DataView is returned instead of an ArrayBuffer.
     value = value.buffer ? value : new DataView(value);
+    console.log(value);
     let batteryLevel = value.getUint8(0);
     log('> Battery Level is ' + batteryLevel + '%');
   })
