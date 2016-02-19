@@ -178,7 +178,10 @@ limitations under the License.
         let value = event.target.value;
         value = value.buffer ? value : new DataView(value);
 
-        var bg_1, bg_2, bg_3, bg_4;
+        var bg_1;
+        var bg_2;
+        var bg_3;
+        var bg_4;
 
         if(value.getUint8(0))
             bg_1 = 'blue';
@@ -204,9 +207,6 @@ limitations under the License.
         document.getElementById("notification_4").backgroundColor = bg_4;
 
         document.querySelector("#notification_1").innerHTML = "ja";
-        console.log(value);
-        
-        return value;
     }
 
 
@@ -226,7 +226,7 @@ limitations under the License.
             }
             else {
                 let data = value.getUint8(byteOffset);
-                log('>>> Byte ' + i + ': ' + data);
+                log('>>> Byte: ' + data);
 
             }
         });
