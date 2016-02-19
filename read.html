@@ -122,9 +122,11 @@ limitations under the License.
     // In Chrome 50+, a DataView is returned instead of an ArrayBuffer.
     value = value.buffer ? value : new DataView(value);
     console.log(value);
-    let batteryLevel = value.getUint8(0);
-    console.log(batteryLevel);
-    log('> Battery Level is ' + batteryLevel + '%');
+    for(var i = 0; i < 20 ; i++) {
+        let batteryLevel = value.getUint8(i);
+        console.log(batteryLevel);
+        log('> Byte ' + i + ': ' + batteryLevel + '%');
+    }
   })
   .catch(error => {
     log('Argh! ' + error);
