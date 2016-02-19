@@ -74,8 +74,9 @@ limitations under the License.
     }
   };
 </script>
-
-<h3 onclick="read()">Logg</h3>
+<h2  onclick="read()">Les</h2>
+<h2 onclick="write()">Skriv</h2>
+<h3>Logg</h3>
 <div id="output" class="output">
   <div id="content"></div>
   <div id="status"></div>
@@ -137,6 +138,17 @@ limitations under the License.
                 log('>>> Byte ' + i + ': ' + batteryLevel + '%');
             }
         })
+    }
+
+
+    function write() {
+        'use strict';
+
+        var charVal = new Uint8Array(20);
+
+        charval[1] = 120;
+
+        readWriteCharacteristic.writeValue(charVal);
     }
 
 </script>
