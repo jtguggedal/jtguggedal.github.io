@@ -418,7 +418,8 @@
                         var valueCheck = new Uint8Array(20);
                         return myCharacteristic.readValue()
                         .then( value =>  {
-                            let returnedValue = value.getUint8Array();
+                            let returnedValue = value.getUint8(0);
+                            console.log(value);
                         })
                         .then(data => console.log(data));
                         /*if(valueCheck[1] != 0) 
@@ -533,7 +534,7 @@
                   this.$el.css( initialOffset ).addClass('ease') ;
 
 
-                setTimeout(resetCharByte(1), 2000);
+                resetCharByte(1);
                 
 
 
