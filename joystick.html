@@ -387,7 +387,6 @@
                             let resetEnergyExpended = new Uint8Array([1]);
                             return controlPoint.writeValue(resetEnergyExpended);
                           });*/
-                        resetCharByte(1);
                         return myCharacteristic.writeValue(charVal);
                     }
                     // Skriver veriden fra slideren til HTML-elementet med ID 'slider-value'
@@ -395,8 +394,9 @@
 
                 });
 
+                                        resetCharByte(1);
 
-
+                
                 function resetCharByte(byte) {
 
                     charVal[1] = 0;
