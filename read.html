@@ -76,6 +76,7 @@ limitations under the License.
 </script>
 <h2  onclick="readFromCharacteristic()">Les</h2>
 <h2 onclick="writeToCharacteristic()">Skriv</h2>
+<h2 id="notification">Notification</h2>
 <h3>Logg</h3>
 <div id="output" class="output">
   <div id="content"></div>
@@ -87,49 +88,85 @@ limitations under the License.
 
   
     
-      <script>
+<script>
 
+    /** Declaring the necessary global variables **/
+    var mainServiceUUID = '00001523-1212-efde-1523-785feabcd123';
+    var readWriteCharacteristicUUID = '00001525-1212-efde-1523-785feabcd123';
+    var notificationCharacteristicUUID = '00001524-1212-efde-1523-785feabcd123';
 
-        var readWriteCharacteristic;
+    var mainService;
+    var readWriteCharacteristic;
+    var notificationCharacteristic;
 
-      function onButtonClick() {
-          'use strict';
+    var notificationContent;
 
+    /** Function for establishing BLE connection to device advertising the main service **/
+    function onButtonClick() {
+        'use strict';
 
-          log('Requesting Bluetooth Device...');
-          navigator.bluetooth.requestDevice(
-            {filters: [{services: ['00001523-1212-efde-1523-785feabcd123']}]})
-          .then(device => {
-            log('> Found ' + device.name);
-            log('Connecting to GATT Server...');
-            return device.connectGATT();
-          })
-          .then(server => {
-            log('Getting Battery Service...');
-            return server.getPrimaryService('00001523-1212-efde-1523-785feabcd123');
-          })
-          .then(service => {
-            log('Getting Battery Level Characteristic...');
-            return service.getCharacteristic('00001525-1212-efde-1523-785feabcd123');
-          })
-          .then(characteristic => {
-            log('Reading Battery Level...');
-
-            readWriteCharacteristic = characteristic;
-            //return readWriteCharacteristic.readValue();
-          })
-          .catch(error => {
+        log('Requesting Bluetooth Device...');
+        navigator.bluetooth.requestDevice(
+            {filters: [{services: [mainServiceUUID]}]})
+            .then(device => {
+                log('> Found ' + device.name);
+                log('Connecting to GATT Server...');
+                return device.connectGATT();
+            })
+            .then(server => {
+                log('Getting main Service...');
+                return server.getPrimaryService(mainServiceUUID);
+            })
+            .then(service => {
+                mainService = service;
+                return Promise.all([
+                    service.getCharacteristic(readWriteCharacteristicUUID)
+                    .then(readWriteCharacteristicHandler),
+                    service.getCharacteristic(notificationCharacteristicUUID)
+                    .then(notificationCharacteristicHandler)
+                ])
+                .catch(error => {
+                    log('>' + error);
+                });
+            })
+        .catch(error => {
             log('Argh! ' + error);
-          });
-        }
+        });
+    }
+
+    /** Function for setting up the notification characteristic **/
+    function notificationCharacteristicHandler(characteristic) {
+        'use strict';
+        notificationCharacteristic = characteristic;
+        notificationCharacteristic.addEventListener('characteristicvaluechanged',handleNotification);
+        return characteristic.startNotifications();
+    }
+
+     /** Function for handling the read and write characteristic **/
+    function readWriteCharacteristicHandler(characteristic) {
+        'use strict';
+        readWriteCharacteristic = characteristic;
+        return 1;
+    }
 
 
+    /** Function for handling notifications **/
+    function handleNotification(event) {
+        let value = event.target.value;
+        value = value.buffer ? value : new DataView(value);
+        notificationContent = value;
 
+        // Push value to #notification for testing purposes
+        document.getElementById("notification").innerHTML = 'Notification: ' + notificationContent;
+
+    }
+
+
+    /** Function for reading from the pin_handler_characteristic **/
     function readFromCharacteristic() {
         'use strict';
         readWriteCharacteristic.readValue()
           .then(value => {
-         // In Chrome 50+, a DataView is returned instead of an ArrayBuffer.
             value = value.buffer ? value : new DataView(value);
             console.log(value);
             for(var i = 0; i < 20 ; i++) {
@@ -140,7 +177,7 @@ limitations under the License.
         });
     }
 
-
+    /** Function for writing to the pin_handler_characetistic **/
     function writeToCharacteristic() {
         'use strict';
 
@@ -151,6 +188,7 @@ limitations under the License.
 
         readWriteCharacteristic.writeValue(charVal);
     }
+
 </script>
 
 
