@@ -174,39 +174,8 @@ limitations under the License.
 
     /** Function for handling notifications **/
     function handleNotification(event) {
-        'use strict';
-        let value = event.target.value;
-        value = value.buffer ? value : new DataView(value);
 
-        var bg_1;
-        var bg_2;
-        var bg_3;
-        var bg_4;
-
-        if(value.getUint8(0))
-            bg_1 = 'blue';
-        else
-            bg_1 = 'red';
-        if(value.getUint8(1))
-            bg_2 = 'blue';
-        else
-            bg_2 = 'red';
-        if(value.getUint8(2))
-            bg_3 = 'blue';
-        else
-            bg_3 = 'red';
-        if(value.getUint8(3))
-            bg_4 = 'blue';
-        else
-            bg_4 = 'red';
-
-        // Push received value to #notification for testing purposes
-        document.getElementById("notification_1").backgroundColor = bg_1;
-        document.getElementById("notification_2").backgroundColor = bg_2;
-        document.getElementById("notification_3").backgroundColor = bg_3;
-        document.getElementById("notification_4").backgroundColor = bg_4;
-
-        document.querySelector("#notification_1").innerHTML = "ja";
+        document.querySelector("#notification").innerHTML = "ja";
     }
 
 
