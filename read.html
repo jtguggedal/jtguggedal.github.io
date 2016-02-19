@@ -177,6 +177,8 @@ limitations under the License.
         let value = event.target.value;
         value = value.buffer ? value : new DataView(value);
 
+        var bg_1, bg_2, bg_3, bg_4;
+
         if(value.getUint8(0))
             bg_1 = 'blue';
         else
