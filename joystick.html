@@ -201,6 +201,13 @@
           window.location.protocol = 'https:';
         }
       })();
+
+      window.addEventListener('error', function(error) {
+        if (ChromeSamples && ChromeSamples.setStatus) {
+          ChromeSamples.setStatus(error.message + ' (Nettleseren din støtter ikke Web Bluetooth.)');
+          error.preventDefault();
+        }
+      });
     </script>
 
 
@@ -387,6 +394,7 @@
                             let resetEnergyExpended = new Uint8Array([1]);
                             return controlPoint.writeValue(resetEnergyExpended);
                           });*/
+
                         return myCharacteristic.writeValue(charVal);
                     }
                     // Skriver veriden fra slideren til HTML-elementet med ID 'slider-value'
@@ -394,9 +402,8 @@
 
                 });
 
-                                        resetCharByte(1);
 
-                
+
                 function resetCharByte(byte) {
 
                     charVal[1] = 0;
@@ -407,19 +414,6 @@
                         console.log(charVal);
                         $('#pos-x').html('x: 0px');
                         $('#pos-y').html('y: 0px -> reset');
-
-                        var valueCheck = new Uint8Array(20);
-                        return myCharacteristic.readValue()
-                            .then( value => {
-
-                                console.log(value);
-                                console.log("j");
-                            });
-
-                        /*if(valueCheck[1] != 0) 
-                            resetCharByte();
-                        else 
-                            return 1;*/
                     }
 
                 };
@@ -526,9 +520,7 @@
 
                 if ( diffTop < REVERT_THRESHOLD && diffLeft < REVERT_THRESHOLD ){
                   this.$el.css( initialOffset ).addClass('ease') ;
-
-
-                
+                setTimeout(resetCharByte(1), 2000);
                 
 
 
