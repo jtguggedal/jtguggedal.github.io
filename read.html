@@ -98,6 +98,8 @@ limitations under the License.
       <script>function onButtonClick() {
   'use strict';
 
+  var readWriteCharacteristic;
+
   log('Requesting Bluetooth Device...');
   navigator.bluetooth.requestDevice(
     {filters: [{services: ['00001523-1212-efde-1523-785feabcd123']}]})
@@ -116,7 +118,9 @@ limitations under the License.
   })
   .then(characteristic => {
     log('Reading Battery Level...');
-    return characteristic.readValue();
+
+    readWriteCharacteristic = characteristic;
+    return readWriteCharacteristic.readValue();
   })
   .then(value => {
     // In Chrome 50+, a DataView is returned instead of an ArrayBuffer.
