@@ -395,11 +395,7 @@
                             return controlPoint.writeValue(resetEnergyExpended);
                           });*/
 
-                        return myCharacteristic.writeValue(charVal)
-                        .then {
-
-                            status = 1;
-                        };
+                        return myCharacteristic.writeValue(charVal);
                     }
                     // Skriver veriden fra slideren til HTML-elementet med ID 'slider-value'
                     //$('#slider-value').html(sliderVal + '%');
@@ -530,7 +526,7 @@
                 var diffTop  = initialOffset.top - offset.top;
                 var diffLeft = -1*(initialOffset.left - offset.left);
 
-                if ( diffTop < REVERT_THRESHOLD && diffLeft < REVERT_THRESHOLD ){
+                if ( diffTop < REVERT_THRESHOLD && diffLeft < REVERT_THRESHOLD ) {
                   this.$el.css( initialOffset ).addClass('ease') ;
 
 
