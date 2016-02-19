@@ -134,7 +134,7 @@ limitations under the License.
         });
     }
 
-    /** Function for initiating the notification characteristic event handler **/
+    /** Function for initiating the notification characteristic and event handler **/
     function notificationCharacteristicHandler(characteristic) {
         'use strict';
         notificationCharacteristic = characteristic;
@@ -152,16 +152,17 @@ limitations under the License.
 
     /** Function for handling notifications **/
     function handleNotification(event) {
+        'use strict';
         let value = event.target.value;
         value = value.buffer ? value : new DataView(value);
         notificationContent = value.getUint8(0);
 
-        // Push value to #notification for testing purposes
+        // Push receivecvalue to #notification for testing purposes
         document.getElementById("notification").innerHTML = 'Notification: ' + notificationContent;
     }
 
 
-    /** Function for reading from the pin_handler_characteristic **/
+    /** Function for reading from the pin_characteristic **/
     function readFromCharacteristic(byteOffset) {
         'use strict';
         readWriteCharacteristic.readValue()
@@ -171,7 +172,7 @@ limitations under the License.
             if(byteOffset == 'all') {
                 var dataArray = new Uint8Array;
                 for(var i = 0; i < 20 ; i++) {
-                    let dataArray[i] = value.getUint8(i);
+                    dataArray[i] = value.getUint8(i);
                 }
                 return dataArray;
             }
