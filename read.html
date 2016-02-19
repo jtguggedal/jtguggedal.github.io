@@ -137,11 +137,12 @@ limitations under the License.
                 console.log(data);
                 log('>>> Byte ' + i + ': ' + data);
             }
-        })
-    };
+        });
+    }
 
 
     function write() {
+        'use strict';
 
         var charVal = new Uint8Array(20);
         console.log(charVal);
@@ -149,15 +150,8 @@ limitations under the License.
         console.log(charVal);
 
         readWriteCharacteristic.writeValue(charVal);
-    };
-
+    }
 </script>
-    
-  
-<script>
-
-</script>
-
 
 
 
