@@ -86,52 +86,53 @@ limitations under the License.
 
   
     
-      <script>function onButtonClick() {
-  'use strict';
+      <script>
+      function onButtonClick() {
+          'use strict';
 
-  var readWriteCharacteristic;
+          var readWriteCharacteristic;
 
-  log('Requesting Bluetooth Device...');
-  navigator.bluetooth.requestDevice(
-    {filters: [{services: ['00001523-1212-efde-1523-785feabcd123']}]})
-  .then(device => {
-    log('> Found ' + device.name);
-    log('Connecting to GATT Server...');
-    return device.connectGATT();
-  })
-  .then(server => {
-    log('Getting Battery Service...');
-    return server.getPrimaryService('00001523-1212-efde-1523-785feabcd123');
-  })
-  .then(service => {
-    log('Getting Battery Level Characteristic...');
-    return service.getCharacteristic('00001525-1212-efde-1523-785feabcd123');
-  })
-  .then(characteristic => {
-    log('Reading Battery Level...');
+          log('Requesting Bluetooth Device...');
+          navigator.bluetooth.requestDevice(
+            {filters: [{services: ['00001523-1212-efde-1523-785feabcd123']}]})
+          .then(device => {
+            log('> Found ' + device.name);
+            log('Connecting to GATT Server...');
+            return device.connectGATT();
+          })
+          .then(server => {
+            log('Getting Battery Service...');
+            return server.getPrimaryService('00001523-1212-efde-1523-785feabcd123');
+          })
+          .then(service => {
+            log('Getting Battery Level Characteristic...');
+            return service.getCharacteristic('00001525-1212-efde-1523-785feabcd123');
+          })
+          .then(characteristic => {
+            log('Reading Battery Level...');
 
-    readWriteCharacteristic = characteristic;
-    return readWriteCharacteristic.readValue();
-  })
-  .then(value => {
-    // In Chrome 50+, a DataView is returned instead of an ArrayBuffer.
-    value = value.buffer ? value : new DataView(value);
-    console.log(value);
-    for(var i = 0; i < 20 ; i++) {
-        let batteryLevel = value.getUint8(i);
-        console.log(batteryLevel);
-        log('> Byte ' + i + ': ' + batteryLevel + '%');
-    }
-  })
-  .catch(error => {
-    log('Argh! ' + error);
-  });
-}
+            readWriteCharacteristic = characteristic;
+            return readWriteCharacteristic.readValue();
+          })
+          .then(value => {
+            // In Chrome 50+, a DataView is returned instead of an ArrayBuffer.
+            value = value.buffer ? value : new DataView(value);
+            console.log(value);
+            for(var i = 0; i < 20 ; i++) {
+                let batteryLevel = value.getUint8(i);
+                console.log(batteryLevel);
+                log('> Byte ' + i + ': ' + batteryLevel + '%');
+            }
+          })
+          .catch(error => {
+            log('Argh! ' + error);
+          });
+        }
 
 
 
-    'use strict';
     function read() {
+        'use strict';
         readWriteCharacteristic.readValue()
           .then(value => {
          // In Chrome 50+, a DataView is returned instead of an ArrayBuffer.
