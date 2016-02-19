@@ -74,8 +74,8 @@ limitations under the License.
     }
   };
 </script>
-<h2  onclick="read()">Les</h2>
-<h2 onclick="write()">Skriv</h2>
+<h2  onclick="read(Char)">Les</h2>
+<h2 onclick="writeChar()">Skriv</h2>
 <h3>Logg</h3>
 <div id="output" class="output">
   <div id="content"></div>
@@ -125,7 +125,7 @@ limitations under the License.
 
 
 
-    function read() {
+    function readChar() {
         'use strict';
         readWriteCharacteristic.readValue()
           .then(value => {
@@ -141,7 +141,7 @@ limitations under the License.
     }
 
 
-    function write() {
+    function writeChar() {
         'use strict';
 
         var charVal = new Uint8Array(20);
