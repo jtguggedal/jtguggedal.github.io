@@ -152,6 +152,7 @@ limitations under the License.
 
     /** Function for handling notifications **/
     function handleNotification(event) {
+        'use strict';
         let value = event.target.value;
         value = value.buffer ? value : new DataView(value);
         notificationContent = value.getUint8(0);
