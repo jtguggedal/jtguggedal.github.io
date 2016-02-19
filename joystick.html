@@ -321,7 +321,7 @@
                     // Søker etter enheter som matcher valgt service-UUID
                     log('Søker etter enheter med valgt \nservice og characteristic...');
                     navigator.bluetooth.requestDevice({filters: [{services: [serviceUuid]}]})
-                    .then(device => device.connectGATT())
+                    .then(device => device.gatt.connect())
                     .then(server => server.getPrimaryService(serviceUuid))
 
                     // Enhetene er nå koblet sammen, og nettleseren leter etter karakteristikk som matcher den ønskede UUID
@@ -402,7 +402,7 @@
 
                 });
 
-                resetCharByte(1);
+
 
                 function resetCharByte(byte) {
                     'use strict';
@@ -415,18 +415,24 @@
                         $('#pos-x').html('x: 0px');
                         $('#pos-y').html('y: 0px -> reset');
 
-                        var valueCheck = new Uint8Array(20);
-                        return myCharacteristic.readValue()
-                        .then( value =>  {
-                            console.log(' value: ' + value);
-                            let temp = value.buffer ? value : new DataView(value);
-                            console.log(temp);
-                            /*
-                            let returnedValue = value.getUint8(0);
-                            console.log(value);
-                            console.log("Sjekk utført.");*/
-                        })
-                        .then(data => console.log(data));
+
+                        var delay=1000; //1 seconds
+
+                        setTimeout(function(){
+                                 
+                            var valueCheck = new Uint8Array(20);
+                            return myCharacteristic.readValue()
+                            .then( value =>  {
+                                console.log(' value: ' + value);
+                                let temp = value.buffer ? value : new DataView(value);
+                                console.log(temp);
+                                /*
+                                let returnedValue = value.getUint8(0);
+                                console.log(value);
+                                console.log("Sjekk utført.");*/
+                            });
+                        }, delay); 
+                                         
                         /*if(valueCheck[1] != 0) 
                             resetCharByte();
                         else  
@@ -553,7 +559,7 @@
 
 
 
-                
+                resetCharByte(1);
 
                 if ( diffTop < REVERT_THRESHOLD && diffLeft < REVERT_THRESHOLD ) {
                   this.$el.css( initialOffset ).addClass('ease') ;
