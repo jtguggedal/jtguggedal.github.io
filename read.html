@@ -215,9 +215,9 @@ limitations under the License.
             value = value.buffer ? value : new DataView(value);
             console.log(value);
             if(byteOffset == 'all') {
-                var dataArray = new Uint8Array;
+                var dataArray = new Uint8Array(20);
                 for(var i = 0; i < 20 ; i++) {
-                    let dataArray[i] = value.getUint8(i);
+                    dataArray[i] = value.getUint8(i);
                 }
                 return dataArray;
             }
