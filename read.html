@@ -16,7 +16,22 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 <html lang="en">
-  <head>
+    <head>
+        <style>
+            .notification {
+                display: inline-block;
+                margin: 20px;
+                width: 20px;
+                width: 20px;
+                background-color: red;
+
+            }
+
+
+        </style>
+
+
+
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="Sample illustrating the use of Web Bluetooth / Battery Level.">
@@ -77,6 +92,13 @@ limitations under the License.
 <h2  onclick="readFromCharacteristic()">Les</h2>
 <h2 onclick="writeToCharacteristic()">Skriv</h2>
 <h2 id="notification">Notification</h2>
+
+<div>
+    <div class="notification" id="notification_1">&nbsp;</div>
+    <div class="notification" id="notification_2">&nbsp;</div>
+    <div class="notification" id="notification_3">&nbsp;</div>
+    <div class="notification" id="notification_4">&nbsp;</div>
+</div>
 <h3>Logg</h3>
 <div id="output" class="output">
   <div id="content"></div>
@@ -134,7 +156,7 @@ limitations under the License.
         });
     }
 
-    /** Function for setting up the notification characteristic **/
+    /** Function for initiating the notification characteristic and event handler **/
     function notificationCharacteristicHandler(characteristic) {
         'use strict';
         notificationCharacteristic = characteristic;
@@ -154,36 +176,66 @@ limitations under the License.
     function handleNotification(event) {
         let value = event.target.value;
         value = value.buffer ? value : new DataView(value);
-        notificationContent = value.getUint8(0);
 
-        // Push value to #notification for testing purposes
-        document.getElementById("notification").innerHTML = 'Notification: ' + notificationContent;
+        if(value.getUint8(0) == 1)
+            bg_1 = 'blue';
+        else
+            bg_1 = 'red';
+        if(value.getUint8(1) == 1)
+            bg_2 = 'blue';
+        else
+            bg_2 = 'red';
+        
+        if(value.getUint8(2) == 1)
+            bg_3 = 'blue';
+        else
+            bg_3 = 'red';
+        
+        if(value.getUint8(3) == 1)
+            bg_4 = 'blue';
+        else
+            bg_4 = 'red';
 
+
+        // Push received value to #notification for testing purposes
+        document.getElementById("notification_1").backgroundColor = bg_1
+        document.getElementById("notification_2").backgroundColor = bg_2;
+        document.getElementById("notification_3").backgroundColor = bg_3;
+        document.getElementById("notification_4").backgroundColor = bg_4;
+
+        return value;
     }
 
 
-    /** Function for reading from the pin_handler_characteristic **/
-    function readFromCharacteristic() {
+    /** Function for reading from the pin_characteristic **/
+    function readFromCharacteristic(byteOffset) {
         'use strict';
         readWriteCharacteristic.readValue()
           .then(value => {
             value = value.buffer ? value : new DataView(value);
             console.log(value);
-            for(var i = 0; i < 20 ; i++) {
-                let data = value.getUint8(i);
-                console.log(data);
+            if(byteOffset == 'all') {
+                var dataArray = new Uint8Array;
+                for(var i = 0; i < 20 ; i++) {
+                    let dataArray[i] = value.getUint8(i);
+                }
+                return dataArray;
+            }
+            else {
+                let data = value.getUint8(byteOffset);
                 log('>>> Byte ' + i + ': ' + data);
+
             }
         });
     }
 
     /** Function for writing to the pin_handler_characetistic **/
-    function writeToCharacteristic() {
+    function writeToCharacteristic(byteOffset) {
         'use strict';
 
         var charVal = new Uint8Array(20);
         console.log(charVal);
-        charVal[1] = 120;
+        charVal[byteOffset] = 120;
         console.log(charVal);
 
         readWriteCharacteristic.writeValue(charVal);
