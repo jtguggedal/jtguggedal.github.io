@@ -131,6 +131,7 @@ limitations under the License.
     
   
 <script>
+
     'use strict';
     function read() {
         readWriteCharacteristic.readValue()
@@ -141,10 +142,11 @@ limitations under the License.
             for(var i = 0; i < 20 ; i++) {
                 let batteryLevel = value.getUint8(i);
                 console.log(batteryLevel);
-                log('> Byte ' + i + ': ' + batteryLevel + '%');
+                log('>>> Byte ' + i + ': ' + batteryLevel + '%');
         })
     }
 
+    read();
 </script>
 
 
