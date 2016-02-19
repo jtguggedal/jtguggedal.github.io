@@ -409,9 +409,13 @@
                         $('#pos-y').html('y: 0px -> reset');
 
                         var valueCheck = new Uint8Array(20);
-                        /*valueCheck = mycharacteristic.readValue;
+                        return mycharacteristic.readValue()
+                            .then( value => {
 
-                        if(valueCheck[1] != 0) 
+                                log(value);
+                            });
+
+                        /*if(valueCheck[1] != 0) 
                             resetCharByte();
                         else 
                             return 1;*/
