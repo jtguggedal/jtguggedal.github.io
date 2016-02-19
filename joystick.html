@@ -321,7 +321,7 @@
                     // Søker etter enheter som matcher valgt service-UUID
                     log('Søker etter enheter med valgt \nservice og characteristic...');
                     navigator.bluetooth.requestDevice({filters: [{services: [serviceUuid]}]})
-                    .then(device => device.gatt.connect())
+                    .then(device => device.connectGATT())
                     .then(server => server.getPrimaryService(serviceUuid))
 
                     // Enhetene er nå koblet sammen, og nettleseren leter etter karakteristikk som matcher den ønskede UUID
@@ -432,7 +432,7 @@
                                 console.log("Sjekk utført.");*/
                             });
                         }, delay); 
-                                         
+
                         /*if(valueCheck[1] != 0) 
                             resetCharByte();
                         else  
