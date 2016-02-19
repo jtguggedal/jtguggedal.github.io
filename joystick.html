@@ -416,9 +416,9 @@
                         $('#pos-y').html('y: 0px -> reset');
 
 
-                        var delay=1000; //1 seconds
+                        //var delay=1000; //1 seconds
 
-                        setTimeout(function(){
+                        //setTimeout(function(){
                                  
                             var valueCheck = new Uint8Array(20);
                             return myCharacteristic.readValue()
@@ -431,7 +431,7 @@
                                 console.log(value);
                                 console.log("Sjekk utført.");*/
                             });
-                        }, delay); 
+                       // }, delay); 
 
                         /*if(valueCheck[1] != 0) 
                             resetCharByte();
