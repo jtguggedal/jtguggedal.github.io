@@ -115,17 +115,7 @@ limitations under the License.
             log('Reading Battery Level...');
 
             readWriteCharacteristic = characteristic;
-            return readWriteCharacteristic.readValue();
-          })
-          .then(value => {
-            // In Chrome 50+, a DataView is returned instead of an ArrayBuffer.
-            value = value.buffer ? value : new DataView(value);
-            console.log(value);
-            for(var i = 0; i < 20 ; i++) {
-                let batteryLevel = value.getUint8(i);
-                console.log(batteryLevel);
-                log('> Byte ' + i + ': ' + batteryLevel + '%');
-            }
+            //return readWriteCharacteristic.readValue();
           })
           .catch(error => {
             log('Argh! ' + error);
