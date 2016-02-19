@@ -330,9 +330,9 @@
                             let sensorLocation = charData.getUint8(0);
 
 
-                        // Lagrer karakteristikken som matcher i variabel slik at den kan brukes i andre funksjoner.
-                        myCharacteristic = characteristic;
-                        log('Tilkoblet, LED kan nå styres.');
+                          // Lagrer karakteristikken som matcher i variabel slik at den kan brukes i andre funksjoner.
+                            myCharacteristic = characteristic;
+                            log('Tilkoblet, LED kan nå styres.');
                           }).then(location => console.log(location));
 
                     })
@@ -435,9 +435,6 @@
                 
 
                 
-                Object.defineProperty(window, "status", { set: function(v) { 
-                      
-                } } );
         </script>
 
 
