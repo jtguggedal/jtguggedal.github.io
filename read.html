@@ -142,11 +142,11 @@ limitations under the License.
 
 
     function write() {
-        'use strict';
 
         var charVal = new Uint8Array(20);
-
+        console.log(charVal);
         charVal[1] = 120;
+        console.log(charVal);
 
         readWriteCharacteristic.writeValue(charVal);
     }
