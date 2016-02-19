@@ -418,8 +418,7 @@
                         var valueCheck = new Uint8Array(20);
                         return myCharacteristic.readValue()
                         .then( value =>  {
-                            let returnedValue = value.getUint8(1);
-                            console.log(dataView);
+                            let returnedValue = value.getUint8Array();
                         })
                         .then(data => console.log(data));
                         /*if(valueCheck[1] != 0) 
