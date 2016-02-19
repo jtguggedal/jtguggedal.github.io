@@ -154,7 +154,7 @@ limitations under the License.
     function handleNotification(event) {
         let value = event.target.value;
         value = value.buffer ? value : new DataView(value);
-        notificationContent = value;
+        notificationContent = value.getUint8(0);
 
         // Push value to #notification for testing purposes
         document.getElementById("notification").innerHTML = 'Notification: ' + notificationContent;
