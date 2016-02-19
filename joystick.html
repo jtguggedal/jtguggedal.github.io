@@ -417,11 +417,11 @@
 
                         var valueCheck = new Uint8Array(20);
                         valueCheck = myCharacteristic.readValue;
-
-                        if(valueCheck[1] != 0) 
+                        log(valueCheck);
+                        /*if(valueCheck[1] != 0) 
                             resetCharByte();
                         else 
-                            return 1;
+                            return 1;*/
                     }
 
                 };
