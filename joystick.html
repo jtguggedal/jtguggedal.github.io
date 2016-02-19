@@ -327,9 +327,19 @@
                     // Enhetene er nå koblet sammen, og nettleseren leter etter karakteristikk som matcher den ønskede UUID
                     .then(service => service.getCharacteristic(characteristicUuid))
                     .then(characteristic => {
+
+
+
+
+                          return characteristic.readValue()
+                          .then(charData => {
+                            let sensorLocation = charData.getUint8(0);
+
+
                         // Lagrer karakteristikken som matcher i variabel slik at den kan brukes i andre funksjoner.
-                		myCharacteristic = characteristic;
+                        myCharacteristic = characteristic;
                         log('Tilkoblet, LED kan nå styres.');
+                          }).then(location => console.log(location));
 
                     })
                     // Dersom feil skjer i løpet av oppkoblingen, skrives feilen til loggen
