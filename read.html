@@ -177,19 +177,19 @@ limitations under the License.
         let value = event.target.value;
         value = value.buffer ? value : new DataView(value);
 
-        if(value.getUint8(0) != 0)
+        if(value.getUint8(0))
             bg_1 = 'blue';
         else
             bg_1 = 'red';
-        if(value.getUint8(1) != 0)
+        if(value.getUint8(1))
             bg_2 = 'blue';
         else
             bg_2 = 'red';
-        if(value.getUint8(2) != 0)
+        if(value.getUint8(2))
             bg_3 = 'blue';
         else
             bg_3 = 'red';
-        if(value.getUint8(3) != 0)
+        if(value.getUint8(3))
             bg_4 = 'blue';
         else
             bg_4 = 'red';
