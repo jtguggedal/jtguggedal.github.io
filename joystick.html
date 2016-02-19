@@ -415,13 +415,8 @@
                         $('#pos-x').html('x: 0px');
                         $('#pos-y').html('y: 0px -> reset');
 
-
-                        //var delay=1000; //1 seconds
-
-                        //setTimeout(function(){
-                                 
                             var valueCheck = new Uint8Array(20);
-                            myCharacteristic.readValue()
+                            myCharacteristic.read()
                             .then( value =>  {
                                 console.log(' value: ' + value);
                                 let temp = value.buffer ? value : new DataView(value);
@@ -431,29 +426,6 @@
                                 console.log(value);
                                 console.log("Sjekk utført.");*/
                             });
-                       // }, delay); 
-
-                        /*if(valueCheck[1] != 0) 
-                            resetCharByte();
-                        else  
-                            return 1;*/
-
-  
-/*
-                                      .then(characteristic => {
-                                        log('Reading Battery Level...');
-                                        return characteristic.readValue();
-                                      })
-                                      .then(value => {
-                                        // In Chrome 50+, a DataView is returned instead of an ArrayBuffer.
-                                        value = value.buffer ? value : new DataView(value);
-                                        let batteryLevel = value.getUint8(0);
-                                        log('> Battery Level is ' + batteryLevel + '%');
-                                      })
-                                      .catch(error => {
-                                        log('Argh! ' + error);
-                                      });*/
-                    }
 
                 };
                 
@@ -559,7 +531,6 @@
 
 
 
-                resetCharByte(1);
 
                 if ( diffTop < REVERT_THRESHOLD && diffLeft < REVERT_THRESHOLD ) {
                   this.$el.css( initialOffset ).addClass('ease') ;
