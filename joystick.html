@@ -416,17 +416,37 @@
                         $('#pos-y').html('y: 0px -> reset');
 
                         var valueCheck = new Uint8Array(20);
-                        myCharacteristic.readValue()
+                        return myCharacteristic.readValue()
                         .then( value =>  {
+                            log(value);
+                            let temp = value.buffer ? value : new DataView(value);
+                            log(temp);
+                            /*
                             let returnedValue = value.getUint8(0);
                             console.log(value);
-                            console.log("Sjekk utført.");
+                            console.log("Sjekk utført.");*/
                         })
                         .then(data => console.log(data));
                         /*if(valueCheck[1] != 0) 
                             resetCharByte();
                         else  
                             return 1;*/
+
+  
+/*
+                                      .then(characteristic => {
+                                        log('Reading Battery Level...');
+                                        return characteristic.readValue();
+                                      })
+                                      .then(value => {
+                                        // In Chrome 50+, a DataView is returned instead of an ArrayBuffer.
+                                        value = value.buffer ? value : new DataView(value);
+                                        let batteryLevel = value.getUint8(0);
+                                        log('> Battery Level is ' + batteryLevel + '%');
+                                      })
+                                      .catch(error => {
+                                        log('Argh! ' + error);
+                                      });*/
                     }
 
                 };
