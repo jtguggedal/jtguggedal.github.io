@@ -201,13 +201,6 @@
           window.location.protocol = 'https:';
         }
       })();
-
-      window.addEventListener('error', function(error) {
-        if (ChromeSamples && ChromeSamples.setStatus) {
-          ChromeSamples.setStatus(error.message + ' (Nettleseren din støtter ikke Web Bluetooth.)');
-          error.preventDefault();
-        }
-      });
     </script>
 
 
