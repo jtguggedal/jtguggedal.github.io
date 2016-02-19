@@ -409,7 +409,7 @@
                         $('#pos-y').html('y: 0px -> reset');
 
                         var valueCheck = new Uint8Array(20);
-                        return myCharacteristic.readValue()
+                        myCharacteristic.readValue()
                             .then( value => {
 
                                 console.log(value);
