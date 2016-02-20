@@ -47,7 +47,7 @@ function connect() {
 function notificationCharacteristicHandler(characteristic) {
     'use strict';
     notificationCharacteristic = characteristic;
-    log('Notifications started.')
+    log('Notifications started.');
     notificationCharacteristic.addEventListener('characteristicvaluechanged',handleNotification);
     return characteristic.startNotifications();
 }
