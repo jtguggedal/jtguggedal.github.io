@@ -208,11 +208,12 @@ limitations under the License.
     /** Function for reading from the pin_handler_characteristic **/
     function readFromCharacteristic(byteOffset) {
         'use strict';
+        var data
         readWriteCharacteristic.readValue()
           .then(value => {
             value = value.buffer ? value : new DataView(value);
 
-            var data = new Uint8Array(20);
+            data = new Uint8Array(20);
             //if(byteOffset == 'all') {
                 for(var i = 0; i < 20 ; i++) {
                     data[i] = value.getUint8(i);
@@ -221,8 +222,10 @@ limitations under the License.
             //    data[0] = value.getUint8(byteOffset);
             //}
           console.log(data);
+
         });
-        return data;
+                  return data;
+
     }
 
     /** Function for writing to the pin_handler_characeristic **/
