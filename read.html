@@ -138,6 +138,7 @@ limitations under the License.
     function notificationCharacteristicHandler(characteristic) {
         'use strict';
         notificationCharacteristic = characteristic;
+        log('Notification started.')
         notificationCharacteristic.addEventListener('characteristicvaluechanged',handleNotification);
         return characteristic.startNotifications();
     }
