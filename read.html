@@ -20,12 +20,22 @@ limitations under the License.
 
 
         <style>
+            @import url(https://fonts.googleapis.com/css?family=Open+Sans|Roboto:400,500,700,300);
+            body {
+                font-family: "Roboto";
+                margin: 0;
+                padding: 0;
+            }
             .notification {
                 display: inline-block;
                 margin: 20px;
-                width: 20px;
-                width: 20px;
-                background-color: red;
+                width: 40px;
+                height: 40px;
+                background-color: blue;
+                color: white;
+                font-size: 34px;
+                text-align: center;
+                font-weight: 700;
             }
 
             h2 {
@@ -84,10 +94,10 @@ limitations under the License.
 
 
 <div>
-    <div class="notification" id="notification_1">&nbsp;</div>
-    <div class="notification" id="notification_2">&nbsp;</div>
-    <div class="notification" id="notification_3">&nbsp;</div>
-    <div class="notification" id="notification_4">&nbsp;</div>
+    <div class="notification" id="notification_1">1</div>
+    <div class="notification" id="notification_2">2</div>
+    <div class="notification" id="notification_3">3</div>
+    <div class="notification" id="notification_4">4</div>
 </div>
 <h3>Logg</h3>
 <div id="output" class="output">
@@ -114,7 +124,7 @@ limitations under the License.
     var notificationContent;
 
     /** Function for establishing BLE connection to device advertising the main service **/
-    function onButtonClick() {
+    function connect() {
         'use strict';
 
         log('Requesting Bluetooth Device...');
@@ -176,21 +186,21 @@ limitations under the License.
                     bg_4;
 
                 if(value.getUint8(0) == 1)
-                    bg_1 = 'blue';
-                else
                     bg_1 = 'red';
+                else
+                    bg_1 = 'blue';
                 if(value.getUint8(1) == 1)
-                    bg_2 = 'blue';
-                else
                     bg_2 = 'red';
+                else
+                    bg_2 = 'blue';
                 if(value.getUint8(2) == 1)
-                    bg_3 = 'blue';
-                else
                     bg_3 = 'red';
-                if(value.getUint8(3) == 1)
-                    bg_4 = 'blue';
                 else
+                    bg_3 = 'blue';
+                if(value.getUint8(3) == 1)
                     bg_4 = 'red';
+                else
+                    bg_4 = 'blue';
 
                 document.getElementById("notification_1").style.backgroundColor = bg_1;
                 document.getElementById("notification_2").style.backgroundColor = bg_2;
@@ -220,7 +230,6 @@ limitations under the License.
             } else {
                 data[byteOffset] = value.getUint8(byteOffset);
             }
-            log(value);
             log(data);
 
         });
@@ -255,7 +264,7 @@ limitations under the License.
         'Please make sure the Web Bluetooth flag is enabled.');
     } else {
       ChromeSamples.clearLog();
-      onButtonClick();
+      connect();
     }
   });
   log = ChromeSamples.log;
