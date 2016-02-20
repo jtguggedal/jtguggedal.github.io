@@ -201,7 +201,7 @@
                     console.log(charVal);
 
 
-                    return readWriteCharacteristic.writeValue(charVal);
+                    setTimeout(readWriteCharacteristic.writeValue(charVal), 100);
                 }
             });
 
