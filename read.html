@@ -17,6 +17,17 @@ limitations under the License.
 -->
 <html lang="en">
   <head>
+
+
+        <style>
+            .notification {
+                display: inline-block;
+                margin: 20px;
+                width: 20px;
+                width: 20px;
+                background-color: red;
+            }
+        </style>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="Sample illustrating the use of Web Bluetooth / Battery Level.">
@@ -77,6 +88,16 @@ limitations under the License.
 <h2  onclick="readFromCharacteristic()">Les</h2>
 <h2 onclick="writeToCharacteristic()">Skriv</h2>
 <h2 id="notification">Notification</h2>
+
+
+
+
+<div>
+    <div class="notification" id="notification_1">&nbsp;</div>
+    <div class="notification" id="notification_2">&nbsp;</div>
+    <div class="notification" id="notification_3">&nbsp;</div>
+    <div class="notification" id="notification_4">&nbsp;</div>
+</div>
 <h3>Logg</h3>
 <div id="output" class="output">
   <div id="content"></div>
@@ -154,11 +175,38 @@ limitations under the License.
     /** Function for handling notifications **/
     function handleNotification(event) {
         'use strict';
-        log('Notification received');
         let value = event.target.value;
         value = value.buffer ? value : new DataView(value);
-        notificationContent = value.getUint8(0);
 
+        var bg_1, bg_2, bg_3, bg_4;
+
+        if(value.getUint8(0))
+            bg_1 = 'blue';
+        else
+            bg_1 = 'red';
+        if(value.getUint8(1))
+            bg_2 = 'blue';
+        else
+            bg_2 = 'red';
+        if(value.getUint8(2))
+            bg_3 = 'blue';
+        else
+            bg_3 = 'red';
+        if(value.getUint8(3))
+            bg_4 = 'blue';
+        else
+            bg_4 = 'red';
+
+        // Push received value to #notification for testing purposes
+        document.getElementById("notification_1").backgroundColor = bg_1;
+        document.getElementById("notification_2").backgroundColor = bg_2;
+        document.getElementById("notification_3").backgroundColor = bg_3;
+        document.getElementById("notification_4").backgroundColor = bg_4;
+
+        document.querySelector("#notification_1").innerHTML = "ja";
+        console.log(value);
+        
+        return value;
         // Push value to #notification for testing purposes
         document.getElementById("notification").innerHTML = 'Notification: ' + notificationContent;
 
