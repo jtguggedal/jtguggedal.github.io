@@ -148,7 +148,8 @@ $('.ball').on("mousemove touchmove", function() {
 
       var offset = $ball.position();
       var offsetY = initialOffset.top - offset.top;
-      var offsetX = -1*(initialOffset.left - offset.left)
+      var offsetX = -1*(initialOffset.left - offset.left);
+      var charVal = new Uint8Array(20);
 
     // Sjekker at tilkobling ble opprettet tidligere
     if(myCharacteristic) {
