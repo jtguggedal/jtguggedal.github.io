@@ -140,7 +140,7 @@ function writeToCharacteristic(byteOffset, value) {
         return 0;
 }
 
-
+/*
 /** Function for controlling LEDs with joystick **/
 $('.ball').on("mousemove touchmove", function() {
 
@@ -149,7 +149,6 @@ $('.ball').on("mousemove touchmove", function() {
       var offset = $ball.position();
       var offsetY = initialOffset.top - offset.top;
       var offsetX = -1*(initialOffset.left - offset.left);
-      var charVal = new Uint8Array(20);
 
     // Sjekker at tilkobling ble opprettet tidligere
     if(myCharacteristic) {
@@ -187,4 +186,4 @@ $('.ball').on("mousemove touchmove", function() {
         return myCharacteristic.writeValue(charVal);
     }
 });
-
+*/
