@@ -158,7 +158,7 @@
 
 
         <script>
-            
+            /*
             var charVal = new Uint8Array(20);
             $('.ball').on("mousemove touchmove", function() {
 
@@ -203,7 +203,7 @@
 
                     setTimeout(readWriteCharacteristic.writeValue(charVal), 100);
                 }
-            });
+            });*/
 
 
             // Funksjon for at joysticken skal gå tilbake til nullpunktet når den slippes
@@ -252,7 +252,7 @@
                 $('#pos-y').html('y: 0px');
                 writeToCharacteristic(1, 0);
 
-                if(readFromCharacteristic(1) == 1 ){
+                if(readFromCharacteristic(1) == 0 ){
                     console.log('Reset successful');
                     return 1;
                 } else {
