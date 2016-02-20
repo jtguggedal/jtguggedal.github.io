@@ -212,13 +212,13 @@ limitations under the License.
         readWriteCharacteristic.readValue()
           .then(value => {
             value = value.buffer ? value : new DataView(value);
-            if(byteOffset == 'all') {
+            //if(byteOffset == 'all') {
                 for(var i = 0; i < 20 ; i++) {
                     data[i] = value.getUint8(i);
                 }
-            } else {
-                data[0] = value.getUint8(byteOffset);
-            }
+            //} else {
+            //    data[0] = value.getUint8(byteOffset);
+            //}
         });
           console.log(data);
         return data;
