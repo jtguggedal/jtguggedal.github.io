@@ -217,7 +217,7 @@ limitations under the License.
                     data[i] = value.getUint8(i);
                 }
             } else {
-                data = value.getUint8(byteOffset);
+                data[0] = value.getUint8(byteOffset);
             }
         });
           console.log(data);
