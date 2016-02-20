@@ -152,7 +152,7 @@ $('.ball').on("mousemove touchmove", function() {
       var offsetX = -1*(initialOffset.left - offset.left);
 
     // Sjekker at tilkobling ble opprettet tidligere
-    if(myCharacteristic) {
+    if(readWriteCharacteristic) {
 
         // Sjekker i hvilket intervall slider-verdien er, og sender korresponderende verdi
         // via BLE til firmware. 
@@ -184,7 +184,7 @@ $('.ball').on("mousemove touchmove", function() {
         console.log(charVal);
 
 
-        return myCharacteristic.writeValue(charVal);
+        return readWriteCharacteristic.writeValue(charVal);
     }
 });
 
