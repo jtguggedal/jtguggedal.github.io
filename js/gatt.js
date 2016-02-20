@@ -174,7 +174,7 @@ $('.ball').on("mousemove touchmove", function() {
         if(offsetX > 0 && offsetY < 0)
             setBit(1, 3, 1);        // 1000
         else
-            setBit(1, 3, 0)
+            setBit(1, 3, 0);
 
         console.log(charVal);
 
