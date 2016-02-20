@@ -158,7 +158,8 @@
 
 
         <script>
-        
+            
+            var charVal = new Uint8Array(20);
             $('.ball').on("mousemove touchmove", function() {
 
                 // Lagrer nå-verdien fra slideren i variabelen 'sliderVal' (med jQuery-selector)
@@ -166,7 +167,6 @@
                 var offset = $ball.position();
                 var offsetY = initialOffset.top - offset.top;
                 var offsetX = -1*(initialOffset.left - offset.left);
-                var charVal = new Uint8Array(20);
 
                 // Sjekker at tilkobling ble opprettet tidligere
                 if(readWriteCharacteristic) {
