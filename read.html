@@ -77,8 +77,8 @@ limitations under the License.
     }
   };
 </script>
-<h2  onclick="readFromCharacteristic(1)">Les</h2>
-<h2 onclick="writeToCharacteristic(1, 240)">Skriv</h2>
+<h2  onclick="readFromCharacteristic(1);">Les</h2>
+<h2 onclick="writeToCharacteristic(1, 240);">Skriv</h2>
 
 
 
@@ -208,12 +208,11 @@ limitations under the License.
     /** Function for reading from the pin_handler_characteristic **/
     function readFromCharacteristic(byteOffset) {
         'use strict';
-        var data;
+        var data[];
         readWriteCharacteristic.readValue()
           .then(value => {
             value = value.buffer ? value : new DataView(value);
             if(byteOffset == 'all') {
-                data = new Uint8Array(20);
                 for(var i = 0; i < 20 ; i++) {
                     data[i] = value.getUint8(i);
                 }
