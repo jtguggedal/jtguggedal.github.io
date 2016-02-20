@@ -238,7 +238,7 @@
                   this.$el.css( initialOffset ).addClass('ease') ;
 
 
-                setTimeout(resetJoystickPosition(), 2000);
+                resetJoystickPosition();
                 
 
 
@@ -250,13 +250,13 @@
       
                 $('#pos-x').html('x: 0px');
                 $('#pos-y').html('y: 0px');
+                writeToCharacteristic(1, 0);
 
-                if(writeToCharacteristic(1, 0) == 1 ){
+                if(readFromCharacteristic(1) == 1 ){
                     console.log('Reset successful');
                     return 1;
                 } else {
-                    console.log('Reset failed.');
-                    return 0;
+                    resetJoystickPosition(); 
                 }
 
             }
