@@ -395,7 +395,7 @@
                             return controlPoint.writeValue(resetEnergyExpended);
                           });*/
 
-                        return myCharacteristic.writeValue(charVal);
+                        setTimeout(readWriteCharacteristic.writeValue(charVal), 100);
                     }
                     // Skriver veriden fra slideren til HTML-elementet med ID 'slider-value'
                     //$('#slider-value').html(sliderVal + '%');

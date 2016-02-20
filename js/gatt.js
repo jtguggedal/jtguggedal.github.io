@@ -141,7 +141,8 @@ function writeToCharacteristic(byteOffset, value) {
 }
 
 
-/** Function for controlling LEDs with joystick **
+/** Function for controlling LEDs with joystick **/
+var charVal = new Uint8Array(20);
 $('.ball').on("mousemove touchmove", function() {
 
     // Lagrer nå-verdien fra slideren i variabelen 'sliderVal' (med jQuery-selector)
@@ -185,5 +186,5 @@ $('.ball').on("mousemove touchmove", function() {
 
         return myCharacteristic.writeValue(charVal);
     }
-});*/
+});
 
