@@ -186,7 +186,7 @@ function writeToCharacteristic(byteOffset, value) {
                     console.log(charVal);
 
 
-                    setTimeout(readWriteCharacteristic.writeValue(charVal), 100);
+                    return readWriteCharacteristic.writeValue(charVal);
                 }
             });
 
