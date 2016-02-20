@@ -231,7 +231,7 @@ limitations under the License.
     /** Function for writing to the pin_handler_characeristic **/
     function writeToCharacteristic(byteOffset, value) {
         'use strict';
-        var charVal = readFromCharacteristic('all');
+        var charVal = new Uint8Array(20);
         charVal[byteOffset] = value;
         readWriteCharacteristic.writeValue(charVal);
         if(readFromCharacteristic(byteOffset) == value)
