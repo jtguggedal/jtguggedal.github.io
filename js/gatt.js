@@ -184,7 +184,7 @@ $('.ball').on("mousemove touchmove", function() {
         console.log(charVal);
 
 
-        return readWriteCharacteristic.writeValue(charVal);*/
+        return readWriteCharacteristic.writeValue(charVal);
     }
 });
-
+*/
