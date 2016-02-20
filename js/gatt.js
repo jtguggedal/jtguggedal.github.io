@@ -134,10 +134,10 @@ function writeToCharacteristic(byteOffset, value) {
     charVal[byteOffset] = value;
     log(charVal);
     readWriteCharacteristic.writeValue(charVal);
-    if(readFromCharacteristic(byteOffset) == value)
+    /*if(readFromCharacteristic(byteOffset) == value)
         return 1;
     else
-        return 0;
+        return 0;*/
 }
 
 
