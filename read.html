@@ -183,52 +183,67 @@
     alert("Heavy task");
 }, 5000);*/
 
+            var timeStart = new Date();
+            var milliSec = timeStart.getMilliseconds(),
+                prevMillisec,
+                sec = timeStart.getSeconds(),
+                prevSec;
+
 
             $('.ball').on("mousemove touchmove", function() {
                     console.log(charVal);
                 // Lagrer nå-verdien fra slideren i variabelen 'sliderVal' (med jQuery-selector)
 
-                debounce(function() {
-                    var offset = $ball.position();
-                    var offsetY = initialOffset.top - offset.top;
-                    var offsetX = -1*(initialOffset.left - offset.left);
+                var offset = $ball.position();
+                var offsetY = initialOffset.top - offset.top;
+                var offsetX = -1*(initialOffset.left - offset.left);
 
-                    // Sjekker at tilkobling ble opprettet tidligere
-                    if(readWriteCharacteristic) {
+                var timeNow = new Date();
 
-                        // Sjekker i hvilket intervall slider-verdien er, og sender korresponderende verdi
-                        // via BLE til firmware. 
-                        // Setter 1. bit lik 1 for å tenne 1. LED osv.
+                prevMillisec = milliSec;
+                milliSec = timeNow.getMilliseconds();
+                prevSec = sec;
+                sec = timeNow.getSeconds();
 
+                // Sjekker at tilkobling ble opprettet tidligere
+                if( readWriteCharacteristic             && 
+                    (   (milliSec > (prevMillisec + 100))   || 
+                        (milliSec < prevMillisec)           || 
+                        (sec != prevSec) 
+                    ) {
 
-                        if(offsetX < 0 && offsetY < 0)
-                            setBit(1, 0, 1);        // 0001
-                        else 
-                            setBit(1, 0, 0);
-                        if(offsetX < 0 && offsetY > 0)      
-                            setBit(1, 1, 1);        // 0010
-                        else
-                            setBit(1, 1, 0);
-                        if(offsetX > 0 && offsetY > 0)
-                            setBit(1, 2, 1);        // 0100
-                        else
-                            setBit(1, 2, 0);
-                        if(offsetX > 0 && offsetY < 0)
-                            setBit(1, 3, 1);        // 1000
-                        else
-                            setBit(1, 3, 0)
-
-                        console.log(charVal);
-
-                        if((offsetX == 0) && (offsetY == 0))
-                            setBit(1, 'b', 0);
-
-                        console.log(charVal);
+                    // Sjekker i hvilket intervall slider-verdien er, og sender korresponderende verdi
+                    // via BLE til firmware. 
+                    // Setter 1. bit lik 1 for å tenne 1. LED osv.
 
 
-                        return readWriteCharacteristic.writeValue(charVal);
-                    }
-                }, 100);
+                    if(offsetX < 0 && offsetY < 0)
+                        setBit(1, 0, 1);        // 0001
+                    else 
+                        setBit(1, 0, 0);
+                    if(offsetX < 0 && offsetY > 0)      
+                        setBit(1, 1, 1);        // 0010
+                    else
+                        setBit(1, 1, 0);
+                    if(offsetX > 0 && offsetY > 0)
+                        setBit(1, 2, 1);        // 0100
+                    else
+                        setBit(1, 2, 0);
+                    if(offsetX > 0 && offsetY < 0)
+                        setBit(1, 3, 1);        // 1000
+                    else
+                        setBit(1, 3, 0)
+
+                    console.log(charVal);
+
+                    if((offsetX == 0) && (offsetY == 0))
+                        setBit(1, 'b', 0);
+
+                    console.log(charVal);
+
+
+                    return readWriteCharacteristic.writeValue(charVal);
+                }
             });
 
 
