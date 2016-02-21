@@ -207,9 +207,10 @@
 
                 // Sjekker at tilkobling ble opprettet tidligere
                 if( readWriteCharacteristic             && 
-                    (   (milliSec > (prevMillisec + 100))   || 
-                        (milliSec < prevMillisec)           || 
-                        (sec != prevSec) 
+                        (   (milliSec > (prevMillisec + 100))   || 
+                            (milliSec < prevMillisec)           || 
+                            (sec != prevSec) 
+                        )
                     ) {
 
                     // Sjekker i hvilket intervall slider-verdien er, og sender korresponderende verdi
