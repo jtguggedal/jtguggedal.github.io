@@ -207,7 +207,7 @@
 
                 // Sjekker at tilkobling ble opprettet tidligere
                 if( readWriteCharacteristic             && 
-                        (   (milliSec > (prevMillisec + 20))    || 
+                        (   (milliSec > (prevMillisec + 50))    || 
                             (milliSec < prevMillisec)           || 
                             (sec != prevSec) 
                         )
