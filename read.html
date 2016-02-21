@@ -191,7 +191,6 @@
 
 
             $('.ball').on("mousemove touchmove", function() {
-                    console.log(charVal);
                 // Lagrer nå-verdien fra slideren i variabelen 'sliderVal' (med jQuery-selector)
 
                 var offset = $ball.position();
@@ -212,6 +211,7 @@
                             (sec != prevSec) 
                         )
                     ) {
+                    console.log('s: ' + sec + ', m: ' + milliSec + ', value: ' + charVal);
 
                     // Sjekker i hvilket intervall slider-verdien er, og sender korresponderende verdi
                     // via BLE til firmware. 
