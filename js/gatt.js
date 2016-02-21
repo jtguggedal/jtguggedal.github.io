@@ -18,12 +18,12 @@ function connect() {
     navigator.bluetooth.requestDevice(
         {filters: [{services: [mainServiceUUID]}]})
         .then(device => {
-            log('> Found ' + device.name);
-            log('Connecting to GATT Server...');
+            console.log('> Found ' + device.name);
+            console.log('Connecting to GATT Server...');
             return device.connectGATT();
         })
         .then(server => {
-            log('Getting main Service...');
+            console.log('Getting main Service...');
             return server.getPrimaryService(mainServiceUUID);
         })
         .then(service => {
@@ -35,11 +35,11 @@ function connect() {
                 .then(notificationCharacteristicHandler)
             ])
             .catch(error => {
-                log('>' + error);
+                console.log('>' + error);
             });
         })
     .catch(error => {
-        log('Argh! ' + error);
+        console.log('Argh! ' + error);
     });
 }
 
@@ -47,7 +47,7 @@ function connect() {
 function notificationCharacteristicHandler(characteristic) {
     'use strict';
     notificationCharacteristic = characteristic;
-    log('Notifications started.');
+    console.log('Notifications started.');
     notificationCharacteristic.addEventListener('characteristicvaluechanged',handleNotification);
     return characteristic.startNotifications();
 }
@@ -117,7 +117,7 @@ function readFromCharacteristic(byteOffset) {
         } else {
             data[byteOffset] = value.getUint8(byteOffset);
         }
-        log(data);
+        console.log('readchar: ' + data);
 
     });
     if(byteOffset != 'all')
@@ -132,7 +132,7 @@ function writeToCharacteristic(byteOffset, value) {
     'use strict';
     var charVal = new Uint8Array(20);
     charVal[byteOffset] = value;
-    log(charVal);
+    console.log('writechar: ' + charVal);
     readWriteCharacteristic.writeValue(charVal);
     /*if(readFromCharacteristic(byteOffset) == value)
         return 1;
