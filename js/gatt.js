@@ -145,6 +145,7 @@ function writeToCharacteristic(byteOffset, value) {
             var charVal = new Uint8Array(20);
 
             $('.ball').on("mousemove touchmove", function() {
+                    console.log(charVal);
 
 
                 // Lagrer nå-verdien fra slideren i variabelen 'sliderVal' (med jQuery-selector)
