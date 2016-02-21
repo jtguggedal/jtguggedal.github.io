@@ -94,7 +94,11 @@ function handleNotification(event) {
             document.getElementById("notification_3").style.backgroundColor = bg_3;
             document.getElementById("notification_4").style.backgroundColor = bg_4;
 
-            console.log(value);
+            var valueArray = new Uint8Array(20);
+            for(var i = 0; i < 20; i++)
+                valueArray[i] = value.getUint8(i);
+
+            console.log(valueArray);
      //**** Testing end
 
     return value;
