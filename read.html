@@ -6,6 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-beta1/jquery.js"></script>   
+    <script type="text/javascript" src="js/jquery.mobile-events.js"></script>
     <script src="js/gatt.js"></script>    
     <script src="js/setBit.js"></script>
     <script src="js/pep.js"></script>   
@@ -206,10 +207,7 @@
                 sec = timeNow.getSeconds();*/
 
                 // Sjekker at tilkobling ble opprettet tidligere
-                if( readWriteCharacteristic             && 
-                        (   writePermission == 1 
-                        )
-                    ) {
+                if( readWriteCharacteristic &&  writePermission == 1 ) {
                     //console.log('s: ' + sec + ', m: ' + milliSec + ', value: ' + charVal);
 
                     // Sjekker i hvilket intervall slider-verdien er, og sender korresponderende verdi
@@ -293,7 +291,11 @@
       
                 $('#pos-x').html('x: 0px');
                 $('#pos-y').html('y: 0px');
-                setTimeout(writeToCharacteristic(1, 0), 200);
+                return setTimeout(writeToCharacteristic(1, 0), 200);
+                .then
+
+
+
 
                 if(readFromCharacteristic(1) == 0 ){
                     console.log('Reset successful');
