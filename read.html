@@ -188,6 +188,7 @@
                 prevMillisec,
                 sec = timeStart.getSeconds(),
                 prevSec;
+            var writePermission = 1;
 
 
             $('.ball').on("mousemove touchmove", function() {
@@ -199,24 +200,22 @@
 
                 var timeNow = new Date();
 
-                prevMillisec = milliSec;
+                /*prevMillisec = milliSec;
                 milliSec = timeNow.getMilliseconds();
                 prevSec = sec;
-                sec = timeNow.getSeconds();
+                sec = timeNow.getSeconds();*/
 
                 // Sjekker at tilkobling ble opprettet tidligere
                 if( readWriteCharacteristic             && 
-                        (   (milliSec > (prevMillisec + 50))    || 
-                            (milliSec < prevMillisec)           || 
-                            (sec != prevSec) 
+                        (   writePermission == 1 
                         )
                     ) {
-                    console.log('s: ' + sec + ', m: ' + milliSec + ', value: ' + charVal);
+                    //console.log('s: ' + sec + ', m: ' + milliSec + ', value: ' + charVal);
 
                     // Sjekker i hvilket intervall slider-verdien er, og sender korresponderende verdi
                     // via BLE til firmware. 
                     // Setter 1. bit lik 1 for å tenne 1. LED osv.
-
+                    writePermission = 0;
 
                     if(offsetX < 0 && offsetY < 0)
                         setBit(1, 0, 1);        // 0001
@@ -243,7 +242,8 @@
                     console.log(charVal);
 
 
-                    return readWriteCharacteristic.writeValue(charVal);
+                    return readWriteCharacteristic.writeValue(charVal)
+                    .then(writePermission = 1);
                 }
             });
 
