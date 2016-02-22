@@ -7,13 +7,13 @@ var notificationCharacteristicUUID = '00001524-1212-efde-1523-785feabcd123';
 var mainService;
 var readWriteCharacteristic;
 var notificationCharacteristic;
-
 var notificationContent;
 
 /** Function for establishing BLE connection to device advertising the main service **/
 function connect() {
     'use strict';
 
+    // Searching for Bluetooth devices that match the filter criterias
     log('Requesting Bluetooth Device...');
     navigator.bluetooth.requestDevice(
         {filters: [{services: [mainServiceUUID]}]})
@@ -22,22 +22,28 @@ function connect() {
             console.log('Connecting to GATT Server...');
             return device.connectGATT();
         })
+
+        // When matching device is found and selected, get the main service
         .then(server => {
             console.log('Getting main Service...');
             return server.getPrimaryService(mainServiceUUID);
         })
         .then(service => {
+            // Storing the main service object globally for easy access from other functions
             mainService = service;
             return Promise.all([
+                // Get all characteristics and call handler functions for both
                 service.getCharacteristic(readWriteCharacteristicUUID)
                 .then(readWriteCharacteristicHandler),
                 service.getCharacteristic(notificationCharacteristicUUID)
                 .then(notificationCharacteristicHandler)
             ])
+            // Print errors  to console
             .catch(error => {
                 console.log('>' + error);
             });
         })
+    // Print errors  to console
     .catch(error => {
         console.log('Argh! ' + error);
     });
@@ -47,8 +53,12 @@ function connect() {
 /** Function for setting up the notification characteristic **/
 function notificationCharacteristicHandler(characteristic) {
     'use strict';
+
+    // Stores the notification characteristic object globally for easy access
     notificationCharacteristic = characteristic;
     console.log('Notifications started.');
+
+    // Initiates event listener for notifications sent from DK
     notificationCharacteristic.addEventListener('characteristicvaluechanged',handleNotification);
     return characteristic.startNotifications();
 }
@@ -56,6 +66,7 @@ function notificationCharacteristicHandler(characteristic) {
  /** Function for handling the read and write characteristic **/
 function readWriteCharacteristicHandler(characteristic) {
     'use strict';
+    // Stores the readWriteCharacteristic globally
     readWriteCharacteristic = characteristic;
     return 1;
 }
@@ -64,8 +75,13 @@ function readWriteCharacteristicHandler(characteristic) {
 /** Function for handling notifications **/
 function handleNotification(event) {
     'use strict';
+
+    // The received notification consists of a DataView object, assigned to value
     let value = event.target.value;
     value = value.buffer ? value : new DataView(value);
+
+    // *** Insert callback function for easier access to notification events here? ****
+
 
     // Testing, testing...
             var bg_1, 
@@ -107,23 +123,34 @@ function handleNotification(event) {
 }
 
 /** Function for reading from the read and write characteristic **/
+//  Parameter      byteOffset      int, 0-19
 function readFromCharacteristic(byteOffset) {
     'use strict';
+
+    // Data is sent from DK as a 20 byte long Uint8Array, stores in the data variable
     var data = new Uint8Array(20);
+
+    // Calls the redValue method in the readWriteCharacteristic
     readWriteCharacteristic.readValue()
       .then(value => {
+        // DataView is received from DK
         value = value.buffer ? value : new DataView(value);
 
+        // Checks if a single byte or all received data is to be returned from the function
         if(byteOffset == 'all') {
+        // Loops through the received DataView and copies to the data array
             for(var i = 0; i < 20 ; i++) {
                 data[i] = value.getUint8(i);
             }
         } else {
+            // Copies the chosen byte from the DataView to data array 
             data[byteOffset] = value.getUint8(byteOffset);
         }
         console.log('readchar: ' + data);
 
     });
+
+    // Returns the selected byte or all data as Uint8Array
     if(byteOffset != 'all')
         return data[byteOffset];
     else
@@ -131,21 +158,15 @@ function readFromCharacteristic(byteOffset) {
 }
 
 /** Function for writing to the read and write characteristic **/
+//  Parameters      byteOffset      int, 0-19
+//                  value           int, 0-255
 function writeToCharacteristic(byteOffset, value) {
     'use strict';
     var charVal = new Uint8Array(20);
     charVal[byteOffset] = value;
     console.log('writechar: ' + charVal);
-    var timing = new Date().getTime();
-
-    console.log('timing 2: ' + timing);
 
 
     readWriteCharacteristic.writeValue(charVal);
-
-    /*if(readFromCharacteristic(byteOffset) == value)
-        return 1;
-    else
-        return 0;*/
 }
 
