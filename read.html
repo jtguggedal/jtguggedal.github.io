@@ -293,13 +293,13 @@
       
                 $('#pos-x').html('x: 0px');
                 $('#pos-y').html('y: 0px');
-                writeToCharacteristic(1, 0);
+                setTimeout(writeToCharacteristic(1, 0), 200);
 
                 if(readFromCharacteristic(1) == 0 ){
                     console.log('Reset successful');
                     return 1;
                 } else {
-                    setTimeout(resetJoystickPosition(), 100); 
+                    resetJoystickPosition(); 
                 }
 
             }
