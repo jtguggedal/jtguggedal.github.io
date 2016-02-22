@@ -287,6 +287,19 @@
               }
             })
 
+            $('.ball').on("tapend", function() {
+                  var offset = $ball.position();
+                  var offsetY = initialOffset.top - offset.top;
+                  var offsetX = -1*(initialOffset.left - offset.left)
+      
+                 $('#pos-x').html('x: ' + offsetX + 'px reset');
+                 $('#pos-y').html('y: ' + offsetY + 'px reset ');
+
+
+
+                setTimeout(writeToCharacteristic(1, 0), 200);
+            });
+/*
             function resetJoystickPosition() {
       
                 $('#pos-x').html('x: 0px');
@@ -304,7 +317,7 @@
                     resetJoystickPosition(); 
                 }
 
-            }
+            }*/
         </script>
 
 
