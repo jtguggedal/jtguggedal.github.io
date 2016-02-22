@@ -299,7 +299,12 @@
                     var timing = new Date().getTime();
 
                     console.log('timing 1: ' + timing);
-                    window.setTimeout(writeToCharacteristic(1, 0), 1000);
+                    //window.setTimeout(writeToCharacteristic(1, 0), 1000);
+
+
+                    setTimeout(function(){
+                      writeToCharacteristic(1, 0);
+                    }, 1000);
             });
 /*
             function resetJoystickPosition() {
