@@ -234,8 +234,6 @@
                     else
                         setBit(1, 3, 0)
 
-                    console.log(charVal);
-
                     if((offsetX == 0) && (offsetY == 0))
                         setBit(1, 'b', 0);
 
@@ -243,7 +241,10 @@
 
 
                     return readWriteCharacteristic.writeValue(charVal)
-                    .then(writePermission = 1);
+                    .then( writeReturn => {
+                        console.log(writeReturn);
+                        writePermission = 1;
+                    });
                 }
             });
 

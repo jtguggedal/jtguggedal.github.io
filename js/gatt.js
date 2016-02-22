@@ -105,7 +105,6 @@ function handleNotification(event) {
 
 }
 
-
 /** Function for reading from the read and write characteristic **/
 function readFromCharacteristic(byteOffset) {
     'use strict';
@@ -128,7 +127,6 @@ function readFromCharacteristic(byteOffset) {
         return data[byteOffset];
     else
         return data;
-
 }
 
 /** Function for writing to the read and write characteristic **/
