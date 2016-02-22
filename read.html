@@ -330,12 +330,16 @@ $('.ball').on("change mousemove touchmove", function() {
         outputLeft = speed;
     } 
 
+    if(y < 0 )
+        setBit(15, 0, 1);
+
+
     $('#pos-x').html('x: ' + x + 'px');
     $('#pos-y').html('y: ' + y + 'px');
     $('#speed').html('Hastighet: ' + speed);
     $('#angle').html('Vinkel: ' + angle);
-    $('#output-left').html('Pådrag V: ' + outputLeft);
-    $('#output-right').html('Pådrag H: ' + outputRight);
+    $('#output-left').html('Pådrag V: ' + Math.round(outputLeft));
+    $('#output-right').html('Pådrag H: ' + Math.round(outputRight));
 
 
 
@@ -386,7 +390,7 @@ $ball.pep({
                 $("#sliderRight").val(0);
 
                     setTimeout(function(){
-                      writeToCharacteristic(1, 0);
+                    //  writeToCharacteristic(1, 0);
                     }, 100);
 
 
