@@ -143,10 +143,6 @@ function writeToCharacteristic(byteOffset, value) {
 
     readWriteCharacteristic.writeValue(charVal);
 
-
-    var timing = new Date().getTime();
-
-    console.log('timing 3: ' + timing);
     /*if(readFromCharacteristic(byteOffset) == value)
         return 1;
     else

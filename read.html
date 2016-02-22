@@ -288,12 +288,9 @@
             })
 
             $('.ball').on("tapend", function() {
-                  var offset = $ball.position();
-                  var offsetY = initialOffset.top - offset.top;
-                  var offsetX = -1*(initialOffset.left - offset.left)
       
-                 $('#pos-x').html('x: ' + offsetX + 'px reset');
-                 $('#pos-y').html('y: ' + offsetY + 'px reset ');
+                 $('#pos-x').html('x: 0px reset');
+                 $('#pos-y').html('y: 0px reset ');
 
 
                     var timing = new Date().getTime();
