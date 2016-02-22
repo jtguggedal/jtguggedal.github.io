@@ -296,6 +296,9 @@
                  $('#pos-y').html('y: ' + offsetY + 'px reset ');
 
 
+                    var timing = new Date().getTime();
+
+                    console.log('timing 1: ' + timing);
                     setTimeout(writeToCharacteristic(1, 0), 1000);
             });
 /*

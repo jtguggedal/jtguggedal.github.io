@@ -43,6 +43,7 @@ function connect() {
     });
 }
 
+
 /** Function for setting up the notification characteristic **/
 function notificationCharacteristicHandler(characteristic) {
     'use strict';
@@ -135,7 +136,17 @@ function writeToCharacteristic(byteOffset, value) {
     var charVal = new Uint8Array(20);
     charVal[byteOffset] = value;
     console.log('writechar: ' + charVal);
+    var timing = new Date().getTime();
+
+    console.log('timing 2: ' + timing);
+
+
     readWriteCharacteristic.writeValue(charVal);
+
+
+    var timing = new Date().getTime();
+
+    console.log('timing 3: ' + timing);
     /*if(readFromCharacteristic(byteOffset) == value)
         return 1;
     else
