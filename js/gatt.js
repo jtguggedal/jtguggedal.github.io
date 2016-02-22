@@ -1,12 +1,12 @@
-//********************************************************************************************//
-//  Functions for connecting to BLE device and setting up main service and characteristics
-//
-//  connect                             Searches for devices that matches the filter criterias
-//  notificationCharacteristicHandler   Sets up event listener for the notification characteristic
-//  handleNotification                  Event handler for changes in the notifications
-//  readWriteCharacteristicHandler      Sets up the readWriteCharacteristic
-//  readFromCharacteristic              Function for reading values from the readWriteCharacteristic
-//  writeToCharacteristic               Function for reading chosen values from the readWriteCharacterstic   
+//**************************************************************************************************************//
+//  Functions for connecting to BLE device and setting up main service and characteristics                      //
+//                                                                                                              //
+//  connect                             Searches for devices that matches the filter criterias                  //
+//  notificationCharacteristicHandler   Sets up event listener for the notification characteristic              //
+//  handleNotification                  Event handler for changes in the notifications                          //
+//  readWriteCharacteristicHandler      Sets up the readWriteCharacteristic                                     //
+//  readFromCharacteristic              Function for reading values from the readWriteCharacteristic            //
+//  writeToCharacteristic               Function for reading chosen values from the readWriteCharacterstic      //
 
 
 
