@@ -42,9 +42,9 @@
             display: inline-block;
             clear: both;
             cursor: pointer;
-            padding: 7px;
+            padding: 3px;
             background-color: #eee;
-            margin: 10px;
+            margin: 6px;
         }
 
         .demo {
@@ -116,6 +116,7 @@
             <h2 onclick="connect();" id='connect'>Koble til</h2>
             <h2 onclick="readFromCharacteristic(1);">Les</h2>
             <h2 onclick="writeToCharacteristic(1, 240);">Skriv</h2>
+            <h2 onclick="printDiscardedPackets();">Tapte pakker</h2>
 
 
 
@@ -224,12 +225,6 @@
                 };
             };
             
-
-            var timeStart = new Date();
-            var milliSec = timeStart.getMilliseconds(),
-                prevMillisec,
-                sec = timeStart.getSeconds(),
-                prevSec;
             var writePermission = 1;
             var discardedPackets = [];
 
@@ -283,95 +278,95 @@
                 }
             });
 
-// Funksjon for at joysticken skal gå tilbake til nullpunktet når den slippes
-var REVERT_THRESHOLD = 1000;
-var ballWidth = $('.ball').css('left').replace(/[^-\d\.]/g, '');
-var ballHeight = $('.ball').css('top').replace(/[^-\d\.]/g, '');
-var $ball = $('.ball.moveable');
-var initialOffset = $ball.offset();
-var outputRight;
-var outputLeft;
-
-$('.ball').on("change mousemove touchmove", function() {
-    var offset = $ball.position();
-    var y = initialOffset.top - offset.top;
-    var x = -1*(initialOffset.left - offset.left);
-    var hypotenus = Math.sqrt((Math.pow(x, 2)) + (Math.pow(y, 2)));
-    var speed = Math.round((255/ballWidth)*hypotenus);
-    var angle = (180/Math.PI)*Math.acos(x/hypotenus);
-
-    if(y < 0)
-        angle = 360 - angle;
-    angle = Math.round(angle);
-
-    if(speed > 255)
-        speed = 255;
-
-    if(angle >= 10 && angle <= 80) {
-        outputRight = (angle/80)*speed;
-        outputLeft = speed;
-    } else if(angle > 80 && angle < 100) {
-        outputLeft = outputRight = speed;
-    } else if(angle >= 100 && angle <= 170) {
-        outputRight = speed;
-        outputLeft = ((180-angle)/80)*speed;;
-    }  else if(angle > 170 && angle < 190) {
-        outputRight = speed;
-        outputLeft = 0;
-    } else if(angle >= 190 && angle <= 260) {
-        outputRight = speed;
-        outputLeft = ((angle-180)/80)*speed;
-    } else if(angle > 260 && angle < 280) {
-        outputRight = outputLeft = speed;
-    } else if(angle >= 280 && angle <= 350) {
-        outputRight = ((360-angle)/80)*speed;
-        outputLeft = speed;
-    } else if(angle > 350 || angle < 10) {
-        outputRight = 0;
-        outputLeft = speed;
-    } 
-
-    if(y < 0 )
-        setBit(15, 0, 1);
-
-
-    $('#pos-x').html('x: ' + x + 'px');
-    $('#pos-y').html('y: ' + y + 'px');
-    $('#speed').html('Hastighet: ' + speed);
-    $('#angle').html('Vinkel: ' + angle);
-    $('#output-left').html('Pådrag V: ' + Math.round(outputLeft));
-    $('#output-right').html('Pådrag H: ' + Math.round(outputRight));
+            function printDiscardedPackets() {
+                console.log(discardedPackets);
+            }
 
 
 
-    $("#sliderLeft").val(outputLeft);
-    $("#sliderRight").val(outputRight);
+            // Funksjon for at joysticken skal gå tilbake til nullpunktet når den slippes
+            var REVERT_THRESHOLD = 1000;
+            var ballWidth = $('.ball').css('left').replace(/[^-\d\.]/g, '');
+            var ballHeight = $('.ball').css('top').replace(/[^-\d\.]/g, '');
+            var $ball = $('.ball.moveable');
+            var initialOffset = $ball.offset();
+            var outputRight;
+            var outputLeft;
+
+            $('.ball').on("change mousemove touchmove", function() {
+                var offset = $ball.position();
+                var y = initialOffset.top - offset.top;
+                var x = -1*(initialOffset.left - offset.left);
+                var hypotenus = Math.sqrt((Math.pow(x, 2)) + (Math.pow(y, 2)));
+                var speed = Math.round((255/ballWidth)*hypotenus);
+                var angle = (180/Math.PI)*Math.acos(x/hypotenus);
+
+                if(y < 0)
+                    angle = 360 - angle;
+                angle = Math.round(angle);
+
+                if(speed > 255)
+                    speed = 255;
+
+                if(angle >= 10 && angle <= 80) {
+                    outputRight = (angle/80)*speed;
+                    outputLeft = speed;
+                } else if(angle > 80 && angle < 100) {
+                    outputLeft = outputRight = speed;
+                } else if(angle >= 100 && angle <= 170) {
+                    outputRight = speed;
+                    outputLeft = ((180-angle)/80)*speed;;
+                }  else if(angle > 170 && angle < 190) {
+                    outputRight = speed;
+                    outputLeft = 0;
+                } else if(angle >= 190 && angle <= 260) {
+                    outputRight = speed;
+                    outputLeft = ((angle-180)/80)*speed;
+                } else if(angle > 260 && angle < 280) {
+                    outputRight = outputLeft = speed;
+                } else if(angle >= 280 && angle <= 350) {
+                    outputRight = ((360-angle)/80)*speed;
+                    outputLeft = speed;
+                } else if(angle > 350 || angle < 10) {
+                    outputRight = 0;
+                    outputLeft = speed;
+                } 
+
+                $('#pos-x').html('x: ' + x + 'px');
+                $('#pos-y').html('y: ' + y + 'px');
+                $('#speed').html('Hastighet: ' + speed);
+                $('#angle').html('Vinkel: ' + angle);
+                $('#output-left').html('Pådrag V: ' + Math.round(outputLeft));
+                $('#output-right').html('Pådrag H: ' + Math.round(outputRight));
+
+                $("#sliderLeft").val(outputLeft);
+                $("#sliderRight").val(outputRight);
 
 
 
-});
+            });
 
-$ball.pep({
+            $ball.pep({
 
-  useCSSTranslation: false,
-  shouldEase: false,
-  constrainTo: 'parent',
-   initiate: function(){
-     this.$el.removeClass('ease')
-   },
-  stop: function(){
-    var offset = this.$el.position();    
-    var diffTop  = initialOffset.top - offset.top;
-    var diffLeft = -1*(initialOffset.left - offset.left);
+              useCSSTranslation: false,
+              shouldEase: false,
+              constrainTo: 'parent',
+               initiate: function(){
+                 this.$el.removeClass('ease')
+               },
+              stop: function(){
+                var offset = this.$el.position();    
+                var diffTop  = initialOffset.top - offset.top;
+                var diffLeft = -1*(initialOffset.left - offset.left);
 
-    if ( diffTop < REVERT_THRESHOLD && diffLeft < REVERT_THRESHOLD ){
-      this.$el.css( initialOffset ).addClass('ease') ;
+                if ( diffTop < REVERT_THRESHOLD && diffLeft < REVERT_THRESHOLD ){
+                  this.$el.css( initialOffset ).addClass('ease') ;
 
 
 
-    }
-  }
-})
+                }
+              }
+            })
 
 
 
@@ -391,7 +386,7 @@ $ball.pep({
                 $("#sliderRight").val(0);
 
                     setTimeout(function(){
-                    //  writeToCharacteristic(1, 0);
+                        writeToCharacteristic(1, 0);
                     }, 100);
 
 
