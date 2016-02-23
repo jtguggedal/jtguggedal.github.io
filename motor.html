@@ -1,0 +1,227 @@
+
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Motorstyring</title>
+    
+    <style>
+    	@import url(https://fonts.googleapis.com/css?family=Open+Sans|Roboto:400,500,700,300);
+    	body {
+    		font-family: "Roboto";
+    	}
+    	div {
+    		margin: 10px;
+    	}
+    	
+    	h1, h3 {
+    		text-align: center;
+    	}
+    	
+    	ul {
+    		margin-top: 10px;
+    		margin-bottom: 30px;
+    		font-size: 14px;
+    	}
+    	
+    	label {
+    		display: inline-block;
+    		width: 120px;
+    		font-weight: 500;
+    	}
+    	
+    	input[type="text"] {
+    		width: 220px;
+    		padding: 5px;
+    	}
+    	
+    	button {
+    		padding: 10px;
+    		margin-right: 30px;
+    		border: 1px solid white;
+    		font-weight: 700;
+    		box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.1);
+            background-color: #CCC;
+    	}
+    	
+    	#main {
+    		max-width: 400px;
+    		margin: 20px auto;
+    		border: 1px solid #DDD;
+    		padding: 10px;
+    		box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.1);
+    	}
+    	
+    	.button-container {
+    		margin: 10px auto 30px auto;
+			max-width: 460px;
+			text-align: center;		
+
+    	}
+    	
+    	#ledon, #ledoff {
+    		color: white;
+    		margin-top: 20px;
+    		margin-bottom: 20px;
+    	}
+    	
+        .servo-btn {
+            padding: 15px;
+            font-size: 30px;
+
+        }
+
+        fieldset {
+            display: inline-block;
+            margin: 10px;
+
+        }
+        legend {
+
+            font-weight: 700;
+        }
+        fieldset input {
+            margin-bottom: 10px;
+        }
+    
+    </style>
+    
+
+  </head>
+
+  <body>
+  	<div id="main">
+		<h1>Styring av motorer</h1>
+		      <div class='button-container'>
+                <button onclick="connect();">Koble til enhet</button>
+            </div>
+		     <div class="motor-container">
+                <fieldset>
+                    <legend>Motor 1</legend>
+                    <input type="radio" name="m1_power" value="on" checked> Av<br>
+                    <input type="radio" name="m1_power" value="off"> På<br>
+                    <hr>
+                    <input type="radio" name="m1_direction" value="direction_1" > Retning 1 <br>
+                    <input type="radio" name="m1_direction" value="direction_2"> Retning 2 <br>
+                    <hr>
+                    <input type="radio" name="m1_speed" value="75" > Hastighet: 75<br>
+                    <input type="radio" name="m1_speed" value="200"> Hastighet: 200<br>
+
+                </fieldset>
+
+                <fieldset>
+                    <legend>Motor 2</legend>
+                    <input type="radio" name="m2_power" value="on" checked> Av<br>
+                    <input type="radio" name="m2_power" value="off"> På<br>
+                    <hr>
+                    <input type="radio" name="m2_direction" value="direction_1" > Retning 1 <br>
+                    <input type="radio" name="m2_direction" value="direction_2"> Retning 2 <br>
+                    <hr>
+                    <input type="radio" name="m2_speed" value="75" > Hastighet: 75<br>
+                    <input type="radio" name="m2_speed" value="200"> Hastighet: 200<br>
+
+                </fieldset>
+                <fieldset>
+                    <legend>Motor 3</legend>
+                    <input type="radio" name="m3_power" value="on" checked> Av<br>
+                    <input type="radio" name="m3_power" value="off"> På<br>
+                    <hr>
+                    <input type="radio" name="m3_direction" value="direction_1" > Retning 1 <br>
+                    <input type="radio" name="m3_direction" value="direction_2"> Retning 2 <br>
+                    <hr>
+                    <input type="radio" name="m3_speed" value="75" > Hastighet: 75<br>
+                    <input type="radio" name="m3_speed" value="200"> Hastighet: 200<br>
+
+                </fieldset>
+                <fieldset>
+                    <legend>Motor 4</legend>
+                    <input type="radio" name="m4_power" value="on" checked> Av<br>
+                    <input type="radio" name="m4_power" value="off"> På<br>
+                    <hr>
+                    <input type="radio" name="m4_direction" value="direction_1" > Retning 1 <br>
+                    <input type="radio" name="m4_direction" value="direction_2"> Retning 2 <br>
+                    <hr>
+                    <input type="radio" name="m4_speed" value="75" > Hastighet: 75<br>
+                    <input type="radio" name="m4_speed" value="200"> Hastighet: 200<br>
+
+                </fieldset>
+		  </div>
+
+
+
+		<script>
+		  var ChromeSamples = {
+			log: function() {
+			  var line = Array.prototype.slice.call(arguments).map(function(argument) {
+				return typeof argument === 'string' ? argument : JSON.stringify(argument);
+			  }).join(' ');
+
+			  document.querySelector('#log').textContent += line + '\n';
+			},
+
+			clearLog: function() {
+			  document.querySelector('#log').textContent = '';
+			},
+
+			setStatus: function(status) {
+			  document.querySelector('#status').textContent = status;
+			},
+
+			setContent: function(newContent) {
+			  var content = document.querySelector('#content');
+			  while(content.hasChildNodes()) {
+				content.removeChild(content.lastChild);
+			  }
+			  content.appendChild(newContent);
+			}
+		  };
+		</script>
+
+		<h3>Logg</h3>
+		<div id="output" class="output">
+		  <div id="content"></div>
+		  <div id="status"></div>
+		  <pre id="log"></pre>
+		</div>
+		
+		
+		
+		
+		
+	<!-- // END OF MAIN -->
+	</div>
+
+  
+    
+    <script>
+        
+      			
+      			
+				
+
+    </script>
+    
+  
+
+
+<script>
+  document.querySelector('form').addEventListener('submit', function(event) {
+    event.stopPropagation();
+    event.preventDefault();
+
+    if (!navigator.bluetooth) {
+      ChromeSamples.setStatus('Web Bluetooth API er ikke tilgjengelig.\n' +
+        'Husk å aktivere Web Bluetooth-flagget: chrome://flags');
+    } else {
+      ChromeSamples.clearLog();
+      onFormSubmit();
+    }
+  });
+  log = ChromeSamples.log;
+</script>
+
+    
+  </body>
+</html>
