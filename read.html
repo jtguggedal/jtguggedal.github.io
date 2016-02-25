@@ -387,7 +387,14 @@
                 $("#sliderRight").val(0);
 
                     setTimeout(function(){
-                        writeToCharacteristic(1, 0);
+                        if(writePermission)
+                            writeToCharacteristic(1, 0);
+                        else {
+                            setTimeout(function(){
+                                writeToCharacteristic(1, 0);
+                            }, 100);
+                        }
+
                     }, 100);
 
 
