@@ -32,7 +32,7 @@ function connect() {
         .then(device => {
             console.log('> Found ' + device.name);
             console.log('Connecting to GATT Server...');
-            return device.gatt.connect()
+            return device.connectGATT()
             .then(gattServer =>  {
                 console.log('> Bluetooth Device connected: ' + device.gatt.connected);
             });
