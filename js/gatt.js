@@ -76,22 +76,24 @@ function connect() {
 
 /** Function for disconnecting th Bluetooth Device **/
 function disconnect() {
-  if (!bluetoothDevice) {
-    return;
-  }
-  console.log('> Disconnecting from Bluetooth Device...');
-  if (bluetoothDevice.gatt.connected) {
-    bluetoothDevice.gatt.disconnect();
-    console.log('> Bluetooth Device connected: ' + bluetoothDevice.gatt.connected);
-  } else {
-    console.log('> Bluetooth Device is already disconnected');
-  }
+    if (!bluetoothDevice) {
+        connectionStatus(0);
+        return;
+    }
+    console.log('> Disconnecting from Bluetooth Device...');
+    if (bluetoothDevice.gatt.connected) {
+        bluetoothDevice.gatt.disconnect();
+        console.log('> Bluetooth Device connected: ' + bluetoothDevice.gatt.connected);
+    } else {
+        console.log('> Bluetooth Device is already disconnected');
+    }
+    connectionStatus(0);
 }
 
 /** Function for handling disconnect event **/
 function disconnectHandler() {
     console.log('>>> Device disconnected.');
-    document.getElementById("connectionStatus").style.backgroundColor = 'red';
+    connectionStatus(0);
 }
 
 /** Function for handling connection status **/
