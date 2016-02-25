@@ -16,6 +16,7 @@ var mainServiceUUID = '00001523-1212-efde-1523-785feabcd123';
 var readWriteCharacteristicUUID = '00001525-1212-efde-1523-785feabcd123';
 var notificationCharacteristicUUID = '00001524-1212-efde-1523-785feabcd123';
 
+var mainServer;
 var mainService;
 var readWriteCharacteristic;
 var notificationCharacteristic;
@@ -34,6 +35,7 @@ function connect() {
             console.log('Connecting to GATT Server...');
             return device.connectGATT()
             .then(gattServer => {
+                mainServer = gattServer;
                 console.log('> Bluetooth Device connected: ' + device.gatt.connected);
             });
         })
