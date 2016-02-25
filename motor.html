@@ -233,7 +233,7 @@
                 setBit(11, 'b', speed);
 
                 // Set direction
-                setBit(15, 1, direction);
+                setBit(16, 1, direction);
             } else if(power == 0) {
                 // Set speed to 0
                 setBit(11, 'b', 0);
@@ -258,7 +258,7 @@
                 setBit(12, 'b', speed);
 
                 // Set direction
-                setBit(15, 2, direction);
+                setBit(17, 2, direction);
             } else if(power == 0) {
                 // Set speed to 0
                 setBit(12, 'b', 0);
@@ -288,7 +288,7 @@
                 setBit(15, 3, direction);
             } else if(power == 0) {
                 // Set speed to 0
-                setBit(13, 'b', 0);
+                setBit(18, 'b', 0);
                 setBit(18, 'b', 1);
             }
 
