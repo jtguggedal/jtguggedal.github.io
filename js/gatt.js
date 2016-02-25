@@ -48,8 +48,8 @@ function connect() {
         .then(service => {
             // Storing the main service object globally for easy access from other functions
             mainService = service;
+            console.log('> serviceReturn: ' + service);
             return Promise.all([
-                console.log('> serviceReturn: ' + service);
                 // Get all characteristics and call handler functions for both
                 service.getCharacteristic(readWriteCharacteristicUUID)
                 .then(readWriteCharacteristicHandler),
