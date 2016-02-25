@@ -43,15 +43,13 @@ function connect() {
         // When matching device is found and selected, get the main service
         .then(server => {
             console.log('Getting main Service...');
-            return mainServer.getPrimaryService(mainServiceUUID).
-            then(serviceReturn => {
-                console.log('> serviceReturn: ' + serviceReturn);
-            }) ;
+            return mainServer.getPrimaryService(mainServiceUUID);
         })
         .then(service => {
             // Storing the main service object globally for easy access from other functions
             mainService = service;
             return Promise.all([
+                console.log('> serviceReturn: ' + service);
                 // Get all characteristics and call handler functions for both
                 service.getCharacteristic(readWriteCharacteristicUUID)
                 .then(readWriteCharacteristicHandler),
