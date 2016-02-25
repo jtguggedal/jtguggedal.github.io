@@ -41,7 +41,10 @@ function connect() {
         // When matching device is found and selected, get the main service
         .then(server => {
             console.log('Getting main Service...');
-            return server.getPrimaryService(mainServiceUUID);
+            return server.getPrimaryService(mainServiceUUID).
+            then(serviceReturn => {
+                console.log('> serviceReturn: ' + serviceReturn);
+            }) ;
         })
         .then(service => {
             // Storing the main service object globally for easy access from other functions
