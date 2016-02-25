@@ -127,8 +127,8 @@
                     <input type="radio" name="m1_power" value="0" checked> Av<br>
                     <input type="radio" name="m1_power" value="1"> På<br>
                     <hr>
-                    <input type="radio" name="m1_direction" value="0" > Retning 1 <br>
-                    <input type="radio" name="m1_direction" value="1"> Retning 2 <br>
+                    <input type="radio" name="m1_direction" value="1" > Framover <br>
+                    <input type="radio" name="m1_direction" value="0"> Bakover <br>
                     <hr>
                     <input type="radio" name="m1_speed" value="75" > Hastighet: 75<br>
                     <input type="radio" name="m1_speed" value="200"> Hastighet: 200<br>
@@ -142,8 +142,8 @@
                     <input type="radio" name="m2_power" value="0" checked> Av<br>
                     <input type="radio" name="m2_power" value="1"> På<br>
                     <hr>
-                    <input type="radio" name="m2_direction" value="0" > Retning 1 <br>
-                    <input type="radio" name="m2_direction" value="1"> Retning 2 <br>
+                    <input type="radio" name="m2_direction" value="1" > Framover <br>
+                    <input type="radio" name="m2_direction" value="0"> Bakover <br>
                     <hr>
                     <input type="radio" name="m2_speed" value="75" > Hastighet: 75<br>
                     <input type="radio" name="m2_speed" value="200"> Hastighet: 200<br>
@@ -156,8 +156,8 @@
                     <input type="radio" name="m3_power" value="0" checked> Av<br>
                     <input type="radio" name="m3_power" value="1"> På<br>
                     <hr>
-                    <input type="radio" name="m3_direction" value="0" > Retning 1 <br>
-                    <input type="radio" name="m3_direction" value="1"> Retning 2 <br>
+                    <input type="radio" name="m3_direction" value="1" > Framover <br>
+                    <input type="radio" name="m3_direction" value="0"> Bakover <br>
                     <hr>
                     <input type="radio" name="m3_speed" value="75" > Hastighet: 75<br>
                     <input type="radio" name="m3_speed" value="200"> Hastighet: 200<br>
@@ -170,8 +170,8 @@
                     <input type="radio" name="m4_power" value="0" checked> Av<br>
                     <input type="radio" name="m4_power" value="1"> På<br>
                     <hr>
-                    <input type="radio" name="m4_direction" value="0" > Retning 1 <br>
-                    <input type="radio" name="m4_direction" value="1"> Retning 2 <br>
+                    <input type="radio" name="m4_direction" value="1" > Framover <br>
+                    <input type="radio" name="m4_direction" value="0"> Bakover <br>
                     <hr>
                     <input type="radio" name="m4_speed" value="75" > Hastighet: 75<br>
                     <input type="radio" name="m4_speed" value="200"> Hastighet: 200<br>
@@ -285,10 +285,10 @@
                 setBit(13, 'b', speed);
 
                 // Set direction
-                setBit(15, 3, direction);
+                setBit(18, 3, direction);
             } else if(power == 0) {
                 // Set speed to 0
-                setBit(18, 'b', 0);
+                setBit(13, 'b', 0);
                 setBit(18, 'b', 1);
             }
 
