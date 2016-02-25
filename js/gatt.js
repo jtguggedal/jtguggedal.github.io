@@ -28,7 +28,7 @@ function connect() {
     'use strict';
 
     // Searching for Bluetooth devices that match the filter criterias
-    log('Requesting Bluetooth Device...');
+    console.log('Requesting Bluetooth Device...');
     navigator.bluetooth.requestDevice(
         {filters: [{services: [mainServiceUUID]}]})
         .then(device => {
