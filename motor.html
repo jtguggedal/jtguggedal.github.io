@@ -5,6 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-beta1/jquery.js"></script>  
+    <script src="js/gatt.js"></script>  
+    <script src="js/setBit.js"></script>  
     <title>Motorstyring</title>
     
     <style>
@@ -40,11 +43,32 @@
     	button {
     		padding: 10px;
     		margin-right: 30px;
+            margin-top: 10px;
     		border: 1px solid white;
     		font-weight: 700;
     		box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.1);
             background-color: #CCC;
     	}
+
+        fieldset {
+            display: inline-block;
+            margin: 10px;
+            width: 140px;
+            border: 1px solid #BBB;
+
+        }
+        hr {
+            border: 1px solid #DDD;
+
+        }
+
+        legend {
+
+            font-weight: 700;
+        }
+        fieldset input {
+            margin-bottom: 10px;
+        }
     	
     	#main {
     		max-width: 400px;
@@ -72,19 +96,6 @@
             font-size: 30px;
 
         }
-
-        fieldset {
-            display: inline-block;
-            margin: 10px;
-
-        }
-        legend {
-
-            font-weight: 700;
-        }
-        fieldset input {
-            margin-bottom: 10px;
-        }
     
     </style>
     
@@ -100,93 +111,64 @@
 		     <div class="motor-container">
                 <fieldset>
                     <legend>Motor 1</legend>
-                    <input type="radio" name="m1_power" value="on" checked> Av<br>
-                    <input type="radio" name="m1_power" value="off"> På<br>
+                    <input type="radio" name="m1_power" value="0" checked> Av<br>
+                    <input type="radio" name="m1_power" value="1"> På<br>
                     <hr>
-                    <input type="radio" name="m1_direction" value="direction_1" > Retning 1 <br>
-                    <input type="radio" name="m1_direction" value="direction_2"> Retning 2 <br>
+                    <input type="radio" name="m1_direction" value="0" > Retning 1 <br>
+                    <input type="radio" name="m1_direction" value="1"> Retning 2 <br>
                     <hr>
                     <input type="radio" name="m1_speed" value="75" > Hastighet: 75<br>
                     <input type="radio" name="m1_speed" value="200"> Hastighet: 200<br>
+
+                    <button id="m1_init">Send verdier</button>
 
                 </fieldset>
 
                 <fieldset>
                     <legend>Motor 2</legend>
-                    <input type="radio" name="m2_power" value="on" checked> Av<br>
-                    <input type="radio" name="m2_power" value="off"> På<br>
+                    <input type="radio" name="m2_power" value="0" checked> Av<br>
+                    <input type="radio" name="m2_power" value="1"> På<br>
                     <hr>
-                    <input type="radio" name="m2_direction" value="direction_1" > Retning 1 <br>
-                    <input type="radio" name="m2_direction" value="direction_2"> Retning 2 <br>
+                    <input type="radio" name="m2_direction" value="0" > Retning 1 <br>
+                    <input type="radio" name="m2_direction" value="1"> Retning 2 <br>
                     <hr>
                     <input type="radio" name="m2_speed" value="75" > Hastighet: 75<br>
                     <input type="radio" name="m2_speed" value="200"> Hastighet: 200<br>
 
+                    <button id="m2_init">Send verdier</button>
+
                 </fieldset>
                 <fieldset>
                     <legend>Motor 3</legend>
-                    <input type="radio" name="m3_power" value="on" checked> Av<br>
-                    <input type="radio" name="m3_power" value="off"> På<br>
+                    <input type="radio" name="m3_power" value="0" checked> Av<br>
+                    <input type="radio" name="m3_power" value="1"> På<br>
                     <hr>
-                    <input type="radio" name="m3_direction" value="direction_1" > Retning 1 <br>
-                    <input type="radio" name="m3_direction" value="direction_2"> Retning 2 <br>
+                    <input type="radio" name="m3_direction" value="0" > Retning 1 <br>
+                    <input type="radio" name="m3_direction" value="1"> Retning 2 <br>
                     <hr>
                     <input type="radio" name="m3_speed" value="75" > Hastighet: 75<br>
                     <input type="radio" name="m3_speed" value="200"> Hastighet: 200<br>
 
+                    <button id="m3_init">Send verdier</button>
+
                 </fieldset>
                 <fieldset>
                     <legend>Motor 4</legend>
-                    <input type="radio" name="m4_power" value="on" checked> Av<br>
-                    <input type="radio" name="m4_power" value="off"> På<br>
+                    <input type="radio" name="m4_power" value="0" checked> Av<br>
+                    <input type="radio" name="m4_power" value="1"> På<br>
                     <hr>
-                    <input type="radio" name="m4_direction" value="direction_1" > Retning 1 <br>
-                    <input type="radio" name="m4_direction" value="direction_2"> Retning 2 <br>
+                    <input type="radio" name="m4_direction" value="0" > Retning 1 <br>
+                    <input type="radio" name="m4_direction" value="1"> Retning 2 <br>
                     <hr>
                     <input type="radio" name="m4_speed" value="75" > Hastighet: 75<br>
                     <input type="radio" name="m4_speed" value="200"> Hastighet: 200<br>
+
+                    <button id="m4_init">Send verdier</button>
 
                 </fieldset>
 		  </div>
 
 
-
-		<script>
-		  var ChromeSamples = {
-			log: function() {
-			  var line = Array.prototype.slice.call(arguments).map(function(argument) {
-				return typeof argument === 'string' ? argument : JSON.stringify(argument);
-			  }).join(' ');
-
-			  document.querySelector('#log').textContent += line + '\n';
-			},
-
-			clearLog: function() {
-			  document.querySelector('#log').textContent = '';
-			},
-
-			setStatus: function(status) {
-			  document.querySelector('#status').textContent = status;
-			},
-
-			setContent: function(newContent) {
-			  var content = document.querySelector('#content');
-			  while(content.hasChildNodes()) {
-				content.removeChild(content.lastChild);
-			  }
-			  content.appendChild(newContent);
-			}
-		  };
-		</script>
-
-		<h3>Logg</h3>
-		<div id="output" class="output">
-		  <div id="content"></div>
-		  <div id="status"></div>
-		  <pre id="log"></pre>
-		</div>
-		
-		
 		
 		
 		
@@ -196,9 +178,113 @@
   
     
     <script>
-        
+
+        var charVal = new Uint8Array(20);
+        var readWriteCharacteristic = 1;
+
+        // Motor 1
+        $('#m1_init').click( function() {
+            var power = $('input:radio[name=m1_power]:checked').val();
+            var direction = $('input:radio[name=m1_direction]:checked').val();
+            var speed = $('input:radio[name=m1_speed]:checked').val();
+            console.log(power);
+            if(power == 1) {
+                // Set speed
+                setBit(10, 'b', speed);
+
+                // Set direction
+                setBit(15, 0, direction);
+            } else if(power == 0) {
+                // Set speed to 0
+                setBit(10, 'b', 0);
+                setBit(15, 0, 1);
+            }
+
+            if(readWriteCharacteristic) {
+                readWriteCharacteristic.writeValue(charVal);
+                console.log(charVal);
+            }
+        });
       			
-      			
+      		
+
+        // Motor 2
+        $('#m2_init').click( function() {
+            var power = $('input:radio[name=m2_power]:checked').val();
+            var direction = $('input:radio[name=m2_direction]:checked').val();
+            var speed = $('input:radio[name=m2_speed]:checked').val();
+
+
+            if(power == 1) {
+                // Set speed
+                setBit(11, 'b', speed);
+
+                // Set direction
+                setBit(15, 1, direction);
+            } else if(power == 0) {
+                // Set speed to 0
+                setBit(11, 'b', 0);
+                setBut(15, 1, 1);
+            }
+
+            if(readWriteCharacteristic) {
+                readWriteCharacteristic.writeValue(charVal);
+                console.log(charVal);
+            }
+        });
+            
+
+        // Motor 3
+        $('#m3_init').click( function() {
+            var power = $('input:radio[name=m3_power]:checked').val();
+            var direction = $('input:radio[name=m3_direction]:checked').val();
+            var speed = $('input:radio[name=m3_speed]:checked').val();
+
+            if(power == 1) {
+                // Set speed
+                setBit(12, 'b', speed);
+
+                // Set direction
+                setBit(15, 2, direction);
+            } else if(power == 0) {
+                // Set speed to 0
+                setBit(12, 'b', 0);
+                setBit(15, 2, 1);
+            }
+
+            if(readWriteCharacteristic) {
+                readWriteCharacteristic.writeValue(charVal);
+                console.log(charVal);
+
+
+            }
+        });
+            
+
+        // Motor 4
+        $('#m4_init').click( function() {
+            var power = $('input:radio[name=m4_power]:checked').val();
+            var direction = $('input:radio[name=m4_direction]:checked').val();
+            var speed = $('input:radio[name=m4_speed]:checked').val();
+
+            if(power == 1) {
+                // Set speed
+                setBit(13, 'b', speed);
+
+                // Set direction
+                setBit(15, 3, direction);
+            } else if(power == 0) {
+                // Set speed to 0
+                setBit(13, 'b', 0);
+                setBit(15, 3, 1);
+            }
+
+            if(readWriteCharacteristic) {
+                readWriteCharacteristic.writeValue(charVal);
+                console.log(charVal);
+            }
+        });
+            	
 				
 
     </script>
@@ -206,21 +292,6 @@
   
 
 
-<script>
-  document.querySelector('form').addEventListener('submit', function(event) {
-    event.stopPropagation();
-    event.preventDefault();
-
-    if (!navigator.bluetooth) {
-      ChromeSamples.setStatus('Web Bluetooth API er ikke tilgjengelig.\n' +
-        'Husk å aktivere Web Bluetooth-flagget: chrome://flags');
-    } else {
-      ChromeSamples.clearLog();
-      onFormSubmit();
-    }
-  });
-  log = ChromeSamples.log;
-</script>
 
     
   </body>
