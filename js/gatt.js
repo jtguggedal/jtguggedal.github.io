@@ -92,8 +92,8 @@ function disconnect() {
 
 /** Function for handling disconnect event **/
 function disconnectHandler() {
-    console.log('>>> Device disconnected.');
     connectionStatus(0);
+    console.log('>>> Device disconnected.');
 }
 
 /** Function for handling connection status **/
