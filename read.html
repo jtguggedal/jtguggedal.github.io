@@ -102,6 +102,15 @@
             width: 50px;
 
         }
+        #connectionStatus {
+            position: fixed;
+            top: 0;
+            right: 0;
+            padding: 5px;
+            background-color: red;
+            color: white;
+        }
+
     </style>
 
     <title>Physical Web</title>
@@ -109,6 +118,7 @@
 </head>
 
     <body>
+        <div id="connectionStatus">Connection</div>
         <div class="column">
             <h1>Web Bluetooth: read, write & notify</h1>
 

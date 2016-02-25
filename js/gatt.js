@@ -33,12 +33,16 @@ function connect() {
         {filters: [{services: [mainServiceUUID]}]})
         .then(device => {
             bluetoothDevice = device;
+            // Adding event listener to detect loss of connection
+            bluetoothDevice.addEventListener('gattserverdisconnected', disconnectHandler);
             console.log('> Found ' + device.name);
             console.log('Connecting to GATT Server...');
             return bluetoothDevice.connectGATT()
             .then(gattServer => {
                 mainServer = gattServer;
                 console.log('> Bluetooth Device connected: ' + device.gatt.connected);
+                connectionStatus(1);
+
             });
         })
 
@@ -82,6 +86,20 @@ function disconnect() {
   } else {
     console.log('> Bluetooth Device is already disconnected');
   }
+}
+
+/** Function for handling disconnect event **/
+function disconnectHandler() {
+    console.log('>>> Device disconnected.');
+    document.getElementById("connectionStatus").style.backgroundColor = 'red';
+}
+
+/** Function for handling connection status **/
+function connectionStatus(status) {
+    if(status == 1)
+        document.getElementById("connectionStatus").style.backgroundColor = 'green';
+    else if(status == 0)
+        document.getElementById("connectionStatus").style.backgroundColor = 'red';
 }
 
 /** Function for setting up the notification characteristic **/
