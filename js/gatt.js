@@ -16,6 +16,7 @@ var mainServiceUUID = '00001523-1212-efde-1523-785feabcd123';
 var readWriteCharacteristicUUID = '00001525-1212-efde-1523-785feabcd123';
 var notificationCharacteristicUUID = '00001524-1212-efde-1523-785feabcd123';
 
+var bluetoothDevice;
 var mainServer;
 var mainService;
 var readWriteCharacteristic;
@@ -31,9 +32,10 @@ function connect() {
     navigator.bluetooth.requestDevice(
         {filters: [{services: [mainServiceUUID]}]})
         .then(device => {
+            bluetoothDevice = device;
             console.log('> Found ' + device.name);
             console.log('Connecting to GATT Server...');
-            return device.connectGATT()
+            return bluetoothDevice.connectGATT()
             .then(gattServer => {
                 mainServer = gattServer;
                 console.log('> Bluetooth Device connected: ' + device.gatt.connected);
@@ -67,6 +69,20 @@ function connect() {
     });
 }
 
+
+/** Function for disconnecting th Bluetooth Device **/
+function disconnect() {
+  if (!bluetoothDevice) {
+    return;
+  }
+  console.log('> Disconnecting from Bluetooth Device...');
+  if (bluetoothDevice.gatt.connected) {
+    bluetoothDevice.gatt.disconnect();
+    console.log('> Bluetooth Device connected: ' + bluetoothDevice.gatt.connected);
+  } else {
+    console.log('> Bluetooth Device is already disconnected');
+  }
+}
 
 /** Function for setting up the notification characteristic **/
 function notificationCharacteristicHandler(characteristic) {
