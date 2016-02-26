@@ -29,5 +29,5 @@
 				}
 			} 
 		}
-		console.log(charVal);
+		console.log('charVal updated: ' );
 	}; 

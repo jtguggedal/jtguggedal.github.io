@@ -23,10 +23,11 @@
 					charVal[byteOffset] -= bitMask[bitOffset];
 				}
 			} else {
-					// Dersom biten er lav og ny verdi er høy, byttes den
+					// Dersom biten er lav og ny verdi er høy, byttes den2
 				 if (value == 1) {
 					charVal[byteOffset] += bitMask[bitOffset];
 				}
 			} 
 		}
+		console.log('charVal updated: ' + charVal);
 	}; 

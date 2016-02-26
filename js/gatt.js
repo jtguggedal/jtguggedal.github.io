@@ -192,7 +192,7 @@ function readFromCharacteristic(byteOffset) {
 
         // Checks if a single byte or all received data is to be returned from the function
         if(byteOffset == 'all') {
-        // Loops through the received DataView and copies to the data array
+            // Loops through the received DataView and copies to the data array
             for(var i = 0; i < 20 ; i++) {
                 data[i] = value.getUint8(i);
             }
