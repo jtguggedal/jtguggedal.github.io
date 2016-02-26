@@ -206,11 +206,11 @@
                 setBit(10, 'b', speed);
 
                 // Set direction
-                setBit(15, 'b', direction);
+                setBit(14, 'b', direction);
             } else if(power == 0) {
                 // Set speed to 0
                 setBit(10, 'b', 0);
-                setBit(15, 'b', 1);
+                setBit(14, 'b', 1);
             }
 
             if(readWriteCharacteristic) {
@@ -233,11 +233,11 @@
                 setBit(11, 'b', speed);
 
                 // Set direction
-                setBit(16, 'b', direction);
+                setBit(15, 'b', direction);
             } else if(power == 0) {
                 // Set speed to 0
                 setBit(11, 'b', 0);
-                setBit(16, 'b', 1);
+                setBit(15, 'b', 1);
             }
 
             if(readWriteCharacteristic) {
@@ -258,11 +258,11 @@
                 setBit(12, 'b', speed);
 
                 // Set direction
-                setBit(17, 'b', direction);
+                setBit(16, 'b', direction);
             } else if(power == 0) {
                 // Set speed to 0
                 setBit(12, 'b', 0);
-                setBit(17, 'b', 1);
+                setBit(16, 'b', 1);
             }
 
             if(readWriteCharacteristic) {
@@ -285,11 +285,11 @@
                 setBit(13, 'b', speed);
 
                 // Set direction
-                setBit(18, 'b', direction);
+                setBit(17, 'b', direction);
             } else if(power == 0) {
                 // Set speed to 0
                 setBit(13, 'b', 0);
-                setBit(18, 'b', 1);
+                setBit(17, 'b', 1);
             }
 
             if(readWriteCharacteristic) {
