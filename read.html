@@ -355,7 +355,6 @@
                 $("#sliderLeft").val(outputLeft);
                 $("#sliderRight").val(outputRight);
 
-                var charVal = new Uint8Array(20);
 
                 if( readWriteCharacteristic &&  writePermission == 1 ) {
 
@@ -363,11 +362,13 @@
                     // via BLE til firmware. 
                     // Setter 1. bit lik 1 for å tenne 1. LED osv.
                     writePermission = 0;
+                    
+                    var charVal = new Uint8Array(20);
 
                     charVal[16] = outputLeft;
                     charVal[17] = outputRight;
 
-                    console.log(charVal);
+                    console.log('Sender' + charVal);
 
 
                     return readWriteCharacteristic.writeValue(charVal)
