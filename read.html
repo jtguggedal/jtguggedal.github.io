@@ -364,9 +364,10 @@
                     writePermission = 0;
                     
                     var charVal = new Uint8Array(20);
-
-                    charVal[16] = outputLeft;
-                    charVal[17] = outputRight;
+                    charVal[11] = outputLeft;
+                    charVal[12] = outputRight;
+                    charVal[16] = 1;
+                    charVal[17] = 1;
 
                     console.log('Sender' + charVal);
 
