@@ -369,12 +369,12 @@
                     charVal[16] = 1;
                     charVal[17] = 1;
 
-                    console.log('Sender' + charVal);
 
 
                     return readWriteCharacteristic.writeValue(charVal)
                     .then( writeReturn => {
                         writePermission = 1;
+                        console.log('Sendt: ' + charVal);
                     });
                 } else if (writePermission == 0) {
                     discardedPackets.push(charVal);
