@@ -40,7 +40,7 @@ function connect() {
             return bluetoothDevice.connectGATT()
             .then(gattServer => {
                 mainServer = gattServer;
-                console.log('> Bluetooth Device connected: ';
+                console.log('> Bluetooth Device connected: ');
                 //connectionStatus(1);
 
             });
