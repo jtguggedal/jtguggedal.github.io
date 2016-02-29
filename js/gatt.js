@@ -34,7 +34,7 @@ function connect() {
         .then(device => {
             bluetoothDevice = device;
             // Adding event listener to detect loss of connection
-            bluetoothDevice.addEventListener('gattserverdisconnected', disconnectHandler);
+            //bluetoothDevice.addEventListener('gattserverdisconnected', disconnectHandler);
             console.log('> Found ' + bluetoothDevice.name);
             console.log('Connecting to GATT Server...');
             return bluetoothDevice.gatt.connect()
