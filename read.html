@@ -397,13 +397,16 @@
                     // Setter 1. bit lik 1 for å tenne 1. LED osv.
                     writePermission = 0;
                     
-                    charVal[10] = outputLeft;
-                    charVal[11] = outputRight;
-                    charVal[12] = outputLeft;
-                    charVal[13] = outputRight;
+                    charVal[10] = outputRight;           // Motor 1
                     charVal[14] = direction;
+
+                    charVal[11] = outputLeft;          // Motor 2
                     charVal[15] = direction;
+
+                    charVal[12] = outputLeft;           // Motor 3
                     charVal[16] = direction;
+
+                    charVal[13] = outputRight;          // Motor 4
                     charVal[17] = direction;
 
 
