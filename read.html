@@ -338,9 +338,15 @@
                 var hypotenus = Math.sqrt((Math.pow(x, 2)) + (Math.pow(y, 2)));
                 var speed = Math.round((255/ballWidth)*hypotenus);
                 var angle = (180/Math.PI)*Math.acos(x/hypotenus);
+                var direction;
 
-                if(y < 0)
+                if(y < 0) {
                     angle = 360 - angle;
+                    direction = 0;
+                } else {
+                    direction = 1;
+                }
+
                 angle = Math.round(angle);
 
                 if(speed > 255)
@@ -380,19 +386,25 @@
                 $("#sliderLeft").val(outputLeft);
                 $("#sliderRight").val(outputRight);
 
+                var charVal = new Uint8Array(20);
 
-                if( readWriteCharacteristic &&  writePermission == 1 ) {
+                var interrupt = 0;
+
+                if( readWriteCharacteristic &&  (writePermission == 1) && (interrupt != 1)) {
 
                     // Sjekker i hvilket intervall slider-verdien er, og sender korresponderende verdi
                     // via BLE til firmware. 
                     // Setter 1. bit lik 1 for å tenne 1. LED osv.
                     writePermission = 0;
                     
-                    var charVal = new Uint8Array(20);
                     charVal[10] = outputLeft;
                     charVal[11] = outputRight;
-                    charVal[14] = 1;
-                    charVal[15] = 1;
+                    charVal[12] = outputLeft;
+                    charVal[13] = outputRight;
+                    charVal[14] = direction;
+                    charVal[15] = direction;
+                    charVal[16] = direction;
+                    charVal[17] = direction;
 
 
 
@@ -401,6 +413,13 @@
                         writePermission = 1;
                         console.log('Sendt: ' + charVal);
                     });
+                } else if(interrupt == 1) {
+                    if(writePermission == 1)
+                        interruptWrite(charVal);
+                    else
+                        setTimeout(function() {
+                            //interruptWrite(charVal);
+                        }, 100);
                 } else if (writePermission == 0) {
                     discardedPackets.push(charVal);
                 }
