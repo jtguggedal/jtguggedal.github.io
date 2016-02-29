@@ -37,7 +37,7 @@ function connect() {
             //bluetoothDevice.addEventListener('gattserverdisconnected', disconnectHandler);
             console.log('> Found ' + bluetoothDevice.name);
             console.log('Connecting to GATT Server...');
-            return bluetoothDevice.gatt.connect()
+            return bluetoothDevice.connectGATT()
             .then(gattServer => {
                 mainServer = gattServer;
                 console.log('> Bluetooth Device connected: ' + device.gatt.connected);
