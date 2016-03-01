@@ -141,8 +141,8 @@
          
             <h2 onclick="connect();" id='connect'>Koble til</h2>
             <h2 onclick="disconnect();" id='disconnect'>Koble fra</h2>
-            <h2 onclick="setBit(1,'b',240);">LED på</h2>
-            <h2 onclick="setBit(1,'b',0);">LED av</h2>
+            <h2 id="LEDp">LED på</h2>
+            <h2 id="LEDa">LED av</h2>
             <h2 onclick="printDiscardedPackets();">Tapte pakker</h2>
 
 
@@ -182,12 +182,17 @@
 
                
                           
-            $('#element').on("touchmove mousemove", function() {
-                $(this).css('background-color', 'red');
+            $('#LEDp').on("touchmove mousemove click change", function() {
+                setBit(1,'b',240);
 
             })
                                
-                      
+            $('#LEDp').on("touchmove mousemove click change", function() {
+                setBit(1,'b',0);
+
+            })
+                               
+                         
 
 
 
