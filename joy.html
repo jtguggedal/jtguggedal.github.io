@@ -226,7 +226,7 @@
             var tapEnd;
 
             $('#container').on('change touchmove mousemove', function() {
-                var y = joystick.deltaX();
+                var y = joystick.deltaX(); 
                 var x = joystick.deltaY();
                 var hypotenus = Math.sqrt((Math.pow(x, 2)) + (Math.pow(y, 2)));
                 var speed = Math.round((255/100)*hypotenus);
