@@ -173,9 +173,11 @@
              
          
             var charVal = new Uint8Array(20);
+ 
+            var outputRight;
+            var outputLeft;
+            var tapEnd;
 
-
-            
             var writePermission = 1;
             var discardedPackets = [];
 
@@ -224,11 +226,7 @@
             ////////////////////////////////////   
 
             // Funksjon for at joysticken skal gå tilbake til nullpunktet når den slippes
-            
-            var outputRight;
-            var outputLeft;
-            var tapEnd;
-
+           
 
             $('#container').on('change touchmove mousemove', function() {
                 var x = joystick.deltaX(); 
