@@ -182,10 +182,10 @@
 
                
                           
-            $('#LEDp').on("touchmove mousemove click change", function() {
+            $('#LEDp').on("click change", function() {
                 setBit(1,'b',240);
                 if(tapEnd == 1) {
-                    writeToCharacteristic(1, 1, charVal);
+                    writeToCharacteristic(1, 240, charVal);
                 }
 
             })
