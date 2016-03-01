@@ -209,13 +209,6 @@
              
                                
             
-
-                               
-                          
-            $('#element').on("touchmove mousemove", function() {
-                $(this).css('background-color', 'red');
-
-            })
                        
             ////////////////////////////////////   
 
@@ -248,6 +241,7 @@
                 if(tapEnd == 1) {
                     outputRight = outputLeft = 0;
                     tapEnd = 0; 
+                    console.log('tapEnd registrert og ny motorpådrag nullstilt.')
                 } else {
                     if(angle >= 10 && angle <= 80) {
                         outputRight = (angle/80)*speed;
@@ -272,6 +266,8 @@
                         outputRight = 0;
                         outputLeft = speed;
                     } 
+
+                    console.log('Posisjoner registrert');
                 }
 
                 $('#pos-x').html('x: ' + x + 'px');
@@ -291,7 +287,6 @@
                 // Sjekker i hvilket intervall slider-verdien er, og sender korresponderende verdi
                 // via BLE til firmware. 
                 // Setter 1. bit lik 1 for å tenne 1. LED osv.
-                writePermission = 0;
                 
                 charVal[10] = outputRight;          // Motor 1
                 charVal[14] = direction;
@@ -308,6 +303,7 @@
 
 
                 if( readWriteCharacteristic &&  (writePermission == 1) && (interrupt != 1)) {
+                    writePermission = 0;
 
                     return readWriteCharacteristic.writeValue(charVal)
                     .then( writeReturn => {
