@@ -184,7 +184,7 @@
 
                
                           
-            $('#LEDp').on("click change", function() {
+            $('#LEDp').on("click change tapend", function() {
                 setBit(1,'b',240);
                 if(tapEnd == 1) {
                     writeToCharacteristic(1, 240, charVal);
@@ -192,7 +192,7 @@
 
             })
                                
-            $('#LEDa').on("click change", function() {
+            $('#LEDa').on("click change tapend", function() {
                 setBit(1,'b',0);
                 if(tapEnd == 1) {
                     writeToCharacteristic(1, 0, charVal);
