@@ -190,7 +190,7 @@
 
             })
                                
-            $('#LEDa').on("touchmove mousemove click change", function() {
+            $('#LEDa').on("click change", function() {
                 setBit(1,'b',0);
                 if(tapEnd == 1) {
                     writeToCharacteristic(1, 0, charVal);
