@@ -11,6 +11,7 @@
     <script src="js/setBit.js"></script>
     <script src="js/joystick.js"></script>
     <script src="js/pep.js"></script>   
+    <script src="js/virtualJoystick.js"></script>   
 
 
     <style>
@@ -18,12 +19,13 @@
         body {
             font-family: "Roboto";
             margin: 0;
-            padding: 20px;
+            padding: 0px;
         }
 
         .column {
             width: 500px;
             display: inline-block;
+            padding-left: 20px;
 
         }
         .notification {
@@ -106,12 +108,19 @@
             position: fixed;
             top: 0;
             right: 0;
+
             padding: 5px;
             background-color: red;
             color: white;
-            visibility: 
+            visibility: hidden;
         }
-
+        #container {
+            width: 200px;
+            height: 200px;
+            background-color: #EEE;
+            border-radius: 100%;
+            
+        }
 
     </style>
 
@@ -123,8 +132,11 @@
 
     <body>
         <div id="connectionStatus">Connection</div>
+            <div id="container">
+        
+            </div>
         <div class="column">
-            <h1>Web Bluetooth: read, write & notify</h1>
+
 
          
             <h2 onclick="connect();" id='connect'>Koble til</h2>
@@ -144,10 +156,6 @@
             </div>
 
 
-            <div class='demo constrain-to-parent'>
-              <div class='ball outline'></div>
-              <div class='ball moveable'></div>
-            </div>
                     <p id="pos-x"></p>
                     <p id="pos-y"></p>
                     <p id="speed"></p>
@@ -156,154 +164,72 @@
                     <p id="output-right"></p>
 
 
-            <h3>Logg</h3>
-            <div id="output" class="output">
-              <div id="content"></div>
-              <div id="status"></div>
-              <pre id="log"></pre>
-            </div>
-        </div>
-        <div class="column">
 
-            <div class="slider-container">
-                <div class="side-by-side">
-                    <input type="range" id="sliderLeft" min="0" max="255" value="0">
-                </div>
-                <div class="side-by-side">
-                    <input type="range" id="sliderRight" min="0" max="255" value="0">
-                </div>
-            </div>
-        </div>
-
-
-
-
-        <script>
-          var ChromeSamples = {
-            log: function() {
-              var line = Array.prototype.slice.call(arguments).map(function(argument) {
-                return typeof argument === 'string' ? argument : JSON.stringify(argument);
-              }).join(' ');
-
-              document.querySelector('#log').textContent += line + '\n';
-            },
-
-            clearLog: function() {
-              document.querySelector('#log').textContent = '';
-            },
-
-            setStatus: function(status) {
-              document.querySelector('#status').textContent = status;
-            },
-
-            setContent: function(newContent) {
-              var content = document.querySelector('#content');
-              while(content.hasChildNodes()) {
-                content.removeChild(content.lastChild);
-              }
-              content.appendChild(newContent);
-            }
-          };
-        </script>
 
 
 
         <script>
             
+             
+         
             var charVal = new Uint8Array(20);
 
 
-            function debounce(func, wait, immediate) {
-                var timeout;
-                return function() {
-                    var context = this,
-                        args = arguments;
-                    var later = function() {
-                        timeout = null;
-                        if (!immediate) func.apply(context, args);
-                    };
-                    var callNow = immediate && !timeout;
-                    clearTimeout(timeout);
-                    timeout = setTimeout(later, wait);
-                    if (callNow) func.apply(context, args);
-                };
-            };
             
             var writePermission = 1;
             var discardedPackets = [];
 
-/*
-            $('.ball').on("mousemove touchmove", function() {
-                // Lagrer nå-verdien fra slideren i variabelen 'sliderVal' (med jQuery-selector)
 
-                var offset = $ball.position();
-                var offsetY = initialOffset.top - offset.top;
-                var offsetX = -1*(initialOffset.left - offset.left);
+               
+                          
+            $('#element').on("touchmove mousemove", function() {
+                $(this).css('background-color', 'red');
 
-                var timeNow = new Date();
-
-                // Sjekker at tilkobling ble opprettet tidligere
-                if( readWriteCharacteristic &&  writePermission == 1 ) {
-
-                    // Sjekker i hvilket intervall slider-verdien er, og sender korresponderende verdi
-                    // via BLE til firmware. 
-                    // Setter 1. bit lik 1 for å tenne 1. LED osv.
-                    writePermission = 0;
-
-                    if(offsetX < 0 && offsetY < 0)
-                        setBit(1, 0, 1);        // 0001
-                    else 
-                        setBit(1, 0, 0);
-                    if(offsetX < 0 && offsetY > 0)      
-                        setBit(1, 1, 1);        // 0010
-                    else
-                        setBit(1, 1, 0);
-                    if(offsetX > 0 && offsetY > 0)
-                        setBit(1, 2, 1);        // 0100
-                    else
-                        setBit(1, 2, 0);
-                    if(offsetX > 0 && offsetY < 0)
-                        setBit(1, 3, 1);        // 1000
-                    else
-                        setBit(1, 3, 0)
-
-                    if((offsetX == 0) && (offsetY == 0))
-                        setBit(1, 'b', 0);
-
-                    console.log(charVal);
+            })
+                               
+                      
 
 
-                    return readWriteCharacteristic.writeValue(charVal)
-                    .then( writeReturn => {
-                        writePermission = 1;
-                    });
-                } else if (writePermission == 0) {
-                    discardedPackets.push(charVal);
-                }
-            });*/
 
             function printDiscardedPackets() {
                 console.log(discardedPackets);
             }
 
+            //*** Joystick
+            var joystickContainer = document.getElementById('container');
+            var joystick = new VirtualJoystick({
+                                    container: joystickContainer,
+                                    mouseSupport: true,
+                                    stationaryBase: true,
+                                    baseX: 100,
+                                    baseY: 100,
+                                    limitStickTravel: true,
+                                    stickRadius: 100
+                               });
+             
+                               
+            
 
+                               
+                          
+            $('#element').on("touchmove mousemove", function() {
+                $(this).css('background-color', 'red');
+
+            })
+                       
+            ////////////////////////////////////   
 
             // Funksjon for at joysticken skal gå tilbake til nullpunktet når den slippes
-            var REVERT_THRESHOLD = 1000;
-            var ballWidth = $('.ball').css('left').replace(/[^-\d\.]/g, '');
-            var ballHeight = $('.ball').css('top').replace(/[^-\d\.]/g, '');
-            var $ball = $('.ball.moveable');
-            var initialOffset = $ball.offset();
+            
             var outputRight;
             var outputLeft;
             var tapEnd;
 
-            $('.ball').on("change mousemove touchmove", function() {
-                var offset = $ball.position();
-                var y = initialOffset.top - offset.top;
-                var x = -1*(initialOffset.left - offset.left);
+            $('#container').on('change touchmove mousemove', function() {
+                var y = joystick.deltaX();
+                var x = joystick.deltaY();
                 var hypotenus = Math.sqrt((Math.pow(x, 2)) + (Math.pow(y, 2)));
-                var speed = Math.round((255/ballWidth)*hypotenus);
+                var speed = Math.round((255/100)*hypotenus);
                 var angle = (180/Math.PI)*Math.acos(x/hypotenus);
                 var direction;
 
@@ -404,32 +330,10 @@
 
             });
 
-            $ball.pep({
-
-              useCSSTranslation: false,
-              shouldEase: false,
-              constrainTo: 'parent',
-               initiate: function(){
-                 this.$el.removeClass('ease')
-               },
-              stop: function(){
-                var offset = this.$el.position();    
-                var diffTop  = initialOffset.top - offset.top;
-                var diffLeft = -1*(initialOffset.left - offset.left);
-
-                if ( diffTop < REVERT_THRESHOLD && diffLeft < REVERT_THRESHOLD ){
-                  this.$el.css( initialOffset ).addClass('ease') ;
+    
 
 
-
-                }
-              }
-            })
-
-
-
-
-            $('.ball').on("tapend", function() {
+            $('#container').on("tapend", function() {
       
                  $('#pos-x').html('x: 0px reset');
                  $('#pos-y').html('y: 0px reset ');

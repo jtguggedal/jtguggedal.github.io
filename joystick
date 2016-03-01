@@ -11,6 +11,7 @@
     <script src="js/setBit.js"></script>
     <script src="js/joystick.js"></script>
     <script src="js/pep.js"></script>   
+    <script src="js/virtualJoystick.js"></script>   
 
 
     <style>
@@ -111,7 +112,13 @@
             color: white;
             visibility: 
         }
-
+        #container {
+            width: 200px;
+            height: 200px;
+            background-color: #EEE;
+            border-radius: 100%;
+            
+        }
 
     </style>
 
@@ -144,9 +151,8 @@
             </div>
 
 
-            <div class='demo constrain-to-parent'>
-              <div class='ball outline'></div>
-              <div class='ball moveable'></div>
+            <div id="container">
+        
             </div>
                     <p id="pos-x"></p>
                     <p id="pos-y"></p>
@@ -213,74 +219,44 @@
             var charVal = new Uint8Array(20);
 
 
-            function debounce(func, wait, immediate) {
-                var timeout;
-                return function() {
-                    var context = this,
-                        args = arguments;
-                    var later = function() {
-                        timeout = null;
-                        if (!immediate) func.apply(context, args);
-                    };
-                    var callNow = immediate && !timeout;
-                    clearTimeout(timeout);
-                    timeout = setTimeout(later, wait);
-                    if (callNow) func.apply(context, args);
-                };
-            };
             
             var writePermission = 1;
             var discardedPackets = [];
 
-/*
-            $('.ball').on("mousemove touchmove", function() {
-                // Lagrer nå-verdien fra slideren i variabelen 'sliderVal' (med jQuery-selector)
-
-                var offset = $ball.position();
-                var offsetY = initialOffset.top - offset.top;
-                var offsetX = -1*(initialOffset.left - offset.left);
-
-                var timeNow = new Date();
-
-                // Sjekker at tilkobling ble opprettet tidligere
-                if( readWriteCharacteristic &&  writePermission == 1 ) {
-
-                    // Sjekker i hvilket intervall slider-verdien er, og sender korresponderende verdi
-                    // via BLE til firmware. 
-                    // Setter 1. bit lik 1 for å tenne 1. LED osv.
-                    writePermission = 0;
-
-                    if(offsetX < 0 && offsetY < 0)
-                        setBit(1, 0, 1);        // 0001
-                    else 
-                        setBit(1, 0, 0);
-                    if(offsetX < 0 && offsetY > 0)      
-                        setBit(1, 1, 1);        // 0010
-                    else
-                        setBit(1, 1, 0);
-                    if(offsetX > 0 && offsetY > 0)
-                        setBit(1, 2, 1);        // 0100
-                    else
-                        setBit(1, 2, 0);
-                    if(offsetX > 0 && offsetY < 0)
-                        setBit(1, 3, 1);        // 1000
-                    else
-                        setBit(1, 3, 0)
-
-                    if((offsetX == 0) && (offsetY == 0))
-                        setBit(1, 'b', 0);
-
-                    console.log(charVal);
 
 
-                    return readWriteCharacteristic.writeValue(charVal)
-                    .then( writeReturn => {
-                        writePermission = 1;
-                    });
-                } else if (writePermission == 0) {
-                    discardedPackets.push(charVal);
-                }
-            });*/
+
+
+
+            var joystickContainer = document.getElementById('container');
+            var joystick = new VirtualJoystick({
+                                    container: joystickContainer,
+                                    mouseSupport: true,
+                                    stationaryBase: true,
+                                    baseX: 100,
+                                    baseY: 100,
+                                    limitStickTravel: true,
+                                    stickRadius: 100
+                               });
+             
+                               
+            $('body').on('change touchmove mousemove', function() {
+
+                $('#x').html('x: ' + Math.round(joystick.deltaX()));
+                $('#y').html('y: ' + Math.round(joystick.deltaY()));
+
+
+            })
+                               
+                          
+            $('#element').on("touchmove mousemove", function() {
+                $(this).css('background-color', 'red');
+
+            })
+                               
+                      
+
+
 
             function printDiscardedPackets() {
                 console.log(discardedPackets);
