@@ -318,29 +318,34 @@
                 if(speed > 255)
                     speed = 255;
 
-                if(angle >= 10 && angle <= 80) {
-                    outputRight = (angle/80)*speed;
-                    outputLeft = speed;
-                } else if(angle > 80 && angle < 100) {
-                    outputLeft = outputRight = speed;
-                } else if(angle >= 100 && angle <= 170) {
-                    outputRight = speed;
-                    outputLeft = ((180-angle)/80)*speed;;
-                }  else if(angle > 170 && angle < 190) {
-                    outputRight = speed;
-                    outputLeft = 0;
-                } else if(angle >= 190 && angle <= 260) {
-                    outputRight = speed;
-                    outputLeft = ((angle-180)/80)*speed;
-                } else if(angle > 260 && angle < 280) {
-                    outputRight = outputLeft = speed;
-                } else if(angle >= 280 && angle <= 350) {
-                    outputRight = ((360-angle)/80)*speed;
-                    outputLeft = speed;
-                } else if(angle > 350 || angle < 10) {
-                    outputRight = 0;
-                    outputLeft = speed;
-                } 
+                if(tapEnd == 1) {
+                    outputRight = outputLeft = 0;
+                    tapEnd = 0; 
+                } else {
+                    if(angle >= 10 && angle <= 80) {
+                        outputRight = (angle/80)*speed;
+                        outputLeft = speed;
+                    } else if(angle > 80 && angle < 100) {
+                        outputLeft = outputRight = speed;
+                    } else if(angle >= 100 && angle <= 170) {
+                        outputRight = speed;
+                        outputLeft = ((180-angle)/80)*speed;;
+                    }  else if(angle > 170 && angle < 190) {
+                        outputRight = speed;
+                        outputLeft = 0;
+                    } else if(angle >= 190 && angle <= 260) {
+                        outputRight = speed;
+                        outputLeft = ((angle-180)/80)*speed;
+                    } else if(angle > 260 && angle < 280) {
+                        outputRight = outputLeft = speed;
+                    } else if(angle >= 280 && angle <= 350) {
+                        outputRight = ((360-angle)/80)*speed;
+                        outputLeft = speed;
+                    } else if(angle > 350 || angle < 10) {
+                        outputRight = 0;
+                        outputLeft = speed;
+                    } 
+                }
 
                 $('#pos-x').html('x: ' + x + 'px');
                 $('#pos-y').html('y: ' + y + 'px');
@@ -437,7 +442,7 @@
                 $("#sliderLeft").val(0);
                 $("#sliderRight").val(0);
 
-
+                tapEnd = 1;
 
                 var charVal = new Uint8Array(20);
 
