@@ -142,7 +142,7 @@
             <h2 onclick="connect();" id='connect'>Koble til</h2>
             <h2 onclick="disconnect();" id='disconnect'>Koble fra</h2>
             <h2 onclick="readFromCharacteristic(1);">Les</h2>
-            <h2 onclick="writeToCharacteristic(1, 240);">Skriv</h2>
+            <h2 onclick="writeToCharacteristic(1, 240, charVal);">Skriv</h2>
             <h2 onclick="printDiscardedPackets();">Tapte pakker</h2>
 
 
@@ -218,6 +218,7 @@
             var outputLeft;
             var tapEnd;
 
+
             $('#container').on('change touchmove mousemove', function() {
                 var x = joystick.deltaX(); 
                 var y = -1*joystick.deltaY();
@@ -241,7 +242,6 @@
                 if(tapEnd == 1) {
                     outputRight = outputLeft = 0;
                     tapEnd = 0; 
-                    console.log('tapEnd registrert og ny motorpådrag nullstilt.')
                 } else {
                     if(angle >= 10 && angle <= 80) {
                         outputRight = (angle/80)*speed;
@@ -267,7 +267,6 @@
                         outputLeft = speed;
                     } 
 
-                    console.log('Posisjoner registrert');
                 }
 
                 $('#pos-x').html('x: ' + x + 'px');
@@ -280,7 +279,6 @@
                 $("#sliderLeft").val(outputLeft);
                 $("#sliderRight").val(outputRight);
 
-                var charVal = new Uint8Array(20);
 
                 var interrupt = 0;
 
