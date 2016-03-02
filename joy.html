@@ -268,7 +268,7 @@
             // Funksjon for at joysticken skal gå tilbake til nullpunktet når den slippes
            
 
-            $('#container').on('change touchmove mousemove', function() {
+            $('#joystick-container').on('change touchmove mousemove', function() {
                 var x = joystick.deltaX(); 
                 var y = -1*joystick.deltaY();
                 var hypotenus = Math.sqrt((Math.pow(x, 2)) + (Math.pow(y, 2)));
