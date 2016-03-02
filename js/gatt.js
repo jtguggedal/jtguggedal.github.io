@@ -41,7 +41,7 @@ function connect() {
             .then(gattServer => {
                 mainServer = gattServer;
                 console.log('> Bluetooth Device connected: ');
-                //connectionStatus(1);
+                connectionStatus(1);
 
             });
         })
