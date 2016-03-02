@@ -232,5 +232,12 @@ function writeArrayToCharacteristic(charVal) {
     console.log('writechar: ' + charVal);
 
 
-    readWriteCharacteristic.writeValue(charVal);
+    if(writePermission) {
+        readWriteCharacteristic.writeValue(charVal)
+        .then(
+            return 1;
+        );
+    } else {
+        return 0;
+    }
 }
