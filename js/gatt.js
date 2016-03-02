@@ -243,15 +243,14 @@ function writeArrayToCharacteristic(charVal) {
 
 /** Function for sending data with high priority, pausing other sendings **/
 
-var priorityPending = 0;
-
 function priorityWrite(charVal) {
     'use strict';
 
     priorityPacket = 1;
     priorityPending = 1;
+    writePermission = 0;
     
-    if((!writePermission) || (priorityPending == 1)) {
+    if(!writePermission) {
         priorityWrite(charVal);
         return 0;
     } else {
@@ -259,7 +258,6 @@ function priorityWrite(charVal) {
             .then( writeReturn => {
                 writePermission = 1;
                 priorityPacket = 0;
-                priorityPending = 0;
                 console.log('Priority sent: ' + charVal);
         });
     }
