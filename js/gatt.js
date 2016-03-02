@@ -247,7 +247,6 @@ function priorityWrite(charVal) {
     'use strict';
 
     priorityPacket = 1;
-    writePermission = 0;
     
     if(!writePermission) {
         setTimeout( function() {
@@ -255,6 +254,7 @@ function priorityWrite(charVal) {
         }, 100);
         return 0;
     } else {
+        writePermission = 0;
         return readWriteCharacteristic.writeValue(charVal)
             .then( writeReturn => {
                 writePermission = 1;
