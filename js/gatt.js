@@ -214,7 +214,7 @@ function readFromCharacteristic(byteOffset) {
 /** Function for writing to the read and write characteristic **/
 //  Parameters      byteOffset      int, 0-19
 //                  value           int, 0-255
-function writeToCharacteristic(byteOffset, value, charVal) {
+function writeToCharacteristic(byteOffset, value) {
     'use strict';
     
     charVal[byteOffset] = value;
