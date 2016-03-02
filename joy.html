@@ -299,6 +299,7 @@
                         outputLeft = ((180-angle)/80)*speed;;
                     }  else if(angle > 170 && angle < 190) {
                         outputRight = speed;
+                        directionRight = 1;
                         outputLeft = speed;
                         directionLeft = 0;
                     } else if(angle >= 190 && angle <= 260) {
@@ -313,6 +314,7 @@
                         outputRight = speed;
                         directionRight = 0;
                         outputLeft = speed;
+                        directionLeft = 1;
                     } 
 
                 }
