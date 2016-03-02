@@ -239,3 +239,36 @@ function writeArrayToCharacteristic(charVal) {
         return 0;
     }
 }
+
+
+/** Function for sending data with high priority, pausing other sendings **/
+
+function priorityWrite(charVal) {
+    'use strict';
+
+    priorityPacket = 1;
+    
+    if(!writePermission) {
+        priorityWrite(charVal);
+        return 0;
+    } else {
+        return readWriteCharacteristic.writeValue(charVal)
+            .then( writeReturn => {
+                writePermission = 1;
+                priorityPacket = 0;
+                console.log('Priority sent: ' + charVal);
+        });
+    }
+
+
+}
+
+
+
+
+
+
+
+
+
+
