@@ -294,23 +294,23 @@
                         outputLeft = speed;
                     } else if(angle > 85 && angle < 95) {
                         outputLeft = outputRight = speed;
-                    } else if(angle >= 95 && angle <= 170) {
+                    } else if(angle >= 95 && angle <= 160) {
                         outputRight = speed;
                         outputLeft = ((180-angle)/80)*speed;;
-                    }  else if(angle > 170 && angle < 190) {
+                    }  else if(angle > 160 && angle < 200) {
                         outputRight = speed;
                         directionRight = 1;
                         outputLeft = speed;
                         directionLeft = 0;
-                    } else if(angle >= 190 && angle <= 260) {
+                    } else if(angle >= 200 && angle <= 260) {
                         outputRight = speed;
                         outputLeft = ((angle-180)/80)*speed;
                     } else if(angle > 260 && angle < 280) {
                         outputRight = outputLeft = speed;
-                    } else if(angle >= 280 && angle <= 350) {
+                    } else if(angle >= 280 && angle <= 340) {
                         outputRight = ((360-angle)/80)*speed;
                         outputLeft = speed;
-                    } else if(angle > 350 || angle < 10) {
+                    } else if(angle > 340 || angle < 20) {
                         outputRight = speed;
                         directionRight = 0;
                         outputLeft = speed;
