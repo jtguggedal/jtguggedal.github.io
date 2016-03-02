@@ -250,7 +250,9 @@ function priorityWrite(charVal) {
     writePermission = 0;
     
     if(!writePermission) {
-        priorityWrite(charVal);
+        setTimeout( function() {
+            priorityWrite(charVal);
+        }, 100);
         return 0;
     } else {
         return readWriteCharacteristic.writeValue(charVal)
