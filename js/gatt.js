@@ -233,10 +233,8 @@ function writeArrayToCharacteristic(charVal) {
 
 
     if(writePermission) {
-        readWriteCharacteristic.writeValue(charVal)
-        .then(
-            return 1;
-        );
+        readWriteCharacteristic.writeValue(charVal);
+        return 1;
     } else {
         return 0;
     }
