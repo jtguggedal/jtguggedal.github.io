@@ -247,7 +247,6 @@ function priorityWrite(charVal) {
     'use strict';
 
     priorityPacket = 1;
-    priorityPending = 1;
     writePermission = 0;
     
     if(!writePermission) {
