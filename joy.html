@@ -114,12 +114,38 @@
             color: white;
             visibility: hidden;
         }
-        #container {
+        #joystick-container {
             width: 200px;
             height: 200px;
             background-color: #EEE;
             border-radius: 100%;
             
+        }
+
+        #joystick-container, #button-container {
+            display: inline-block;
+        }
+
+        #button-container {
+            float: right;
+            padding-right: 0px;
+            background-color: #EEE;
+            height: 320px;
+            width: 150px;
+        }
+
+        #control-button {
+            width: 75px;
+            height: 75px;
+            margin: 100px auto;
+            background-color: white;
+            box-shadow: 0px 0px 30px 10px rgba(0,0,0, 0.2);
+            border: 4px solid #003366;
+            border-radius: 100%;
+            background-image: url("img/aimpt.png");
+            background-size: contain;
+            background-repeat: no-repeat;
+
         }
 
     </style>
@@ -132,7 +158,18 @@
 
     <body>
         <div id="connectionStatus">Connection</div>
-            <div id="container">
+
+            <div id="control-container">
+
+                <div id="joystick-container">
+                </div>
+
+                <div id="button-container">
+                    <div id="control-button">
+                    </div>
+                </div>
+
+
         
             </div>
         <div class="column">
@@ -181,6 +218,8 @@
             var writePermission = 1;
             var discardedPackets = [];
 
+            var priorityPacket = 0;
+
 
                
                           
@@ -209,7 +248,7 @@
             }
 
             //*** Joystick
-            var joystickContainer = document.getElementById('container');
+            var joystickContainer = document.getElementById('joystick-container');
             var joystick = new VirtualJoystick({
                                     container: joystickContainer,
                                     mouseSupport: true,
@@ -289,8 +328,6 @@
                 $("#sliderRight").val(outputRight);
 
 
-                var interrupt = 0;
-
                 // Sjekker i hvilket intervall slider-verdien er, og sender korresponderende verdi
                 // via BLE til firmware. 
                 // Setter 1. bit lik 1 for å tenne 1. LED osv.
@@ -309,7 +346,7 @@
 
 
 
-                if( readWriteCharacteristic &&  (writePermission == 1) && (interrupt != 1)) {
+                if( readWriteCharacteristic &&  (writePermission == 1) && (priorityPacket != 1)) {
                     writePermission = 0;
 
                     return readWriteCharacteristic.writeValue(charVal)
@@ -317,7 +354,7 @@
                         writePermission = 1;
                         console.log('Sendt: ' + charVal);
                     });
-                } else if(interrupt == 1) {
+                } else if(priorityPacket == 1) {
                     if(writePermission == 1)
                         interruptWrite(charVal);
                     else
@@ -369,6 +406,13 @@
                     }, 100);
 
 
+            });
+
+            $('#control-button').on('mousedown', function() {
+                $(this).css({'box-shadow': '0px 0px 10px 3px rgba(0,0,0, 0.2)', 'height': '70px', 'width': '70px'});
+            });
+            $('#control-button').on('mouseup', function() {
+                $(this).css({'box-shadow': '0px 0px 30px 10px rgba(0,0,0, 0.2)', 'height': '75px', 'width': '75px'});
             });
 
         </script>
