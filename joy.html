@@ -140,12 +140,9 @@
             height: 75px;
             margin: 100px auto;
             background-color: white;
-            box-shadow: 0px 0px 30px 10px rgba(0,0,0, 0.15);
+            box-shadow: 0px 0px 30px 0px rgba(0,0,0, 0.2);
             border: 4px solid #0b4251;
             border-radius: 100%;
-            background-image: url("img/aimpt.png");
-            background-size: contain;
-            background-repeat: no-repeat;
 
         }
 
@@ -274,13 +271,13 @@
                 var hypotenus = Math.sqrt((Math.pow(x, 2)) + (Math.pow(y, 2)));
                 var speed = Math.round((255/100)*hypotenus);
                 var angle = (180/Math.PI)*Math.acos(x/hypotenus);
-                var direction;
+                var directionRight, directionLeft;
 
                 if(y < 0) {
                     angle = 360 - angle;
-                    direction = 0;
+                    directionRight = directionLeft = 0;
                 } else {
-                    direction = 1;
+                    directionRight = directionLeft = 1;
                 }
 
                 angle = Math.round(angle);
@@ -292,12 +289,12 @@
                     outputRight = outputLeft = 0;
                     tapEnd = 0; 
                 } else {
-                    if(angle >= 10 && angle <= 80) {
-                        outputRight = (angle/80)*speed;
+                    if(angle >= 10 && angle <= 85) {
+                        outputRight = (angle/85)*speed;
                         outputLeft = speed;
-                    } else if(angle > 80 && angle < 100) {
+                    } else if(angle > 85 && angle < 95) {
                         outputLeft = outputRight = speed;
-                    } else if(angle >= 100 && angle <= 170) {
+                    } else if(angle >= 95 && angle <= 170) {
                         outputRight = speed;
                         outputLeft = ((180-angle)/80)*speed;;
                     }  else if(angle > 170 && angle < 190) {
@@ -312,7 +309,8 @@
                         outputRight = ((360-angle)/80)*speed;
                         outputLeft = speed;
                     } else if(angle > 350 || angle < 10) {
-                        outputRight = 0;
+                        outputRight = 100;
+                        directionRight = 0;
                         outputLeft = speed;
                     } 
 
@@ -334,16 +332,16 @@
                 // Setter 1. bit lik 1 for å tenne 1. LED osv.
                 
                 charVal[10] = outputRight;          // Motor 1
-                charVal[14] = direction;
+                charVal[14] = directionRight;
 
                 charVal[11] = outputLeft;           // Motor 2
-                charVal[15] = direction;
+                charVal[15] = directionLeft;
 
                 charVal[12] = outputLeft;           // Motor 3
-                charVal[16] = direction;
+                charVal[16] = directionLeft;
 
                 charVal[13] = outputRight;          // Motor 4
-                charVal[17] = direction;
+                charVal[17] = directionRight;
 
                 console.log('params set');
 
