@@ -357,7 +357,7 @@
                             writePermission = 1;
                             console.log('Sendt: ' + charVal);
                     });
-                } else if(priorityPending == 1) {
+                } else if(priorityPacket == 1) {
                     priorityWrite(charVal);
                 } else if (writePermission == 0) {
                     discardedPackets.push(charVal);
