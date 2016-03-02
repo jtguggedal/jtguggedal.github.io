@@ -14,149 +14,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <link rel="stylesheet" type="text/css" href="stylesheet.css"></link>
 
-
-    <style>
-        @import url(https://fonts.googleapis.com/css?family=Open+Sans|Roboto:400,500,700,300);
-        body {
-            font-family: "Roboto";
-            margin: 0;
-            padding: 0px;
-			background: #0b4251
-        }
-
-        .column {
-			margin-top: 30px;
-			margin-left: auto;
-			margin-right: auto;
-            
-
-        }
-        .notification {
-            display: inline-block;
-            margin: 15px;
-            width: 35px;
-            height: 35px;
-            background-color: blue;
-            color: white;
-            font-size: 34px;
-            text-align: center;
-            font-weight: 700;
-        }
-		h1 {
-			color: white;
-			text-align: center;
-			margin-left: auto;
-			margin-right: auto;
-		}
-        h2 {
-            display: inline-block;
-            clear: both;
-            cursor: pointer;
-            padding: 3px;
-            background-color: #eee;
-            margin: 6px;
-        }
-		h3 {
-			color: white;
-			text-align: center;
-			margin-left: auto;
-			margin-right: auto;
-		}
-        .demo {
-            background: #f3eee6;
-            width: 200px;
-            height: 200px;
-            display: inline-block;
-            border-radius: 100px;
-            margin: 0;
-        }
-
-
-        .ball {
-            width: 70px;
-            height: 70px;
-            background: red;
-            position: absolute;
-            top: 65px;
-            left: 65px;
-            border-radius: 70px;
-        }
-        .ball.outline {
-          background: #eee;
-        }
-        .ball.ease {
-          -moz-transition: all 0.2s ease;
-          -o-transition: all 0.2s ease;
-          -webkit-transition: all 0.2s ease;
-          transition: all 0.2s ease;
-        }
-
-        #pos-x, #pos-y {
-            margin-left: 20px;
-
-        }
-
-
-        .slider-container {
-            display: inline-block;
-            float: left;
-            margin: 0 auto;
-            width: 100px;
-            text-align: center;     
-        }
-        input[type=range] {
-            display: inline-block;
-            width: 50px;
-            height: 100px;
-            writing-mode: bt-lr; /* IE */
-            -webkit-appearance: slider-vertical; /* WebKit */
-        }
-        .side-by-side {
-            display: inline-block;
-            float: left;
-            width: 50px;
-
-        }
-        #connectionStatus {
-			height: 20px;
-			width: 100px;
-            padding: 1px solid grey;
-            background-color: red;
-            color: white;
-            visibility:
-			text-align: center;
-			border: 2px solid white;
-			border-radius: 5px;
-			position: relative;
-			margin-left: auto;
-			margin-right: auto;
-        }
-		#welcome {
-			backgroung-color: white;
-			font-family: Arial;
-			font-size: 20px;
-			color: white;
-			text-align: center;
-			margin-left: auto;
-			margin-right: auto;
-		}
-		#connect, #disconnect{
-			display: block;
-			width: 200px;
-			height: 30px;
-			border: 2px solid black;
-			border-radius: 5px;
-			text-align: center;
-			position: relative;
-			margin-left: auto;
-			margin-right: auto;
-		}
-
-    </style>
-
     <title>Physical Web Toy</title>
-
-
 
 </head>
 
@@ -186,6 +44,11 @@
               <pre id="log"></pre>
             </div>
         </div>
+		<div id="footer">
+				<a href="https://google.github.io/physical-web/"><img src="pics/physical_web_logo.png" class="imglink"></img></a>
+				<a href="https://www.ntnu.edu/"><img src="pics/NTNULogo.png" id="ntnu" class="imglink"></img></a>
+				<a href="http://www.nordicsemi.no"><img src="pics/NordicSemiLogo.png" id="nordiclogo" class="imglink"></img></a>
+		</div>
        
 		<script>
 		$(document).ready(function(){
@@ -265,11 +128,7 @@
             }
 		</script>
 
-		<footer>
-				<a href="https://google.github.io/physical-web/"><img src="pics/physical_web_logo.png"></img></a>
-				<a href="https://www.ntnu.edu/"><img src="pics/NTNULogo.png" id="ntnu"></img></a>
-				<a href="http://www.nordicsemi.no"><img src="pics/NordicSemiLogo.png"></img></a>
-		</footer>
+		
 
     </body>
 </html>

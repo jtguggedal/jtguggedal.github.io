@@ -1,15 +1,18 @@
 /* Link til fargekoder i hex: http://www.w3schools.com/colors/colors_picker.asp */
-
+@import url(https://fonts.googleapis.com/css?family=Open+Sans|Roboto:400,500,700,300);
 body {
-    margin:0;
-    padding:0;
-	width:100%;
-    text-align:center;
+	font-family: "Roboto";
+	margin: 0;
+	padding: 0px;
+	width: 100%;
+	background: #0b4251;
+	text-align: center;
 }
-.pull-me{
-    -webkit-box-shadow: 0 0 8px grey;
-    -moz-box-shadow: 0 0 8px grey;
-    box-shadow: 0 0 8px grey;
+
+.pull-down-menu{
+    -webkit-box-shadow: 0 0 8px white;
+    -moz-box-shadow: 0 0 8px white;
+    box-shadow: 0 0 8px white;
     cursor:pointer;
 }
 .panel {
@@ -18,9 +21,7 @@ body {
     height:30px;
 	display:none;
     font-family:garamond,times-new-roman,serif;
-}
-.panel p{
-    text-align:center;
+	text-align: center;
 }
 .menu {
 	display: inline-block;
@@ -47,6 +48,7 @@ body {
     height:20px;
 	font-family:arial,sans-serif;
     font-size:14px;
+	font-weight: bold;
 	color:white;
     background:#009999;
 	text-decoration:none;
@@ -58,9 +60,7 @@ body {
 	cursor:pointer;
 	border-bottom:solid 2px #006666;
 }
-.pull-me p {
-    text-align:center;
-}
+
 #home {
 	float: left;
 }
@@ -75,24 +75,155 @@ body {
     background-color:#00b3b3;
 }
 
-footer {
+#footer {
 	height: 50px;
 	width: 100%;
 	background-color: #008888;
-	bottom: 0;
 	position: fixed;
+	bottom: 0;
+	margin: 0;
+	clear: both;
+}
+#ntnu {
+	height: 30px;
+	width: auto;
+	margin-bottom: 8px;
+}
+#nordiclogo {
+	height: 43px;
+	width: auto;
+	margin-bottom: 3px;
+}
+.imglink {
+	max-height: 48px;
+	width: auto;
+	margin-left: 5%;
+	margin-right: 5%;
+}
+
+.column {
+	margin-top: 30px;
+	margin-left: auto;
+	margin-right: auto;
+	
+
+}
+.notification {
+	display: inline-block;
+	margin: 15px;
+	width: 35px;
+	height: 35px;
+	background-color: blue;
+	color: white;
+	font-size: 34px;
+	text-align: center;
+	font-weight: 700;
+}
+h1 {
+	color: white;
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+}
+h2 {
+	display: inline-block;
+	clear: both;
+	cursor: pointer;
+	padding: 3px;
+	background-color: #eee;
+	margin: 6px;
+}
+h3 {
+	color: white;
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+}
+.demo {
+	background: #f3eee6;
+	width: 200px;
+	height: 200px;
+	display: inline-block;
+	border-radius: 100px;
 	margin: 0;
 }
 
-img {
-    width: auto;
-    height: 48px;
-	margin: 0px 35px 0px 35px;
+
+.ball {
+	width: 70px;
+	height: 70px;
+	background: red;
+	position: absolute;
+	top: 65px;
+	left: 65px;
+	border-radius: 70px;
 }
-#ntnu {
-	padding-bottom: 5px;
+.ball.outline {
+  background: #eee;
 }
-#imagelinks {
+.ball.ease {
+  -moz-transition: all 0.2s ease;
+  -o-transition: all 0.2s ease;
+  -webkit-transition: all 0.2s ease;
+  transition: all 0.2s ease;
+}
+
+#pos-x, #pos-y {
+	margin-left: 20px;
+
+}
+
+
+.slider-container {
+	display: inline-block;
+	float: left;
+	margin: 0 auto;
+	width: 100px;
+	text-align: center;     
+}
+input[type=range] {
+	display: inline-block;
+	width: 50px;
+	height: 100px;
+	writing-mode: bt-lr; /* IE */
+	-webkit-appearance: slider-vertical; /* WebKit */
+}
+.side-by-side {
+	display: inline-block;
+	float: left;
+	width: 50px;
+
+}
+#connectionStatus {
+	height: 20px;
+	width: 100px;
+	padding: 1px solid grey;
+	background-color: red;
+	color: white;
+	visibility: ;
+	text-align: center;
+	border: 2px solid white;
+	border-radius: 5px;
+	position: relative;
+	margin-left: auto;
+	margin-right: auto;
+}
+#welcome {
+	font-family: Arial;
+	font-size: 20px;
+	color: white;
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+}
+#connect, #disconnect{
+	display: block;
+	width: 200px;
+	height: 30px;
+	border: 2px solid black;
+	border-radius: 5px;
+	text-align: center;
+	position: relative;
 	margin-left: auto;
 	margin-right: auto;
 }
