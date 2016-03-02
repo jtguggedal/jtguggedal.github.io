@@ -224,3 +224,13 @@ function writeToCharacteristic(byteOffset, value) {
     readWriteCharacteristic.writeValue(charVal);
 }
 
+/** Function for writing array to the read and write characteristic **/
+//  Parameters      charVal     Uint8Array, maximum 20 bytes long
+function writeArrayToCharacteristic(charVal) {
+    'use strict';
+    
+    console.log('writechar: ' + charVal);
+
+
+    readWriteCharacteristic.writeValue(charVal);
+}

@@ -214,7 +214,7 @@
  
             var outputRight;
             var outputLeft;
-            var tapEnd;
+            var tapEnd = 1;
 
             var writePermission = 1;
             var discardedPackets = [];
@@ -409,11 +409,11 @@
 
             });
 
-            $('#control-button').on('mousedown tap touchstart', function() {
+            $('#control-button').on('mousedown touchstart', function() {
                 $(this).css({'box-shadow': '0px 0px 10px 3px rgba(0,0,0, 0.2)', 'height': '70px', 'width': '70px'});
                 setBit(1,'b',240);
                 if(tapEnd == 1) {
-                    writeToCharacteristic(1, 240, charVal);
+                    writeArrayToCharacteristic(charVal);
                 }
 
             });
@@ -421,7 +421,7 @@
                 $(this).css({'box-shadow': '0px 0px 30px 10px rgba(0,0,0, 0.15)', 'height': '75px', 'width': '75px'});
                 setBit(1,'b',0);
                 if(tapEnd == 1) {
-                    writeToCharacteristic(1, 0, charVal);
+                    writeArrayToCharacteristic(charVal);
                 }
             });
 
