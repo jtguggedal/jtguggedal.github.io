@@ -1,0 +1,98 @@
+/* Link til fargekoder i hex: http://www.w3schools.com/colors/colors_picker.asp */
+
+body {
+    margin:0;
+    padding:0;
+	width:100%;
+    text-align:center;
+}
+.pull-me{
+    -webkit-box-shadow: 0 0 8px grey;
+    -moz-box-shadow: 0 0 8px grey;
+    box-shadow: 0 0 8px grey;
+    cursor:pointer;
+}
+.panel {
+	background: #009999;
+    background-size:90% 90%;
+    height:30px;
+	display:none;
+    font-family:garamond,times-new-roman,serif;
+}
+.panel p{
+    text-align:center;
+}
+.menu {
+	display: inline-block;
+    height: 25px;
+    width: 30%;
+    border: 2px solid #008080;
+    border-radius: 5px;
+	background-color: #004d4d;
+	color: white;
+	font-weight: bold;
+	text-align: center;
+}
+.slide {
+	margin:0;
+	padding:0;
+	border-top:solid 2px #006666;
+}
+.pull-down-menu {
+	display:block;
+    position:relative;
+    margin-right:auto;
+	margin-left: auto;
+    width:100px;
+    height:20px;
+	font-family:arial,sans-serif;
+    font-size:14px;
+	color:white;
+    background:#009999;
+	text-decoration:none;
+    -moz-border-bottom-left-radius:5px;
+    -moz-border-bottom-right-radius:5px;
+    border-bottom-left-radius:5px;
+    border-bottom-right-radius:5px;
+	text-align:center;
+	cursor:pointer;
+	border-bottom:solid 2px #006666;
+}
+.pull-me p {
+    text-align:center;
+}
+#home {
+	float: left;
+}
+#settings {
+	clear: both;
+}
+#about {
+	float: right;
+}
+
+.active {
+    background-color:#00b3b3;
+}
+
+footer {
+	height: 50px;
+	width: 100%;
+	background-color: #008888;
+	bottom: 0;
+	position: fixed;
+	margin: 0;
+}
+
+img {
+    width: auto;
+    height: 48px;
+	margin: 0px 35px 0px 35px;
+}
+#ntnu {
+	padding-bottom: 5px;
+}
+#imagelinks {
+	margin-left: auto;
+	margin-right: auto;
+}

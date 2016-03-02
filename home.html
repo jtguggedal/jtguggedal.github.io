@@ -1,0 +1,276 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-beta1/jquery.js"></script>   
+    <script type="text/javascript" src="js/jquery.mobile-events.js"></script>
+    <script src="js/gatt.js"></script>    
+    <script src="js/setBit.js"></script>
+    <script src="js/joystick.js"></script>
+    <script src="js/pep.js"></script>   
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="stylesheet.css"></link>
+
+
+    <style>
+        @import url(https://fonts.googleapis.com/css?family=Open+Sans|Roboto:400,500,700,300);
+        body {
+            font-family: "Roboto";
+            margin: 0;
+            padding: 0px;
+			background: #008080
+        }
+
+        .column {
+			margin-top: 100px;
+			margin-left: auto;
+			margin-right: auto;
+            width: 500px;
+            
+
+        }
+        .notification {
+            display: inline-block;
+            margin: 15px;
+            width: 35px;
+            height: 35px;
+            background-color: blue;
+            color: white;
+            font-size: 34px;
+            text-align: center;
+            font-weight: 700;
+        }
+		h1 {
+			color: white;
+			text-align: center;
+			margin-left: auto;
+			margin-right: auto;
+		}
+        h2 {
+            display: inline-block;
+            clear: both;
+            cursor: pointer;
+            padding: 3px;
+            background-color: #eee;
+            margin: 6px;
+        }
+		h3 {
+			color: white;
+			text-align: center;
+			margin-left: auto;
+			margin-right: auto;
+		}
+        .demo {
+            background: #f3eee6;
+            width: 200px;
+            height: 200px;
+            display: inline-block;
+            border-radius: 100px;
+            margin: 0;
+        }
+
+
+        .ball {
+            width: 70px;
+            height: 70px;
+            background: red;
+            position: absolute;
+            top: 65px;
+            left: 65px;
+            border-radius: 70px;
+        }
+        .ball.outline {
+          background: #eee;
+        }
+        .ball.ease {
+          -moz-transition: all 0.2s ease;
+          -o-transition: all 0.2s ease;
+          -webkit-transition: all 0.2s ease;
+          transition: all 0.2s ease;
+        }
+
+        #pos-x, #pos-y {
+            margin-left: 20px;
+
+        }
+
+
+        .slider-container {
+            display: inline-block;
+            float: left;
+            margin: 0 auto;
+            width: 100px;
+            text-align: center;     
+        }
+        input[type=range] {
+            display: inline-block;
+            width: 50px;
+            height: 100px;
+            writing-mode: bt-lr; /* IE */
+            -webkit-appearance: slider-vertical; /* WebKit */
+        }
+        .side-by-side {
+            display: inline-block;
+            float: left;
+            width: 50px;
+
+        }
+        #connectionStatus {
+			height: 20px;
+			width: 100px;
+            padding: 1px solid grey;
+            background-color: red;
+            color: white;
+            visibility:
+			text-align: center;
+			border: 2px solid white;
+			border-radius: 5px;
+			position: relative;
+			margin-left: auto;
+			margin-right: auto;
+        }
+		#welcome {
+			backgroung-color: white;
+			font-family: Arial;
+			font-size: 20px;
+			color: white;
+			text-align: center;
+			margin-left: auto;
+			margin-right: auto;
+		}
+		#connect, #disconnect{
+			display: block;
+			width: 200px;
+			height: 30px;
+			border: 2px solid black;
+			border-radius: 5px;
+			text-align: center;
+			position: relative;
+			margin-left: auto;
+			margin-right: auto;
+		}
+
+    </style>
+
+    <title>Physical Web Toy</title>
+
+
+
+</head>
+
+    <body>
+		<div class="panel">
+			<a href='home.html'><div class="menu" id="home">Home</div></a>
+			<a href='read.html'><div class="menu" id="settings">Main</div></a>
+			<a href='about.html'><div class="menu" id="about">About</div></a>
+			
+        </div>
+		<div class="pull-down-menu">Menu</div>
+        <div class="column">
+            <h1>Welcome to Physical Web Toy!</h1>
+			<p id="welcome">You can now connect to a robot car in your vicinity, control it using your smart device
+			and play laser tag with other people!</p><br><br>
+         
+            <h2 onclick="connect();" id='connect'>Connect</h2><br>
+            <h2 onclick="disconnect();" id='disconnect'>Disconnect</h2><br>
+			<div id="connectionStatus">Connection</div>
+
+
+
+            <h3>Logg</h3>
+            <div id="output" class="output">
+              <div id="content"></div>
+              <div id="status"></div>
+              <pre id="log"></pre>
+            </div>
+        </div>
+       
+		<script>
+		$(document).ready(function(){
+			$('.pull-down-menu').click(function() {		// Function to slide down the menu selector
+				$('.panel').slideToggle('slow');
+				});
+			
+			$('.menu').hover(							// Makes the menus change color while hovering over them
+			function(){
+				$(this).addClass('active');
+			},
+			function(){
+				$(this).removeClass('active');    
+			}
+			);
+		});
+		</script>
+
+
+
+        <script>
+          var ChromeSamples = {
+            log: function() {
+              var line = Array.prototype.slice.call(arguments).map(function(argument) {
+                return typeof argument === 'string' ? argument : JSON.stringify(argument);
+              }).join(' ');
+
+              document.querySelector('#log').textContent += line + '\n';
+            },
+
+            clearLog: function() {
+              document.querySelector('#log').textContent = '';
+            },
+
+            setStatus: function(status) {
+              document.querySelector('#status').textContent = status;
+            },
+
+            setContent: function(newContent) {
+              var content = document.querySelector('#content');
+              while(content.hasChildNodes()) {
+                content.removeChild(content.lastChild);
+              }
+              content.appendChild(newContent);
+            }
+          };
+        </script>
+
+
+
+        <script>
+            
+            var charVal = new Uint8Array(20);
+
+
+            function debounce(func, wait, immediate) {
+                var timeout;
+                return function() {
+                    var context = this,
+                        args = arguments;
+                    var later = function() {
+                        timeout = null;
+                        if (!immediate) func.apply(context, args);
+                    };
+                    var callNow = immediate && !timeout;
+                    clearTimeout(timeout);
+                    timeout = setTimeout(later, wait);
+                    if (callNow) func.apply(context, args);
+                };
+            };
+            
+            var writePermission = 1;
+            var discardedPackets = [];
+
+            function printDiscardedPackets() {
+                console.log(discardedPackets);
+            }
+		</script>
+
+		<footer>
+				<a href="https://google.github.io/physical-web/"><img src="pics/physical_web_logo.png"></img></a>
+				<a href="https://www.ntnu.edu/"><img src="pics/NTNULogo.png" id="ntnu"></img></a>
+				<a href="http://www.nordicsemi.no"><img src="pics/NordicSemiLogo.png"></img></a>
+		</footer>
+
+    </body>
+</html>
