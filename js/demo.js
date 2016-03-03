@@ -199,13 +199,13 @@
 
             $('#control-button').on('touchstart', function(event) {
                 $(this).css({'box-shadow': '0px 0px 10px 3px rgba(0,0,0, 0.2)', 'height': '70px', 'width': '70px'});
-                setBit(1,'b',240);
+                setBit(1, 0, 1);
                 priorityWrite(charVal);
                 event.preventDefault();
 
             });
             $('#control-button').on('touchend', function() {
                 $(this).css({'box-shadow': '0px 0px 30px 10px rgba(0,0,0, 0.15)', 'height': '75px', 'width': '75px'});
-                setBit(1,'b',0);
+                setBit(1,0,0);
                 priorityWrite(charVal);
             });
