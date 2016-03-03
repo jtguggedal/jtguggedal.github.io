@@ -251,7 +251,7 @@ function priorityWrite(charVal) {
     if(!writePermission) {
         setTimeout( function() {
             priorityWrite(charVal);
-        }, 100);
+        }, 20);
         return 0;
     } else {
         writePermission = 0;
