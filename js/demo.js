@@ -192,7 +192,7 @@
             });
 
             $('#control-button').on('touchstart', function(event) {
-                $(this).css({'box-shadow': '0px 0px 10px 3px rgba(0,0,0, 0.2)', 'height': '140px', 'width': '140px', 'ease' : '0.2'});
+                $(this).css({'box-shadow': '0px 0px 10px 3px rgba(0,0,0, 0.2)', 'height': '115px', 'width': '115px', 'ease' : '0.2'});
                 setBit(1, 0, 1);
                 priorityWrite(charVal);
                 event.preventDefault();
@@ -200,7 +200,7 @@
             });
 
             $('#control-button').on('touchend', function() {
-                $(this).css({'box-shadow': '0px 0px 30px 10px rgba(0,0,0, 0.15)', 'height': '150px', 'width': '150px', '-webkit-transition-timing-function' : 'ease'});
+                $(this).css({'box-shadow': '0px 0px 30px 10px rgba(0,0,0, 0.15)', 'height': '120px', 'width': '120px', '-webkit-transition-timing-function' : 'ease'});
                 setBit(1,0,0);
                 priorityWrite(charVal);
             });
