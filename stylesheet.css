@@ -97,8 +97,7 @@ body {
 .imglink {
 	max-height: 48px;
 	width: auto;
-	margin-left: 5%;
-	margin-right: 5%;
+	margin: 0 10px;
 }
 
 .column {

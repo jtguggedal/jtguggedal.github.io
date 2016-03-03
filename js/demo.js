@@ -155,9 +155,9 @@
     
 
 
-            $('#joystick-container').on("tapend", function() {
+            $('#joystick-container').on("touchend", function() {
       
-                $('#pos-x').html('x: 0px reset');
+                /*$('#pos-x').html('x: 0px reset');
                 $('#pos-y').html('y: 0px reset ');
 
                 $('#speed').html('Hastighet: 0');
@@ -167,7 +167,7 @@
                 $('#output-right').html('Pådrag H: 0');
 
                 $("#sliderLeft").val(0);
-                $("#sliderRight").val(0);
+                $("#sliderRight").val(0);*/
 
                 tapEnd = 1;
 
@@ -176,7 +176,9 @@
                 charVal[12] = 0;
                 charVal[13] = 0;
 
-                    setTimeout(function(){
+
+                priorityWrite(charVal);
+                    /*setTimeout(function(){
                         if(writePermission)
                             readWriteCharacteristic.writeValue(charVal);
                         else {
@@ -185,7 +187,7 @@
                             }, 300);
                         }
 
-                    }, 100);
+                    }, 100);*/
 
 
             });
