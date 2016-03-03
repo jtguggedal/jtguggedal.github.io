@@ -8,6 +8,8 @@ body {
 	height: 100%;
 	background: #0b4251;
 	text-align: center;
+	min-height: 400px;
+	overflow: hidden;
 }
 
 .pull-down-menu{
@@ -84,6 +86,7 @@ body {
 	bottom: 0;
 	margin: 0;
 	clear: both;
+	z-index: 10;
 }
 #ntnu {
 	height: 30px;
