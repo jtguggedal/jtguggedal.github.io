@@ -324,7 +324,7 @@ VirtualJoystick.prototype._buildJoystickBase	= function()
 	var ctx		= canvas.getContext('2d');
 	ctx.beginPath(); 
 	ctx.strokeStyle = this._strokeStyle; 
-	ctx.lineWidth	= 6; 
+	ctx.lineWidth	= 30; 
 	ctx.arc( canvas.width/2, canvas.width/2, 40, 0, Math.PI*2, true); 
 	ctx.stroke();	
 
@@ -363,7 +363,7 @@ VirtualJoystick.prototype._move = function(style, x, y)
 {
 	if (this._transform) {
 		if (this._has3d) {
-			style[this._transform] = 'translate3d(' + x + 'px,' + y + 'px, 0)';
+			style[this._transform] = 'translate3d(' + x + 'px,' + y + 30 + 'px, 0)';
 		} else {
 			style[this._transform] = 'translate(' + x + 'px,' + y + 'px)';
 		}

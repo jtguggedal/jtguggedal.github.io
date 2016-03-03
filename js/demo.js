@@ -29,15 +29,15 @@
 
             })
                                
-                         
+          
 
-
+            //** Print to console array containing packets that's not been sent  **/
 
             function printDiscardedPackets() {
                 console.log(discardedPackets);
             }
 
-            //*** Joystick
+            //*** Joystick  ***/
             var joystickContainer = document.getElementById('joystick-container');
             var joystick = new VirtualJoystick({
                                     container: joystickContainer,
@@ -52,10 +52,11 @@
                                
             
                        
-            ////////////////////////////////////   
+            ////////////////////////////////////  
 
-            // Funksjon for at joysticken skal gå tilbake til nullpunktet når den slippes
            
+            // Sjekker i hvilket intervall joysticken er, og sender korresponderende verdi
+                
 
             $('#joystick-container').on('change touchmove mousemove', function() {
                 var x = joystick.deltaX(); 
@@ -94,12 +95,12 @@
                         directionRight = 1;
                         outputLeft = speed;
                         directionLeft = 0;
-                    } else if(angle >= 200 && angle <= 260) {
+                    } else if(angle >= 200 && angle <= 265) {
                         outputRight = speed;
                         outputLeft = ((angle-180)/80)*speed;
-                    } else if(angle > 260 && angle < 280) {
+                    } else if(angle > 265 && angle < 275) {
                         outputRight = outputLeft = speed;
-                    } else if(angle >= 280 && angle <= 340) {
+                    } else if(angle >= 275 && angle <= 340) {
                         outputRight = ((360-angle)/80)*speed;
                         outputLeft = speed;
                     } else if(angle > 340 || angle < 20) {
@@ -122,10 +123,6 @@
                 $("#sliderRight").val(outputRight);
 
 
-                // Sjekker i hvilket intervall slider-verdien er, og sender korresponderende verdi
-                // via BLE til firmware. 
-                // Setter 1. bit lik 1 for å tenne 1. LED osv.
-                
                 charVal[10] = outputRight;          // Motor 1
                 charVal[14] = directionRight;
 
@@ -153,10 +150,6 @@
                 } else {
                     discardedPackets.push(charVal);
                 }
-
-
-
-
             });
 
     
@@ -204,8 +197,11 @@
                 event.preventDefault();
 
             });
+
             $('#control-button').on('touchend', function() {
                 $(this).css({'box-shadow': '0px 0px 30px 10px rgba(0,0,0, 0.15)', 'height': '75px', 'width': '75px'});
                 setBit(1,0,0);
                 priorityWrite(charVal);
             });
+
+

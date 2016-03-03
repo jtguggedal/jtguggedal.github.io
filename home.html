@@ -9,16 +9,16 @@
     <script type="text/javascript" src="js/jquery.mobile-events.js"></script>
     <script src="js/gatt.js"></script>    
     <script src="js/setBit.js"></script>
-    <script src="js/joystick.js"></script>
-    <script src="js/pep.js"></script>   
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <link rel="stylesheet" type="text/css" href="stylesheet.css"></link>
+    <link rel="stylesheet" type="text/css" href="css/controllers.css"></link>
 
     <title>Physical Web Toy</title>
 
 </head>
 
     <body>
+        <div id="connectionStatus">Connection</div>
 		<div class="panel">
 			<a href='home.html'><div class="menu" id="home">Home</div></a>
 			<a href='joy.html'><div class="menu" id="settings">Main</div></a>
@@ -29,25 +29,17 @@
         <div class="column">
             <h1>Welcome to Physical Web Toy!</h1>
 			<p id="welcome">You can now connect to a robot car in your vicinity, control it using your smart device
-			and play laser tag with other people!</p><br>
+			and play laser tag with other people!</p>
          
-            <h2 onclick="connect();" id='connect'>Connect</h2><br>
-            <h2 onclick="disconnect();" id='disconnect'>Disconnect</h2><br>
-			<div id="connectionStatus">Connection</div>
+            <h2 onclick="game_init();" id='connect'>Connect</h2>
+            <h2 onclick="disconnect();" id='disconnect'>Disconnect</h2>
 
 
-
-            <h3>Logg</h3>
-            <div id="output" class="output">
-              <div id="content"></div>
-              <div id="status"></div>
-              <pre id="log"></pre>
-            </div>
         </div>
 		<div id="footer">
-				<a href="https://google.github.io/physical-web/"><img src="pics/physical_web_logo.png" class="imglink"></img></a>
-				<a href="https://www.ntnu.edu/"><img src="pics/NTNULogo.png" id="ntnu" class="imglink"></img></a>
-				<a href="http://www.nordicsemi.no"><img src="pics/NordicSemiLogo.png" id="nordiclogo" class="imglink"></img></a>
+		    <a href="https://google.github.io/physical-web/"><img src="pics/physical_web_logo.png" class="imglink"></img></a>
+			<a href="https://www.ntnu.edu/"><img src="pics/NTNULogo.png" id="ntnu" class="imglink"></img></a>
+			<a href="http://www.nordicsemi.no"><img src="pics/NordicSemiLogo.png" id="nordiclogo" class="imglink"></img></a>
 		</div>
        
 		<script>
@@ -65,68 +57,21 @@
 			}
 			);
 		});
+
+
+
+        //*** Initialize game **/
+
+        function game_init() {   
+            connect();
+            $('.column').load('include/controllers.html');    
+        }
+
+
 		</script>
 
+ 
 
-
-        <script>
-          var ChromeSamples = {
-            log: function() {
-              var line = Array.prototype.slice.call(arguments).map(function(argument) {
-                return typeof argument === 'string' ? argument : JSON.stringify(argument);
-              }).join(' ');
-
-              document.querySelector('#log').textContent += line + '\n';
-            },
-
-            clearLog: function() {
-              document.querySelector('#log').textContent = '';
-            },
-
-            setStatus: function(status) {
-              document.querySelector('#status').textContent = status;
-            },
-
-            setContent: function(newContent) {
-              var content = document.querySelector('#content');
-              while(content.hasChildNodes()) {
-                content.removeChild(content.lastChild);
-              }
-              content.appendChild(newContent);
-            }
-          };
-        </script>
-
-
-
-        <script>
-            
-            var charVal = new Uint8Array(20);
-
-
-            function debounce(func, wait, immediate) {
-                var timeout;
-                return function() {
-                    var context = this,
-                        args = arguments;
-                    var later = function() {
-                        timeout = null;
-                        if (!immediate) func.apply(context, args);
-                    };
-                    var callNow = immediate && !timeout;
-                    clearTimeout(timeout);
-                    timeout = setTimeout(later, wait);
-                    if (callNow) func.apply(context, args);
-                };
-            };
-            
-            var writePermission = 1;
-            var discardedPackets = [];
-
-            function printDiscardedPackets() {
-                console.log(discardedPackets);
-            }
-		</script>
 
 		
 
