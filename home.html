@@ -19,6 +19,7 @@
 
     <body>
         <div id="connectionStatus">Connection</div>
+        <div class="column">
 		<div class="panel">
 			<a href='home.html'><div class="menu" id="home">Home</div></a>
 			<a href='joy.html'><div class="menu" id="settings">Main</div></a>
@@ -26,7 +27,6 @@
 			
         </div>
 		<div class="pull-down-menu">Menu</div>
-        <div class="column">
             <h1>Welcome to Physical Web Toy!</h1>
 			<p id="welcome">You can now connect to a robot car in your vicinity, control it using your smart device
 			and play laser tag with other people!</p>
@@ -63,8 +63,11 @@
         //*** Initialize game **/
 
         function game_init() {   
+            var time = new Date();
+            var e = time.getTime();
+
             connect();
-            $('.column').load('include/controllers.html');    
+            $('.column').load('include/controllers.html?t=' + e);    
         }
 
 

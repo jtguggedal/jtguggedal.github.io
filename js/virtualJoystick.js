@@ -25,13 +25,13 @@ var VirtualJoystick	= function(opts)
 	this._stickRadius	= opts.stickRadius !== undefined ? opts.stickRadius : 100;
 	this._useCssTransform	= opts.useCssTransform !== undefined ? opts.useCssTransform : false;
 
-	this._container.style.position	= "absolute";
+	this._container.style.position	= "relative";
 
 	this._container.appendChild(this._baseEl);
-	this._baseEl.style.position	= "relative";
+	this._baseEl.style.position	= "absolute";
 	this._baseEl.style.display	= "none";
 	this._container.appendChild(this._stickEl);
-	this._stickEl.style.position	= "absolute";
+	this._stickEl.style.position	= "relative";
 	this._stickEl.style.display	= "none";
 
 	this._pressed	= false;
@@ -381,7 +381,7 @@ VirtualJoystick.prototype._move = function(style, x, y)
 		}
 	} else {
 		style.left = x + 'px';
-		style.top = y - 50 + 'px';
+		style.top = y + 'px';
 	}
 }
 
