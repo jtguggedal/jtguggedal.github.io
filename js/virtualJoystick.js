@@ -1,5 +1,5 @@
 
-function getOffset(el) {
+/*function getOffset(el) {
   el = el.getBoundingClientRect();
   return {
     left: el.left + window.scrollX,
@@ -8,7 +8,7 @@ function getOffset(el) {
 }
 
 var joystickPos = document.getElementById('joystick-container');
-var yOffset = getOffset(joystickPos).top;
+var yOffset = getOffset(joystickPos).top;*/
 
 var VirtualJoystick	= function(opts)
 {
