@@ -4,7 +4,7 @@ function getOffset(el) {
   return {
     left: el.left + window.scrollX,
     top: el.top + window.scrollY
-  };
+  }; 
 }
 
 var joystickPos = document.getElementById('joystick-container');
