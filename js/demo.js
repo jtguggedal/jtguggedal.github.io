@@ -213,7 +213,7 @@
                     $('#points').text(score);
                 }
 
-                if(score <= 10) {
+                if(score <= 0) {
                     gameOn = 0;
                     gameLost();
                 }
