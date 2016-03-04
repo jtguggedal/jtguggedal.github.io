@@ -209,7 +209,7 @@
             function notificationCallback(dataArray) {
 
                 if((dataArray[0] == 1 || dataArray[1] == 1 || dataArray[2] == 1 || dataArray[3] == 1) && (gameOn == 1)) {
-                    score -= 1;
+                    score--;
                     $('#points').text(score);
                     console.log(score);
                 }
