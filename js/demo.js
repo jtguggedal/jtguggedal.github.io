@@ -10,7 +10,8 @@
 
             var priorityPacket = 0;
 
-            var score = 0;
+            var gameOn = 1;
+            var score = 10;
                
                           
             $('#LEDp').on("click change tapend", function() {
@@ -207,8 +208,34 @@
 
             function notificationCallback(dataArray) {
 
-                if(dataArray[0] == 1 || dataArray[1] == 1 || dataArray[2] == 1 || dataArray[3] == 1)
-                    score += 1;
-                $('#points').text(score);
+                if((dataArray[0] == 1 || dataArray[1] == 1 || dataArray[2] == 1 || dataArray[3] == 1) && (gameOn == 1)) {
+                    score -= 1;
+                    $('#points').text(score);
+                }
+
+                if(score <= 10) {
+                    gameOn = 0;
+                    gameLost();
+                }
+            }
+
+            function gameLost() {   
+                gameOn == 0;
+
+                charVal[10] = 0;
+                charVal[11] = 0;
+                charVal[12] = 0;
+                charVal[13] = 0;
+
+
+                priorityWrite(charVal);
+
+                writePermission = 0;
+
+                $('#points').text('You lost :(');
+                $('#points').css('color', 'red');
+
+
+
             }
 
