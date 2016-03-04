@@ -167,6 +167,8 @@
                 charVal[12] = 0;
                 charVal[13] = 0;
 
+                priorityWrite(charVal);
+
             });
 
             $('#control-button').on('touchstart', function(event) {
