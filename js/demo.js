@@ -206,7 +206,9 @@
             });
 
             function notificationCallback(dataArray) {
-                score += 1;
+
+                if(dataArray[0] == 1 || dataArray[1] == 1 || dataArray[2] == 1 || dataArray[3] == 1)
+                    score += 1;
                 $('#points').text(score);
             }
 
