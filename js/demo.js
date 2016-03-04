@@ -204,7 +204,7 @@
 
                     setTimeout(function() {
                         coolDown = 0;
-                    }, 2000);
+                    }, 500);
                 }
             }
 
