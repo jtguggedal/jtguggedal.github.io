@@ -12,6 +12,7 @@
 
             var gameOn = 1;
             var score = 10;
+            var coolDown = 0;
                
                           
             $('#LEDp').on("click change tapend", function() {
@@ -158,17 +159,6 @@
 
             $('#joystick-container').on("touchend", function() {
       
-                /*$('#pos-x').html('x: 0px reset');
-                $('#pos-y').html('y: 0px reset ');
-
-                $('#speed').html('Hastighet: 0');
-                $('#angle').html('Vinkel: 0');
-
-                $('#output-left').html('Pådrag V: 0');
-                $('#output-right').html('Pådrag H: 0');
-
-                $("#sliderLeft").val(0);
-                $("#sliderRight").val(0);*/
 
                 tapEnd = 1;
 
@@ -176,19 +166,6 @@
                 charVal[11] = 0;
                 charVal[12] = 0;
                 charVal[13] = 0;
-
-
-                priorityWrite(charVal);
-                    /*setTimeout(function(){
-                        if(writePermission)
-                            readWriteCharacteristic.writeValue(charVal);
-                        else {
-                            setTimeout(function(){
-                                readWriteCharacteristic.writeValue(charVal);
-                            }, 300);
-                        }
-
-                    }, 100);*/ 
 
             });
 
@@ -206,24 +183,27 @@
                 priorityWrite(charVal);
             });
 
-            function notificationCallback(dataArray) {
+            function notificationCallback(dataArray) {  
 
-                if((dataArray[0] == 1 || dataArray[1] == 1 || dataArray[2] == 1 || dataArray[3] == 1) && (gameOn == 1) && (wait != 1)) {
-                    score--;
-                    $('#points').text(score);
-                    console.log(score);
+                if((coolDown != 1)) {
+
+                    if((dataArray[0] == 1 || dataArray[1] == 1 || dataArray[2] == 1 || dataArray[3] == 1) && (gameOn == 1)) {
+                        score--;
+                        $('#points').text(score);
+                        console.log(score);
+                    }
+
+                    if(score <= 0) {
+                        gameOn = 0;
+                        gameLost();
+                    }
+
+                    coolDown = 1;
+
+                    setTimeout(function() {
+                        coolDown = 0;
+                    }, 2000);
                 }
-
-                if(score <= 0) {
-                    gameOn = 0;
-                    gameLost();
-                }
-
-                wait = 1;
-
-                setTimeout(function() {
-                    wait = 0;
-                }, 2000);
             }
 
 
