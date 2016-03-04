@@ -40,3 +40,14 @@
     border-radius: 50%;
 
 }
+
+#points {
+    font-size:60px;
+    color: white;
+    text-align: center;
+    font-weight: 700;
+    position: fixed;
+    top: 30px;
+    width: 100%;
+}
+

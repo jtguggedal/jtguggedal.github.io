@@ -10,7 +10,7 @@
 
             var priorityPacket = 0;
 
-
+            var score = 0;
                
                           
             $('#LEDp').on("click change tapend", function() {
@@ -192,7 +192,7 @@
             });
 
             $('#control-button').on('touchstart', function(event) {
-                $(this).css({'box-shadow': '0px 0px 10px 3px rgba(0,0,0, 0.2)', 'height': '115px', 'width': '115px', 'ease' : '0.2'});
+                $(this).css({'box-shadow': '0px 0px 10px 3px rgba(0,0,0, 0.2)', 'height': '115px', 'width': '115px', 'transition-timing-function' : 'ease'});
                 setBit(1, 0, 1);
                 priorityWrite(charVal);
                 event.preventDefault();
@@ -200,9 +200,13 @@
             });
 
             $('#control-button').on('touchend', function() {
-                $(this).css({'box-shadow': '0px 0px 30px 10px rgba(0,0,0, 0.15)', 'height': '120px', 'width': '120px', '-webkit-transition-timing-function' : 'ease'});
+                $(this).css({'box-shadow': '0px 0px 30px 10px rgba(0,0,0, 0.15)', 'height': '120px', 'width': '120px', 'transition-timing-function' : 'ease'});
                 setBit(1,0,0);
                 priorityWrite(charVal);
             });
 
+            function notificationCallback(dataArray) {
+                score += 1;
+                $('#points').text(score);
+            }
 

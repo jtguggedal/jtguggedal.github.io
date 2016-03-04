@@ -134,8 +134,14 @@ function handleNotification(event) {
     let value = event.target.value;
     value = value.buffer ? value : new DataView(value);
 
-    // *** Insert callback function for easier access to notification events here? ****
+    // Checks if notificationCallback exists, and if it does, calls it with the received data array as argument
+    if (typeof notificationCallback === "function") { 
+        var valueArray = new Uint8Array(20);
+        for(var i = 0; i < 20; i++)
+            valueArray[i] = value.getUint8(i);
 
+        notificationCallback(valueArray);
+    }
 
     // Testing, testing...
             var bg_1, 
