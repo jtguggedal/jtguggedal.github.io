@@ -208,7 +208,7 @@
 
             function notificationCallback(dataArray) {
 
-                if((dataArray[0] == 1 || dataArray[1] == 1 || dataArray[2] == 1 || dataArray[3] == 1) && (gameOn == 1)) {
+                if((dataArray[0] == 1 || dataArray[1] == 1 || dataArray[2] == 1 || dataArray[3] == 1) && (gameOn == 1) && (wait != 1)) {
                     score--;
                     $('#points').text(score);
                     console.log(score);
@@ -218,7 +218,14 @@
                     gameOn = 0;
                     gameLost();
                 }
+
+                wait = 1;
+
+                setTimeout(function() {
+                    wait = 0;
+                }, 2000);
             }
+
 
             function gameLost() {   
                 gameOn == 0;
@@ -234,7 +241,7 @@
                 writePermission = 0;
 
                 $('#points').text('You lost :(');
-                $('#points').css('color', 'red');
+                $('#points').css({'color': 'red'});
 
 
 
