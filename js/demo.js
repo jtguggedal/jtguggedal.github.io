@@ -222,8 +222,8 @@
 
                 writePermission = 0;
 
-                $('#points').text('You lost :(');
-                $('#points').css({'color': 'red'});
+                $('#points').text('You won!');
+                $('#points').css({'color': 'green'});
 
 
 
