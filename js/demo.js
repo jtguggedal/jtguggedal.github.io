@@ -12,7 +12,9 @@
 
             var gameOn = 1;
             var score = 10;
-            var coolDown = 0;
+            var coolDownStatus = 0;
+
+            var local = 0;
                
                           
             $('#LEDp').on("click change tapend", function() {
@@ -141,7 +143,7 @@
 
 
 
-                if( readWriteCharacteristic &&  (writePermission == 1) && (priorityPacket != 1)) {
+                if( readWriteCharacteristic &&  (writePermission == 1) && (priorityPacket != 1) && !local) {
                     writePermission = 0;
 
                     return readWriteCharacteristic.writeValue(charVal)
@@ -150,6 +152,7 @@
                             console.log('Sendt: ' + charVal);
                     });
                 } else {
+                    // Pushes arrays that were never sent to a discarder packets array to use in debugging
                     discardedPackets.push(charVal);
                 }
             });
@@ -171,23 +174,9 @@
 
             });
 
-            $('#control-button').on('touchstart', function(event) {
-                $(this).css({'box-shadow': '0px 0px 10px 3px rgba(0,0,0, 0.2)', 'height': '115px', 'width': '115px', 'transition-timing-function' : 'ease'});
-                setBit(1, 0, 1);
-                priorityWrite(charVal);
-                event.preventDefault();
-
-            });
-
-            $('#control-button').on('touchend', function() {
-                $(this).css({'box-shadow': '0px 0px 30px 10px rgba(0,0,0, 0.15)', 'height': '120px', 'width': '120px', 'transition-timing-function' : 'ease'});
-                setBit(1,0,0);
-                priorityWrite(charVal);
-            });
-
             function notificationCallback(dataArray) {  
 
-                if((coolDown != 1)) {
+                if(coolDownStatus != 1) {
 
                     if((dataArray[0] == 1 || dataArray[1] == 1 || dataArray[2] == 1 || dataArray[3] == 1) && (gameOn == 1)) {
                         score--;
@@ -199,12 +188,6 @@
                         gameOn = 0;
                         gameLost();
                     }
-
-                    coolDown = 1;
-
-                    setTimeout(function() {
-                        coolDown = 0;
-                    }, 500);
                 }
             }
 
@@ -217,15 +200,94 @@
                 charVal[12] = 0;
                 charVal[13] = 0;
 
-
-                priorityWrite(charVal);
-
-                writePermission = 0;
-
-                $('#points').text('You won!');
-                $('#points').css({'color': 'green'});
+                if(!local) {
+                    priorityWrite(charVal);
+                    writePermission = 0;
+                }
+                $('#points').text('You lost :(');
+                $('#points').css({'color': 'red'});
 
 
 
             }
+
+            // Function to add 'shooting' functionality. Is called when the fire button is pushed.
+            function shoot() {
+                if(!coolDownStatus) {
+                    if(!local) {
+                        setBit(1, 0, 1);
+                        priorityWrite(charVal);
+                    }
+                    coolDown();
+                }
+
+            }
+
+            // Function to ensure that a player can't shoot again before a certain time has passed. The 'cool-down time' is set in the timeOute variable [ms]
+            function coolDown() {
+
+                var timeOut = 500;
+                var e = document.getElementById("cool-down-bar");   
+                var width = 1;
+                var interval = setInterval(coolDownCounter, timeOut/100);
+                coolDownStatus = 1;
+                function coolDownCounter() {
+                    if (width >= 100) {
+                        clearInterval(interval);
+                        coolDownStatus = 0;
+                    } else {
+                        width++; 
+                        e.style.width = width + '%'; 
+                    }
+                }
+            }
+
+
+            // Function to restart the game
+            function restartGame() {
+
+                gameOn = 1;
+                score = 10;
+                coolDownStatus = 0;
+                writePermission = 1;
+                $('#points').text(score);
+                $('#points').css('color', 'white');
+
+            }
+
+
+            //
+            //** Buttons and actions
+            //
+
+            $('#control-button').on('touchstart mousedown', function(event) {
+                $(this).css({'box-shadow': '0px 0px 10px 3px rgba(0,0,0, 0.2)', 'height': '115px', 'width': '115px', 'transition-timing-function' : 'ease'});
+                event.preventDefault();
+                if(!coolDownStatus)
+                    shoot();
+
+            });
+
+            $('#control-button').on('touchend mouseup', function() {
+                $(this).css({'box-shadow': '0px 0px 30px 10px rgba(0,0,0, 0.15)', 'height': '120px', 'width': '120px', 'transition-timing-function' : 'ease'});
+                if(!local) {
+                    setBit(1,0,0);
+                    priorityWrite(charVal);
+                }
+            });
+
+
+            $('#restart-game').on('touchstart mousedown', function() {
+                restartGame();
+            });
+
+
+            // This 'sim-hit' button triggers the same events as would be the case if the player's car was 'hit' by IR
+            $('#sim-hit').on('touchstart mousedown', function() {
+                var hitArray = new Uint8Array(20);
+                hitArray[1] = 1;
+                notificationCallback(hitArray);
+            });
+
+
 

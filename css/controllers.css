@@ -41,6 +41,19 @@
 
 }
 
+#sim-hit, #restart-game {
+    display: inline-block;
+    padding: 5px;
+    margin-top: 40px;
+    background-color: white;
+    box-shadow: 0px 0px 30px 0px rgba(0,0,0, 0.1);
+    border: 1px solid #0b4251;
+    border-radius: 2px;
+    text-align: center;
+    cursor: pointer;
+
+}
+
 #points {
     font-size:60px;
     color: white;
@@ -51,3 +64,20 @@
     width: 100%;
 }
 
+#cool-down-bar-container {
+    position: absolute;
+    width: 200px;
+    height: 20px;
+    left: 50%;
+    margin-left: -100px;
+    
+
+}
+
+#cool-down-bar {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: #4CAF50;
+    border-radius: 5px;
+}
