@@ -174,6 +174,21 @@
 
             });
 
+
+            function createGame() {
+                $('#status-create-game').text('Creating game...');
+
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (xhttp.readyState == 4 && xhttp.status == 200) {
+                        document.getElementById("status-create-game").innerHTML = xhttp.responseText;
+                    }
+                };
+                xhttp.open("GET", "http://www.nrk.no", true);
+                xhttp.send();
+
+            }
+
             function notificationCallback(dataArray) {  
 
                 if(coolDownStatus != 1) {
@@ -278,14 +293,17 @@
                 }
             });
 
+            $('#btn-create-game').on('touchstart mousedown', function() {
+                createGame();
+            })
 
-            $('#restart-game').on('touchstart mousedown', function() {
+            $('#btn-restart-game').on('touchstart mousedown', function() {
                 restartGame();
             });
 
 
             // This 'sim-hit' button triggers the same events as would be the case if the player's car was 'hit' by IR
-            $('#sim-hit').on('touchstart mousedown', function() {
+            $('#btn-sim-hit').on('touchstart mousedown', function() {
                 var hitArray = new Uint8Array(20);
                 hitArray[1] = 1;
                 notificationCallback(hitArray);

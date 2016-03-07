@@ -41,7 +41,7 @@
 
 }
 
-#sim-hit, #restart-game {
+#btn-create-game, #btn-sim-hit, #btn-restart-game {
     display: inline-block;
     padding: 5px;
     margin-top: 40px;
