@@ -235,9 +235,11 @@
                     if (width >= 100) {
                         clearInterval(interval);
                         coolDownStatus = 0;
+                        e.style.backgroundColor = 'green';
                     } else {
                         width++; 
                         e.style.width = width + '%'; 
+                        e.style.backgroundColor = 'orange';
                     }
                 }
             }
@@ -270,7 +272,7 @@
 
             $('#control-button').on('touchend mouseup', function() {
                 $(this).css({'box-shadow': '0px 0px 30px 10px rgba(0,0,0, 0.15)', 'height': '120px', 'width': '120px', 'transition-timing-function' : 'ease'});
-                if(!local) {
+                if(!local && !coolDownStatus) {
                     setBit(1,0,0);
                     priorityWrite(charVal);
                 }
