@@ -184,7 +184,7 @@
                         document.getElementById("status-create-game").innerHTML = xhttp.responseText;
                     }
                 };
-                xhttp.open("GET", "http://www.nrk.no", true);
+                xhttp.open("GET", "https://www.nrk.no", true);
                 xhttp.send();
 
             }
