@@ -242,6 +242,7 @@
                         clearInterval(repeat);
                         $('#message-container').fadeOut('slow');
                         $('.wait-till-game').show('fast');
+                        $('#joystick-container).show('fast');
                     }
                 }
             }
