@@ -1,0 +1,126 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-beta1/jquery.js"></script>   
+    <script type="text/javascript" src="js/jquery.mobile-events.js"></script>
+    <script src="js/gatt.js"></script>    
+    <script src="js/setBit.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="stylesheet.css"></link>
+    <link rel="stylesheet" type="text/css" href="css/controllers.css"></link>
+
+    <title>Physical Web Toy</title>
+
+</head>
+
+    <body>
+        <div id="orientation-message">
+            <div>Vennligst snu enheten 90&#176;</div>
+        </div>
+        <div id="connectionStatus">Status</div>
+
+        <div id="fullscreen" onclick="">Klikk for fullskjerm</div>
+
+        <div class="column">
+		<div class="panel">
+			<a href='home.html'><div class="menu" id="home">Home</div></a>
+			<a href='joy.html'><div class="menu" id="settings">Main</div></a>
+			<a href='about.html'><div class="menu" id="about">About</div></a>
+			
+        </div>
+		<div class="pull-down-menu">Menu</div>
+            <h1>Welcome to Physical Web Toy!</h1>
+			<p id="welcome">You can now connect to a robot car in your vicinity, control it using your smart device
+			and play laser tag with other people!</p>
+         
+            <h2 onclick="game_init();" id='connect'>Connect</h2>
+            <h2 onclick="disconnect();" id='disconnect'>Disconnect</h2>
+
+
+        </div>
+		<div id="footer">
+		    <a href="https://google.github.io/physical-web/"><img src="pics/physical_web_logo.png" class="imglink"></img></a>
+			<a href="https://www.ntnu.edu/"><img src="pics/NTNULogo.png" id="ntnu" class="imglink"></img></a>
+			<a href="http://www.nordicsemi.no"><img src="pics/NordicSemiLogo.png" id="nordiclogo" class="imglink"></img></a>
+		</div>
+       
+		<script>
+		$(document).ready(function(){
+			$('.pull-down-menu').click(function() {		// Function to slide down the menu selector
+				$('.panel').slideToggle('slow');
+				});
+			
+			$('.menu').hover(							// Makes the menus change color while hovering over them
+			function(){
+				$(this).addClass('active');
+			},
+			function(){
+				$(this).removeClass('active');    
+			}
+			);
+		});
+
+
+
+        //*** Initialize game **/
+
+        function game_init() {   
+            var time = new Date();
+            var e = time.getTime();
+
+            connect();
+            $('.column').load('include/controllers.html?t=' + e);    
+        }
+
+
+		</script>
+
+ 
+
+        <script>
+            // Funksjon for å vise siden i fullskjerm
+            function toggleFullscreen(elem) {
+              elem = elem || document.documentElement;
+              if (!document.fullscreenElement && !document.mozFullScreenElement &&
+                !document.webkitFullscreenElement && !document.msFullscreenElement) {
+                if (elem.requestFullscreen) {
+                  elem.requestFullscreen();
+                } else if (elem.msRequestFullscreen) {
+                  elem.msRequestFullscreen();
+                } else if (elem.mozRequestFullScreen) {
+                  elem.mozRequestFullScreen();
+                } else if (elem.webkitRequestFullscreen) {
+                  elem.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+                }
+                $('#fullscreen').html("Avslutt fullskjerm");
+              } else {
+                if (document.exitFullscreen) {
+                  document.exitFullscreen();
+                } else if (document.msExitFullscreen) {
+                  document.msExitFullscreen();
+                } else if (document.mozCancelFullScreen) {
+                  document.mozCancelFullScreen();
+                } else if (document.webkitExitFullscreen) {
+                  document.webkitExitFullscreen();
+                }
+                $('#fullscreen').html("Klikk for fullskjerm");
+              }
+            }
+
+            document.getElementById('fullscreen').addEventListener('click', function() {
+              toggleFullscreen();
+            });
+
+            
+
+        </script>
+
+
+		
+
+    </body>
+</html>
