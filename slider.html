@@ -1,0 +1,395 @@
+
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-beta1/jquery.js"></script>    
+    <script src="js/setBit.js"></script>
+
+    <title>Web Bluetooth</title>
+    
+    <style>
+    	@import url(https://fonts.googleapis.com/css?family=Open+Sans|Roboto:400,500,700,300);
+    	body {
+    		font-family: "Roboto";
+            margin: 0;
+            padding: 0;
+    	}
+    	div {
+    		margin: 10px;
+    	}
+    	
+    	h1, h3 {
+    		text-align: center;
+    	}
+    	
+    	ul {
+    		margin-top: 10px;
+    		margin-bottom: 30px;
+    		font-size: 14px;
+    	}
+    	
+    	label {
+    		display: inline-block;
+    		width: 120px;
+    		font-weight: 500;
+    	}
+    	
+    	input[type="text"] {
+            width: 225px;
+    		padding: 3px;
+            font-size: 12px;
+    	}
+    	
+    	button {
+    		padding: 10px;
+    		margin-left: 120px;
+    		border: 1px solid white;
+    		font-weight: 700;
+    		box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.1);
+            float: 
+    	}
+    	
+    	#main {
+    		width: 100%;
+            max-width: 800px;
+            height: 100%;
+    		border: px solid #DDD;
+    		padding: 20px;
+            font-size: 14px;
+            margin: 0;
+    	}
+    	
+    	.slider-container {
+            display: inline-block;
+            float: left;
+	        margin: 0 auto;
+			width: 100px;
+			text-align: center;		
+    	}
+    	
+    	#ledon, #ledoff {
+    		color: white;
+    		margin-top: 20px;
+    		margin-bottom: 20px;
+    	}
+    	
+    	#ledon {
+    		background-color: #006600;
+    	}
+    	
+    	#ledoff {
+    		background-color: #cc0000;
+    	}
+
+        input[type=range] {
+            width: 20px;
+            height: 150px;
+            margin-top: 0px;
+            -webkit-appearance: slider-vertical;
+
+        }
+
+        #slider-value {
+            text-align: center;
+            font-size: 20px;
+            font-weight: 700;
+
+        }
+        #orientation-message {
+                display: none;
+
+        }
+
+        #fullscreen {
+            display: block;
+            cursor: pointer;
+            position: fixed;
+            top: 0px;
+            right: 0px;
+            padding: 2px;
+            background-color: #222;
+            color: white;
+
+
+        }
+
+        @media screen and (orientation:portrait)
+        {
+           #orientation-message {
+                display: block;
+                position: fixed;
+                width: 100%;
+                height: 100%;
+                font-size: 25px;
+                background-color: rgba(0, 0, 0, 0.8);
+                color: white;
+                margin: 0;
+                padding: 0;
+                margin-top: -20px;
+                vertical-align: middle;
+                text-align: center;
+                font-weight: 700;
+                padding-top: 200px;
+
+           }
+        }
+    
+    </style>
+    <script>
+      // If we're running on a real web server (as opposed to localhost, which is whitelisted),
+      // then change the protocol to HTTPS.
+      // See https://goo.gl/lq4gCo for an explanation as to why this is needed for some features.
+      (function() {
+        var isLocalhost = !!(window.location.hostname === 'localhost' ||
+          // [::1] is the IPv6 localhost address.
+          window.location.hostname === '[::1]' ||
+          // 127.0.0.1/8 is considered localhost for IPv4.
+          window.location.hostname.match(/^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/));
+        if (window.location.protocol === 'http:' && !isLocalhost) {
+          // Redirect to https: if we're currently using http: and we're not on localhost.
+          window.location.protocol = 'https:';
+        }
+      })();
+
+      window.addEventListener('error', function(error) {
+        if (ChromeSamples && ChromeSamples.setStatus) {
+          ChromeSamples.setStatus(error.message + ' (Nettleseren din støtter ikke Web Bluetooth.)');
+          error.preventDefault();
+        }
+      });
+    </script>
+
+
+
+
+
+  </head>
+
+  <body>
+    <div id="orientation-message">
+        <div>Vennligst snu enheten 90&#176;</div>
+    </div>
+  	<div id="main">
+        <div id="fullscreen" onclick="">Klikk for fullskjerm</div>
+        <div class="slider-container">
+            <p id="slider-value">0%</p>
+
+            <input type="range" id="slider" min="0" max="100" value="0" width="300px">
+        </div>
+
+        <div id="config">
+    		<h1>Styring av LED med slider</h1>
+    		For å bruke Web Bluetooth til å styre LED med slider:
+    		<form>
+    		  <div><label for="service">Service: </label><input id="service" type="text" list="services" autofocus placeholder="Bluetooth Service" value="00001523-1212-efde-1523-785feabcd123"></div>
+    		  <div><label for="service">Characteristic: </label><input id="characteristic" type="text" list="characteristics" placeholder="Bluetooth Characteristic" value="00001525-1212-efde-1523-785feabcd123"></div>
+    		  <div><button id="connect" >Koble til enhet</button></div>
+
+    		</form>
+        </div>
+
+
+
+		<script>
+		  var ChromeSamples = {
+			log: function() {
+			  var line = Array.prototype.slice.call(arguments).map(function(argument) {
+				return typeof argument === 'string' ? argument : JSON.stringify(argument);
+			  }).join(' ');
+
+			  document.querySelector('#log').textContent += line + '\n';
+			},
+
+			clearLog: function() {
+			  document.querySelector('#log').textContent = '';
+			},
+
+			setStatus: function(status) {
+			  document.querySelector('#status').textContent = status;
+			},
+
+			setContent: function(newContent) {
+			  var content = document.querySelector('#content');
+			  while(content.hasChildNodes()) {
+				content.removeChild(content.lastChild);
+			  }
+			  content.appendChild(newContent);
+			}
+		  };
+		</script>
+
+		<h3>Logg</h3>
+		<div id="output" class="output">
+		  <div id="content"></div>
+		  <div id="status"></div>
+		  <pre id="log"></pre>
+		</div>
+		
+		
+		
+		
+		
+	<!-- // END OF MAIN -->
+	</div>
+
+  
+    
+      <script>
+                /******  START WEB BLUETOOTH-KODE   *****/
+      			
+                // Setter en variabel for å lagre karakteristikken som skal brukes videre
+                // i funksjoner utenfor selve tilkoblingen til enheten.
+                // Variabelen settes utenfor alle funksjoner slik at den skal være global, 
+                // og tilgjengelig i alle funksjoner.
+      			var myCharacteristic;
+                var status = 0;
+      			
+
+
+                // Funksjonen 'onFormSubmit' trigges når 'Koble til enhet'-knappen trykkes
+                // Se egen funksjon for dette rett før </body>-taggen i denne filen
+      			function onFormSubmit() {
+				    'use strict';
+
+                    // Henter service-UUID som er oppgitt i tekstboksen for dette
+                    let serviceUuid = document.getElementById('service').value;
+                    if (serviceUuid.startsWith('0x')) {
+                        serviceUuid = parseInt(serviceUuid, 16);
+                    }
+
+                    // Henter karakteristikk-UUID som er oppgitt i tekstboksen for dette
+                    let characteristicUuid = document.getElementById('characteristic').value;
+                    if (characteristicUuid.startsWith('0x')) {
+                        characteristicUuid = parseInt(characteristicUuid, 16);
+                    }
+
+                    // Søker etter enheter som matcher valgt service-UUID
+                    log('Søker etter enheter med valgt service og characteristic...');
+                    navigator.bluetooth.requestDevice({filters: [{services: [serviceUuid]}]})
+                    .then(device => device.connectGATT())
+                    .then(server => server.getPrimaryService(serviceUuid))
+
+                    // Enhetene er nå koblet sammen, og nettleseren leter etter karakteristikk som matcher den ønskede UUID
+                    .then(service => service.getCharacteristic(characteristicUuid))
+                    .then(characteristic => {
+                        // Lagrer karakteristikken som matcher i variabel slik at den kan brukes i andre funksjoner.
+                		myCharacteristic = characteristic;
+                        status = 2;
+                        log('Tilkoblet, LED kan nå styres.');
+
+                    })
+                    // Dersom feil skjer i løpet av oppkoblingen, skrives feilen til loggen
+                    .catch(error => {
+                        log('Argh! ' + error);
+                    });
+                }
+    			
+
+                var charVal = new Uint8Array(20);
+
+				//******** Funksjon for å styre LEDene   ******/
+
+                // Bruker jQuery for å registrere når HTML-elementet med ID 'slider' endres.
+                // Når endring skjer, kjøres funksjonen.
+                $('#slider').on("change mousemove touchmove", function() {
+
+                    // Lagrer nå-verdien fra slideren i variabelen 'sliderVal' (med jQuery-selector)
+                    var sliderVal = $(this).val();
+
+                    // Sjekker at tilkobling ble opprettet tidligere
+				    if(myCharacteristic) {
+
+                        // Sjekker i hvilket intervall slider-verdien er, og sender korresponderende verdi
+                        // via BLE til firmware. 
+                        // Setter 1. bit lik 1 for å tenne 1. LED osv.
+
+
+                        if(sliderVal > 20)
+                            setBit(1, 3, 1);        // 0001
+                        if(sliderVal > 40)      
+                            setBit(1, 2, 1);        // 0010
+                        if(sliderVal > 60)
+                            setBit(1, 1, 1);        // 0100
+                        if(sliderVal > 80)
+                            setBit(1, 0, 1);        // 1000
+
+                        myCharacteristic.writeValue(charVal);
+                        //console.log(charVal);
+                    }
+                    // Skriver veriden fra slideren til HTML-elementet med ID 'slider-value'
+                    $('#slider-value').html(sliderVal + '%');
+
+                });
+                Object.defineProperty(window, "status", { set: function(v) { 
+                      
+                } } );
+        </script>
+
+
+        <script>
+            // Funksjon for å vise siden i fullskjerm
+            function toggleFullscreen(elem) {
+              elem = elem || document.documentElement;
+              if (!document.fullscreenElement && !document.mozFullScreenElement &&
+                !document.webkitFullscreenElement && !document.msFullscreenElement) {
+                if (elem.requestFullscreen) {
+                  elem.requestFullscreen();
+                } else if (elem.msRequestFullscreen) {
+                  elem.msRequestFullscreen();
+                } else if (elem.mozRequestFullScreen) {
+                  elem.mozRequestFullScreen();
+                } else if (elem.webkitRequestFullscreen) {
+                  elem.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+                }
+                $('#fullscreen').html("Avslutt fullskjerm");
+              } else {
+                if (document.exitFullscreen) {
+                  document.exitFullscreen();
+                } else if (document.msExitFullscreen) {
+                  document.msExitFullscreen();
+                } else if (document.mozCancelFullScreen) {
+                  document.mozCancelFullScreen();
+                } else if (document.webkitExitFullscreen) {
+                  document.webkitExitFullscreen();
+                }
+                $('#fullscreen').html("Klikk for fullskjerm");
+              }
+            }
+
+            document.getElementById('fullscreen').addEventListener('click', function() {
+              toggleFullscreen();
+            });
+
+            
+
+        </script>
+
+            
+          
+
+
+        <script>
+          document.querySelector('form').addEventListener('submit', function(event) {
+            event.stopPropagation();
+            event.preventDefault();
+
+            status = 1;
+
+            if (!navigator.bluetooth) {
+              ChromeSamples.setStatus('Web Bluetooth API er ikke tilgjengelig.\n' +
+                'Husk å aktivere Web Bluetooth-flagget: chrome://flags');
+            } else {
+              ChromeSamples.clearLog();
+              onFormSubmit();
+            }
+          });
+          log = ChromeSamples.log;
+        </script>
+
+    
+  </body>
+</html>
