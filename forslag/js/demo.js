@@ -248,11 +248,11 @@
             }
 
             function restartGame() {
-
+                allowCreate = 1;
                 var time = new Date();
                 var e = time.getTime();
 
-                connect();
+                //connect();
                 $('.column').load('include/controllers.html?t=' + e);    
             }
 
