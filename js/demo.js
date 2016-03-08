@@ -158,6 +158,7 @@
                 charVal[12] = 0;
                 charVal[13] = 0;
 
+                        console.log('touchend joystick');
                 priorityWrite(charVal);
 
             });
@@ -296,6 +297,7 @@
                 charVal[13] = 0;
 
                 if(!local) {
+                        console.log('lost');
                     priorityWrite(charVal);
                     writePermission = 0;
                 }
@@ -312,6 +314,7 @@
                     if(!local) {
                         setBit(1, 0, 1);
                         priorityWrite(charVal);
+                        console.log('shoot');
                     }
                     coolDown();
                 }
@@ -371,6 +374,7 @@
                 if(!local) {
                     setBit(1,0,0);
                     priorityWrite(charVal);
+                    console.log('shoot up');
                 }
             });
 
