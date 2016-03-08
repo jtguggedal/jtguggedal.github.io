@@ -20,7 +20,7 @@
 
             //** Game settings
             var score = 10;                     // Number of lives each player starts with
-            var timeToJoin = 10;                 // Interval from games is created until it starts [s]
+            var timeToJoin = 20;                 // Interval from games is created until it starts [s]
             var coolDownPeriod = 500;           // Shortest allowed interval between shots fired [ms]
             var coolDownStatus = 0;             // Players starts with no need of 'cool down'
             var gameOn = 0;                     // Game is by default not started automatically
@@ -32,7 +32,7 @@
 
 
             //**
-            //     Joystick, based on VirtualJoystick 
+            //     Joystick, based on nipplejs 
             //**
 
 
@@ -182,14 +182,14 @@
                     $('#message').text('Creating...');
 
                     // Creates XMLHttpRequest object and sends request to PHP page that creates game ID and entry in database
-                   /*var xhttp = new XMLHttpRequest();
+                    var xhttp = new XMLHttpRequest();
                     xhttp.onreadystatechange = function() {
                         if (xhttp.readyState == 4 && xhttp.status == 200) {
                             document.getElementById("message").innerHTML = xhttp.responseText;
                         }
                     };
                     xhttp.open("GET", "php/game.php?t=create&ttj=" + timeToJoin, true);
-                    xhttp.send();*/
+                    xhttp.send();
 
                     // Starts timer before startgame() is called
 
@@ -364,7 +364,7 @@
 
             $('#control-button').on('touchend mouseup', function() {
                 $(this).css({'box-shadow': '0px 0px 30px 10px rgba(0,0,0, 0.15)', 'height': '120px', 'width': '120px', 'transition-timing-function' : 'ease'});
-                if(!local && !coolDownStatus) {
+                if(!local) {
                     setBit(1,0,0);
                     priorityWrite(charVal);
                 }
