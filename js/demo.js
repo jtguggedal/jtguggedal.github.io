@@ -275,6 +275,7 @@
                 // var test = dataArray.length == prevNotificationArray.length && dataArray.every(function(v,i) { return v === prevNotificationArray[i]});
                 // console.log(test);
                 if(gameOn && (!preventShot)) {
+                    preventShot = 1;
                     setTimeout(function() {
                         preventShot = 0;
                     }, timeBetweenHits);
