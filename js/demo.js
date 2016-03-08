@@ -266,9 +266,11 @@
             //      Game functions 
             //**
 
+            var prevNotificationArray = new Uint8Array(20);
+
             function notificationCallback(dataArray) {  
 
-                if(coolDownStatus != 1) {
+                if(coolDownStatus != 1 && dataArray != prevNotificationArray) {
 
                     if((dataArray[0] == 1 || dataArray[1] == 1 || dataArray[2] == 1 || dataArray[3] == 1) && (gameOn == 1)) {
                         score--;
@@ -285,6 +287,8 @@
 
 
                 }
+
+                prevNotificationArray = dataArray;
             }
 
 
