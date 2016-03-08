@@ -293,11 +293,12 @@
             //      Game functions 
             //**
 
-            var prevNotificationArray;
+            var prevNotificationArray = [];
 
             function notificationCallback(dataArray) {  
-
-                if(gameOn && (dataArray.equals(prevNotificationArray))) {
+                var test = dataArray.length==prevNotificationArray.length && dataArray.every(function(v,i) { return v === prevNotificationArray[i]});
+                console.log(test);
+                if(gameOn && (!test)) {
 
                     if((dataArray[0] == 1 || dataArray[1] == 1 || dataArray[2] == 1 ) && (gameOn == 1)) {
                         score--;
