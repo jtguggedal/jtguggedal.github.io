@@ -280,6 +280,7 @@
                         gameLost();
                     }
 
+                    console.log('Notification mottatt: ' + dataArray);
 
 
                 }
