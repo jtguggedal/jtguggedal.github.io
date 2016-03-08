@@ -1,73 +1,63 @@
+            
+            
+            //**
+            //      Gloabl settings
+            //**
 
+
+            //** Array for BLE packets
             var charVal = new Uint8Array(20);
- 
-            var allowCreate = 1;
 
-            var coolDownPeriod = 1000;
-
-
+            //** Gloabl joystick variables
             var outputRight;
             var outputLeft;
             var tapEnd = 1;
 
-            var writePermission = 1;
-            var discardedPackets = [];
+            //** Global variables needed to control and monitor the data flow over BLE
+            var writePermission = 1;            // When set to 1, the players can control the cars
+            var discardedPackets = [];          // Array to hold arrays that are created by touch events but never sent over BLE, kind of equivalent to packet loss
+            var priorityPacket = 0;             // Events like button press, that happen rarely compared to joystick events, are given priority to ensure that the DK gets the information
 
-            var priorityPacket = 0;
+            //** Game settings
+            var score = 10;                     // Number of lives each player starts with
+            var timeToJoin = 1;                 // Interval from games is created until it starts [s]
+            var coolDownPeriod = 500;           // Shortest allowed interval between shots fired [ms]
+            var coolDownStatus = 0;             // Players starts with no need of 'cool down'
+            var gameOn = 0;                     // Game is by default not started automatically
+            var allowCreate = 1;                // Players are allowed to create their own games
 
-            var gameOn = 1;
-            var score = 10;
-            var coolDownStatus = 0;
+            //** For local testing, set to 1
+            var local = 1;
 
-            var local = 0;
 
-            var timeToJoin = 10;
-               
-                          
-            $('#LEDp').on("click change tapend", function() {
-                setBit(1,'b',240);
-                if(tapEnd == 1) {
-                    writeToCharacteristic(1, 240, charVal);
-                }
 
-            })
-                               
-            $('#LEDa').on("click change tapend", function() {
-                setBit(1,'b',0);
-                if(tapEnd == 1) {
-                    writeToCharacteristic(1, 0, charVal);
-                }
+            //**
+            //     Joystick, based on VirtualJoystick 
+            //**
 
-            })
-                               
-          
 
-            //** Print to console array containing packets that's not been sent  **/
+            var joystick = nipplejs.create({
+                zone: document.getElementById('joystick-container'),
+                mode: 'static',
+                position: {left: '100px', top: '150px'},
+                color: 'white',
+                size: 150,
+                restOpacity: 0.9
+            });
 
-            function printDiscardedPackets() {
-                console.log(discardedPackets);
-            }
+            var pos = joystick.position;
 
-            //*** Joystick  ***/
-            var joystickContainer = document.getElementById('joystick-container');
-            var joystick = new VirtualJoystick({
-                                    container: joystickContainer,
-                                    mouseSupport: true,
-                                    stationaryBase: true,
-                                    baseX: 110,
-                                    baseY: 170,
-                                    limitStickTravel: true,
-                                    stickRadius: 100
-                               });
-                
-            $('#joystick-container').on('change touchmove mousemove', function() {
-                var x = joystick.deltaX(); 
-                var y = -1*joystick.deltaY();
+            joystick.on('start end', function(evt, data) {
+                    // Needs to stop car here
+                }).on('move', function(evt, data) {
+
+
+                var x = data.position.x-110; 
+                var y = -1*(data.position.y-155);
                 var hypotenus = Math.sqrt((Math.pow(x, 2)) + (Math.pow(y, 2)));
-                var speed = Math.round((255/100)*hypotenus);
+                var speed = Math.round((255/75)*hypotenus);
                 var angle = (180/Math.PI)*Math.acos(x/hypotenus);
                 var directionRight, directionLeft;
-
                 if(y < 0) {
                     angle = 360 - angle;
                     directionRight = directionLeft = 0;
@@ -212,47 +202,59 @@
                     // Countdown clock
                     
                      $('#game-info').text('Game starts in ' + countDown);
-                    setInterval(function() {
-                        if(countDown > 1) {
-                            countDown--;
-                            $('#game-info').text('Game starts in ' + countDown);
-                        } else {
-                            $('#game-info').fadeOut('slow');
-                        }
-                    }, 1000);
+                    var countDownInterval = setInterval(function() {
+                            if(countDown > 1) {
+                                countDown--;
+                                $('#game-info').text('Game starts in ' + countDown);
+                            } else {
+                                $('#game-info').slideToggle('slow');
+                                clearInterval(countDownInterval);
+                            }
+                        }, 1000);
                 }
             }
 
 
             function startGame() {
-                // Visual stuff
-                var startMsg = ['Ready!', 'Set!', 'Go!'];
-                var i = 0;
 
-                var repeat =    setInterval(function() {
+                // Visual stuff in the startup
+                var startMsg = ['Ready...', 'Set...', 'Go!'];
+                var i = 0;
+                var repeat;
+
+                $('#message').css({'color': 'rgba(0,0,0,0)', 'transition': 'color 0.2s'});
+                setTimeout( function() {
+                    repeat =    setInterval(function() {
                                     startMessages();
                                 }, 1000);
+                }, 0);
 
                 function startMessages() {
                     if(i < 3) {
-                        console.log(i);
+                        $('#message').css({'color': 'rgba(255, 255, 255, 1)', 'transition': 'color 0.2s'});
                         $('#message').text(startMsg[i]);
+                        setTimeout(function() {
+                            $('#message').css({'color': 'rgba(0,0,0,0)', 'transition': 'color 0.2s'});
+                        }, 800);
                         i++;
                     } else {
                         clearInterval(repeat);
                         $('#message-container').fadeOut('slow');
                         $('.wait-till-game').show('fast');
-                        $('#joystick-container').show('fast');
+
+                        // Allow the players to control the car and shoot
+                        writePermission = 1;
+                        gameOn = 1;
                     }
                 }
             }
 
             function restartGame() {
                 allowCreate = 1;
+                gameOn = 0;
                 var time = new Date();
                 var e = time.getTime();
 
-                //connect();
                 $('.column').load('include/controllers.html?t=' + e);    
             }
 
@@ -282,7 +284,7 @@
 
 
             function gameLost() {   
-                gameOn == 0;
+                gameOn = 0;
 
                 charVal[10] = 0;
                 charVal[11] = 0;
@@ -340,6 +342,14 @@
             }
 
 
+            //** Print to console array containing packets that's not been sent  **/
+
+            function printDiscardedPackets() {
+                console.log(discardedPackets);
+            }
+
+
+
             //
             //** Buttons and actions
             //
@@ -381,6 +391,10 @@
 
             // Set transition time for cool-down-bar
             $('#cool-down-bar').css('transition', 'background-color ' + coolDownPeriod*3/5000 + 's');
+
+            $('.wait-till-game').css('visibility', 'visible');
+            $('.wait-till-game').hide();
+
 
 
 

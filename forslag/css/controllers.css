@@ -13,11 +13,11 @@
 
 
 #joystick-container {
-    width: 200px;
-    height: 200px;
-    border-radius: 100%;
-    background-color: ;
-    display: none;
+    width: 150px;
+    height: 150px;
+    position: absolute;
+    left: 10px;
+    top: 5px;
 
 }
 
@@ -26,7 +26,7 @@
     right: 0;
     top: 0;
     padding-right: 20px;
-    padding-top: 100px;
+    padding-top: 90px;
     height: 100%;
     width: 150px;
 }
@@ -62,7 +62,7 @@
     text-align: center;
     font-weight: 700;
     position: fixed;
-    top: 30px;
+    top: 35px;
     width: 100%;
 }
 
@@ -121,6 +121,14 @@
 }
 
 .wait-till-game {
-    display: none;
+    visibility: hidden;
+}
+
+#static {
+    width: 150px;
+    height: 150px;
+    position: absolute;
+    left: 10px;
+    top: 30px;
 }
 
