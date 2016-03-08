@@ -23,6 +23,8 @@ var readWriteCharacteristic;
 var notificationCharacteristic;
 var notificationContent;
 
+var prevNotification;
+
 /** Function for establishing BLE connection to device advertising the main service **/
 function connect() {
     'use strict';
@@ -134,15 +136,22 @@ function handleNotification(event) {
     let value = event.target.value;
     value = value.buffer ? value : new DataView(value);
 
-    // Checks if notificationCallback exists, and if it does, calls it with the received data array as argument
-    if (typeof notificationCallback === "function") { 
-        var valueArray = new Uint8Array(20);
-        for(var i = 0; i < 20; i++)
-            valueArray[i] = value.getUint8(i);
+    if(value != prevNotification) {
 
-        notificationCallback(valueArray);
+        // Checks if notificationCallback exists, and if it does, calls it with the received data array as argument
+        if (typeof notificationCallback === "function") { 
+            var valueArray = new Uint8Array(20);
+            for(var i = 0; i < 20; i++)
+                valueArray[i] = value.getUint8(i);
+
+            notificationCallback(valueArray);
+            console.log('Notification value changed ');
+        }
+    } else {
+        console.log('Notification NOT changed');
     }
 
+    prevNotification = value;
     /* Testing, testing...
             var bg_1, 
                 bg_2, 
@@ -175,7 +184,6 @@ function handleNotification(event) {
             for(var i = 0; i < 20; i++)
                 valueArray[i] = value.getUint8(i);*/
 
-            console.log(valueArray);
      //**** Testing end
 
     return value;

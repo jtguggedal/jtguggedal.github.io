@@ -313,8 +313,8 @@
                 if(!coolDownStatus) {
                     if(!local) {
                         setBit(1, 0, 1);
-                        priorityWrite(charVal);
                         console.log('shoot');
+                        priorityWrite(charVal);
                     }
                     coolDown();
                 }
@@ -373,8 +373,8 @@
                 $(this).css({'box-shadow': '0px 0px 30px 10px rgba(0,0,0, 0.15)', 'height': '120px', 'width': '120px', 'transition-timing-function' : 'ease'});
                 if(!local) {
                     setBit(1,0,0);
-                    priorityWrite(charVal);
                     console.log('shoot up');
+                    priorityWrite(charVal);
                 }
             });
 
