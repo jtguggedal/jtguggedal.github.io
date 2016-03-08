@@ -1,31 +1,5 @@
             
 
-            // Compare arrays
-            Array.prototype.equals = function (array, strict) {
-                if (!array)
-                    return false;
-
-                if (arguments.length == 1)
-                    strict = true;
-
-                if (this.length != array.length)
-                    return false;
-
-                for (var i = 0; i < this.length; i++) {
-                    if (this[i] instanceof Array && array[i] instanceof Array) {
-                        if (!this[i].equals(array[i], strict))
-                            return false;
-                    }
-                    else if (strict && this[i] != array[i]) {
-                        return false;
-                    }
-                    else if (!strict) {
-                        return this.sort().equals(array.sort(), true);
-                    }
-                }
-                return true;
-            };
-
             
             //**
             //      Gloabl settings
@@ -48,6 +22,7 @@
             //** Game settings
             var score = 10;                     // Number of lives each player starts with
             var timeToJoin = 3;                 // Interval from games is created until it starts [s]
+            var 
             var coolDownPeriod = 500;           // Shortest allowed interval between shots fired [ms]
             var coolDownStatus = 0;             // Players starts with no need of 'cool down'
             var gameOn = 0;                     // Game is by default not started automatically
@@ -296,11 +271,11 @@
             var prevNotificationArray = [];
 
             function notificationCallback(dataArray) {  
-                var test = dataArray.length==prevNotificationArray.length && dataArray.every(function(v,i) { return v === prevNotificationArray[i]});
+                var test = dataArray.length == prevNotificationArray.length && dataArray.every(function(v,i) { return v === prevNotificationArray[i]});
                 console.log(test);
                 if(gameOn && (!test)) {
 
-                    if((dataArray[0] == 1 || dataArray[1] == 1 || dataArray[2] == 1 ) && (gameOn == 1)) {
+                    if(gameOn == 1) {
                         score--;
                         $('#points').text('♥ ' + score + ' 13: ' + dataArray[0] + ' 14: ' + dataArray[1] + ' 15: ' + dataArray[2]);
                         console.log(score);
