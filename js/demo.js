@@ -283,13 +283,14 @@
                         gameLost();
                     }
 
-                    console.log('Notification mottatt: ' + dataArray);
+                    console.log('Notification mottatt: ' + dataArray + ' tidligere: ' + prevNotificationArray);
 
 
+                } else {
+                    console.log('Uendret notification mottatt: ' + dataArray);
                 }
 
                 prevNotificationArray = dataArray;
-                    console.log('Notification mottatt: ' + dataArray);
             }
 
 
