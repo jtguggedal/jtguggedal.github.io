@@ -320,6 +320,11 @@
                         setBit(1, 0, 1);
                         console.log('shoot');
                         priorityWrite(charVal);
+                        setTimeout(function() {
+                            setBit(1,0,0);
+                            console.log('shoot off');
+                            priorityWrite(charVal);
+                        }, 50);
                     }
                     coolDown();
                 }
@@ -377,8 +382,6 @@
             $('#control-button').on('touchend mouseup', function() {
                 $(this).css({'box-shadow': '0px 0px 30px 10px rgba(0,0,0, 0.15)', 'height': '120px', 'width': '120px', 'transition-timing-function' : 'ease'});
                 if(!local) {
-                    setBit(1,0,0);
-                    console.log('shoot up');
                     priorityWrite(charVal);
                 }
             });
