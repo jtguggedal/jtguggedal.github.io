@@ -143,7 +143,7 @@ function handleNotification(event) {
         notificationCallback(valueArray);
     }
 
-    // Testing, testing...
+    /* Testing, testing...
             var bg_1, 
                 bg_2, 
                 bg_3, 
@@ -173,7 +173,7 @@ function handleNotification(event) {
 
             var valueArray = new Uint8Array(20);
             for(var i = 0; i < 20; i++)
-                valueArray[i] = value.getUint8(i);
+                valueArray[i] = value.getUint8(i);*/
 
             console.log(valueArray);
      //**** Testing end
