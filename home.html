@@ -71,9 +71,11 @@
         function game_init() {   
             var time = new Date();
             var e = time.getTime();
-
+            toggleFullscreen();
             connect();
-            $('.column').load('include/controllers.html?t=' + e);    
+            setTimeout(function() {
+                $('.column').load('include/controllers.html?t=' + e);  
+            }, 200);  
         }
 
 
