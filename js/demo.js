@@ -270,9 +270,9 @@
 
             function notificationCallback(dataArray) {  
 
-                if((coolDownStatus != 1) && (dataArray != prevNotificationArray)) {
+                if(gameOn && (dataArray != prevNotificationArray)) {
 
-                    if((dataArray[0] == 1 || dataArray[1] == 1 || dataArray[2] == 1 || dataArray[3] == 1) && (gameOn == 1)) {
+                    if((dataArray[0] == 1 || dataArray[1] == 1 || dataArray[2] == 1 ) && (gameOn == 1)) {
                         score--;
                         $('#points').text('♥ ' + score + ' pin 13: ' + dataArray[0] + ' pin 14: ' + dataArray[1] + ' pin 15: ' + dataArray[2]);
                         console.log(score);
