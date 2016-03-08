@@ -22,11 +22,12 @@
             //** Game settings
             var score = 10;                     // Number of lives each player starts with
             var timeToJoin = 3;                 // Interval from games is created until it starts [s]
-            var timeBetweenHits = 1000;
+            var timeBetweenHits = 2000;
             var coolDownPeriod = 500;           // Shortest allowed interval between shots fired [ms]
             var coolDownStatus = 0;             // Players starts with no need of 'cool down'
             var gameOn = 0;                     // Game is by default not started automatically
             var allowCreate = 1;                // Players are allowed to create their own games
+            var preventShot = 0;
 
             //** For local testing, set to 1
             var local = 0;
@@ -271,10 +272,12 @@
             var prevNotificationArray = [];
 
             function notificationCallback(dataArray) {  
-                var test = dataArray.length == prevNotificationArray.length && dataArray.every(function(v,i) { return v === prevNotificationArray[i]});
-                console.log(test);
-                if(gameOn && (!test)) {
-
+                // var test = dataArray.length == prevNotificationArray.length && dataArray.every(function(v,i) { return v === prevNotificationArray[i]});
+                // console.log(test);
+                if(gameOn && (!preventShot)) {
+                    setTimeout(function() {
+                        preventShot = 0;
+                    }, timeBetweenHits);
                     if(gameOn == 1) {
                         score--;
                         $('#points').text('♥ ' + score + ' 13: ' + dataArray[0] + ' 14: ' + dataArray[1] + ' 15: ' + dataArray[2]);
