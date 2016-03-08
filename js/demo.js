@@ -311,6 +311,7 @@
             // Function to add 'shooting' functionality. Is called when the fire button is pushed.
             function shoot() {
                 if(!coolDownStatus) {
+                    coolDownStatus = 1;
                     if(!local) {
                         setBit(1, 0, 1);
                         console.log('shoot');
