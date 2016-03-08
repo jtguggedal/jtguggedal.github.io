@@ -1,75 +1,63 @@
+            
+            
+            //**
+            //      Gloabl settings
+            //**
 
+
+            //** Array for BLE packets
             var charVal = new Uint8Array(20);
- 
+
+            //** Gloabl joystick variables
             var outputRight;
             var outputLeft;
             var tapEnd = 1;
 
-            var writePermission = 1;
-            var discardedPackets = [];
+            //** Global variables needed to control and monitor the data flow over BLE
+            var writePermission = 1;            // When set to 1, the players can control the cars
+            var discardedPackets = [];          // Array to hold arrays that are created by touch events but never sent over BLE, kind of equivalent to packet loss
+            var priorityPacket = 0;             // Events like button press, that happen rarely compared to joystick events, are given priority to ensure that the DK gets the information
 
-            var priorityPacket = 0;
+            //** Game settings
+            var score = 10;                     // Number of lives each player starts with
+            var timeToJoin = 20;                 // Interval from games is created until it starts [s]
+            var coolDownPeriod = 500;           // Shortest allowed interval between shots fired [ms]
+            var coolDownStatus = 0;             // Players starts with no need of 'cool down'
+            var gameOn = 0;                     // Game is by default not started automatically
+            var allowCreate = 1;                // Players are allowed to create their own games
 
-            var gameOn = 1;
-            var score = 10;
-            var coolDownStatus = 0;
-
+            //** For local testing, set to 1
             var local = 0;
-               
-                          
-            $('#LEDp').on("click change tapend", function() {
-                setBit(1,'b',240);
-                if(tapEnd == 1) {
-                    writeToCharacteristic(1, 240, charVal);
-                }
 
-            })
-                               
-            $('#LEDa').on("click change tapend", function() {
-                setBit(1,'b',0);
-                if(tapEnd == 1) {
-                    writeToCharacteristic(1, 0, charVal);
-                }
 
-            })
-                               
-          
 
-            //** Print to console array containing packets that's not been sent  **/
+            //**
+            //     Joystick, based on nipplejs 
+            //**
 
-            function printDiscardedPackets() {
-                console.log(discardedPackets);
-            }
 
-            //*** Joystick  ***/
-            var joystickContainer = document.getElementById('joystick-container');
-            var joystick = new VirtualJoystick({
-                                    container: joystickContainer,
-                                    mouseSupport: true,
-                                    stationaryBase: true,
-                                    baseX: 110,
-                                    baseY: 170,
-                                    limitStickTravel: true,
-                                    stickRadius: 100
-                               });
-             
-                               
-            
-                       
-            ////////////////////////////////////  
+            var joystick = nipplejs.create({
+                zone: document.getElementById('joystick-container'),
+                mode: 'static',
+                position: {left: '100px', top: '150px'},
+                color: 'white',
+                size: 150,
+                restOpacity: 0.9
+            });
 
-           
-            // Sjekker i hvilket intervall joysticken er, og sender korresponderende verdi
-                
+            var pos = joystick.position;
 
-            $('#joystick-container').on('change touchmove mousemove', function() {
-                var x = joystick.deltaX(); 
-                var y = -1*joystick.deltaY();
+            joystick.on('start end', function(evt, data) {
+                    // Needs to stop car here
+                }).on('move', function(evt, data) {
+
+
+                var x = data.position.x-110; 
+                var y = -1*(data.position.y-155);
                 var hypotenus = Math.sqrt((Math.pow(x, 2)) + (Math.pow(y, 2)));
-                var speed = Math.round((255/100)*hypotenus);
+                var speed = Math.round((255/75)*hypotenus);
                 var angle = (180/Math.PI)*Math.acos(x/hypotenus);
                 var directionRight, directionLeft;
-
                 if(y < 0) {
                     angle = 360 - angle;
                     directionRight = directionLeft = 0;
@@ -175,19 +163,107 @@
             });
 
 
+
+            //**
+            //      Game administration
+            //**
+
             function createGame() {
-                $('#status-create-game').text('Creating game...');
 
-                var xhttp = new XMLHttpRequest();
-                xhttp.onreadystatechange = function() {
-                    if (xhttp.readyState == 4 && xhttp.status == 200) {
-                        document.getElementById("status-create-game").innerHTML = xhttp.responseText;
-                    }
-                };
-                xhttp.open("GET", "https://www.nrk.no", true);
-                xhttp.send();
+                if(allowCreate) {
+                    // Prevent multiple games being created
+                    allowCreate = 0;
 
+                    // Variables needed
+                    var countDown = timeToJoin;             // Time to join (in seconds) from game is created before it starts
+
+                    // Sets text to be shown while game is being created externally
+                    $('#message-container').fadeIn(300);
+                    $('#message').text('Creating...');
+
+                    // Creates XMLHttpRequest object and sends request to PHP page that creates game ID and entry in database
+                    var xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function() {
+                        if (xhttp.readyState == 4 && xhttp.status == 200) {
+                            document.getElementById("message").innerHTML = xhttp.responseText;
+                        }
+                    };
+                    xhttp.open("GET", "php/game.php?t=create&ttj=" + timeToJoin, true);
+                    xhttp.send();
+
+                    // Starts timer before startgame() is called
+
+                    $('#game-info').show();
+                    setTimeout(function() {
+                        startGame();
+                    }, 1000*countDown+1);
+
+
+                    // Countdown clock
+                    
+                     $('#game-info').text('Game starts in ' + countDown);
+                    var countDownInterval = setInterval(function() {
+                            if(countDown > 1) {
+                                countDown--;
+                                $('#game-info').text('Game starts in ' + countDown);
+                            } else {
+                                $('#game-info').slideToggle('slow');
+                                clearInterval(countDownInterval);
+                            }
+                        }, 1000);
+                }
             }
+
+
+            function startGame() {
+
+                // Visual stuff in the startup
+                var startMsg = ['Ready...', 'Set...', 'Go!'];
+                var i = 0;
+                var repeat;
+
+                $('#message').css({'color': 'rgba(0,0,0,0)', 'transition': 'color 0.2s'});
+                setTimeout( function() {
+                    repeat =    setInterval(function() {
+                                    startMessages();
+                                }, 1000);
+                }, 0);
+
+                function startMessages() {
+                    if(i < 3) {
+                        $('#message').css({'color': 'rgba(255, 255, 255, 1)', 'transition': 'color 0.2s'});
+                        $('#message').text(startMsg[i]);
+                        setTimeout(function() {
+                            $('#message').css({'color': 'rgba(0,0,0,0)', 'transition': 'color 0.2s'});
+                        }, 800);
+                        i++;
+                    } else {
+                        clearInterval(repeat);
+                        $('#message-container').fadeOut('slow');
+                        $('.wait-till-game').show('fast');
+
+                        // Allow the players to control the car and shoot
+                        writePermission = 1;
+                        gameOn = 1;
+                    }
+                }
+            }
+
+            function restartGame() {
+                allowCreate = 1;
+                gameOn = 0;
+                var time = new Date();
+                var e = time.getTime();
+
+                $('.column').load('include/controllers.html?t=' + e);    
+            }
+
+
+
+
+            //**
+            //      Game functions 
+            //**
 
             function notificationCallback(dataArray) {  
 
@@ -195,7 +271,7 @@
 
                     if((dataArray[0] == 1 || dataArray[1] == 1 || dataArray[2] == 1 || dataArray[3] == 1) && (gameOn == 1)) {
                         score--;
-                        $('#points').text(score);
+                        $('#points').text('♥ ' + score);
                         console.log(score);
                     }
 
@@ -208,7 +284,7 @@
 
 
             function gameLost() {   
-                gameOn == 0;
+                gameOn = 0;
 
                 charVal[10] = 0;
                 charVal[11] = 0;
@@ -219,8 +295,8 @@
                     priorityWrite(charVal);
                     writePermission = 0;
                 }
-                $('#points').text('You lost :(');
-                $('#points').css({'color': 'red'});
+                $('#message-container').text('You lost :(');
+                $('#message-container').fadeIn('slow');
 
 
 
@@ -241,7 +317,7 @@
             // Function to ensure that a player can't shoot again before a certain time has passed. The 'cool-down time' is set in the timeOute variable [ms]
             function coolDown() {
 
-                var timeOut = 500;
+                var timeOut = coolDownPeriod;
                 var e = document.getElementById("cool-down-bar");   
                 var width = 1;
                 var interval = setInterval(coolDownCounter, timeOut/100);
@@ -250,27 +326,28 @@
                     if (width >= 100) {
                         clearInterval(interval);
                         coolDownStatus = 0;
-                        e.style.backgroundColor = 'green';
+                        e.style.backgroundColor = '#367d59';
                     } else {
                         width++; 
                         e.style.width = width + '%'; 
-                        e.style.backgroundColor = 'orange';
+
+                        if(width <= 35)
+                            e.style.backgroundColor = 'red';
+                        else if(width <= 90)
+                            e.style.backgroundColor = 'orange';
+                        else
+                            e.style.backgroundColor = '#367d59';
                     }
                 }
             }
 
 
-            // Function to restart the game
-            function restartGame() {
+            //** Print to console array containing packets that's not been sent  **/
 
-                gameOn = 1;
-                score = 10;
-                coolDownStatus = 0;
-                writePermission = 1;
-                $('#points').text(score);
-                $('#points').css('color', 'white');
-
+            function printDiscardedPackets() {
+                console.log(discardedPackets);
             }
+
 
 
             //
@@ -287,27 +364,37 @@
 
             $('#control-button').on('touchend mouseup', function() {
                 $(this).css({'box-shadow': '0px 0px 30px 10px rgba(0,0,0, 0.15)', 'height': '120px', 'width': '120px', 'transition-timing-function' : 'ease'});
-                if(!local && !coolDownStatus) {
+                if(!local) {
                     setBit(1,0,0);
                     priorityWrite(charVal);
                 }
             });
 
-            $('#btn-create-game').on('touchstart mousedown', function() {
+            $('#btn-create-game').on('touchstart mousedown', function(event) {
                 createGame();
+                event.preventDefault();
             })
 
-            $('#btn-restart-game').on('touchstart mousedown', function() {
+            $('#btn-restart-game').on('touchstart mousedown', function(event) {
                 restartGame();
+                event.preventDefault();
             });
 
 
-            // This 'sim-hit' button triggers the same events as would be the case if the player's car was 'hit' by IR
-            $('#btn-sim-hit').on('touchstart mousedown', function() {
+            // This 'sim-hit' button triggers the same events with the same parameters as would be the case if the player's car was 'hit' by IR
+            $('#btn-sim-hit').on('touchstart mousedown', function(event) {
                 var hitArray = new Uint8Array(20);
                 hitArray[1] = 1;
                 notificationCallback(hitArray);
+                event.preventDefault();
             });
+
+            // Set transition time for cool-down-bar
+            $('#cool-down-bar').css('transition', 'background-color ' + coolDownPeriod*3/5000 + 's');
+
+            $('.wait-till-game').css('visibility', 'visible');
+            $('.wait-till-game').hide();
+
 
 
 
