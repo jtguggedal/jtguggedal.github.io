@@ -271,7 +271,7 @@
 
                     if((dataArray[0] == 1 || dataArray[1] == 1 || dataArray[2] == 1 || dataArray[3] == 1) && (gameOn == 1)) {
                         score--;
-                        $('#points').text('♥ ' + score);
+                        $('#points').text('♥ ' + score + ' pin 13: ' + dataArray[0] + ' pin 14: ' + dataArray[1] + ' pin 15: ' + dataArray[2]);
                         console.log(score);
                     }
 
@@ -279,6 +279,9 @@
                         gameOn = 0;
                         gameLost();
                     }
+
+
+
                 }
             }
 
