@@ -365,7 +365,7 @@
             $('#control-button').on('touchstart mousedown', function(event) {
                 $(this).css({'box-shadow': '0px 0px 10px 3px rgba(0,0,0, 0.2)', 'height': '115px', 'width': '115px', 'transition-timing-function' : 'ease'});
                 event.preventDefault();
-                if(!coolDownStatus)
+                if(coolDownStatus != 1)
                     shoot();
 
             });
