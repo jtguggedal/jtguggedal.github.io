@@ -183,14 +183,14 @@
                     $('#message').text('Creating...');
 
                     // Creates XMLHttpRequest object and sends request to PHP page that creates game ID and entry in database
-                    var xhttp = new XMLHttpRequest();
+                    /*var xhttp = new XMLHttpRequest();
                     xhttp.onreadystatechange = function() {
                         if (xhttp.readyState == 4 && xhttp.status == 200) {
                             document.getElementById("message").innerHTML = xhttp.responseText;
                         }
                     };
                     xhttp.open("GET", "php/game.php?t=create&ttj=" + timeToJoin, true);
-                    xhttp.send();
+                    xhttp.send();*/
 
                     // Starts timer before startgame() is called
 
