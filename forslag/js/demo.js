@@ -20,14 +20,14 @@
 
             //** Game settings
             var score = 10;                     // Number of lives each player starts with
-            var timeToJoin = 1;                 // Interval from games is created until it starts [s]
+            var timeToJoin = 10;                 // Interval from games is created until it starts [s]
             var coolDownPeriod = 500;           // Shortest allowed interval between shots fired [ms]
             var coolDownStatus = 0;             // Players starts with no need of 'cool down'
             var gameOn = 0;                     // Game is by default not started automatically
             var allowCreate = 1;                // Players are allowed to create their own games
 
             //** For local testing, set to 1
-            var local = 1;
+            var local = 0;
 
 
 
