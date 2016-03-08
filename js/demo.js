@@ -22,7 +22,7 @@
             //** Game settings
             var score = 10;                     // Number of lives each player starts with
             var timeToJoin = 3;                 // Interval from games is created until it starts [s]
-            var 
+            var timeBetweenHits = 1000;
             var coolDownPeriod = 500;           // Shortest allowed interval between shots fired [ms]
             var coolDownStatus = 0;             // Players starts with no need of 'cool down'
             var gameOn = 0;                     // Game is by default not started automatically
