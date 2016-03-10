@@ -250,7 +250,7 @@ function joinGame(gId) {
         $('#message').html("Joining...");
         $('#message').fadeIn(500);
 
-        $.getJSON('https://cpanel2.proisp.no/~stangtqr/pwt/game.php?t=join&gid=' + gId + '&pname=' + name + '&jsonp=?', function(r) { 
+        $.getJSON('https://cpanel2.proisp.no/~stangtqr/pwt/game.php?t=join&gid=' + gId + '&pname=' + name + '&callback=?', function(r) { 
             console.log('hh');
             // Check if the game had started and could not be joined
             if(r == 'not_exist' || r == 'started') {
@@ -343,7 +343,7 @@ function startGame() {
 function updateGame() {
     sendRequest();
     function sendRequest() {
-        $.getJSON('https://cpanel2.proisp.no/~stangtqr/pwt/game.php?t=u&gid=' + gameId + '&pid=' + playerId + '&pname=' + name + '&l=' + score + '&jsonp=?', function(r) {
+        $.getJSON('https://cpanel2.proisp.no/~stangtqr/pwt/game.php?t=u&gid=' + gameId + '&pid=' + playerId + '&pname=' + name + '&l=' + score + '&callback=?', function(r) {
                 console.log(r);
                 console.log(r.name);
                 score = r.score;
