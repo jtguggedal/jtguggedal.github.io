@@ -35,7 +35,7 @@ var gameId;
 var playerId;
 
 //** For local testing, set to 1
-var local = 1;
+var local = 0;
 
 //**
 //     Joystick, based on nipplejs 
