@@ -25,7 +25,14 @@ span {
   background: url('../pics/powerups.png') no-repeat;
 }
 
-
+#slotmachine-container {
+	position: absolute;
+	display: none;
+	width: 200px;
+	top: 100px;
+	left: 42%;
+	margin: auto;
+}
 
 .boost {
   -webkit-transform:rotate(0deg);
