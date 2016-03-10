@@ -20,7 +20,7 @@ var prevNotificationArray = [];     // The notification characteristic handler u
 
 //** Game settings
 var score = 10;                     // Number of lives each player starts with
-var timeToJoin = 30;                 // Interval from games is created until it starts [s]
+var timeToJoin = 3;                 // Interval from games is created until it starts [s]
 var timeBetweenHits = 2000;         // Time from one hit to next possible [ms]
 var coolDownPeriod = 500;           // Shortest allowed interval between shots fired [ms]
 var coolDownStatus = 0;             // Players starts with no need of 'cool down'
