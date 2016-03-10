@@ -42,7 +42,7 @@
 
 }
 
-#btn-create-game, #btn-sim-hit, #btn-restart-game {
+#btn-create-game, #btn-sim-hit, #btn-restart-game, #btn-slotmachine {
     display: inline-block;
     padding: 5px;
     margin-top: 40px;
@@ -87,7 +87,14 @@
     height: 100%;
     background-color: #367d59;
 }
-
+#slotmachine-container {
+	position: absolute;
+	display: none;
+	width: 200px;
+	top: 100px;
+	left: 42%;
+	margin: auto;
+}
 #message-container {
     position: absolute;
     display: none;
