@@ -1,4 +1,5 @@
 <?php 
+	header('Access-Control-Allow-Origin: *');
 	header('Content-type: text/plain; charset=utf-8');
 	ini_set('display_errors',1);
 	ini_set('display_startup_errors',1);
@@ -25,6 +26,8 @@
 	$playerId = 	querystring('pid');
 	$playerName = 	querystring('pname');
 
+	$function_name = $_GET['callback'];
+
 
 	switch ($type) {
 		case 'create':
@@ -32,7 +35,7 @@
 			$gameId = createGame();
 			$player = new Player($gameId, $playerName, $score, $playerId);
 			$player->update($player->gameId, $player->id, $player->score);
-			$response = json_encode($player, JSON_UNESCAPED_UNICODE);
+			$response = json_encode((array)$player, JSON_UNESCAPED_UNICODE);
 			break;
 		case 'join':
 			// Join an already created game
@@ -43,7 +46,7 @@
 			// Update settings for player
 			$player = new Player($gameId, $playerName, $score, $playerId);
 			$player->update($gameId, $playerId, $score);
-			$response = json_encode($player, JSON_UNESCAPED_UNICODE);
+			$response = json_encode((array)$player, JSON_UNESCAPED_UNICODE);
 		default:
 			//
 			break;
@@ -54,8 +57,10 @@
 	//**
 
 	// Print the response
+	$response = str_replace(":", "=>", $response);
+	echo "$function_name (\n";
 	echo $response;
-
+	echo ");\n";
 
 	//**
 	//		Class for player creation. Data is stored in database.
