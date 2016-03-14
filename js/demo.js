@@ -29,19 +29,15 @@ var allowCreate = 1;                // Players are allowed to create their own g
 var preventShot = 0;                // Variable to prevent being hit before timeBetweenHits is out
 var updateInterval = 2000;          // Intervall for game updates to and from the server [ms]
 
-var speedCoeff = 0.7;
+
+var speedCoeff;
+    outputRight *= speedCoeff;
+    outputLeft *= speedCoeff;
 
 var message;
 var name;
 var gameId;
 var playerId;
-
-class Player {
-    var id;
-    var name;
-    var score;
-    var gameId;
-}
 
 //** For local testing, set to 1
 var local = 0;
@@ -128,6 +124,7 @@ joystick.on('start end', function(evt, data) {
 
     $("#sliderLeft").val(outputLeft);
     $("#sliderRight").val(outputRight);
+
 
     outputRight *= speedCoeff;
     outputLeft *= speedCoeff;
