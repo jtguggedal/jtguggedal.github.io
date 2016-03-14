@@ -20,19 +20,28 @@ var prevNotificationArray = [];     // The notification characteristic handler u
 
 //** Game settings
 var score = 10;                     // Number of lives each player starts with
-var timeToJoin = 3;                 // Interval from games is created until it starts [s]
+var timeToJoin = 10;                 // Interval from games is created until it starts [s]
 var timeBetweenHits = 2000;         // Time from one hit to next possible [ms]
 var coolDownPeriod = 500;           // Shortest allowed interval between shots fired [ms]
 var coolDownStatus = 0;             // Players starts with no need of 'cool down'
 var gameOn = 0;                     // Game is by default not started automatically
 var allowCreate = 1;                // Players are allowed to create their own games
 var preventShot = 0;                // Variable to prevent being hit before timeBetweenHits is out
-var updateInterval = 2000;            // Intervall for game updates to and from the server [ms]
+var updateInterval = 2000;          // Intervall for game updates to and from the server [ms]
+
+var speedCoeff = 0.7;
 
 var message;
 var name;
 var gameId;
 var playerId;
+
+class Player {
+    var id;
+    var name;
+    var score;
+    var gameId;
+}
 
 //** For local testing, set to 1
 var local = 0;
@@ -120,6 +129,8 @@ joystick.on('start end', function(evt, data) {
     $("#sliderLeft").val(outputLeft);
     $("#sliderRight").val(outputRight);
 
+    outputRight *= speedCoeff;
+    outputLeft *= speedCoeff;
 
     charVal[10] = outputRight;          // Motor 1
     charVal[14] = directionRight;
@@ -244,7 +255,7 @@ function joinGamePopup() {
 //**
 //      Function that allows the player to join a game created by another player. Called by joinGamePopup() where the game ID is submitted.
 //**
-//**    @parameter       gId        the ID of the game the player wants to join
+//**    @parameter       gId        the ID2 of the game the player wants to join
 
 
 function joinGame(gId) {

@@ -57,7 +57,6 @@
 	//**
 
 	// Print the response
-	$response = str_replace(":", "=>", $response);
 	echo "$function_name (\n";
 	echo $response;
 	echo ");\n";
@@ -73,6 +72,7 @@
 		public $score;
 		public $hitsTaken;
 		public $countdown;
+		public $gameStatus;
 
 		// Public methods
 
@@ -85,6 +85,7 @@
 			$this->gameId = $gameId;
 			$this->name = $name;
 			$this->score = $score;
+			$this->gameStatus = 10;
 		}
 
 		public function update($gameId, $playerId, $score) {
