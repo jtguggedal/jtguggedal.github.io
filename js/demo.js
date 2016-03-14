@@ -19,7 +19,7 @@ var priorityPacket = 0;             // Events like button press, that happen rar
 var prevNotificationArray = [];     // The notification characteristic handler uses this array to ensure that it only triggers actions when new values are sent
 
 //** Game settings
-var score = 10;                     // Number of lives each player starts with
+var score = 5;                     // Number of lives each player starts with
 var timeToJoin = 10;                 // Interval from games is created until it starts [s]
 var timeBetweenHits = 2000;         // Time from one hit to next possible [ms]
 var coolDownPeriod = 500;           // Shortest allowed interval between shots fired [ms]
@@ -459,7 +459,7 @@ function gameLost() {
         priorityWrite(charVal);
         writePermission = 0;
     }
-    $('#message-container').text('You lost :(');
+    $('#message-container').html('You lost :(');
     $('#message-container').fadeIn('slow');
 
 
