@@ -31,8 +31,6 @@ var updateInterval = 2000;          // Intervall for game updates to and from th
 
 
 var speedCoeff;
-    outputRight *= speedCoeff;
-    outputLeft *= speedCoeff;
 
 var message;
 var name;
@@ -92,7 +90,7 @@ joystick.on('start end', function(evt, data) {
             outputLeft = outputRight = speed;
         } else if(angle >= 95 && angle <= 160) {
             outputRight = speed;
-            outputLeft = ((180-angle)/80)*speed;;
+            outputLeft = ((180-angle)/80)*speed;
         } else if(angle > 160 && angle < 200) {
             outputRight = speed;
             directionRight = 1;
@@ -310,7 +308,7 @@ function joinGame(gId) {
         });
 
 
-    })
+    });
 }
 
 //**
@@ -544,12 +542,12 @@ $('#control-button').on('touchend mouseup', function() {
 $('#btn-create-game').on('touchstart mousedown', function(event) {
     createGame();
     event.preventDefault();
-})
+});
 
 $('#btn-join-game').on('touchstart mousedown', function(event) {
     joinGamePopup();
     event.preventDefault();
-})
+});
 
 $('#btn-restart-game').on('touchstart mousedown', function(event) {
     restartGame();
