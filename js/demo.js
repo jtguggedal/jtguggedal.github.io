@@ -124,8 +124,8 @@ joystick.on('start end', function(evt, data) {
     $("#sliderRight").val(outputRight);
 
 
-    //outputRight *= speedCoeff;
-    //outputLeft *= speedCoeff;
+    outputRight *= speedCoeff;
+    outputLeft *= speedCoeff;
 
     charVal[10] = outputRight;          // Motor 1
     charVal[14] = directionRight;
