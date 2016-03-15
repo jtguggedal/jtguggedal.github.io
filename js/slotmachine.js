@@ -54,12 +54,13 @@ function activatePowerup (powerup) {
 			break;
 		case "health":
 			score++
+			$('#points').text('♥ ' + score);
 			break;
 	};
 };
 
 function deactivatePowerup () {
-	speedCoeff = 0.5;
+	speedCoeff = 0.78;
 	coolDownPeriod = 1500;
 	preventShot = 0;
 };
