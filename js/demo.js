@@ -30,7 +30,7 @@ var preventShot = 0;                // Variable to prevent being hit before time
 var updateInterval = 2000;          // Intervall for game updates to and from the server [ms]
 
 
-var speedCoeff = 0.78;				
+var speedCoeff = 0.5;				
 
 var message;
 var name;

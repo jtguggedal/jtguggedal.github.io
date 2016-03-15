@@ -2,14 +2,13 @@
 	var slotDuration = 10000;		// The duration of the power-up
 	var running = false;			// Variable to make sure the function startSlot| can not be triggered when it is already running
 
-$(document).ready(function() {
+
 	
-	$('#btn-slotmachine').on('touchstart mousedown', function() {
-				
-		startSlot();		
-	});
+$('#btn-slotmachine').on('touchstart mousedown', function() {
+			
+	startSlot();		
+});
 	
- });
 
 function startSlot () {
 	if(running == false){
@@ -60,7 +59,7 @@ function activatePowerup (powerup) {
 };
 
 function deactivatePowerup () {
-	speedCoeff = 1;
+	speedCoeff = 0.5;
 	coolDownPeriod = 1500;
 	preventShot = 0;
 };
