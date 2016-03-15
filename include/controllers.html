@@ -56,6 +56,11 @@
     <script src="js/virtualJoystick.js"></script>   
     <script src="js/nipplejs.min.js"></script>
 	<script type="text/JavaScript" src="js/slotmachine.js"> </script>
+	<script>
+	var time = new Date();
+	var e = time.getTime();
+	$.getScript( "js/demo.js?t=" + e, function( data, textStatus, jqxhr ) {
+	});</script>
 
     <!--  Include demo version of the car controllers -->
     <script type="text/javascript" src="js/demo.js"></script>
