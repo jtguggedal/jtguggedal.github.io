@@ -485,7 +485,7 @@ function shoot() {
 
 }
 
-// Function to ensure that a player can't shoot again before a certain time has passed. The 'cool-down time' is set in the timeOute variable [ms]
+// Function to ensure that a player can't shoot again before a certain time has passed. The 'cool-down time' is set in the timeOut variable [ms]
 function coolDown() {
 
     var timeOut = coolDownPeriod;
@@ -554,7 +554,6 @@ $('#btn-restart-game').on('touchstart mousedown', function(event) {
     event.preventDefault();
 });
 
-
 // This 'sim-hit' button triggers the same events with the same parameters as would be the case if the player's car was 'hit' by IR
 $('#btn-sim-hit').on('touchstart mousedown', function(event) {
     var hitArray = new Uint8Array(20);
@@ -571,6 +570,5 @@ $('.wait-till-game').hide();
 
 // Populate the #points with the score (needs 'manual' update incase it is changed by joining a game with different settings than set here)
 $('#points').text('♥ ' + score);
-
 
 
