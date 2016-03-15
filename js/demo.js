@@ -22,7 +22,7 @@ var prevNotificationArray = [];     // The notification characteristic handler u
 var score = 5;                     // Number of lives each player starts with
 var timeToJoin = 10;                 // Interval from games is created until it starts [s]
 var timeBetweenHits = 2000;         // Time from one hit to next possible [ms]
-var coolDownPeriod = 500;           // Shortest allowed interval between shots fired [ms]
+var coolDownPeriod = 1500;           // Shortest allowed interval between shots fired [ms]
 var coolDownStatus = 0;             // Players starts with no need of 'cool down'
 var gameOn = 0;                     // Game is by default not started automatically
 var allowCreate = 1;                // Players are allowed to create their own games
@@ -30,7 +30,7 @@ var preventShot = 0;                // Variable to prevent being hit before time
 var updateInterval = 2000;          // Intervall for game updates to and from the server [ms]
 
 
-var speedCoeff;
+var speedCoeff = 0.78;				
 
 var message;
 var name;
@@ -124,7 +124,7 @@ joystick.on('start end', function(evt, data) {
     $("#sliderRight").val(outputRight);
 
 
-   // outputRight *= speedCoeff;
+    //outputRight *= speedCoeff;
     //outputLeft *= speedCoeff;
 
     charVal[10] = outputRight;          // Motor 1
