@@ -75,12 +75,12 @@
 }
 
 #message-container {
-    position: absolute;
+    position: relative;
     display: none;
-    min-width: 200px;
-    top: 100px;
-    left: 50%;
-    margin-left: -100px;
+    width: 200px;
+    top: 70px;
+    margin-left: auto;
+	margin-right: auto;
     background-color: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.3);
     text-align: center;
@@ -118,9 +118,12 @@
 }
 .button {
     display: ;
-	position: absolute;
+	position: relative;
+	width: 30%;
     padding: 5px;
     margin-top: 10px;
+	margin-left: auto;
+	margin-right: auto;
     background-color: white;
     border: 1px solid #0b4251;
     border-radius: 2px;
