@@ -28,6 +28,9 @@
             <div id="btn-create-game" class="button">
                 Create game
             </div>
+           <!-- <div id="btn-slotmachine" class="button">
+                Slotmachine
+            </div>-->
             <div id="btn-join-game" class="button">
                 Join game
             </div>
@@ -36,9 +39,6 @@
             </div>
             <div id="btn-restart-game" class="button">
                 Restart
-            </div>
-			<div id="btn-slotmachine" class="button">
-                Slotmachine
             </div>
         </div>
         <div id="count-down">
@@ -58,4 +58,8 @@
 	<script type="text/JavaScript" src="js/slotmachine.js"> </script>
 
     <!--  Include demo version of the car controllers -->
-    <script type="text/javascript" src="js/demo.js"></script>
+    <script>
+        var time = new Date();      
+        var e = time.getTime();     
+        $.getScript( "js/demo.js?t=" + e);
+    </script>

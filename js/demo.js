@@ -19,29 +19,30 @@ var priorityPacket = 0;             // Events like button press, that happen rar
 var prevNotificationArray = [];     // The notification characteristic handler uses this array to ensure that it only triggers actions when new values are sent
 
 //** Game settings
-var score = 5;                     // Number of lives each player starts with
-var timeToJoin = 10;                 // Interval from games is created until it starts [s]
+var score = 5;                      // Number of lives each player starts with
+var timeToJoin = 20;                // Interval from games is created until it starts [s]
 var timeBetweenHits = 2000;         // Time from one hit to next possible [ms]
-var coolDownPeriod = 500;           // Shortest allowed interval between shots fired [ms]
+var coolDownPeriod = 1500;          // Shortest allowed interval between shots fired [ms]
 var coolDownStatus = 0;             // Players starts with no need of 'cool down'
 var gameOn = 0;                     // Game is by default not started automatically
 var allowCreate = 1;                // Players are allowed to create their own games
 var preventShot = 0;                // Variable to prevent being hit before timeBetweenHits is out
-var updateInterval = 2000;          // Intervall for game updates to and from the server [ms]
+var updateInterval = 500;           // Intervall for game updates to and from the server [ms]
 
 
-var speedCoeff;
+var speedCoeff = 0.78;
 
 var message;
 var name;
 var gameId;
 var playerId;
 
-//** For local testing, set to 1
-var local = 0;
+//** For local testing, set local to 1 to avoid Web Bluetooth errors
+var local = 1;
+
 
 //**
-//     Joystick, based on nipplejs 
+//     Joystick, based on the amazing nippleJS: http://yoannmoinet.github.io/nipplejs/
 //**
 
 
@@ -124,8 +125,8 @@ joystick.on('start end', function(evt, data) {
     $("#sliderRight").val(outputRight);
 
 
-   // outputRight *= speedCoeff;
-    //outputLeft *= speedCoeff;
+    outputRight *= speedCoeff;
+    outputLeft *= speedCoeff;
 
     charVal[10] = outputRight;          // Motor 1
     charVal[14] = directionRight;
@@ -176,7 +177,7 @@ $('#joystick-container').on("touchend", function() {
 //////////////////////////////////////////////*
 
 //**
-//      Function that creates a new game session with it's own 'unique' ID (not really unique, but unique enough for this purpose..)
+//      Function that creates a new game sessions with it's own 'unique' ID (not really unique, but unique enough for this purpose..)
 //**
 
 function createGame() {
@@ -194,8 +195,8 @@ function createGame() {
         $('#message').text('Creating...');
 
         // Send AJAX request to PHP page that creates game ID and entry in database. Object with player and game information is returned as JSONP
-        // JSONP is used to avoid cross-domain issues. Should use JSON if the php page may run locally.
-        $.getJSON('https://cpanel2.proisp.no/~stangtqr/pwt/game.php?t=create&ttj=' + timeToJoin + '&pname=' + name + '&l=' + score + '&callback=?', function(r) { 
+        // to avoid cross-domain issues. Should consider to use JSON if the php page may run on local server.
+        $.getJSON('php/game.php?t=create&ttj=' + timeToJoin + '&pname=' + name + '&l=' + score + '&callback=?', function(r) { 
             // Returned object is stored to global variables for easy access for all functions
             console.log(r);
             console.log(r.name);
@@ -205,8 +206,9 @@ function createGame() {
             playerId = r.id;
 
             // Push new gameId to #message so other players may see it and join in
-            $('#message').fadeOut(200);
-            $('#message').text(gameId).fadeIn(500);
+            $('#message').fadeOut(500, function() {
+                $(this).text(gameId).fadeIn(500);
+            });
 
         });
 
@@ -220,16 +222,17 @@ function createGame() {
         // The timing works well in testing, but should be replaced by a more sophisticated solution to compensate for possible delayed requests for other player
         $('#game-info').text('Game starts in ' + countDown);
         var countDownInterval = setInterval(function() {
-                if(countDown > 1) {
-                    countDown--;
-                    $('#game-info').text('Game starts in ' + countDown);
-                } else {
-                    $('#game-info').slideToggle('slow');
-                    clearInterval(countDownInterval);
-                }
-            }, 1000);
+            if(countDown > 1) {
+                countDown--;
+                $('#game-info').text('Game starts in ' + countDown);
+            } else {
+                $('#game-info').slideToggle('slow');
+                clearInterval(countDownInterval);
+            }
+        }, 1000);
     }
 }
+
 //**
 //      Functions that displays a text input where a player can enter game ID to join a game created by another player
 //**
@@ -252,62 +255,69 @@ function joinGamePopup() {
 //**
 //**    @parameter       gId        the ID2 of the game the player wants to join
 
-
 function joinGame(gId) {
+
     // #message fades out
-    $('#message').fadeOut(500, function() {
+    $('#message').fadeOut(100).promise().done( function() {
+
         // All html content of #message (most likely a text input and a button) is replaced
         $('#message').html("Joining...");
-        $('#message').fadeIn(500);
+        $('#message').fadeIn(500).promise().done( function() {
 
-        // AJAX request to php file that taes care of the database connection and makes sure that the new player gets a playerId in return
-        // and is connected to the right game session
-        // JSONP is used to avoid cross-domain issues when php page is placed on a diffrent domain than this script. Consider to replace by JSON if not needed.
-        $.getJSON('https://cpanel2.proisp.no/~stangtqr/pwt/game.php?t=join&gid=' + gId + '&pname=' + name + '&callback=?', function(r) { 
-            // Check if the game had started or did'nt exist and therefore could not be joined
-            if(r == 'not_exist' || r == 'started') {
-                $('#game-info').fadeOut(100);
-                $('#game-info').text("Sorry, couldn't join :'(").fadeIn(500);
-                $('#message').fadeOut(500);
-            } else {
-                // If the php file was able to connect the player to the game, information from the returnerd object is stored i global variables
-                console.log(r);
-                score = r.score;
-                name = r.name;
-                gameId = r.gameId;
-                playerId = r.id;
 
-                // This is an attempt to time the start of the game and sync all players. Works fine in tests, but by no means good enough
-                // and should be replaced. In short, it uses the php server's timestamp to sync the new players joining the game, and is therefore 
-                // exposed to delays over the network. The player who created the game has a countdown based on the browser's timestamp. 
-                // And because of this, syncing is more luck than skill everytime it works, and is doomed to fail, and sometimes badly so, from time to time.
-                var countDown = r.countdown;
+            // AJAX request to php file that taes care of the database connection and makes sure that the new player gets a playerId in return
+            // and is connected to the right game session
+            // JSONP is used to avoid cross-domain issues when php page is placed on a diffrent domain than this script. Consider to replace by JSON if not needed.
+            $.getJSON('php/game.php?t=join&gid=' + gId + '&pname=' + name + '&callback=?', function(r) { 
 
-                // Push to #message as confirmation that the game is successfully joined
-                $('#message').fadeOut(100);
-                $('#message').text("You're in!").fadeIn(1000);
+                // Check if the game had started or did'nt exist and therefore could not be joined
+                if(r == 'not_exist' || r == 'started') {
+                    $('#game-info').fadeOut(100);
+                    $('#game-info').text("Sorry, couldn't join :'(").fadeIn(500);
+                    $('#message').fadeOut(500);
+                } else {
 
-                // Countdown clock, with the drawbacks previusly mentioned
-                $('#game-info').text('Game starts in ' + countDown);
-                var countDownInterval = setInterval(function() {
-                    if(countDown > 1) {
-                        countDown--;
-                        $('#game-info').text('Game starts in ' + countDown);
-                    } else {
+                    // If the php file was able to connect the player to the game, information from the returnerd object is stored i global variables
+                    console.log(r);
+                    score = r.score;
+                    name = r.name;
+                    gameId = r.gameId;
+                    playerId = r.id;
 
-                        // When the countdown is done, hide the counter and attached message and prevent further updates by clearing interval
-                        $('#game-info').slideToggle('slow');
-                        clearInterval(countDownInterval);
+                    // This is an attempt to time the start of the game and sync all players. Works fine in tests, but by no means good enough
+                    // and should be replaced. In short, it uses the php server's timestamp to sync the new players joining the game, and is therefore 
+                    // exposed to delays over the network. The player who created the game has a countdown based on the browser's timestamp. 
+                    // And because of this, syncing is more luck than skill everytime it works, and is doomed to fail, and sometimes badly so, from time to time.
+                    var countDown = r.countdown;
 
-                        // Start the game
-                        startGame();
-                    }
-                }, 1000);
+                    // Push to #message as confirmation that the game is successfully joined
+                    $('#message').fadeOut(1000, function() { 
+                        $(this).text("You're in!").fadeIn(1000)
+                    });
 
-            }
+                    // Countdown clock, with the drawbacks previusly mentioned
+                    $('#game-info').text('Game starts in ' + countDown);
+                    var countDownInterval = setInterval(function() {
+                        if(countDown > 1) {
+                            countDown--;
+                            $('#game-info').text('Game starts in ' + countDown);
+                        } else {
+
+                            // When the countdown is done, hide the counter and attached message and prevent further updates by clearing interval
+                            $('#game-info').slideToggle('slow');
+                            clearInterval(countDownInterval);
+
+                            // Start the game
+                            startGame();
+                        }
+                    }, 1000);
+
+                   
+                }
+            });
         });
 
-
+        
     });
 }
 
@@ -317,13 +327,13 @@ function joinGame(gId) {
 //**    The player will now be able to control the car, and the browser starts polling the server via updateGame()
 
 function startGame() {
-    //** Visual stuff in the startup
 
     // Array that contains start messages
     var startMsg = ['Ready...', 'Set...', 'Go!'];
 
     // The repeat variable has to be set outside the function where it's first assigned to make it accessible for the startMesssages() function
     var repeat;
+    var n = 0;
 
     // Hide the content in #message by setting the text opacity to 0
     $('#message').css({'color': 'rgba(0, 0, 0, 0)', 'transition': 'color 0.2s'});
@@ -340,27 +350,29 @@ function startGame() {
         // Loops through the startMsg array and displays them in #message with som fancy transition effects.
         // Use the opacity to fade the text in and out instead hide/show beacause it then keeps its size. 
         // Yes, there are better solutions to this...
-        for(var i; i < startMsg.length; i++) {
-            $('#message').text(startMsg[i]);
-            $('#message').css({'color': 'rgba(255, 255, 255, 1)', 'transition': 'color 0.2s'});
-            // Fade out the text after 800 millisecs
+        console.log('klar til start');
+        $('#message').text(startMsg[n]);
+        $('#message').css({'color': 'rgba(255, 255, 255, 1)', 'transition': 'color 0.4s'});
+        // Fade out the text after 800 millisecs
             setTimeout(function() {
-                $('#message').css({'color': 'rgba(0,0,0,0)', 'transition': 'color 0.2s'});
-            }, 800);
-        } 
+                $('#message').css({'color': 'rgba(0,0,0,0)', 'transition': 'color 0.4s'});
+            }, 600);
+        
+        n++;
+        if(n == startMsg.length) {
+            clearInterval(repeat);
+            // When the excitement reaches its peak during the start messages, the following hides the #message-container and brings in the game controllers
+            // and other elements within the .wait-till-game class
+            $('#message-container').fadeOut('slow');
+            $('.wait-till-game').show('fast');
 
-        // When the excitement reaches its peak during the start messages, the following hides the #message-container and brings in the game controllers
-        // and other elements within the .wait-till-game class
-        clearInterval(repeat);
-        $('#message-container').fadeOut('slow');
-        $('.wait-till-game').show('fast');
+            // Allow the players to control the car and shoot, and let the game begin!
+            writePermission = 1;
+            gameOn = 1;
 
-        // Allow the players to control the car and shoot, and let the game begin!
-        writePermission = 1;
-        gameOn = 1;
-
-        // Start updating the game status
-        updateGame();
+            // Start updating the game status
+            updateGame();
+        };
         
     }
 }
@@ -375,8 +387,31 @@ function updateGame() {
         //  AJAX request to php-file that communicates with database and handles information about all the players 
         //  in each game session and returned updated player object and game status
         //  Is set up to use JSONP to handle cross-domain issues if necessary. Should consider to be removed and replaced by JSON if not needed.
-        $.getJSON('https://cpanel2.proisp.no/~stangtqr/pwt/game.php?t=u&gid=' + gameId + '&pid=' + playerId + '&pname=' + name + '&l=' + score + '&callback=?', function(r) {
-                console.log(r);
+        //  Other options are to use WebSocket or long polling instead of frequent AJAX requests in cases when possible
+        $.getJSON('php/game.php?t=u&gid=' + gameId + '&pid=' + playerId + '&pname=' + name + '&l=' + score + '&callback=?', function(r) {
+            //  Checking the gameStatus property of the received object to see if game is still active
+            //  The game is active as long as the status is 10. As soon as only one player still has points left, the returnes gameStatus
+            //  changes to this player's ID
+            if(r.gameStatus == 10) {
+                if(score <= 0)
+                    // The game is active, but the players is out of points
+                    gameLost('active');
+                else {
+                    // The game is still active, and the player has more lives left
+                }
+            } else if(r.gameStatus != 10) {
+                //  Since the status is no longer 10, ie the game is over, perform check to see if the player has won or lost the game, 
+                //  and call functions accordingly
+                if(r.gameStatus == playerId) {
+                    // The game is over and player won the game
+                    gameWon();
+                } else {
+                    // The game is over and another player won
+                    gameLost();
+                }
+            }
+            // Debug
+            console.log(r);
         });
         // Update every given interval as long as the game is ongoing, which is as long as gameStatus = 1 in the returned JSONP in this function
         if(gameOn) {
@@ -410,7 +445,7 @@ function restartGame() {
 
 //////////////////////////////////////////////*
 //                                          //*
-//        The-game-itself-functions         //*
+//         The-game-itself-functions        //*
 //                                          //*
 //////////////////////////////////////////////*
 
@@ -429,9 +464,8 @@ function notificationCallback(dataArray) {
             console.log(score);
         }
 
-        if(score <= 0) {
-            gameOn = 0;
-            gameLost();
+        if(score < 0) {
+            score = 0;
         }
         startSlot();
 
@@ -445,8 +479,11 @@ function notificationCallback(dataArray) {
     prevNotificationArray = dataArray;
 }
 
+//**
+//      Function called when the player wins a game
+//**
 
-function gameLost() {   
+function gameWon() {   
     gameOn = 0;
 
     charVal[10] = 0;
@@ -455,18 +492,43 @@ function gameLost() {
     charVal[13] = 0;
 
     if(!local) {
-            console.log('lost');
+        console.log('lost');
+        priorityWrite(charVal);
+        writePermission = 0;
+    }
+    $('#message-container').html('You won :)');
+    $('#message-container').fadeIn('slow');
+}
+
+
+//**
+//      Function called when the player loses a game
+//**
+
+function gameLost(status = "") {   
+    gameOn = 0;
+
+    charVal[10] = 0;
+    charVal[11] = 0;
+    charVal[12] = 0;
+    charVal[13] = 0;
+
+    if(!local) {
+        console.log('lost');
         priorityWrite(charVal);
         writePermission = 0;
     }
     $('#message-container').html('You lost :(');
     $('#message-container').fadeIn('slow');
 
-
-
+        
 }
 
-// Function to add 'shooting' functionality. Is called when the fire button is pushed.
+
+//**
+//      Function to add 'shooting' functionality. Is called when the fire button is pushed
+//**
+
 function shoot() {
     if(!coolDownStatus) {
         coolDownStatus = 1;
@@ -482,10 +544,13 @@ function shoot() {
         }
         coolDown();
     }
-
 }
 
-// Function to ensure that a player can't shoot again before a certain time has passed. The 'cool-down time' is set in the timeOute variable [ms]
+
+//**
+//      Function to ensure that a player can't shoot again before a certain time has passed. The 'cool-down time' is set in the timeOute variable [ms]
+//**
+
 function coolDown() {
 
     var timeOut = coolDownPeriod;
@@ -520,7 +585,6 @@ function printDiscardedPackets() {
 }
 
 
-
 //**
 //      Buttons and actions
 //**
@@ -553,7 +617,11 @@ $('#btn-restart-game').on('touchstart mousedown', function(event) {
     restartGame();
     event.preventDefault();
 });
-
+$('#btn-slotmachine').on('touchstart mousedown', function(event) {
+    console.log('h');
+    startSlot();
+    event.preventDefault();
+});
 
 // This 'sim-hit' button triggers the same events with the same parameters as would be the case if the player's car was 'hit' by IR
 $('#btn-sim-hit').on('touchstart mousedown', function(event) {
