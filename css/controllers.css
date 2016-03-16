@@ -136,21 +136,68 @@
 	position: relative;
 	width: 300px;
 	height: 30px;
-    padding: 5px;
+    padding-top: 5px;
     margin-top: 10px;
 	margin-left: auto;
 	margin-right: auto;
-    background-color: rgba(255, 255, 255, 0.9);
-    border: 2px solid #0b4251;
+    background-color: rgba(0, 13, 29, 0.9);
+    border: 2px solid rgba(255, 255, 255, 0.1);
     border-radius: 5px;
     text-align: center;
     cursor: pointer;
     box-shadow: 0px 0px 40px 0px rgba(0,0,0, 0.3);
-    color: #222;
+    color: rgba(255, 255, 230, 0.9);
     font-size: 20px;
     font-weight: bold;
 }
 
+#btn-menu {
+	display: none;
+	height: 40px;
+	width: 40px;
+	background-color: rgba(0, 0, 0, 0.8);
+	position: fixed;
+	bottom: 10px;
+	left: 50%;
+	margin-left: -20px; 	
+	color: white;
+	font-size: 25px;
+	padding-top: 2px;
+	border: 2px solid rgba(255, 255, 255, 0.8);
+	border-radius: 100%;
+	text-align: center;
+	z-index: 11;
+	box-shadow: 0px 0px 20px 2px rgba(0, 0, 0, 0.4);
+}
+
+#slide-menu {
+	height: 0px;
+	width: 100%;
+	background-color: rgba(0, 0, 0, 0.3);
+	position: fixed;
+	border-top: 2px solid rgba(255, 255, 255, 0.1);
+	bottom: 0;
+	margin: 0;
+	clear: both;
+	vertical-align: middle;
+	z-index: 10;
+	box-shadow: 0px 0px 20px 2px rgba(0, 0, 0, 0.4);
+}
+#btn-exit, #btn-slotmachine {
+	display: inline-block;
+	width: 200px;
+}
+
+#btn-exit {
+	margin-left: 50px;
+	margin-right: 50px;
+}
+
+#btn-slotmachine {
+	margin-left: 50px;
+	margin-right: 50px;
+	float: right;
+}
 #message input[type=text] {
     border: 1px solid white;
     background-color: rgba(255, 255, 255, 0.3);

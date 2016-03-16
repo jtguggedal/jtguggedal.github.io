@@ -3,9 +3,8 @@
 	var running = false;			// Variable to make sure the function startSlot| can not be triggered when it is already running
 
 $('#btn-slotmachine').on('touchstart mousedown', function(event) {
-	console.log("Før startSlot");
+	toggleGameMenu();
 	startSlot();
-	console.log("Etter startSlot");
 	event.preventDefault();
 });
 

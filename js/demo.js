@@ -35,6 +35,7 @@ var name;
 var gameId;
 var playerId;
 var singlePlayer = false;
+var gameMenuDown = true;
 
 //** For local testing, set local to 1 to avoid Web Bluetooth errors
 var local = 0;
@@ -684,3 +685,27 @@ function startSingleplayer () {
 	$('#message-container').fadeIn('slow');
 	startGame();
 };
+
+$('#btn-menu').on('touchstart mousedown', function (event) {
+	toggleGameMenu();
+	event.preventDefault();
+});
+
+function toggleGameMenu() {
+	if (gameMenuDown == true){
+		$('#slide-menu').animate({height: "60px"},'slow');
+		$('#btn-menu').animate({bottom: "37px"},'slow');
+		
+		gameMenuDown = false;
+	}
+	else if (gameMenuDown == false){
+		$('#slide-menu').animate({height: "0px"},'slow');
+		$('#btn-menu').animate({bottom: "10px"},'slow');
+		
+		gameMenuDown = true;
+	}
+};
+
+$('#btn-exit').on('touchstart mousedown', function (event) {
+	$('.column').load('include/controllers.html?t=' + e);
+});
