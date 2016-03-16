@@ -230,10 +230,10 @@ input[type=range] {
 	font-size: ;
 	color: white;
 	text-align: center;
-	margin-top: 60px;
+	margin-top: 40px;
 	margin-left: auto;
 	margin-right: auto;
-	margin-bottom: 60px;
+	margin-bottom: 40px;
 }
 #connect, #disconnect{
 	display: block;
