@@ -22,24 +22,14 @@ var prevNotificationArray = [];     // The notification characteristic handler u
 var score = 5;                      // Number of lives each player starts with
 var timeToJoin = 20;                // Interval from games is created until it starts [s]
 var timeBetweenHits = 2000;         // Time from one hit to next possible [ms]
-<<<<<<< HEAD
 var coolDownPeriod = 1500;          // Shortest allowed interval between shots fired [ms]
-=======
-var coolDownPeriod = 1500;           // Shortest allowed interval between shots fired [ms]
->>>>>>> origin/master
 var coolDownStatus = 0;             // Players starts with no need of 'cool down'
 var gameOn = 0;                     // Game is by default not started automatically
 var allowCreate = 1;                // Players are allowed to create their own games
 var preventShot = 0;                // Variable to prevent being hit before timeBetweenHits is out
 var updateInterval = 500;           // Intervall for game updates to and from the server [ms]
 
-
-<<<<<<< HEAD
 var speedCoeff = 0.78;
-=======
-var speedCoeff = 0.78;				
->>>>>>> origin/master
-
 var message;
 var name;
 var gameId;
@@ -554,15 +544,12 @@ function shoot() {
     }
 }
 
-<<<<<<< HEAD
+
 
 //**
 //      Function to ensure that a player can't shoot again before a certain time has passed. The 'cool-down time' is set in the timeOute variable [ms]
 //**
 
-=======
-// Function to ensure that a player can't shoot again before a certain time has passed. The 'cool-down time' is set in the timeOut variable [ms]
->>>>>>> origin/master
 function coolDown() {
 
     var timeOut = coolDownPeriod;
@@ -629,14 +616,12 @@ $('#btn-restart-game').on('touchstart mousedown', function(event) {
     restartGame();
     event.preventDefault();
 });
-<<<<<<< HEAD
+
 $('#btn-slotmachine').on('touchstart mousedown', function(event) {
     console.log('h');
     startSlot();
     event.preventDefault();
 });
-=======
->>>>>>> origin/master
 
 // This 'sim-hit' button triggers the same events with the same parameters as would be the case if the player's car was 'hit' by IR
 $('#btn-sim-hit').on('touchstart mousedown', function(event) {
