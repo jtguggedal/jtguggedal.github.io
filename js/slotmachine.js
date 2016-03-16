@@ -57,6 +57,15 @@ function activatePowerup (powerup) {
 			break;
 	};
 };
+<<<<<<< HEAD
+=======
+
+function deactivatePowerup () {
+	speedCoeff = 0.78;
+	coolDownPeriod = 1500;
+	preventShot = 0;
+};
+>>>>>>> origin/master
 
 function deactivatePowerup () {
 	speedCoeff = 0.78;
