@@ -7,7 +7,7 @@
     margin: 0;
 }
 
-#joystick-container, #button-container {
+#joystick-container, #fire-button-container {
     display: inline-block;
 }
 
@@ -21,7 +21,7 @@
 
 }
 
-#button-container {
+#fire-button-container {
     position: absolute;
     right: 0;
     top: 0;
@@ -79,7 +79,8 @@
     display: none;
     width: 200px;
     top: 70px;
-    margin-left: 50%;
+    margin-left: auto;
+	margin-right: auto;
     background-color: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.3);
     text-align: center;
@@ -95,12 +96,13 @@
     font-weight: normal;
 }
 
-#btn-debug-container {
+#btn-gamemenu-container {
     position: absolute;
-    bottom: 50px;
+	left: 50%;
+    bottom: 100px;
     text-align: center;
-    width: 100%;
-    margin: 5px;
+    width: 400px;
+    margin-left: -200px;
     padding: 9px;
 }
 
@@ -117,20 +119,21 @@
 }
 .button {
 	position: relative;
-	width: 30%;
+	width: 300px;
+	height: 30px;
     padding: 5px;
     margin-top: 10px;
 	margin-left: auto;
 	margin-right: auto;
-    background-color: white;
-    border: 1px solid #0b4251;
-    border-radius: 2px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 2px solid #0b4251;
+    border-radius: 5px;
     text-align: center;
     cursor: pointer;
     box-shadow: 0px 0px 40px 0px rgba(0,0,0, 0.3);
     color: #222;
-    font-size: 16px;
-    font-weight: normal;
+    font-size: 20px;
+    font-weight: bold;
 }
 
 #btn-join-popup {

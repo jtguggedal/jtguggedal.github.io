@@ -647,13 +647,13 @@ $('#btn-slotmachine').on('touchstart mousedown', function(event) {
     event.preventDefault();
 });
 
-// This 'sim-hit' button triggers the same events with the same parameters as would be the case if the player's car was 'hit' by IR
-$('#btn-sim-hit').on('touchstart mousedown', function(event) {
-    var hitArray = new Uint8Array(20);
-    hitArray[1] = 1;
-    notificationCallback(hitArray);
-    event.preventDefault();
-});
+//  This 'sim-hit' button triggers the same events with the same parameters as would be the case if the player's car was 'hit' by IR
+//  $('#btn-sim-hit').on('touchstart mousedown', function(event) {
+//  var hitArray = new Uint8Array(20);
+//  hitArray[1] = 1;
+//  notificationCallback(hitArray);
+//  event.preventDefault();
+//});
 
 // Set transition time for cool-down-bar. Placed here instead of static CSS to give a more sensible transition time based on the chosen coolDownPeriod
 $('#cool-down-bar').css('transition', 'background-color ' + coolDownPeriod*3/5000 + 's');
@@ -664,4 +664,6 @@ $('.wait-till-game').hide();
 // Populate the #points with the score (needs 'manual' update incase it is changed by joining a game with different settings than set here)
 $('#points').text('♥ ' + score);
 
-
+$('#btn-gamemenu-container').on('touchstart mousedown', function(event) {
+	$('.button').fadeOut("slow", function() {});
+});
