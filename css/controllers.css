@@ -106,6 +106,21 @@
     padding: 9px;
 }
 
+#btn-join-container {
+	display: none;
+	position: absolute;
+	left: 50%;
+    bottom: 100px;
+    text-align: center;
+    width: 400px;
+    margin-left: -200px;
+    padding: 9px;
+}
+
+#btn-return {
+	
+}
+
 .wait-till-game {
     visibility: hidden;
 }
@@ -134,20 +149,6 @@
     color: #222;
     font-size: 20px;
     font-weight: bold;
-}
-
-#btn-join-popup {
-    display: inline-block;
-    padding: 5px 10px;
-    margin-top: 15px;
-    background-color: rgba(255, 255, 255, 0.9);
-    border: 1px solid white;
-    border-radius: 3px;
-    text-align: center;
-    cursor: pointer;
-    box-shadow: 0px 0px 40px 0px rgba(0,0,0, 0.4);
-    font-size: 20px;
-    font-weight: normal;
 }
 
 #message input[type=text] {

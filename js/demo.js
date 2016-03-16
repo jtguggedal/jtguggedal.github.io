@@ -34,6 +34,7 @@ var message;
 var name;
 var gameId;
 var playerId;
+var singlePlayer = false;
 
 //** For local testing, set local to 1 to avoid Web Bluetooth errors
 var local = 0;
@@ -236,12 +237,11 @@ function createGame() {
 //**
 
 function joinGamePopup() {
-    var input = `<input type='text' id='game-id' placeholder='PIN' maxlength='5' size='5' autofocus>
-                    <div><div id='btn-join-popup' class='button'>Join</div></div>`;
+    var input = `<input type='text' id='game-id' placeholder='PIN' maxlength='5' size='5' autofocus>`;
 
     $('#message').html(input);
     $('#message-container').fadeIn(500);
-
+	$('#btn-join-container').fadeIn(500);
     $('#btn-join-popup').on('touchstart mousedown', function() {
         var pin = $('#game-id').val();
         joinGame(pin);
@@ -369,7 +369,8 @@ function startGame() {
             gameOn = 1;
 
             // Start updating the game status
-            updateGame();
+			if(singlePlayer == false)
+				updateGame();
         };
         
     }
@@ -665,5 +666,21 @@ $('.wait-till-game').hide();
 $('#points').text('♥ ' + score);
 
 $('#btn-gamemenu-container').on('touchstart mousedown', function(event) {
-	$('.button').fadeOut("slow", function() {});
+	$('#btn-gamemenu-container').fadeOut("slow");
 });
+
+$('#btn-return').on('touchstart mousedown', function(event) {
+	$('#btn-join-container').fadeOut("slow");
+	$('#message-container').fadeOut("slow");
+	$('#btn-gamemenu-container').fadeIn("slow");
+});
+
+$('#btn-singleplayer').on('touchstart mousedown', function(event) {
+	startSingleplayer();
+});
+
+function startSingleplayer () {
+	singlePlayer = true;
+	$('#message-container').fadeIn('slow');
+	startGame();
+};
