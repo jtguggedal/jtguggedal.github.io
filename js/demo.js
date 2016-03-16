@@ -204,7 +204,7 @@ function createGame() {
 
         // Send AJAX request to PHP page that creates game ID and entry in database. Object with player and game information is returned as JSONP
         // to avoid cross-domain issues. Should consider to use JSON if the php page may run on local server.
-        $.getJSON('php/game.php?t=create&ttj=' + timeToJoin + '&pname=' + name + '&l=' + score + '&callback=?', function(r) { 
+        $.getJSON('https://cpanel2.proisp.no/~stangtqr/pwt/game.php?t=create&ttj=' + timeToJoin + '&pname=' + name + '&l=' + score + '&callback=?', function(r) { 
             // Returned object is stored to global variables for easy access for all functions
             console.log(r);
             console.log(r.name);
@@ -276,7 +276,7 @@ function joinGame(gId) {
             // AJAX request to php file that taes care of the database connection and makes sure that the new player gets a playerId in return
             // and is connected to the right game session
             // JSONP is used to avoid cross-domain issues when php page is placed on a diffrent domain than this script. Consider to replace by JSON if not needed.
-            $.getJSON('php/game.php?t=join&gid=' + gId + '&pname=' + name + '&callback=?', function(r) { 
+            $.getJSON('https://cpanel2.proisp.no/~stangtqr/pwt/game.php?t=join&gid=' + gId + '&pname=' + name + '&callback=?', function(r) { 
 
                 // Check if the game had started or did'nt exist and therefore could not be joined
                 if(r == 'not_exist' || r == 'started') {
@@ -396,7 +396,7 @@ function updateGame() {
         //  in each game session and returned updated player object and game status
         //  Is set up to use JSONP to handle cross-domain issues if necessary. Should consider to be removed and replaced by JSON if not needed.
         //  Other options are to use WebSocket or long polling instead of frequent AJAX requests in cases when possible
-        $.getJSON('php/game.php?t=u&gid=' + gameId + '&pid=' + playerId + '&pname=' + name + '&l=' + score + '&callback=?', function(r) {
+        $.getJSON('https://cpanel2.proisp.no/~stangtqr/pwt/game.php?t=u&gid=' + gameId + '&pid=' + playerId + '&pname=' + name + '&l=' + score + '&callback=?', function(r) {
             //  Checking the gameStatus property of the received object to see if game is still active
             //  The game is active as long as the status is 10. As soon as only one player still has points left, the returnes gameStatus
             //  changes to this player's ID
