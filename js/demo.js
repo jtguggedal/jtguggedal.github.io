@@ -380,6 +380,7 @@ function startGame() {
 //**
 
 function updateGame() {
+    var earlyUpdate = 2;
     sendRequest();
     function sendRequest() {
         //  AJAX request to php-file that communicates with database and handles information about all the players 
@@ -390,7 +391,12 @@ function updateGame() {
             //  Checking the gameStatus property of the received object to see if game is still active
             //  The game is active as long as the status is 10. As soon as only one player still has points left, the returnes gameStatus
             //  changes to this player's ID
-            if(r.gameStatus == 10) {
+            if(earlyUpdate  > 0 && r.gameStatus == 1) {
+                // If one of the two first updates returns that the player who created the game has won, it means that no other players joined the game in time
+                // The player will then be presented a message with question to drive about a bit anyway
+                gameOn = 0;
+                singlePlayerPopup();
+            } else if(r.gameStatus == 10) {
                 if(score <= 0)
                     // The game is active, but the players is out of points
                     gameLost('active');
@@ -414,10 +420,28 @@ function updateGame() {
         // Update every given interval as long as the game is ongoing, which is as long as gameStatus = 1 in the returned JSONP in this function
         if(gameOn) {
             setTimeout(function() {
-                sendRequest();
+                if(gameOn)
+                    sendRequest();
             }, updateInterval);
         }
+
+        earlyUpdate--;
+
     }
+}
+
+function singlePlayerPopup() {
+
+    var input = `<input type='text' id='game-id' placeholder='PIN' maxlength='5' size='5' autofocus>
+                    <div><div id='btn-join-popup' class='button'>Join</div></div>`;
+
+    $('#message').html(input);
+    $('#message-container').fadeIn(500);
+
+    $('#btn-join-popup').on('touchstart mousedown', function() {
+        var pin = $('#game-id').val();
+        joinGame(pin);
+    });
 }
 
 //**
