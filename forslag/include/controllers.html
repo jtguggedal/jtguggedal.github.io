@@ -1,0 +1,67 @@
+
+    <!-- Controllers: joystick and button -->
+    <div id="control-container">
+        <div id="cool-down-bar-container" class="wait-till-game">
+            <div id="cool-down-bar">
+            </div>
+        </div>
+
+        <div id="joystick-container" class="wait-till-game">
+        </div>
+
+        <div id="points" class="wait-till-game">
+        </div>
+        <div id="slotmachine-container">
+            <div id="slotmachine">
+                <span></span>
+            </div>
+        </div>
+        <div id="message-container">
+            <div id="message">
+            </div>
+            <div id="game-info">
+            </div>
+        </div>
+        <div id="btn-gamemenu-container">
+            <div id="btn-singleplayer" class="button">
+                Singleplayer Demo
+            </div>
+            <div id="btn-create-game" class="button">
+                Create Multiplayer Game
+            </div>
+           <!-- <div id="btn-slotmachine" class="button">
+                Slotmachine
+            </div>-->
+            <div id="btn-join-game" class="button">
+                Join Multiplayer Game
+            </div>
+            
+            <!--div id="btn-sim-hit" class="button">
+                Simulér treff
+            </div-->
+            <!--div id="btn-restart-game" class="button">
+                Restart
+            </div-->
+        </div>
+        <div id="count-down">
+        </div>
+        <div id="static" class ="wait-till-game">
+        </div>
+
+        <div id="fire-button-container" >
+            <div id="control-button" class="wait-till-game">
+            </div>
+        </div>
+    </div>
+    <div id="status-create-game">
+    </div>
+    <script src="js/virtualJoystick.js"></script>   
+    <script src="js/nipplejs.min.js"></script>
+    <script src="js/slotmachine.js"></script>
+    
+    <!--  Include demo version of the car controllers -->
+    <script>
+        var time = new Date();      
+        var e = time.getTime();     
+        $.getScript( "js/demo.js?t=" + e);
+    </script>

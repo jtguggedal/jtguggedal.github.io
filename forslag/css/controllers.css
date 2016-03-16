@@ -1,0 +1,254 @@
+
+/***  Stylesheet for game controllers  ***/
+
+#control-container {
+    width: 100%;
+    text-align: left;
+    margin: 0;
+}
+
+#joystick-container, #fire-button-container {
+    display: inline-block;
+}
+
+
+#joystick-container {
+    width: 150px;
+    height: 150px;
+    position: absolute;
+    left: 10px;
+    top: 5px;
+
+}
+
+#fire-button-container {
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding-right: 20px;
+    padding-top: 90px;
+    height: 100%;
+    width: 150px;
+}
+
+#control-button {
+    width: 120px;
+    height: 120px;
+    margin: auto;
+    background-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0px 0px 30px 0px rgba(0,0,0, 0.2);
+    border: 4px solid rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+}
+
+
+
+#points {
+    display: none;
+    font-size:40px;
+    color: white;
+    text-align: center;
+    font-weight: 700;
+    position: fixed;
+    top: 35px;
+    width: 100%;
+    text-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);
+}
+
+#cool-down-bar-container {
+    position: absolute;
+    width: 200px;
+    height: 20px;
+    left: 50%;
+    top: 10px;
+    margin-left: -100px;
+    border-radius: 5px;
+    border: 1px solid white;
+    overflow: hidden;
+}
+
+#cool-down-bar {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: #367d59;
+}
+
+#message-container {
+    position: relative;
+    display: none;
+    width: 320px;
+    max-width: 350px;
+    top: 60px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+    text-align: center;
+    color: white;
+    padding: 10px;
+    font-size: 35px;
+    font-weight: 700;
+    box-shadow: 0px 0px 60px 0px rgba(0,0,0, 0.4);
+}
+
+#game-info {
+    font-size: 18px;
+    font-weight: normal;
+}
+
+#btn-gamemenu-container {
+    position: absolute;
+    left: 50%;
+    bottom: 100px;
+    text-align: center;
+    width: 400px;
+    margin-left: -200px;
+    padding: 9px;
+}
+
+#btn-join-container {
+    display: none;
+    position: relative;
+    text-align: center;
+    width: 100%;
+
+}
+
+#btn-return {
+    
+}
+
+.wait-till-game {
+    visibility: hidden;
+}
+
+#static {
+    width: 150px;
+    height: 150px;
+    position: absolute;
+    left: 10px;
+    top: 30px;
+}
+.button, .msg-button {
+    position: relative;
+    width: 300px;
+    height: 30px;
+    padding: 8px 0 5px 0;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
+    box-shadow: 0px 0px 20px 1px rgba(0,0,0, 0.4);
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 20px;
+    font-weight: bold;
+}
+
+#btn-menu {
+    display: none;
+    height: 40px;
+    width: 40px;
+    background-color: rgba(0, 0, 0, 0.8);
+    position: fixed;
+    bottom: 10px;
+    left: 50%;
+    margin-left: -20px;     
+    color: white;
+    font-size: 25px;
+    padding-top: 2px;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    border-radius: 100%;
+    text-align: center;
+    z-index: 11;
+    box-shadow: 0px 0px 20px 2px rgba(0, 0, 0, 0.4);
+}
+
+#slide-menu {
+    height: 0px;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    position: fixed;
+    border-top: 2px solid rgba(255, 255, 255, 0.1);
+    bottom: 0;
+    margin: 0;
+    clear: both;
+    vertical-align: middle;
+    z-index: 10;
+    box-shadow: 0px 0px 20px 2px rgba(0, 0, 0, 0.4);
+}
+#btn-exit, #btn-slotmachine {
+    display: inline-block;
+    width: 200px;
+}
+
+#btn-exit {
+    margin-left: 50px;
+    margin-right: 50px;
+}
+
+#btn-slotmachine {
+    margin-left: 50px;
+    margin-right: 50px;
+    float: right;
+}
+#message input[type=text] {
+    border: 1px solid white;
+    background-color: rgba(255, 255, 255, 0.3);
+    padding: 2px 8px;
+    font-size: 30px;
+    text-align: center;
+    width: 120px;
+    text-transform:uppercase;
+    margin: 0;
+    color: white;
+   
+}
+ ::-webkit-input-placeholder { 
+    color: rgba(255, 255, 255, 0.7);
+}
+
+input:focus {
+    outline: none;
+    box-shadow: 0px 0px 20px 0px rgba(0,0,0, 0.3);
+}
+
+.msg {
+    font-size: 20px;
+    font-weight: 100;
+    margin: 10px 10px 20px 10px;
+    text-align: left;
+    line-height: 130%;
+    color: white;
+
+}
+
+.msg h1 {
+    font-size: 45px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 15px;
+    margin-top: 10px;
+}
+
+.msg-button {
+
+    box-shadow: 0px 0px 20px 0px rgba(0,0,0, 0.3);
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+#join-fail {
+    font-size: 16px;
+    font-weight: 100;
+    margin-top: 3px;
+    margin-bottom: 10px;
+}
+
+.alert-glow {
+    box-shadow: 0px 0px 20px 0px rgba(204,41,0, 0.8);
+}
