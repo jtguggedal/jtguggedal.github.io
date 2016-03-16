@@ -278,7 +278,11 @@ input[type=range] {
         width: 100%;
         height: 100%;
         font-size: 25px;
-        background-color: rgba(0, 0, 0, 0.9);
+        background: #0b4260;
+		background: -moz-radial-gradient(center, ellipse cover,  #0b4260 0%, #080c0f 100%);
+		background: -webkit-radial-gradient(center, ellipse cover,  #0b4260 0%,#080c0f 100%);
+		background: radial-gradient(ellipse at center,  #0b4260 0%,#080c0f 100%);
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0b4260', endColorstr='#080c0f',GradientType=1 );
         color: white;
         margin: 0;
         padding: 0;

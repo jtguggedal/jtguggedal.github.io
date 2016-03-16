@@ -1,6 +1,4 @@
 <?php 
-	header('Access-Control-Allow-Origin: *');
-	header('Content-type: text/plain; charset=utf-8');
 	ini_set('display_errors',1);
 	ini_set('display_startup_errors',1);
 	error_reporting(E_ALL);
@@ -28,25 +26,50 @@
 
 	$function_name = $_GET['callback'];
 
-
 	switch ($type) {
 		case 'create':
+		global $db;
 			// Create random 5 char ID for new game
 			$gameId = createGame();
-			$player = new Player($gameId, $playerName, $score, $playerId);
-			$player->update($player->gameId, $player->id, $player->score);
-			$response = json_encode((array)$player, JSON_UNESCAPED_UNICODE);
+
+			// New player object
+			$id = 1; // ID is set to 1 for the player who creates the game
+			$player = new Player($gameId, $playerName, $score, $id);
+
+			// Save player object as JSON to database
+			$playerJsonId = 'player_1';
+			$playerJson = json_encode($player, JSON_UNESCAPED_UNICODE);
+			$sql = "UPDATE game SET $playerJsonId = '$playerJson' WHERE id = '$gameId'";
+			$db->query($sql);
+
+			// Player JSON to be returned to js with JSONP
+			$response = $playerJson;
 			break;
 		case 'join':
 			// Join an already created game
+
+			// Create new player object
 			$player = new Player($gameId, $playerName);
+
+			// joingame() returns player object as JSON to be returned to js
 			$response = joinGame($player, $gameId);
 			break;
 		case 'u':
 			// Update settings for player
+
+			// Create new player object
 			$player = new Player($gameId, $playerName, $score, $playerId);
-			$player->update($gameId, $playerId, $score);
-			$response = json_encode((array)$player, JSON_UNESCAPED_UNICODE);
+
+			// The update() method returns the gameStatus.
+			// If more than one player is still active, player object is returned as JSON.
+			// If only one player has lives left, the game is over, and JSON with gameStatus: finished is returned
+			$u = $player->update($gameId, $playerId, $score);
+			if($u == 'updated' || $u == 'ongoing')
+				$response = json_encode($player, JSON_UNESCAPED_UNICODE);
+			else if($u == 'finished') {
+				$s = $player->gameStatus;
+				$response = "{ 'gameStatus': $s }";
+			}
 		default:
 			//
 			break;
@@ -61,8 +84,9 @@
 	echo $response;
 	echo ");\n";
 
+
 	//**
-	//		Class for player creation. Data is stored in database.
+	//		Player class
 	//**
 
 	class Player {
@@ -88,16 +112,47 @@
 			$this->gameStatus = 10;
 		}
 
+		// Function that receives player data from the js and saves it to the database
 		public function update($gameId, $playerId, $score) {
 			global $db;
-
 			$this->score = $score;
+			$status = $this->gameStatus($gameId);
 
-			$playerJsonId = 'player_' . $playerId;
-			$playerJson = json_encode($this, JSON_UNESCAPED_UNICODE);
-			$sql = "UPDATE game SET $playerJsonId = '$playerJson' WHERE id = '$gameId'";
-			$db->query($sql);
+			if($status != 10) 
+				return 'finished';
+			else {
+
+				$playerJsonId = 'player_' . $playerId;
+				$playerJson = json_encode($this, JSON_UNESCAPED_UNICODE);
+				$sql = "UPDATE game SET $playerJsonId = '$playerJson' WHERE id = '$gameId'";
+				$db->query($sql);
+
+				if($score != 0)
+					return 'updated';
+				else
+					return 'ongoing';
+			} 
 		}
+
+		// Function that returns the number of players that's already joined the game
+		public function numberOfPlayers($gameId) {
+			global $db;
+
+			$timeOut = time();
+
+			$sql = "SELECT * FROM game WHERE id = '$gameId'";
+			$q = $db->query($sql);
+			$r = $q->fetch_assoc();
+			$count = 0;
+
+			for($i = 1; $i <= 4; $i++) {
+				if($r["player_$i"] != "")
+					$count++;
+			}
+
+			return $count;
+		}
+
 
 		public function getId() {
 			return $this->id;
@@ -118,27 +173,45 @@
 		public function setscore($score) {
 			return $this->score = $score;
 		}
-
+ 
 		// Private methods
 
-		public function numberOfPlayers($gameId) {
+		// Function that returns 
+		private function gameStatus($gameId) {
 			global $db;
-
-			$timeOut = time();
-
+			$stillActive = array();
+			
+			// Check game status
 			$sql = "SELECT * FROM game WHERE id = '$gameId'";
 			$q = $db->query($sql);
 			$r = $q->fetch_assoc();
-			$count = 0;
+			$status = $r['status'];
+			$this->gameStatus = $status;
 
-			for($i = 1; $i <= 4; $i++) {
-				if($r["player_$i"] != "")
-					$count++;
+			$playerCount = $this->numberOfPlayers($gameId);
+
+			// Save player data to array if still active (in the sense that the player has > 0 lives left)
+			for($k = 1; $k <= $playerCount; $k++) {
+				$pId = 'player_' . $k;
+				$obj = json_decode($r[$pId]);
+				if($obj->score > 0)
+					$stillActive[$k] = $obj->score;
 			}
 
-			return $count;
-		}
+			// Check if more than one player is still active. If not, the games is over and the active player has won
+			if(sizeof($stillActive) > 1) {
+				$sql = "UPDATE game SET status = 10 WHERE id = '$gameId'";
+				$db->query($sql);
 
+				return 10;
+			} else {
+				$s = key($stillActive);
+				$sql = "UPDATE game SET status = $s WHERE id = '$gameId'";
+				$db->query($sql);
+
+				return $s;
+			}
+		}
 	}
 
 	//**
@@ -149,6 +222,7 @@
 		global $timeToJoin;
 		global $db;
 		global $gameId;
+		global $score;
 
 		$base = str_split('ABCDEFGHIJKLMNOPQRSTUVWXYZ'); 
 		shuffle($base); 
@@ -161,7 +235,7 @@
 		$timeOut = $time + $timeToJoin;
 
 		// Save game to database
-		$sql = "INSERT INTO game (timestamp, timeout, id) VALUES ($time, $timeOut, '$id')";
+		$sql = "INSERT INTO game (timestamp, timeout, id, status, defaultScore) VALUES ($time, $timeOut, '$id', 10, $score)";
 		$db->query($sql);
 
 		return $id;
@@ -188,8 +262,9 @@
 		$toStart = $timeOut - $time;
 
 		$player->countdown = $toStart;
+		$player->score = intval($r['defaultScore']);
 
-		if($timeOut > $time && $q->num_rows > 0) {
+		if($timeOut > $time) {
 			// Get the number of already registered players and assign playerId
 			$id = $player->numberOfPlayers($gameId) + 1;
 			$playerName = 'player_' . $id;
