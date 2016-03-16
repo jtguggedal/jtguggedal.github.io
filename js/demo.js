@@ -37,7 +37,7 @@ var playerId;
 var singlePlayer = false;
 
 //** For local testing, set local to 1 to avoid Web Bluetooth errors
-var local = 1;
+var local = 0;
 
 
 //**
