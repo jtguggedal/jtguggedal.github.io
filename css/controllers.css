@@ -116,7 +116,7 @@
     top: 30px;
 }
 .button {
-	position: absolute;
+	position: relative;
 	width: 30%;
     padding: 5px;
     margin-top: 10px;
