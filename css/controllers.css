@@ -79,8 +79,7 @@
     display: none;
     width: 200px;
     top: 70px;
-    margin-left: auto;
-	margin-right: auto;
+    margin-left: 50%;
     background-color: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.3);
     text-align: center;
@@ -117,7 +116,6 @@
     top: 30px;
 }
 .button {
-    display: ;
 	position: relative;
 	width: 30%;
     padding: 5px;
