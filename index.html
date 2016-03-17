@@ -64,14 +64,15 @@
         //*** Initialize game **/
 
         function game_init() {   
-            var time = new Date();
-            var e = time.getTime();
             toggleFullscreen();
             connect();
+            $('#fullscreen').show();
 			$('#footer').hide();
+            var time = new Date();
+            var e = time.getTime();
             setTimeout(function() {
                 $('.column').load('include/controllers.html?t=' + e);  
-            }, 600);  
+            }, 1000);  
         }
 
 
@@ -111,7 +112,7 @@
             }
 
             document.getElementById('fullscreen').addEventListener('click', function() {
-              toggleFullscreen();
+                toggleFullscreen();
             });
 
             

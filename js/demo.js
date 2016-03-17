@@ -254,13 +254,11 @@ function joinGamePopup(fail = 0) {
                         </div>
                     </div>`;
 
-    $('#message-container').css('box-shadow', '0px 0px 20px 0px rgba(0, 0, 0, 0.3)');
     $('#message').html(input).fadeIn(500);
     if(!fail) {
         $('#message-container').fadeIn(500);
     } else {
-        $('#message-container').css('box-shadow', '0px 0px 40px 0px rgba(204,41,0, 0.9)');
-        $('#join-fail').text('').fadeOut(100).promise().done( function() {   
+        $('#join-fail').text('').fadeOut(100).promise().done( function() {
             $(this).text("Could not join the game. Please try again.").fadeIn(500);
         });
     }
@@ -318,7 +316,6 @@ function joinGame(gId) {
 
                     // Push to #message as confirmation that the game is successfully joined
                     $('#message').fadeOut(1000, function() {         
-                        $('#message-container').css('box-shadow', '0px 0px 40px 0px rgba(33,219,70, 0.7)');
                         $(this).text("You're in!").fadeIn(1000);
                     });
 
@@ -591,8 +588,8 @@ function gameWon() {
         priorityWrite(charVal);
         writePermission = 0;
     }
-    $('#message-container').html('You won :)');
-    $('#message-container').fadeIn('slow');
+    $('#game-message').html('You won :)');
+    $('#game-message').fadeIn('slow');
 }
 
 
@@ -613,10 +610,8 @@ function gameLost(status = "") {
         priorityWrite(charVal);
         writePermission = 0;
     }
-    $('#message-container').html('You lost :(');
-    $('#message-container').fadeIn('slow');
-
-        
+    $('#game-message').html('You lost :(');
+    $('#game-message').fadeIn('slow');
 }
 
 
@@ -715,7 +710,6 @@ $('#btn-restart-game').on('touchstart mousedown', function(event) {
 });
 
 $('#btn-slotmachine').on('touchstart mousedown', function(event) {
-    console.log('h');
     startSlot();
     toggleGameMenu();
     event.preventDefault();
