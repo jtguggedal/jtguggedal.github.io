@@ -723,9 +723,10 @@ $('#btn-sim-hit').on('touchstart mousedown', function(event) {
     event.preventDefault();
 });
 
-$('#btn-gamemenu-container').on('touchstart mousedown', function(event) {       
+$('#btn-singleplayer #btn-create-game #btn-join-game').on('touchstart mousedown', function(event) {       
     $('#btn-gamemenu-container').fadeOut("slow");       
 });     
+
 $('#btn-return').on('touchstart mousedown', function(event) {  
     $('#message-container').fadeOut("slow").promise().done(function() {
         $('.column').load('include/controllers.html');
