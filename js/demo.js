@@ -685,8 +685,8 @@ function printDiscardedPackets() {
 //**
 
 $('#control-button').on('touchstart mousedown', function(event) {
-    $(this).css({'box-shadow': '0px 0px 10px 3px rgba(0,0,0, 0.2)', 'height': '115px', 'width': '115px', 'transition-timing-function' : 'ease'});
     event.preventDefault();
+    $(this).css({'box-shadow': '0px 0px 10px 3px rgba(0,0,0, 0.2)', 'height': '115px', 'width': '115px', 'transition-timing-function' : 'ease'});
     if(coolDownStatus != 1)
         shoot();
 });
@@ -699,43 +699,46 @@ $('#control-button').on('touchend mouseup', function() {
 });
 
 $('#btn-create-game').on('touchstart mousedown', function(event) {
-    createGame();
     event.preventDefault();
+    createGame();
 });
 
 $('#btn-join-game').on('touchstart mousedown', function(event) {
-    joinGamePopup();
     event.preventDefault();
+    joinGamePopup();
 });
 
 $('#btn-restart-game').on('touchstart mousedown', function(event) {
-    restartGame();
     event.preventDefault();
+    restartGame();
 });
 
 $('#btn-slotmachine').on('touchstart mousedown', function(event) {
-    startSlot();
     event.preventDefault();
+    startSlot();
 });
 
 // This 'sim-hit' button triggers the same events with the same parameters as would be the case if the player's car was 'hit' by IR
 $('#btn-sim-hit').on('touchstart mousedown', function(event) {
+    event.preventDefault();
     var hitArray = new Uint8Array(20);
     hitArray[1] = 1;
     notificationCallback(hitArray);
-    event.preventDefault();
 });
 
-$('.button').on('touchstart mousedown', function(event) {       
+$('.button').on('touchstart mousedown', function(event) { 
+    event.preventDefault();      
     $('#btn-gamemenu-container').fadeOut("slow");       
 });     
 
 $('#btn-return').on('touchstart mousedown', function(event) {  
+    event.preventDefault();
     $('#message-container').fadeOut("slow").promise().done(function() {
         $('.column').load('include/controllers.html');
     });  
 });     
 $('#btn-singleplayer').on('touchstart mousedown', function(event) {     
+    event.preventDefault();
     startSingleplayer();        
 });   
 
