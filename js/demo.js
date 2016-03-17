@@ -36,6 +36,7 @@ var gameId;
 var playerId;
 var singlePlayer = false;
 var gameMenuDown = true;
+var join = 1;
 
 //** For local testing, set local to 1 to avoid Web Bluetooth errors
 var local = 0;
@@ -242,6 +243,7 @@ function createGame() {
 //**
 
 function joinGamePopup(fail = 0) {
+    join = 1;
     var input = `   
                     <div id="join-fail"></div>
                     <input type='text' id='game-id' placeholder='GAME ID' maxlength='5' size='5' autofocus>
@@ -277,7 +279,7 @@ function joinGamePopup(fail = 0) {
 //      Function that allows the player to join a game created by another player. Called by joinGamePopup() where the game ID is submitted.
 //**
 //**    @parameter       gId        the ID2 of the game the player wants to join
-var join = 1;
+
 function joinGame(gId) {
     if(join == 1) {
         join = 0;
