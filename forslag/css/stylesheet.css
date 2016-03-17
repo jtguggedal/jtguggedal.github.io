@@ -9,11 +9,12 @@ body {
 	background: #0b4260;
 	text-align: center;
 	min-height: 400px;
-		overflow: hidden;background: rgb(30,87,153);
-	background: -moz-radial-gradient(center, ellipse cover,  rgba(30,87,153,1) 0%, rgba(8,12,15,1) 100%);
-	background: -webkit-radial-gradient(center, ellipse cover,  rgba(30,87,153,1) 0%,rgba(8,12,15,1) 100%);
-	background: radial-gradient(ellipse at center,  rgba(30,87,153,1) 0%,rgba(8,12,15,1) 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#080c0f',GradientType=1 );
+	overflow: hidden;
+	background: #0b4260;
+	background: -moz-radial-gradient(center, ellipse cover,  #0b4260 0%, #080c0f 100%);
+	background: -webkit-radial-gradient(center, ellipse cover,  #0b4260 0%,#080c0f 100%);
+	background: radial-gradient(ellipse at center,  #0b4260 0%,#080c0f 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0b4260', endColorstr='#080c0f',GradientType=1 );
 
 
 }
@@ -137,13 +138,13 @@ body {
 	font-weight: 700;
 }
 h1 {
-	color: white;
+	color: rgba(255, 255, 255, 0.9);
+	font-size: 50px;
 	text-align: center;
 	margin-left: auto;
 	margin-right: auto;
 }
 h2 {
-	display: inline-block;
 	clear: both;
 	cursor: pointer;
 	padding: 3px;
@@ -226,26 +227,6 @@ input[type=range] {
 	right: 10px;
 	font-size: 12px;
 }
-#welcome {
-	font-family: Arial;
-	font-size: 20px;
-	color: white;
-	text-align: center;
-	margin-left: auto;
-	margin-right: auto;
-}
-#connect, #disconnect{
-	display: block;
-	width: 200px;
-	height: 30px;
-	border: 2px solid black;
-	border-radius: 5px;
-	text-align: center;
-	position: relative;
-	margin-left: auto;
-	margin-right: auto;
-}
-
 
 /* Button to activate fullscreen */
 

@@ -3,8 +3,6 @@
   height: 100px;
   padding: 0px 0px 0px;
   margin: 0 auto;
-  background: radial-gradient(ellipse at center,  #0b4260  0%,#080c0f  100%);
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0b4260 ', endColorstr='#080c0f ',GradientType=1 );
   border: 5px solid rgba(0, 13, 29, 0.9);
   border-radius: 10px;
   -webkit-transition: all ease 1s;
@@ -26,12 +24,12 @@ span {
 }
 
 #slotmachine-container {
-	position: absolute;
-	display: none;
-	width: 200px;
-	top: 100px;
-	left: 42%;
-	margin: auto;
+  position: absolute;
+  display: none;
+  width: 200px;
+  top: 100px;
+  left: 42%;
+  margin: auto;
 }
 
 .boost {

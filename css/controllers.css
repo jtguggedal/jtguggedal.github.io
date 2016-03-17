@@ -77,12 +77,14 @@
 #message-container {
     position: relative;
     display: none;
-    width: 200px;
-    top: 70px;
+    width: 320px;
+    max-width: 350px;
+    top: 60px;
     margin-left: auto;
-	margin-right: auto;
+    margin-right: auto;
     background-color: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
     text-align: center;
     color: white;
     padding: 10px;
@@ -98,7 +100,7 @@
 
 #btn-gamemenu-container {
     position: absolute;
-	left: 50%;
+    left: 50%;
     bottom: 100px;
     text-align: center;
     width: 400px;
@@ -107,18 +109,15 @@
 }
 
 #btn-join-container {
-	display: none;
-	position: absolute;
-	left: 50%;
-    bottom: 100px;
+    display: none;
+    position: relative;
     text-align: center;
-    width: 400px;
-    margin-left: -200px;
-    padding: 9px;
+    width: 100%;
+
 }
 
 #btn-return {
-	
+    
 }
 
 .wait-till-game {
@@ -132,71 +131,92 @@
     left: 10px;
     top: 30px;
 }
-.button {
-	position: relative;
-	width: 300px;
-	height: 30px;
+.button, .msg-button {
+    position: relative;
+    width: 300px;
+    height: 30px;
     padding-top: 5px;
-    margin-top: 10px;
-	margin-left: auto;
-	margin-right: auto;
-    background-color: rgba(0, 13, 29, 0.9);
-    border: 2px solid rgba(255, 255, 255, 0.1);
+    margin: 15px auto;
+    background-color: rgba(0, 13, 29, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 5px;
     text-align: center;
     cursor: pointer;
-    box-shadow: 0px 0px 40px 0px rgba(0,0,0, 0.3);
-    color: rgba(255, 255, 230, 0.9);
+    box-shadow: 0px 0px 20px 0px rgba(0,0,0, 0.4);
+    color: rgba(255, 255, 255, 0.9);
     font-size: 20px;
     font-weight: bold;
 }
+.msg-button {
+    width: 200px;
+    font-weight: ;
+}
 
 #btn-menu {
-	display: none;
-	height: 40px;
-	width: 40px;
-	background-color: rgba(0, 0, 0, 0.8);
-	position: fixed;
-	bottom: 10px;
-	left: 50%;
-	margin-left: -20px; 	
-	color: white;
-	font-size: 25px;
-	padding-top: 2px;
-	border: 2px solid rgba(255, 255, 255, 0.8);
-	border-radius: 100%;
-	text-align: center;
-	z-index: 11;
-	box-shadow: 0px 0px 20px 2px rgba(0, 0, 0, 0.4);
+    display: none;
+    height: 40px;
+    width: 40px;
+    background-color: rgba(0, 0, 0, 0.8);
+    position: fixed;
+    bottom: 10px;
+    left: 50%;
+    margin-left: -20px;     
+    color: white;
+    font-size: 25px;
+    padding-top: 2px;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    border-radius: 100%;
+    text-align: center;
+    z-index: 11;
+    box-shadow: 0px 0px 20px 2px rgba(0, 0, 0, 0.4);
+}
+#btn-menu {
+    display: none;
+    height: 40px;
+    width: 40px;
+    background-color: rgba(0, 0, 0, 0.7);
+    position: fixed;
+    bottom: 10px;
+    left: 50%;
+    margin-left: -20px;     
+    color: white;
+    font-size: 25px;
+    padding-top: px;
+    border: 2px solid rgba(255, 255, 255, 0.7);
+    border-radius: 100%;
+    text-align: center;
+    z-index: 100;
+    box-shadow: 0px 0px 20px 2px rgba(0, 0, 0, 0.4);
 }
 
 #slide-menu {
-	height: 0px;
-	width: 100%;
-	background-color: rgba(0, 0, 0, 0.3);
-	position: fixed;
-	border-top: 2px solid rgba(255, 255, 255, 0.1);
-	bottom: 0;
-	margin: 0;
-	clear: both;
-	vertical-align: middle;
-	z-index: 10;
-	box-shadow: 0px 0px 20px 2px rgba(0, 0, 0, 0.4);
+    height: 0px;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    position: fixed;
+    border-top: px solid rgba(255, 255, 255, 0.1);
+    bottom: 0;
+    margin: 0;
+    clear: both;
+    vertical-align: middle;
+    z-index: 10;
+    box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.4);
 }
+
 #btn-exit, #btn-slotmachine {
-	display: inline-block;
-	width: 200px;
+    display: inline-block;
+    width: 200px;
 }
 
 #btn-exit {
-	margin-left: 50px;
-	margin-right: 50px;
+    margin-left: 50px;
+    margin-right: 50px;
 }
 
 #btn-slotmachine {
-	margin-left: 50px;
-	margin-right: 50px;
-	float: right;
+    margin-left: 50px;
+    margin-right: 50px;
+    float: right;
 }
 #message input[type=text] {
     border: 1px solid white;
@@ -211,7 +231,7 @@
    
 }
  ::-webkit-input-placeholder { 
-    color: rgba(255, 255, 255, 0.7);
+    color: rgba(255, 255, 255, 0.5);
 }
 
 input:focus {
@@ -219,4 +239,32 @@ input:focus {
     box-shadow: 0px 0px 20px 0px rgba(0,0,0, 0.3);
 }
 
+.msg {
+    font-size: 20px;
+    font-weight: 100;
+    margin: 10px 10px 20px 10px;
+    text-align: left;
+    line-height: 130%;
+    color: white;
 
+}
+
+.msg h1 {
+    font-size: 45px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 15px;
+    margin-top: 10px;
+}
+
+
+#join-fail {
+    font-size: 16px;
+    font-weight: 500;
+    margin-top: 3px;
+    margin-bottom: 10px;
+}
+
+.alert-glow {
+    box-shadow: 0px 0px 20px 0px rgba(204,41,0, 0.8);
+}
