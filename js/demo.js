@@ -277,9 +277,10 @@ function joinGamePopup(fail = 0) {
 //      Function that allows the player to join a game created by another player. Called by joinGamePopup() where the game ID is submitted.
 //**
 //**    @parameter       gId        the ID2 of the game the player wants to join
-
+var join = 1;
 function joinGame(gId) {
-
+    if(join == 1) {
+        join = 0;
     // #message fades out
     $('#message').fadeOut(100).promise().done( function() {
 
@@ -339,6 +340,7 @@ function joinGame(gId) {
             });
         });
     });
+    }
 }
 
 //**
