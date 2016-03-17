@@ -317,12 +317,13 @@ function joinGame(gId) {
                     var countDown = r.countdown;
 
                     // Push to #message as confirmation that the game is successfully joined
-                    $('#message').fadeOut(1000, function() { 
-                        $(this).text("You're in!").fadeIn(1000)
+                    $('#message').fadeOut(1000, function() {         
+                        $('#message-container').css('box-shadow', '0px 0px 40px 0px rgba(33,219,70, 0.7)');
+                        $(this).text("You're in!").fadeIn(1000);
                     });
 
                     // Countdown clock, with the drawbacks previusly mentioned
-                    $('#game-info').text('Game starts in ' + countDown);
+                    $('#game-info').text('Game starts in ' + countDown).fadeIn(500);
                     var countDownInterval = setInterval(function() {
                         if(countDown > 1) {
                             countDown--;
@@ -330,7 +331,7 @@ function joinGame(gId) {
                         } else {
 
                             // When the countdown is done, hide the counter and attached message and prevent further updates by clearing interval
-                            $('#game-info').slideToggle('slow');
+                            $('#game-info').hide('slow');
                             clearInterval(countDownInterval);
 
                             // Start the game
@@ -534,6 +535,8 @@ function singlePlayerPopup() {
 function startSingleplayer () {     
     singlePlayer = true;        
     $('#message').html('s').fadeIn(500).promise().done(function() { 
+        $('#points').text('');
+        $('#btn-sim-hit').hide();
         startGame();   
         $('#message-container').fadeIn(500);
     });
@@ -748,21 +751,21 @@ $('.wait-till-game').hide();
 $('#points').text('♥ ' + score);
 
 
-$('#btn-menu').on('touchstart mousedown', function (event) {
+$('#btn-slide-menu').on('touchstart mousedown', function (event) {
     toggleGameMenu();
     event.preventDefault();
 });
 
 function toggleGameMenu() {
-    if (gameMenuDown == true){
+    if(gameMenuDown == true) {
         $('#slide-menu').animate({height: "60px"},'slow');
-        $('#btn-menu').animate({bottom: "37px"},'slow');
+        $('#btn-slide-menu').animate({bottom: "50px"},'slow');
         
         gameMenuDown = false;
     }
-    else if (gameMenuDown == false){
+    else if(gameMenuDown == false) {
         $('#slide-menu').animate({height: "0px"},'slow');
-        $('#btn-menu').animate({bottom: "10px"},'slow');
+        $('#btn-slide-menu').animate({bottom: "10px"},'slow');
         
         gameMenuDown = true;
     }

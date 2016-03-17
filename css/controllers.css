@@ -156,24 +156,6 @@
     display: none;
     height: 40px;
     width: 40px;
-    background-color: rgba(0, 0, 0, 0.8);
-    position: fixed;
-    bottom: 10px;
-    left: 50%;
-    margin-left: -20px;     
-    color: white;
-    font-size: 25px;
-    padding-top: 2px;
-    border: 2px solid rgba(255, 255, 255, 0.8);
-    border-radius: 100%;
-    text-align: center;
-    z-index: 11;
-    box-shadow: 0px 0px 20px 2px rgba(0, 0, 0, 0.4);
-}
-#btn-menu {
-    display: none;
-    height: 40px;
-    width: 40px;
     background-color: rgba(0, 0, 0, 0.7);
     position: fixed;
     bottom: 10px;
@@ -194,7 +176,7 @@
     width: 100%;
     background-color: rgba(0, 0, 0, 0.4);
     position: fixed;
-    border-top: px solid rgba(255, 255, 255, 0.1);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
     bottom: 0;
     margin: 0;
     clear: both;
@@ -203,21 +185,18 @@
     box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.4);
 }
 
-#btn-exit, #btn-slotmachine {
+#slide-menu-btn-container {
+    max-width: 600px;
+    margin: 13px auto;
+    text-align: center;
+}
+.btn-slide-menu {
     display: inline-block;
-    width: 200px;
+    width: 160px;
+    margin: 0 15px;
+    font-size: 18px;
 }
 
-#btn-exit {
-    margin-left: 50px;
-    margin-right: 50px;
-}
-
-#btn-slotmachine {
-    margin-left: 50px;
-    margin-right: 50px;
-    float: right;
-}
 #message input[type=text] {
     border: 1px solid white;
     background-color: rgba(255, 255, 255, 0.3);
@@ -263,6 +242,10 @@ input:focus {
     font-weight: 500;
     margin-top: 3px;
     margin-bottom: 10px;
+}
+
+.success-glow {
+    box-shadow: 0px 0px 20px 0px rgba(33,219,70, 0.8);
 }
 
 .alert-glow {

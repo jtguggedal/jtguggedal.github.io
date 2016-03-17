@@ -10,11 +10,12 @@ body {
 	text-align: center;
 	min-height: 400px;
 	overflow: hidden;
-	background: #0b4260;
-	background: -moz-radial-gradient(center, ellipse cover,  #0b4260 0%, #080c0f 100%);
-	background: -webkit-radial-gradient(center, ellipse cover,  #0b4260 0%,#080c0f 100%);
-	background: radial-gradient(ellipse at center,  #0b4260 0%,#080c0f 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0b4260', endColorstr='#080c0f',GradientType=1 );
+	background: -moz-radial-gradient(center, ellipse cover,  rgba(12,78,145,1) 0%, rgba(0,0,0,0.97) 100%);
+	background: -webkit-radial-gradient(center, ellipse cover,  rgba(12,78,145,1) 0%,rgba(0,0,0,0.97) 100%);
+	background: radial-gradient(ellipse at center,  rgba(12,78,145,1) 0%,rgba(0,0,0,0.97) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0c4e91', endColorstr='#f7000000',GradientType=1 );
+
+
 
 
 }
