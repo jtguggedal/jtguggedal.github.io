@@ -36,7 +36,7 @@ var gameId;
 var playerId;
 var singlePlayer = false;
 var gameMenuDown = true;
-var join = 1;
+var allowJoin = 1;
 
 //** For local testing, set local to 1 to avoid Web Bluetooth errors
 var local = 0;
@@ -243,7 +243,7 @@ function createGame() {
 //**
 
 function joinGamePopup(fail = 0) {
-    join = 1;
+    allowJoin = true;
     var input = `   
                     <div id="join-fail"></div>
                     <input type='text' id='game-id' placeholder='GAME ID' maxlength='5' size='5' autofocus>
@@ -281,67 +281,66 @@ function joinGamePopup(fail = 0) {
 //**    @parameter       gId        the ID2 of the game the player wants to join
 
 function joinGame(gId) {
-    if(join == 1) {
-        join = 0;
-    // #message fades out
-    $('#message').fadeOut(100).promise().done( function() {
+    if(allowJoin == true) {
+        allowJoin = false;
+        // #message fades out
+        $('#message').fadeOut(100).promise().done( function() {
 
-        // All html content of #message (most likely a text input and a button) is replaced
-        $('#message').html("Joining...");
-        $('#message').fadeIn(500).promise().done( function() {
+            // All html content of #message (most likely a text input and a button) is replaced
+            $('#message').html("Joining...");
+            $('#message').fadeIn(500).promise().done( function() {
 
-            // AJAX request to php file that taes care of the database connection and makes sure that the new player gets a playerId in return
-            // and is connected to the right game session
-            // JSONP is used to avoid cross-domain issues when php page is placed on a diffrent domain than this script. Consider to replace by JSON if not needed.
-            $.getJSON('https://cpanel2.proisp.no/~stangtqr/pwt/game.php?t=join&gid=' + gId + '&pname=' + name + '&callback=?', function(r) { 
-            //$.getJSON('php/game.php?t=join&gid=' + gId + '&pname=' + name + '&callback=?', function(r) { 
+                // AJAX request to php file that taes care of the database connection and makes sure that the new player gets a playerId in return
+                // and is connected to the right game session
+                // JSONP is used to avoid cross-domain issues when php page is placed on a diffrent domain than this script. Consider to replace by JSON if not needed.
+                $.getJSON('https://cpanel2.proisp.no/~stangtqr/pwt/game.php?t=join&gid=' + gId + '&pname=' + name + '&callback=?', function(r) { 
+                //$.getJSON('php/game.php?t=join&gid=' + gId + '&pname=' + name + '&callback=?', function(r) { 
 
-                // Check if the game had started or did'nt exist and therefore could not be joined
-                if(r.gameStatus == 'not_exist' || r.gameStatus == 'started') {
-                    $('#message').fadeOut(500).promise().done( function() {
-                        joinGamePopup(1);
-                    });
-                    
-                } else {
+                    // Check if the game had started or did'nt exist and therefore could not be joined
+                    if(r.gameStatus == 'not_exist' || r.gameStatus == 'started') {
+                        $('#message').fadeOut(500).promise().done( function() {
+                            joinGamePopup(1);
+                        });
+                        
+                    } else {
 
-                    // If the php file was able to connect the player to the game, information from the returnerd object is stored i global variables
-                    console.log(r);
-                    score = r.score;
-                    name = r.name;
-                    gameId = r.gameId;
-                    playerId = r.id;
+                        // If the php file was able to connect the player to the game, information from the returnerd object is stored i global variables
+                        console.log(r);
+                        score = r.score;
+                        name = r.name;
+                        gameId = r.gameId;
+                        playerId = r.id;
 
-                    // This is an attempt to time the start of the game and sync all players. Works fine in tests, but by no means good enough
-                    // and should be replaced. In short, it uses the php server's timestamp to sync the new players joining the game, and is therefore 
-                    // exposed to delays over the network. The player who created the game has a countdown based on the browser's timestamp. 
-                    // And because of this, syncing is more luck than skill everytime it works, and is doomed to fail, and sometimes badly so, from time to time.
-                    var countDown = r.countdown;
+                        // This is an attempt to time the start of the game and sync all players. Works fine in tests, but by no means good enough
+                        // and should be replaced. In short, it uses the php server's timestamp to sync the new players joining the game, and is therefore 
+                        // exposed to delays over the network. The player who created the game has a countdown based on the browser's timestamp. 
+                        // And because of this, syncing is more luck than skill everytime it works, and is doomed to fail, and sometimes badly so, from time to time.
+                        var countDown = r.countdown;
 
-                    // Push to #message as confirmation that the game is successfully joined
-                    $('#message').fadeOut(1000, function() {         
-                        $(this).text("You're in!").fadeIn(1000);
-                    });
+                        // Push to #message as confirmation that the game is successfully joined
+                        $('#message').fadeOut(1000, function() {         
+                            $(this).text("You're in!").fadeIn(1000);
+                        });
+                        $('#game-info').hide();
+                        // Countdown clock, with the drawbacks previusly mentioned
+                        var countDownInterval = setInterval(function() {
+                            if(countDown > 1) {
+                                countDown--;
+                                $('#game-info').text('Game starts in ' + countDown).fadeIn(1000);
+                            } else {
 
-                    // Countdown clock, with the drawbacks previusly mentioned
-                    $('#game-info').text('Game starts in ' + countDown).fadeIn(500);
-                    var countDownInterval = setInterval(function() {
-                        if(countDown > 1) {
-                            countDown--;
-                            $('#game-info').text('Game starts in ' + countDown);
-                        } else {
+                                // When the countdown is done, hide the counter and attached message and prevent further updates by clearing interval
+                                $('#game-info').hide('slow');
+                                clearInterval(countDownInterval);
 
-                            // When the countdown is done, hide the counter and attached message and prevent further updates by clearing interval
-                            $('#game-info').hide('slow');
-                            clearInterval(countDownInterval);
-
-                            // Start the game
-                            startGame();
-                        }
-                    }, 1000);
-                }
+                                // Start the game
+                                startGame();
+                            }
+                        }, 1000);
+                    }
+                });
             });
         });
-    });
     }
 }
 
@@ -444,7 +443,6 @@ function updateGame() {
                     setTimeout(function() {
                         singlePlayerPopup();
                     }, 1000);
-                    console.log('single');
                     resolve('single_player');
                 } else if((r.gameStatus == 10) && (score <= 0) && (r.score != score)) {
                     updateGame();
@@ -597,6 +595,7 @@ function gameWon() {
     }
     $('#game-message').html('You won :)');
     $('#game-message').fadeIn('slow');
+    $('body').css({'background': '-webkit-radial-gradient(center, ellipse cover, rgba(58,132,74,1) 0%,rgba(13,25,15,1) 100%)'});
 }
 
 
@@ -619,6 +618,7 @@ function gameLost(status = "") {
     }
     $('#game-message').html('You lost :(');
     $('#game-message').fadeIn('slow');
+    $('body').css({'background': '-webkit-radial-gradient(center, ellipse cover, rgba(143, 2, 34, 1) 0%,rgba(38, 0, 0, 1) 100%)'});
 }
 
 
@@ -776,6 +776,7 @@ function toggleGameMenu() {
 };
 
 $('#btn-exit').on('touchstart mousedown', function (event) {
+    $('body').css({'background': '-webkit-radial-gradient(center, ellipse cover, rgba(12,78,145,1) 0%,rgba(0,0,0,1) 100%)'});
     $('.column').load('include/controllers.html?t=' + e);
 });
 
