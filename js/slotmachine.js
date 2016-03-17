@@ -2,12 +2,6 @@
 	var slotDuration = 10000;		// The duration of the power-up
 	var running = false;			// Variable to make sure the function startSlot| can not be triggered when it is already running
 
-$('#btn-slotmachine').on('touchstart mousedown', function(event) {
-	toggleGameMenu();
-	startSlot();
-	event.preventDefault();
-});
-
 function startSlot () {
 	if(running == false){
 		var randomPower;
