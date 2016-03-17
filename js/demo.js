@@ -446,6 +446,9 @@ function updateGame() {
                     }, 1000);
                     console.log('single');
                     resolve('single_player');
+                } else if((r.gameStatus == 10) && (score <= 0) && (r.score != score)) {
+                    updateGame();
+                    resolve('updateAgain');
                 } else if(r.gameStatus == 10) {
                     if(score <= 0)
                         // The game is active, but the players is out of points
