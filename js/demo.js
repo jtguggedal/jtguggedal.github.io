@@ -46,7 +46,6 @@ var local = 0;
 //     Joystick, based on the amazing nippleJS: http://yoannmoinet.github.io/nipplejs/
 //**
 
-
 var joystick = nipplejs.create({
     zone: document.getElementById('joystick-container'),
     mode: 'static',
