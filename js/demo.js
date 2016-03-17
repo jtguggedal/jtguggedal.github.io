@@ -751,21 +751,21 @@ $('.wait-till-game').hide();
 $('#points').text('♥ ' + score);
 
 
-$('#btn-slide-menu').on('touchstart mousedown', function (event) {
+$('#btn-menu').on('touchstart mousedown', function (event) {
     toggleGameMenu();
     event.preventDefault();
 });
 
 function toggleGameMenu() {
-    if(gameMenuDown == true) {
+    if (gameMenuDown == true){
         $('#slide-menu').animate({height: "60px"},'slow');
-        $('#btn-slide-menu').animate({bottom: "50px"},'slow');
+        $('#btn-menu').animate({bottom: "50px"},'slow');
         
         gameMenuDown = false;
     }
-    else if(gameMenuDown == false) {
+    else if (gameMenuDown == false){
         $('#slide-menu').animate({height: "0px"},'slow');
-        $('#btn-slide-menu').animate({bottom: "10px"},'slow');
+        $('#btn-menu').animate({bottom: "10px"},'slow');
         
         gameMenuDown = true;
     }
