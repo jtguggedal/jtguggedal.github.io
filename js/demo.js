@@ -36,7 +36,7 @@ var gameId;
 var playerId;
 var singlePlayer = false;
 var gameMenuDown = true;
-var allowJoin = 1;
+var allowJoin = true;
 
 //** For local testing, set local to 1 to avoid Web Bluetooth errors
 var local = 0;
