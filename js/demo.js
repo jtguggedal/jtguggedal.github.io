@@ -35,6 +35,7 @@ var name;
 var gameId;
 var playerId;
 var singlePlayer = false;
+var gameMenuDown = true;
 
 //** For local testing, set local to 1 to avoid Web Bluetooth errors
 var local = 0;
@@ -710,6 +711,7 @@ $('#btn-restart-game').on('touchstart mousedown', function(event) {
 $('#btn-slotmachine').on('touchstart mousedown', function(event) {
     console.log('h');
     startSlot();
+    toggleGameMenu();
     event.preventDefault();
 });
 
@@ -766,4 +768,6 @@ function toggleGameMenu() {
 $('#btn-exit').on('touchstart mousedown', function (event) {
     $('.column').load('include/controllers.html?t=' + e);
 });
+
+
 

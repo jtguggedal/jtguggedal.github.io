@@ -9,7 +9,7 @@
     <script type="text/javascript" src="js/jquery.mobile-events.js"></script>
     <script src="js/gatt.js"></script>    
     <script src="js/setBit.js"></script>
-      <link rel="stylesheet" type="text/css" href="css/slotmachine.css"></link>
+	  <link rel="stylesheet" type="text/css" href="css/slotmachine.css"></link>
     <link rel="stylesheet" type="text/css" href="css/stylesheet.css?"></link>
     <link rel="stylesheet" type="text/css" href="css/controllers.css"></link>
 
@@ -30,34 +30,34 @@
         <div id="fullscreen" onclick="">Klikk for fullskjerm</div>
 
         <div class="column">
-        
+		
             <h1 id="welcome">Physical Web Toy</h1>
-            
-            <h2 onclick="game_init();" id='connect'>Start</h2>
-            <h2 onclick="disconnect();" id='disconnect'>About</h2>
+			
+			<h2 onclick="game_init();" id='connect' class="button">Start</h2>
+            <h2 onclick="disconnect();" id='disconnect'class="button">About</h2>
 
 
         </div>
-        <div id="footer">
-            <a href="https://google.github.io/physical-web/"><img src="pics/PhysicalWebLogoSmall.png" class="imglink"></img></a>
-            <a href="https://www.ntnu.edu/"><img src="pics/NTNULogoSmall.png" id="ntnu" class="imglink"></img></a>
-            <a href="http://www.nordicsemi.no"><img src="pics/NordicSemiLogoSmall.png" id="nordiclogo" class="imglink"></img></a>
-        </div>
+		<div id="footer">
+		    <a href="https://google.github.io/physical-web/"><img src="pics/PhysicalWebLogoSmall.png" class="imglink"></img></a>
+			<a href="https://www.ntnu.edu/"><img src="pics/NTNULogoSmall.png" id="ntnu" class="imglink"></img></a>
+			<a href="http://www.nordicsemi.no"><img src="pics/NordicSemiLogoSmall.png" id="nordiclogo" class="imglink"></img></a>
+		</div>
        
-        <script>
-        $(document).ready(function(){
-            $('.pull-down-menu').click(function() {     // Function to slide down the menu selector
-                $('.panel').slideToggle('slow');
-                });
-            
-            $('.menu').hover(                           // Makes the menus change color while hovering over them
-                function(){
-                    $(this).addClass('active');
-                },
-                function(){
-                    $(this).removeClass('active');    
-                });
-        });
+		<script>
+		$(document).ready(function(){
+			$('.pull-down-menu').click(function() {		// Function to slide down the menu selector
+				$('.panel').slideToggle('slow');
+				});
+			
+			$('.menu').hover(							// Makes the menus change color while hovering over them
+    			function(){
+    				$(this).addClass('active');
+    			},
+    			function(){
+    				$(this).removeClass('active');    
+    			});
+		});
 
 
 
@@ -67,15 +67,15 @@
             var time = new Date();
             var e = time.getTime();
             toggleFullscreen();
-            //connect();
-            $('#footer').hide();
+            connect();
+			$('#footer').hide();
             setTimeout(function() {
                 $('.column').load('include/controllers.html?t=' + e);  
             }, 600);  
         }
 
 
-        </script>
+		</script>
 
  
 
@@ -94,7 +94,7 @@
                 } else if (elem.webkitRequestFullscreen) {
                   elem.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
                 }
-                $('#fullscreen').show();
+				$('#fullscreen').show();
                 $('#fullscreen').html("Exit fullscreen");
               } else {
                 if (document.exitFullscreen) {
@@ -119,7 +119,7 @@
         </script>
 
 
-        
+		
 
     </body>
 </html>
