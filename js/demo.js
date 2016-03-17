@@ -39,7 +39,7 @@ var gameMenuDown = true;
 var join = 1;
 
 //** For local testing, set local to 1 to avoid Web Bluetooth errors
-var local = 0;
+var local = 1;
 
 
 //**
@@ -588,7 +588,7 @@ function gameWon() {
     charVal[13] = 0;
 
     if(!local) {
-        console.log('lost');
+        console.log('won');
         priorityWrite(charVal);
         writePermission = 0;
     }
@@ -715,7 +715,6 @@ $('#btn-restart-game').on('touchstart mousedown', function(event) {
 
 $('#btn-slotmachine').on('touchstart mousedown', function(event) {
     startSlot();
-    toggleGameMenu();
     event.preventDefault();
 });
 
@@ -751,8 +750,8 @@ $('#points').text('♥ ' + score);
 
 
 $('#btn-menu').on('touchstart mousedown', function (event) {
-    toggleGameMenu();
     event.preventDefault();
+    toggleGameMenu();
 });
 
 function toggleGameMenu() {
