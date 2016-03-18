@@ -31,13 +31,15 @@ var updateInterval = 500;           // Interval for game updates to and from the
 
 var speedCoeff = 0.78;              // This is the default speed coefficient that limits the maximum speed of the car and makes the speed boost power-up possible
                                     // The coeffcient has a linear relationship with the output current to the motors, and ranges from 0 to 1
-//var message;
 var name;                           // The player may enter a name that will also be stored in the database when participating in a game session. Not yet implemented in GUI.
 var gameId;                         // When either creating or joining a game, the game ID is stored
 var playerId;                       // Each player in a game session receives a unique player ID
-var singlePlayer = false;   
+
+// Some flags used to avoid errors
+var singlePlayer = false;
 var gameMenuDown = true;
 var allowJoin = true;
+var vibratePossible = "vibrate" in navigator;
 
 //** For local testing, set local to 1 to avoid Web Bluetooth errors
 var local = 0;
@@ -63,7 +65,7 @@ joystick.on('start end', function(evt, data) {
     }).on('move', function(evt, data) {
 
 
-    var x = data.position.x-110; 
+    var x = data.position.x-110;
     var y = -1*(data.position.y-155);
     var hypotenus = Math.sqrt((Math.pow(x, 2)) + (Math.pow(y, 2)));
     var speed = Math.round((255/75)*hypotenus);
@@ -83,7 +85,7 @@ joystick.on('start end', function(evt, data) {
 
     if(tapEnd == 1) {
         outputRight = outputLeft = 0;
-        tapEnd = 0; 
+        tapEnd = 0;
     } else {
         if(angle >= 10 && angle <= 85) {
             outputRight = (angle/85)*speed;
@@ -111,7 +113,7 @@ joystick.on('start end', function(evt, data) {
             directionRight = 0;
             outputLeft = speed;
             directionLeft = 1;
-        } 
+        }
 
     }
 
@@ -185,7 +187,7 @@ function createGame() {
 
     // Check that it's actually allowed to create a new game session before initiating. Two sessions may not be initiated by the same player at once.
     if(allowCreate) {
-        // Prevents multiple games being created 
+        // Prevents multiple games being created
         allowCreate = 0;
 
         // Variables needed to time the start of the game for all players
@@ -198,9 +200,9 @@ function createGame() {
         // Send AJAX request to PHP page that creates game ID and entry in database. Object with player and game information is returned as JSONP
         // to avoid cross-domain issues. Should consider to use JSON if the php page may run on local server.
 
-        //$.getJSON('php/game.php?t=create&ttj=' + timeToJoin + '&pname=' + name + '&l=' + score + '&callback=?', function(r) { 
+        //$.getJSON('php/game.php?t=create&ttj=' + timeToJoin + '&pname=' + name + '&l=' + score + '&callback=?', function(r) {
 
-        $.getJSON('https://cpanel2.proisp.no/~stangtqr/pwt/game.php?t=create&ttj=' + timeToJoin + '&pname=' + name + '&l=' + score + '&callback=?', function(r) { 
+        $.getJSON('https://cpanel2.proisp.no/~stangtqr/pwt/game.php?t=create&ttj=' + timeToJoin + '&pname=' + name + '&l=' + score + '&callback=?', function(r) {
 
             // Returned object is stored to global variables for easy access for all functions
             console.log(r);
@@ -223,7 +225,7 @@ function createGame() {
             startGame();
         }, 1000*countDown+1);
 
-        // Countdown clock 
+        // Countdown clock
         // The timing works well in testing, but should be replaced by a more sophisticated solution to compensate for possible delayed requests for other player
         $('#game-info').text('Game starts in ' + countDown);
         var countDownInterval = setInterval(function() {
@@ -244,7 +246,7 @@ function createGame() {
 
 function joinGamePopup(fail = 0) {
     allowJoin = true;
-    var input = `   
+    var input = `
                     <div id="join-fail"></div>
                     <input type='text' id='game-id' placeholder='GAME ID' maxlength='5' size='5' autofocus>
                     <div id="btn-join-container">
@@ -293,15 +295,15 @@ function joinGame(gId) {
                 // AJAX request to php file that taes care of the database connection and makes sure that the new player gets a playerId in return
                 // and is connected to the right game session
                 // JSONP is used to avoid cross-domain issues when php page is placed on a diffrent domain than this script. Consider to replace by JSON if not needed.
-                $.getJSON('https://cpanel2.proisp.no/~stangtqr/pwt/game.php?t=join&gid=' + gId + '&pname=' + name + '&callback=?', function(r) { 
-                //$.getJSON('php/game.php?t=join&gid=' + gId + '&pname=' + name + '&callback=?', function(r) { 
+                $.getJSON('https://cpanel2.proisp.no/~stangtqr/pwt/game.php?t=join&gid=' + gId + '&pname=' + name + '&callback=?', function(r) {
+                //$.getJSON('php/game.php?t=join&gid=' + gId + '&pname=' + name + '&callback=?', function(r) {
 
                     // Check if the game had started or did'nt exist and therefore could not be joined
                     if(r.gameStatus == 'not_exist' || r.gameStatus == 'started') {
                         $('#message').fadeOut(500).promise().done( function() {
                             joinGamePopup(1);
                         });
-                        
+
                     } else {
 
                         // If the php file was able to connect the player to the game, information from the returnerd object is stored i global variables
@@ -312,13 +314,13 @@ function joinGame(gId) {
                         playerId = r.id;
 
                         // This is an attempt to time the start of the game and sync all players. Works fine in tests, but by no means good enough
-                        // and should be replaced. In short, it uses the php server's timestamp to sync the new players joining the game, and is therefore 
-                        // exposed to delays over the network. The player who created the game has a countdown based on the browser's timestamp. 
+                        // and should be replaced. In short, it uses the php server's timestamp to sync the new players joining the game, and is therefore
+                        // exposed to delays over the network. The player who created the game has a countdown based on the browser's timestamp.
                         // And because of this, syncing is more luck than skill everytime it works, and is doomed to fail, and sometimes badly so, from time to time.
                         var countDown = r.countdown;
 
                         // Push to #message as confirmation that the game is successfully joined
-                        $('#message').fadeOut(1000, function() {         
+                        $('#message').fadeOut(1000, function() {
                             $(this).text("You're in!").fadeIn(1000);
                         });
                         $('#game-info').hide();
@@ -369,7 +371,7 @@ function startGame() {
         .then( status => {
             console.log('status: ', status);
             if(status != 'single_player') {
-                repeat = setInterval(function() { 
+                repeat = setInterval(function() {
                     startMessages();
                 }, 1000);
             }
@@ -378,22 +380,22 @@ function startGame() {
             console.log(e);
         });
     } else {
-        repeat = setInterval(function() { 
+        repeat = setInterval(function() {
             startMessages();
-        }, 1000);    
+        }, 1000);
     }
 
     function startMessages() {
 
         // Loops through the startMsg array and displays them in #message with som fancy transition effects.
-        // Use the opacity to fade the text in and out instead hide/show beacause it then keeps its size. 
+        // Use the opacity to fade the text in and out instead hide/show beacause it then keeps its size.
         $('#message').text(startMsg[n]);
         $('#message').css({'color': 'rgba(255, 255, 255, 1)', 'transition': 'color 0.4s'});
         // Fade out the text after 800 millisecs
             setTimeout(function() {
                 $('#message').css({'color': 'rgba(0,0,0,0)', 'transition': 'color 0.4s'});
             }, 600);
-        
+
         console.log(n);
         n++;
 
@@ -413,12 +415,12 @@ function startGame() {
             // Start updating the game status if the game is not single player
             if(!singlePlayer)
                 updateGame();
-        } 
+        }
     }
 }
 
 //**
-//      Function that updates the game info at a given interval set in the updatePeriod variable. By default every 2 seconds. 
+//      Function that updates the game info at a given interval set in the updatePeriod variable. By default every 2 seconds.
 //**
 
 var firstUpdate = 1;
@@ -426,7 +428,7 @@ function updateGame() {
     return new Promise(function(resolve, reject) {
         sendRequest();
         function sendRequest() {
-            //  AJAX request to php-file that communicates with database and handles information about all the players 
+            //  AJAX request to php-file that communicates with database and handles information about all the players
             //  in each game session and returned updated player object and game status
             //  Is set up to use JSONP to handle cross-domain issues if necessary. Should consider to be removed and replaced by JSON if not needed.
             //  Other options are to use WebSocket or long polling instead of frequent AJAX requests in cases when possible
@@ -438,7 +440,7 @@ function updateGame() {
                 //  changes to this player's ID
                 if(firstUpdate != 0 && r.gameStatus == 1) {
                     // If the first update returns that the player who created the game has won, it means that no other players joined the game in time
-                    // The player will then be presented a message with question to drive about a bit in single player mode 
+                    // The player will then be presented a message with question to drive about a bit in single player mode
                     gameOn = 0;
                     setTimeout(function() {
                         singlePlayerPopup();
@@ -456,7 +458,7 @@ function updateGame() {
                     }
                     resolve('updated');
                 } else if(r.gameStatus != 10) {
-                    //  Since the status is no longer 10, ie the game is over, perform check to see if the player has won or lost the game, 
+                    //  Since the status is no longer 10, ie the game is over, perform check to see if the player has won or lost the game,
                     //  and call functions accordingly
                     if(r.gameStatus == playerId) {
                         // The game is over and player won the game
@@ -488,7 +490,7 @@ function updateGame() {
 
 
 //**
-//      When a game is over, this function the opportunity to create a new game without reloading the page and thus maintaining the Bluetooth connection 
+//      When a game is over, this function the opportunity to create a new game without reloading the page and thus maintaining the Bluetooth connection
 //**
 //**    If a new game is created, a new gameId is now set and the players will have to rejoin the new session even if they were part of the previous one
 
@@ -496,7 +498,7 @@ function restartGame() {
     // Allow the player to create a new game
     allowCreate = 1;
 
-    // Stop the ongoing game and gameUpdate() 
+    // Stop the ongoing game and gameUpdate()
     gameOn = 0;
 
     // Avoid cached version of the controllers-file
@@ -504,7 +506,7 @@ function restartGame() {
     var e = time.getTime();
 
     // AJAX request to restart the game session without interefering with the Bluetooth connection
-    $('.column').load('include/controllers.html?t=' + e);    
+    $('#main').load('include/controllers.html?t=' + e);
 }
 
 //**
@@ -520,29 +522,29 @@ function singlePlayerPopup() {
                     <div id='btn-singleplayer' class='msg-button' onclick='startSingleplayer();'>Singleplayer Mode</div>
                     <div id='btn-main-menu' class='msg-button' onclick='restartGame();'>Main Menu</div>`;
 
-    
+
     $('#message-container').fadeOut(500).promise().done(function() {
         $('#message').html(input);
         $('#message-container').fadeIn(500).promise().done(function() {
             $('#message').fadeIn(1000);
         });
-    });    
+    });
 
 }
 
 //**
 //      If a player wants to just drive the car without creating a new game, this function is called
 //**
-  
-function startSingleplayer () {     
-    singlePlayer = true;        
-    $('#message').html('s').fadeIn(500).promise().done(function() { 
+
+function startSingleplayer () {
+    singlePlayer = true;
+    $('#message').html('s').fadeIn(500).promise().done(function() {
         $('#points').text('');
         $('#btn-sim-hit').hide();
-        startGame();   
+        startGame();
         $('#message-container').fadeIn(500);
     });
-         
+
 };
 
 
@@ -553,7 +555,7 @@ function startSingleplayer () {
 //////////////////////////////////////////////*
 
 
-function notificationCallback(dataArray) {  
+function notificationCallback(dataArray) {
     // var test = dataArray.length == prevNotificationArray.length && dataArray.every(function(v,i) { return v === prevNotificationArray[i]});
     // console.log(test);
     if(gameOn && (!preventShot)) {
@@ -563,6 +565,7 @@ function notificationCallback(dataArray) {
         }, timeBetweenHits);
         if(gameOn == 1) {
             score--;
+            vibrate(500);   // vibrates for 500 ms
             $('#points').text('♥ ' + score);
             console.log(score);
         }
@@ -580,7 +583,7 @@ function notificationCallback(dataArray) {
 //      Function called when the player wins a game
 //**
 
-function gameWon() {   
+function gameWon() {
     gameOn = 0;
 
     charVal[10] = 0;
@@ -603,7 +606,7 @@ function gameWon() {
 //      Function called when the player loses a game
 //**
 
-function gameLost(status = "") {   
+function gameLost(status = "") {
     gameOn = 0;
 
     charVal[10] = 0;
@@ -652,7 +655,7 @@ function shoot() {
 function coolDown() {
 
     var timeOut = coolDownPeriod;
-    var e = document.getElementById("cool-down-bar");   
+    var e = document.getElementById("cool-down-bar");
     var width = 1;
     var interval = setInterval(coolDownCounter, timeOut/100);
     coolDownStatus = 1;
@@ -662,8 +665,8 @@ function coolDown() {
             coolDownStatus = 0;
             e.style.backgroundColor = '#367d59';
         } else {
-            width++; 
-            e.style.width = width + '%'; 
+            width++;
+            e.style.width = width + '%';
 
             if(width <= 35)
                 e.style.backgroundColor = 'red';
@@ -682,7 +685,19 @@ function printDiscardedPackets() {
     console.log(discardedPackets);
 }
 
+//**
+//      Vibration
+//**
 
+function vibrate(duration, interval = 0) {
+    if(interval) {
+        var repeat = setInterval(function() {
+            navigator.vibrate(duration);
+        }, interval)
+    } else {
+        navigator.vibrate();
+    }
+}
 //**
 //      Buttons and actions
 //**
@@ -729,21 +744,21 @@ $('#btn-sim-hit').on('touchstart mousedown', function(event) {
     notificationCallback(hitArray);
 });
 
-$('.button').on('touchstart mousedown', function(event) { 
-    event.preventDefault();      
-    $('#btn-gamemenu-container').fadeOut("slow");       
-});     
+$('.button').on('touchstart mousedown', function(event) {
+    event.preventDefault();
+    $('#btn-gamemenu-container').fadeOut("slow");
+});
 
-$('#btn-return').on('touchstart mousedown', function(event) {  
+$('#btn-return').on('touchstart mousedown', function(event) {
     event.preventDefault();
     $('#message-container').fadeOut("slow").promise().done(function() {
-        $('.column').load('include/controllers.html');
-    });  
-});     
-$('#btn-singleplayer').on('touchstart mousedown', function(event) {     
+        $('#main').load('include/controllers.html');
+    });
+});
+$('#btn-singleplayer').on('touchstart mousedown', function(event) {
     event.preventDefault();
-    startSingleplayer();        
-});   
+    startSingleplayer();
+});
 
 // Set transition time for cool-down-bar. Placed here instead of static CSS to give a more sensible transition time based on the chosen coolDownPeriod
 $('#cool-down-bar').css('transition', 'background-color ' + coolDownPeriod*3/5000 + 's');
@@ -764,21 +779,18 @@ function toggleGameMenu() {
     if (gameMenuDown == true){
         $('#slide-menu').animate({height: "60px"},'slow');
         $('#btn-menu').animate({bottom: "50px"},'slow');
-        
+
         gameMenuDown = false;
     }
     else if (gameMenuDown == false){
         $('#slide-menu').animate({height: "0px"},'slow');
         $('#btn-menu').animate({bottom: "10px"},'slow');
-        
+
         gameMenuDown = true;
     }
 };
 
 $('#btn-exit').on('touchstart mousedown', function (event) {
     $('body').css({'background': '-webkit-radial-gradient(center, ellipse cover, rgba(12,78,145,1) 0%,rgba(0,0,0,1) 100%)'});
-    $('.column').load('include/controllers.html?t=' + e);
+    $('#main').load('include/controllers.html?t=' + e);
 });
-
-
-

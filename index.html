@@ -4,10 +4,10 @@
   <head>
 
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-beta1/jquery.js"></script>   
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-beta1/jquery.js"></script>
     <script type="text/javascript" src="js/jquery.mobile-events.js"></script>
-    <script src="js/gatt.js"></script>    
+    <script src="js/gatt.js"></script>
     <script src="js/setBit.js"></script>
 	  <link rel="stylesheet" type="text/css" href="css/slotmachine.css"></link>
     <link rel="stylesheet" type="text/css" href="css/stylesheet.css?"></link>
@@ -25,45 +25,31 @@
                </div>
             </div>
         </div>
-        <div id="connectionStatus">Status</div>
+        <div id="connectionStatus">Connection status</div>
 
         <div id="fullscreen" onclick="">Klikk for fullskjerm</div>
 
-        <div class="column">
-		
+        <div id="main">
+
             <h1 id="welcome">Physical Web Toy</h1>
-			
-			<h2 onclick="game_init();" id='connect' class="button">Start</h2>
-            <h2 onclick="disconnect();" id='disconnect'class="button">About</h2>
+            <div id="main-message">
+    			<h2 onclick="game_init();" id='connect' class="button">Start</h2>
+                <h2 onclick="disconnect();" id='disconnect'class="button">About</h2>
+            </div>
 
 
         </div>
 		<div id="footer">
-		    <a href="https://google.github.io/physical-web/"><img src="pics/PhysicalWebLogoSmall.png" class="imglink"></img></a>
-			<a href="https://www.ntnu.edu/"><img src="pics/NTNULogoSmall.png" id="ntnu" class="imglink"></img></a>
-			<a href="http://www.nordicsemi.no"><img src="pics/NordicSemiLogoSmall.png" id="nordiclogo" class="imglink"></img></a>
+		    <a href="https://google.github.io/physical-web/"><img src="img/physicalweb.png" class="footer-logo"></img></a>
+			<a href="http://www.nordicsemi.no"><img src="img/nordic.png" id="nordiclogo" class="footer-logo"></img></a>
+            <a href="https://www.ntnu.edu/"><img src="img/ntnu.png" id="ntnu" class="footer-logo"></img></a>
 		</div>
-       
+
 		<script>
-		$(document).ready(function(){
-			$('.pull-down-menu').click(function() {		// Function to slide down the menu selector
-				$('.panel').slideToggle('slow');
-				});
-			
-			$('.menu').hover(							// Makes the menus change color while hovering over them
-    			function(){
-    				$(this).addClass('active');
-    			},
-    			function(){
-    				$(this).removeClass('active');    
-    			});
-		});
-
-
 
         //*** Initialize game **/
 
-        function game_init() {   
+        function game_init() {
             toggleFullscreen();
             connect();
             $('#fullscreen').show();
@@ -71,14 +57,14 @@
             var time = new Date();
             var e = time.getTime();
             setTimeout(function() {
-                $('.column').load('include/controllers.html?t=' + e);  
-            }, 1000);  
+                $('#main').load('include/controllers.html?t=' + e);
+            }, 1000);
         }
 
 
 		</script>
 
- 
+
 
         <script>
             // Funksjon for å vise siden i fullskjerm
@@ -115,12 +101,12 @@
                 toggleFullscreen();
             });
 
-            
+
 
         </script>
 
 
-		
+
 
     </body>
 </html>

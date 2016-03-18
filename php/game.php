@@ -1,10 +1,10 @@
 <?php 
 	// Open database connection
 	
-	$host = 	"host";
-	$username = 	"user";
-	$password = 	"password";
-	$dbname = 	"db";
+	$host = 		"localhost";
+	$username = 	"root";
+	$password = 	"root";
+	$dbname = 		"pwt";
 
 	if($db = new mysqli($host, $username, $password, $dbname));
 

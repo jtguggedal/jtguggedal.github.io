@@ -121,7 +121,7 @@
 }
 
 #btn-return {
-    
+
 }
 
 .wait-till-game {
@@ -139,17 +139,20 @@
     position: relative;
     width: 300px;
     height: 30px;
-    padding-top: 5px;
-    margin: 15px auto;
-    background-color: rgba(0, 13, 29, 0.8);
+    padding: 7px;
+    margin: 20px auto;
+    background-color: rgba(0, 0, 0, 0.7);
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 5px;
     text-align: center;
     cursor: pointer;
     box-shadow: 0px 0px 20px 0px rgba(0,0,0, 0.4);
     color: rgba(255, 255, 255, 0.9);
-    font-size: 20px;
-    font-weight: bold;
+    font-size: 23px;
+    font-weight: 700;
+}
+.button:last-child, .msg-button:last-child {
+    margin-bottom: 5px;
 }
 .msg-button {
     width: 200px;
@@ -164,7 +167,7 @@
     position: fixed;
     bottom: 10px;
     left: 50%;
-    margin-left: -20px;     
+    margin-left: -20px;
     color: white;
     font-size: 25px;
     padding-top: px;
@@ -212,9 +215,9 @@
     text-transform:uppercase;
     margin: 0;
     color: white;
-   
+
 }
- ::-webkit-input-placeholder { 
+ ::-webkit-input-placeholder {
     color: rgba(255, 255, 255, 0.5);
 }
 

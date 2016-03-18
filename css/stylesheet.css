@@ -1,8 +1,8 @@
 /* Link til fargekoder i hex: http://www.w3schools.com/colors/colors_picker.asp */
-@import url(https://fonts.googleapis.com/css?family=Open+Sans|Roboto:400,500,700,300,100);
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:100,300,400,500,700|Lato:400,500,700,300,100);
 
 body {
-	font-family: "Roboto";
+	font-family: "Lato";
 	margin: 0;
 	margin-bottom: -20px;
 	padding: 0px;
@@ -14,18 +14,13 @@ body {
 	overflow: hidden;
 	background: -moz-radial-gradient(center, ellipse cover,  rgba(12,78,145,1) 0%, rgba(0,0,0,0.97) 100%);
 	background: -webkit-radial-gradient(center, ellipse cover,  rgba(12,78,145,1) 0%,rgba(0,0,0,0.97) 100%);
-	background: radial-gradient(ellipse at center,  rgba(12,78,145,1) 0%,rgba(0,0,0,0.97) 100%);
+	background: radial-gradient(ellipse at center,  rgba(12, 89, 167, 1) 0%,rgba(9, 15, 28, 0.97) 100%);
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0c4e91', endColorstr='#f7000000',GradientType=1 );
 }
-
-.active {
-    background-color:#00b3b3;
-}
-
 #footer {
 	height: 40px;
 	width: 100%;
-	background-color: #EBEBEB;
+    background-color: rgba(0, 0, 0, 0.5);
 	position: fixed;
 	bottom: 0;
 	margin: 0;
@@ -35,24 +30,12 @@ body {
 	box-shadow: 0px 0px 20px 2px rgba(0, 0, 0, 0.4);
 }
 
-#ntnu {
-	height: 15px;
-	width: auto;
-	margin-bottom: 8px;
+.footer-logo {
+	height: 18px;
+	margin: 12px 30px 0 30px;
 }
 
-#nordiclogo {
-	height: 43px;
-	width: auto;
-	margin-bottom: 3px;
-}
-
-.imglink {
-	max-height: 20px;
-	margin: 6px;
-}
-
-.column {
+#main {
 	width: 100%;
 	height: 100%;
 	margin-top: 0;
@@ -60,16 +43,8 @@ body {
 	margin-right: auto;
 }
 
-.notification {
-	display: inline-block;
-	margin: 15px;
-	width: 35px;
-	height: 35px;
-	background-color: blue;
-	color: white;
-	font-size: 34px;
-	text-align: center;
-	font-weight: 700;
+#main-message {
+
 }
 
 h1 {
@@ -78,6 +53,7 @@ h1 {
 	text-align: center;
 	margin-left: auto;
 	margin-right: auto;
+	text-shadow: 1px 1px 15px rgba(0, 0, 0, 0.9);
 }
 
 h2 {
@@ -95,60 +71,12 @@ h3 {
 	margin-right: auto;
 }
 
-.demo {
-	background: #f3eee6;
-	width: 200px;
-	height: 200px;
-	display: inline-block;
-	border-radius: 100px;
-	margin: 0;
-}
-
-.ball {
-	width: 70px;
-	height: 70px;
-	background: red;
-	position: absolute;
-	top: 65px;
-	left: 65px;
-	border-radius: 70px;
-}
-
-.ball.outline {
-  background: #eee;
-}
-
-.ball.ease {
-  -moz-transition: all 0.2s ease;
-  -o-transition: all 0.2s ease;
-  -webkit-transition: all 0.2s ease;
-  transition: all 0.2s ease;
-}
-
-#pos-x, #pos-y {
-	margin-left: 20px;
-}
-
-.slider-container {
-	display: inline-block;
-	float: left;
-	margin: 0 auto;
-	width: 100px;
-	text-align: center;     
-}
-
 input[type=range] {
 	display: inline-block;
 	width: 50px;
 	height: 100px;
 	writing-mode: bt-lr; /* IE */
 	-webkit-appearance: slider-vertical; /* WebKit */
-}
-
-.side-by-side {
-	display: inline-block;
-	float: left;
-	width: 50px;
 }
 
 #connectionStatus {
@@ -181,12 +109,11 @@ input[type=range] {
     z-index: 10;
 }
 
-/****  Message if portrait orientation  *****/      
+/****  Message if portrait orientation  *****/
 
 #orientation-message {
 	display: none;
 }
-
 
 @media screen and (orientation:portrait)
 {
@@ -195,7 +122,7 @@ input[type=range] {
         position: fixed;
         width: 100%;
         height: 100%;
-        font-size: 25px;
+		font-size: 25px;
 		background: -moz-radial-gradient(center, ellipse cover,  rgba(12,78,145,1) 0%, rgba(0,0,0,0.97) 100%);
 		background: -webkit-radial-gradient(center, ellipse cover,  rgba(12,78,145,1) 0%,rgba(0,0,0,0.97) 100%);
 		background: radial-gradient(ellipse at center,  rgba(12,78,145,1) 0%,rgba(0,0,0,0.97) 100%);
@@ -215,7 +142,3 @@ input[type=range] {
     	margin-top: 100px;
     }
 }
-
-
-
-
