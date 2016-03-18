@@ -541,6 +541,7 @@ function startSingleplayer () {
     $('#message').html('s').fadeIn(500).promise().done(function() {
         $('#points').text('');
         $('#btn-sim-hit').hide();
+        $('#btn-slotmachine').hide();
         startGame();
         $('#message-container').fadeIn(500);
     });
@@ -596,6 +597,7 @@ function gameWon() {
         priorityWrite(charVal);
         writePermission = 0;
     }
+    vibrate(300, 400, 5);
     $('#game-message').html('You won :)');
     $('#game-message').fadeIn('slow');
     $('body').css({'background': '-webkit-radial-gradient(center, ellipse cover, rgba(58,132,74,1) 0%,rgba(13,25,15,1) 100%)'});
@@ -643,6 +645,7 @@ function shoot() {
                 priorityWrite(charVal);
             }, 50);
         }
+        vibrate(100);
         coolDown();
     }
 }

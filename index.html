@@ -83,7 +83,6 @@
                 }
 				$('#fullscreen').show();
                 $('#fullscreen').html("Exit fullscreen");
-                screen.keepAwake = true;
               } else {
                 if (document.exitFullscreen) {
                   document.exitFullscreen();
@@ -95,7 +94,6 @@
                   document.webkitExitFullscreen();
                 }
                 $('#fullscreen').html("Fullscreen");
-                screen.keepAwake = false;
               }
             }
 
