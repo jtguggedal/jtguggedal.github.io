@@ -619,6 +619,7 @@ function gameLost(status = "") {
         priorityWrite(charVal);
         writePermission = 0;
     }
+    vibrate(200, 300, 5);
     $('#game-message').html('You lost :(');
     $('#game-message').fadeIn('slow');
     $('body').css({'background': '-webkit-radial-gradient(center, ellipse cover, rgba(143, 2, 34, 1) 0%,rgba(38, 0, 0, 1) 100%)'});
@@ -689,13 +690,21 @@ function printDiscardedPackets() {
 //      Vibration
 //**
 
-function vibrate(duration, interval = 0) {
-    if(interval) {
-        var repeat = setInterval(function() {
+function vibrate(duration, interval = 0, repeats = 1) {
+    if(vibratePossible) {
+        if(interval) {
+            var n = 1;
+            var repeat = setInterval(function() {
+                if(n <= repeats)
+                    navigator.vibrate(duration);
+                else {
+                    clearInterval(repeat);
+                }
+                n++;
+            }, interval)
+        } else {
             navigator.vibrate(duration);
-        }, interval)
-    } else {
-        navigator.vibrate(duration);
+        }
     }
 }
 //**
