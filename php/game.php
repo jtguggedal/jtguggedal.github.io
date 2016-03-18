@@ -1,14 +1,10 @@
 <?php 
-	ini_set('display_errors',1);
-	ini_set('display_startup_errors',1);
-	error_reporting(E_ALL);
-	ini_set('display_errors', 'On');
 	// Open database connection
 	
-	$host = 		"localhost";
-	$username = 	"root";
-	$password = 	"root";
-	$dbname = 		"pwt";
+	$host = 	"host";
+	$username = 	"user";
+	$password = 	"password";
+	$dbname = 	"db";
 
 	if($db = new mysqli($host, $username, $password, $dbname));
 
@@ -18,11 +14,11 @@
 	// Fetch parameters form querystring
 
 	$type = 		querystring("t");
-	$timeToJoin = 	querystring('ttj');
+	$timeToJoin = 		querystring('ttj');
 	$score = 		querystring('l');
 	$gameId = 		querystring('gid');
-	$playerId = 	querystring('pid');
-	$playerName = 	querystring('pname');
+	$playerId = 		querystring('pid');
+	$playerName = 		querystring('pname');
 
 	$function_name = $_GET['callback'];
 
