@@ -29,12 +29,13 @@ var allowCreate = 1;                // Players are allowed to create their own g
 var preventShot = 0;                // Variable to prevent being hit before timeBetweenHits is out
 var updateInterval = 500;           // Interval for game updates to and from the server [ms]
 
-var speedCoeff = 0.78;
-var message;
-var name;
-var gameId;
-var playerId;
-var singlePlayer = false;
+var speedCoeff = 0.78;              // This is the default speed coefficient that limits the maximum speed of the car and makes the speed boost power-up possible
+                                    // The coeffcient has a linear relationship with the output current to the motors, and ranges from 0 to 1
+//var message;
+var name;                           // The player may enter a name that will also be stored in the database when participating in a game session. Not yet implemented in GUI.
+var gameId;                         // When either creating or joining a game, the game ID is stored
+var playerId;                       // Each player in a game session receives a unique player ID
+var singlePlayer = false;   
 var gameMenuDown = true;
 var allowJoin = true;
 
