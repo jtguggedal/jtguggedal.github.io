@@ -42,7 +42,7 @@ var allowJoin = true;
 var vibratePossible = "vibrate" in navigator;
 
 //** For local testing, set local to 1 to avoid Web Bluetooth errors
-var local = 1;
+var local = 0;
 
 
 //**
@@ -657,7 +657,6 @@ function shoot() {
 //**
 
 function coolDown() {
-
     var timeOut = coolDownPeriod;
     var e = document.getElementById("cool-down-bar");
     var width = 1;
