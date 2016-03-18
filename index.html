@@ -83,7 +83,7 @@
                 }
 				$('#fullscreen').show();
                 $('#fullscreen').html("Exit fullscreen");
-                chrome.power.requestKeepAwake('display');
+                screen.keepAwake = true;
               } else {
                 if (document.exitFullscreen) {
                   document.exitFullscreen();
@@ -95,7 +95,7 @@
                   document.webkitExitFullscreen();
                 }
                 $('#fullscreen').html("Fullscreen");
-                chrome.power.releaseKeepAwake();
+                screen.keepAwake = false;
               }
             }
 
