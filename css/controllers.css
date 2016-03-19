@@ -204,11 +204,11 @@
 }
 .btn-slide-menu {
     display: inline-block;
-    width: 160px;
+    width: 150px;
     margin: 0 15px;
     font-size: 18px;
     height: 20px;
-    padding: 7px 0;
+    padding: 6px 0;
 }
 
 #message input[type=text] {

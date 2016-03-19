@@ -42,7 +42,7 @@ var allowJoin = true;
 var vibratePossible = "vibrate" in navigator;
 
 //** For local testing, set local to 1 to avoid Web Bluetooth errors
-var local = 0;
+var local = 0; 
 
 
 //**
