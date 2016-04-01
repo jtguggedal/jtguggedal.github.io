@@ -26,7 +26,7 @@ var coolDownPeriod = 1500;          // Shortest allowed interval between shots f
 var coolDownStatus = 0;             // Players starts with no need of 'cool down'
 var gameOn = 0;                     // Game is by default not started automatically
 var allowCreate = 1;                // Players are allowed to create their own games
-var preventShot = 0;                // Variable to prevent being hit before timeBetweenHits is out
+var preventHit = 0;                // Variable to prevent being hit before timeBetweenHits is out
 var updateInterval = 500;           // Interval for game updates to and from the server [ms]
 
 var speedCoeff = 0.78;              // This is the default speed coefficient that limits the maximum speed of the car and makes the speed boost power-up possible
@@ -42,7 +42,7 @@ var allowJoin = true;
 var vibratePossible = "vibrate" in navigator;
 
 //** For local testing, set local to 1 to avoid Web Bluetooth errors
-var local = 0; 
+var local = 1;
 
 
 //**
@@ -495,6 +495,7 @@ function updateGame() {
 //**    If a new game is created, a new gameId is now set and the players will have to rejoin the new session even if they were part of the previous one
 
 function restartGame() {
+
     // Allow the player to create a new game
     allowCreate = 1;
 
@@ -545,7 +546,6 @@ function startSingleplayer () {
         startGame();
         $('#message-container').fadeIn(500);
     });
-
 };
 
 
@@ -557,23 +557,31 @@ function startSingleplayer () {
 
 
 function notificationCallback(dataArray) {
-    // var test = dataArray.length == prevNotificationArray.length && dataArray.every(function(v,i) { return v === prevNotificationArray[i]});
-    // console.log(test);
-    if(gameOn && (!preventShot)) {
-        preventShot = 1;
-        setTimeout(function() {
-            preventShot = 0;
-        }, timeBetweenHits);
-        if(gameOn == 1) {
-            score--;
-            vibrate(500);   // vibrates for 500 ms
-            $('#points').text('♥ ' + score);
-            console.log(score);
-        }
-        if(score < 0) {
-            score = 0;
+    var test = !(dataArray.length == prevNotificationArray.length && dataArray.every(function(v,i) { return v === prevNotificationArray[i]})) ? true : false;
+    console.log(test);
+    if(gameOn) {
+        if(test) {
+            if((dataArray[4] != prevNotificationArray[4]) && (dataArray[4] != 0)) {
+                prevNotificationArray = dataArray;
+                startSlot();
+            }
+        } else if(!preventHit) {
+            preventHit = 1;
+            setTimeout(function() {
+                preventHit = 0;
+            }, timeBetweenHits);
+            if(gameOn == 1) {
+                score--;
+                vibrate(500);   // vibrates for 500 ms
+                $('#points').text('♥ ' + score);
+                console.log(score);
+            }
+            if(score < 0) {
+                score = 0;
+            }
         }
         console.log('Notification mottatt: ' + dataArray + ' tidligere: ' + prevNotificationArray);
+
     } else {
         console.log('Uendret notification mottatt: ' + dataArray);
     }
