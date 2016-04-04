@@ -40,6 +40,7 @@ var singlePlayer = false;
 var gameMenuDown = true;
 var allowJoin = true;
 var vibratePossible = "vibrate" in navigator;
+var firstHit = true;
 
 //** For local testing, set local to 1 to avoid Web Bluetooth errors
 var local = 0;
@@ -558,14 +559,15 @@ function startSingleplayer () {
 
 function notificationCallback(dataArray) {
     var test = !(dataArray.length == prevNotificationArray.length && dataArray.every(function(v,i) { return v === prevNotificationArray[i]})) ? true : false;
+    var preventSlotFirst = (firstHit && (dataArray[0] == 1 || dataArray[1] == 1 || dataArray[2] == 1 || dataArray[3] == 1)) ? true : false;
+    var preventSlot = (dataArray[4] == prevNotificationArray[4]) ? true : false ;
+    firstHit = true;
+
     console.log(test);
     if(gameOn) {
-        if(test) {
-            if((dataArray[4] != prevNotificationArray[4]) && (dataArray[4] != 0)) {
-                prevNotificationArray = dataArray;
+        if(test && !preventSlotFirst && !preventSlot) {
                 startSlot();
-            }
-        } else if(!preventHit) {
+        } else if(!preventHit && !preventSlot) {
             preventHit = 1;
             setTimeout(function() {
                 preventHit = 0;
@@ -580,12 +582,12 @@ function notificationCallback(dataArray) {
                 score = 0;
             }
         }
+        prevNotificationArray = dataArray;
         console.log('Notification mottatt: ' + dataArray + ' tidligere: ' + prevNotificationArray);
 
     } else {
         console.log('Uendret notification mottatt: ' + dataArray);
     }
-    prevNotificationArray = dataArray;
 }
 
 //**
