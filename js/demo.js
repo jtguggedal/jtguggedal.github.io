@@ -566,7 +566,7 @@ function notificationCallback(dataArray) {
     if(gameOn) {
         if(!preventSlotFirst && !preventSlot) {
                 startSlot();
-        } else if(!preventHit && (preventSlot && newNotificationValue)) {
+        } else if(!preventHit && newNotificationValue) {
             preventHit = 1;
             setTimeout(function() {
                 preventHit = 0;
