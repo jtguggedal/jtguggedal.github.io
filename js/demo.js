@@ -561,11 +561,11 @@ function notificationCallback(dataArray) {
     var test = !(dataArray.length == prevNotificationArray.length && dataArray.every(function(v,i) { return v === prevNotificationArray[i]})) ? true : false;
     var preventSlotFirst = (firstHit && (dataArray[0] == 1 || dataArray[1] == 1 || dataArray[2] == 1 || dataArray[3] == 1)) ? true : false;
     var preventSlot = (dataArray[4] == prevNotificationArray[4]) ? true : false ;
-    firstHit = true;
+    firstHit = false;
 
     console.log(test);
     if(gameOn) {
-        if(test && !preventSlotFirst && !preventSlot) {
+        if(!preventSlotFirst && !preventSlot) {
                 startSlot();
         } else if(!preventHit && !preventSlot) {
             preventHit = 1;
