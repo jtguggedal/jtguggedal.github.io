@@ -34,6 +34,9 @@
             <div id="btn-join-game" class="button">
                 Join Multiplayer Game
             </div>
+            <div id="btn-settings" class="button">
+                Multiplayer Settings
+            </div>
         </div>
         <div id="btn-join-container">
             <div id='btn-join-popup' class='button'>
@@ -71,13 +74,23 @@
     </div>
     <div id="status-create-game">
     </div>
-    <script src="js/virtualJoystick.js"></script>   
+    <script src="js/virtualJoystick.js"></script>
     <script src="js/nipplejs.min.js"></script>
     <script src="js/slotmachine.js"></script>
-    
+
+    <script>
+        $('#btn-settings').on('click', function() {
+            $('#main').html(' ').promise().done(function() {
+                var time = new Date();
+                var e = time.getTime();
+                $('#main').load('include/settings.html?' + e);
+            });
+        });
+    </script>
+
     <!--  Include demo version of the car controllers -->
     <script>
-        var time = new Date();      
-        var e = time.getTime();     
+        var time = new Date();
+        var e = time.getTime();
         $.getScript( "js/demo.js?t=" + e);
     </script>

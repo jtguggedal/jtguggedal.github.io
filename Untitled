@@ -1,0 +1,7 @@
+/* Header css file */
+
+#header-container {
+    height: 100px;
+    background-color: #333;
+    color: white;
+}

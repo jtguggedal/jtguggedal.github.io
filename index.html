@@ -9,7 +9,7 @@
     <script type="text/javascript" src="js/jquery.mobile-events.js"></script>
     <script src="js/gatt.js"></script>
     <script src="js/setBit.js"></script>
-	  <link rel="stylesheet" type="text/css" href="css/slotmachine.css"></link>
+	<link rel="stylesheet" type="text/css" href="css/slotmachine.css"></link>
     <link rel="stylesheet" type="text/css" href="css/stylesheet.css?"></link>
     <link rel="stylesheet" type="text/css" href="css/controllers.css"></link>
 
@@ -101,6 +101,11 @@
                 toggleFullscreen();
             });
 
+            (function() {
+                var time = new Date();
+                var e = time.getTime();
+                $('head').append('<link rel="stylesheet" href="css/settings.css?' + e + '" type="text/css" />');
+            })();
 
 
         </script>
