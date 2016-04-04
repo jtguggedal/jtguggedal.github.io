@@ -6,7 +6,7 @@
         <div id="settings-content">
             <div class="settings-row">
                 <div class="settings-row-label">
-                    Time from create to start
+                    Time to join [seconds]
                 </div>
                 <div class="settings-row-setting">
                     <div id="settings-timeToJoin" class="settings-contenteditable" contenteditable="true">
@@ -15,28 +15,71 @@
             </div>
             <div class="settings-row">
                 <div class="settings-row-label">
-                    Setting 2
+                    Number of lives
                 </div>
                 <div class="settings-row-setting">
-                    Box
+                    <div id="settings-lives" class="settings-contenteditable" contenteditable="true">
+                    </div>
                 </div>
             </div>
             <div class="settings-row">
                 <div class="settings-row-label">
-                    Setting 3
+                    Cooldown time before new shot [seconds]
                 </div>
                 <div class="settings-row-setting">
-                    Box
+                    <div id="settings-coolDownPeriod" class="settings-contenteditable" contenteditable="true">
+                    </div>
                 </div>
             </div>
             <div class="settings-row">
                 <div class="settings-row-label">
-                    Setting 4
+                    Minimum time between hits
                 </div>
                 <div class="settings-row-setting">
-                    Box
+                    <div id="settings-timeBetweenHits" class="settings-contenteditable" contenteditable="true">
+                    </div>
                 </div>
             </div>
-    </div>
+        </div>
+        <div id="settings-btn-return" class="button">
+            Save and return
+        </div>
     </div>
 </div>
+
+
+<script>
+
+    // Populate settings boxes
+    $('#settings-timeToJoin').text(timeToJoin);
+    $('#settings-lives').text(score);
+    $('#settings-coolDownPeriod').text(coolDownPeriod/1000);
+    $('#settings-timeBetweenHits').text(timeBetweenHits/1000);
+
+    // Save the new settings
+    $('#settings-timeToJoin').focusout( function() {
+        timeToJoin = $(this).text().trim();
+        console.log('Time to join: ' + timeToJoin);
+    });
+
+    $('#settings-lives').focusout( function() {
+        score = $(this).text().trim();
+        console.log('Number of lives: ' + score);
+    });
+
+    $('#settings-coolDownPeriod').focusout( function() {
+        coolDownPeriod = $(this).text().trim() * 1000;
+        console.log('Cooldown time: ' + coolDownPeriod);
+    });
+
+    $('#settings-timeBetweenHits').focusout( function() {
+        timeBetweenHits = $(this).text().trim() * 1000;
+        console.log('Time between hits: ' + timeBetweenHits);
+    });
+
+    // Return to game menu
+    $('#settings-btn-return').on('click', function() {
+        $('#main').fadeOut(200).promise().done( function() { $(this).load('include/controllers.html').fadeIn(200) });
+    });
+
+</script>

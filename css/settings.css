@@ -10,23 +10,24 @@
     border: 1px solid white;
     padding: 15px;
     margin-right: auto;
-    background-color: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 1px;
+    background-color: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0);
+    border-radius: 3px;
     text-align: center;
     color: white;
     padding: 15px;
     font-size: 35px;
     font-weight: 700;
-    box-shadow: 0px 0px 60px 0px rgba(0,0,0, 0.4);
+    box-shadow: 0px 0px 40px 0px rgba(0,0,0, 0.4);
 }
 
 #settings-title {
     width:100%;
     text-align: center;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     font-size: 22px;
     color: white;
+    font-family: "PT Sans";
 }
 
 #settings-content {
@@ -34,15 +35,22 @@
 }
 
 .settings-row {
-    margin: 10px 0;
-    height: 40px;
-    width: 100%;
+    padding: 7px 10px;
+    min-height: 35px;
+    width: 400px;
     z-index: 10;
     font-size: 16px;
     font-weight: normal;
+    vertical-align: middle;
+    box-sizing: border-box;
+}
+
+.settings-row:nth-child(odd) {
+    background-color: rgba(255, 255, 255, 0.05);
 }
 
 .settings-row-label {
+    display: inline-block;
     float: left;
     color: white;
 }
@@ -50,4 +58,18 @@
 .settings-row-setting {
     float: right;
     font-weight: normal;
+}
+
+.settings-contenteditable {
+    display: inline-block;
+        border: 1px solid white;
+        background-color: rgba(255, 255, 255, 0.1);
+        box-shadow: 0px 0px 60px 0px rgba(0,0,0, 0.4) inset;
+        width: 30px;
+        height: 20px;
+}
+
+
+#settings-btn-retun {
+    
 }

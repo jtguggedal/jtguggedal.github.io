@@ -37,6 +37,9 @@
             <div id="btn-settings" class="button">
                 Multiplayer Settings
             </div>
+            <div id="btn-reconnect" class="button">
+                Reconnect
+            </div>
         </div>
         <div id="btn-join-container">
             <div id='btn-join-popup' class='button'>
@@ -80,10 +83,11 @@
 
     <script>
         $('#btn-settings').on('click', function() {
-            $('#main').html(' ').promise().done(function() {
+            $('#btn-gamemenu-container').fadeOut("slow");
+            $('#main').fadeOut(200).promise().done(function() {
                 var time = new Date();
                 var e = time.getTime();
-                $('#main').load('include/settings.html?' + e);
+                $('#main').load('include/settings.html?' + e).fadeIn(200);
             });
         });
     </script>

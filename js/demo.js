@@ -19,8 +19,8 @@ var priorityPacket = 0;             // Events like button press, that happen rar
 var prevNotificationArray = [];     // The notification characteristic handler uses this array to ensure that it only triggers actions when new values are sent
 
 //** Game settings
-var score = 5;                      // Number of lives each player starts with
-var timeToJoin = 25;                // Interval from games is created until it starts [s]
+var score = score || 5;                      // Number of lives each player starts with
+var timeToJoin = timeToJoin || 25;                // Interval from games is created until it starts [s]
 var timeBetweenHits = 2000;         // Time from one hit to next possible [ms]
 var coolDownPeriod = 1500;          // Shortest allowed interval between shots fired [ms]
 var coolDownStatus = 0;             // Players starts with no need of 'cool down'
@@ -738,11 +738,13 @@ $('#control-button').on('touchend mouseup', function() {
 
 $('#btn-create-game').on('touchstart mousedown', function(event) {
     event.preventDefault();
+    $('#btn-gamemenu-container').fadeOut("slow");
     createGame();
 });
 
 $('#btn-join-game').on('touchstart mousedown', function(event) {
     event.preventDefault();
+    $('#btn-gamemenu-container').fadeOut("slow");
     joinGamePopup();
 });
 
@@ -756,17 +758,17 @@ $('#btn-slotmachine').on('touchstart mousedown', function(event) {
     startSlot();
 });
 
+$('#btn-reconnect').on('touchstart mousedown', function(event) {
+    event.preventDefault();
+    connect();
+});
+
 // This 'sim-hit' button triggers the same events with the same parameters as would be the case if the player's car was 'hit' by IR
 $('#btn-sim-hit').on('touchstart mousedown', function(event) {
     event.preventDefault();
     var hitArray = new Uint8Array(20);
     hitArray[1] = 1;
     notificationCallback(hitArray);
-});
-
-$('.button').on('touchstart mousedown', function(event) {
-    event.preventDefault();
-    $('#btn-gamemenu-container').fadeOut("slow");
 });
 
 $('#btn-return').on('touchstart mousedown', function(event) {
@@ -777,6 +779,7 @@ $('#btn-return').on('touchstart mousedown', function(event) {
 });
 $('#btn-singleplayer').on('touchstart mousedown', function(event) {
     event.preventDefault();
+    $('#btn-gamemenu-container').fadeOut("slow");
     startSingleplayer();
 });
 
