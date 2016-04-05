@@ -91,5 +91,14 @@
     $('#settings-btn-return').on('click', function() {
         $('#main').fadeOut(200).promise().done( function() { $(this).load('include/controllers.html').fadeIn(200) });
     });
+    
+    //** Debug functions **//
 
+    $('#btn-rgb-send').on('touchstart mousedown', function(event) {
+        event.preventDefault;
+        new Uint8Array charVal(20);
+        charVal[5] = $('#settings-rgbValue').text().trim();
+        console.log(charVal);
+        priorityWrite(charVal);
+    });
 </script>

@@ -833,13 +833,3 @@ $('#btn-exit').on('touchstart mousedown', function (event) {
     $('body').css({'background': '-webkit-radial-gradient(center, ellipse cover, rgba(12,78,145,1) 0%,rgba(0,0,0,1) 100%)'});
     $('#main').load('include/controllers.html?t=' + e);
 });
-
-//** Debug functions **//
-
-$('#btn-rgb-send').on('touchstart mousedown', function(event) {
-    event.preventDefault;
-    new Uint8Array charVal(20);
-    charVal[5] = $('#settings-rgbValue').text().trim();
-    console.log(charVal);
-    priorityWrite(charVal);
-});
