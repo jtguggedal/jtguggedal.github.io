@@ -836,7 +836,10 @@ $('#btn-exit').on('touchstart mousedown', function (event) {
 
 //** Debug functions **//
 
-$('#btn-rgb-send').on('touchstart mousedown', function() {
+$('#btn-rgb-send').on('touchstart mousedown', function(event) {
+    event.preventDefault;
+    new Uint8Array charVal(20);
     charVal[5] = $('#settings-rgbValue').text().trim();
+    console.log(charVal);
     priorityWrite(charVal);
 });
