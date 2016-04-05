@@ -777,7 +777,9 @@ $('#btn-sim-hit').on('touchstart mousedown', function(event) {
 $('#btn-return').on('touchstart mousedown', function(event) {
     event.preventDefault();
     $('#message-container').fadeOut("slow").promise().done(function() {
-        $('#main').load('include/controllers.html');
+        $('#main').load('include/controllers.html', function() {
+            $(this).fadeIn(200);
+        });
     });
 });
 
@@ -791,7 +793,9 @@ $('#btn-singleplayer').on('touchstart mousedown', function(event) {
 $('#btn-home').on('touchstart mousedown', function(event) {
     event.preventDefault();
     $('#btn-gamemenu-container').fadeOut("slow").promise().done(function() {
-        $('body').load('index.html');
+        $('body').load('index.html', function() {
+            $(this).fadeIn(200);
+        });
     });
 });
 
@@ -799,7 +803,7 @@ $('#btn-home').on('touchstart mousedown', function(event) {
 $('#cool-down-bar').css('transition', 'background-color ' + coolDownPeriod*3/5000 + 's');
 
 $('.wait-till-game').css('visibility', 'visible');
-$('.wait-till-game').hide(); 
+$('.wait-till-game').hide();
 
 // Populate the #points with the score (needs 'manual' update incase it is changed by joining a game with different settings than set here)
 $('#points').text('♥ ' + score);
@@ -828,4 +832,11 @@ function toggleGameMenu() {
 $('#btn-exit').on('touchstart mousedown', function (event) {
     $('body').css({'background': '-webkit-radial-gradient(center, ellipse cover, rgba(12,78,145,1) 0%,rgba(0,0,0,1) 100%)'});
     $('#main').load('include/controllers.html?t=' + e);
+});
+
+//** Debug functions **//
+
+$('#btn-rgb-send').on('touchstart mousedown', function() {
+    charVal[5] = $('#settings-rgbValue').text().trim();
+    priorityWrite(charVal);
 });

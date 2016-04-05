@@ -7,7 +7,7 @@
     width: 400px;
     margin: 0 auto;
     border: 1px solid white;
-    padding: 10px;
+    padding: 0 10px 10px 10px;
     margin-right: auto;
     background-color: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0);
@@ -23,7 +23,7 @@
 #settings-title {
     width:100%;
     text-align: center;
-    margin-bottom: 15px;
+    margin: 0 0 8px 0;
     font-size: 25px;
     color: white;
     font-family: "PT Sans";
@@ -34,8 +34,8 @@
 }
 
 .settings-row {
-    padding: 7px 10px;
-    min-height: 35px;
+    padding: 4px 10px;
+    min-height: 30px;
     width: 400px;
     z-index: 10;
     font-size: 16px;
@@ -46,7 +46,7 @@
 
 .settings-row:nth-child(odd) {
     background-color: rgba(255, 255, 255, 0.1);
-    background: linear-gradient(to right, rgba(0, 0, 0, 0.17), rgba(0, 0, 0, 0.05));
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.17), rgba(0, 0, 0, 0.17));
 }
 
 .settings-row-label {
@@ -70,6 +70,19 @@
 }
 
 
-#settings-btn-retun {
-
+.btn-debug{
+    display: inline-block;
+    position: relative;
+    width: 30px;
+    padding: 3px;
+    margin: -5px 0 5px 10px;
+    background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.5));
+    background-color: rgba(8, 62, 96, 1);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 1px;
+    text-align: center;
+    cursor: pointer;
+    box-shadow: 1px 1px 20px 0px rgba(0,0,0, 0.4);
+    color: #FFF;
+    font-size: 14px;
 }

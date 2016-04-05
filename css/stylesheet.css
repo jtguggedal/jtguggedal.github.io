@@ -26,6 +26,10 @@ body {
 	background: radial-gradient(ellipse at center,  rgba(29, 76, 122, 1) 0%, rgba(8, 21, 34, 1) 100%);
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0c4e91', endColorstr='#f7000000',GradientType=1 );
 	overflow: hidden;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 
 #footer {
