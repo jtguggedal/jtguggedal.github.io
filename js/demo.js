@@ -799,7 +799,7 @@ $('#btn-home').on('touchstart mousedown', function(event) {
 $('#cool-down-bar').css('transition', 'background-color ' + coolDownPeriod*3/5000 + 's');
 
 $('.wait-till-game').css('visibility', 'visible');
-$('.wait-till-game').hide();
+$('.wait-till-game').hide(); 
 
 // Populate the #points with the score (needs 'manual' update incase it is changed by joining a game with different settings than set here)
 $('#points').text('♥ ' + score);
