@@ -145,7 +145,7 @@
     margin: 30px auto;
     background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.5));
     background-color: rgba(8, 62, 96, 1);
-    border: 1px solid #DDD;
+    border: 1px solid rgba(255, 255, 255, 0.5);
     border-radius: 1px;
     text-align: center;
     cursor: pointer;
