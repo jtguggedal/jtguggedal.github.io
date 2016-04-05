@@ -25,20 +25,29 @@
             </div>
         </div>
         <div id="btn-gamemenu-container">
-            <div id="btn-singleplayer" class="button">
-                Singleplayer Demo
+            <div id="btn-singleplayer" class="button-main-menu">
+                <img src="img/singleplayer.png">
+                Singleplayer
             </div>
-            <div id="btn-create-game" class="button">
-                Create Multiplayer Game
+            <div id="btn-create-game" class="button-main-menu">
+                <img src="img/multiplayer.png">
+                Create Game
             </div>
-            <div id="btn-join-game" class="button">
-                Join Multiplayer Game
+            <div id="btn-join-game" class="button-main-menu">
+                <img src="img/joingame.png">
+                Join Game
             </div>
-            <div id="btn-settings" class="button">
-                Multiplayer Settings
+            <div id="btn-settings" class="button-main-menu">
+                <img src="img/settings.png">
+                Settings
             </div>
-            <div id="btn-reconnect" class="button">
+            <div id="btn-reconnect" class="button-main-menu">
+                <img src="img/bluetoothlogo.png">
                 Reconnect
+            </div>
+            <div id="btn-home" class="button-main-menu">
+                <img src="img/home.png">
+                Home
             </div>
         </div>
         <div id="btn-join-container">
@@ -85,9 +94,10 @@
         $('#btn-settings').on('click', function() {
             $('#btn-gamemenu-container').fadeOut("slow");
             $('#main').fadeOut(200).promise().done(function() {
+
                 var time = new Date();
                 var e = time.getTime();
-                $('#main').load('include/settings.html?' + e).fadeIn(200);
+                $('#main').load('include/settings.html?' + e).promise().done( function() { $(this).fadeIn(200)});
             });
         });
     </script>

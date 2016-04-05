@@ -10,9 +10,9 @@
     border: 1px solid white;
     padding: 15px;
     margin-right: auto;
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: rgba(0, 0, 0, 0.1);
     border: 1px solid rgba(255, 255, 255, 0);
-    border-radius: 3px;
+    border-radius: 1px;
     text-align: center;
     color: white;
     padding: 15px;
@@ -24,8 +24,8 @@
 #settings-title {
     width:100%;
     text-align: center;
-    margin-bottom: 20px;
-    font-size: 22px;
+    margin-bottom: 15px;
+    font-size: 25px;
     color: white;
     font-family: "PT Sans";
 }
@@ -46,7 +46,7 @@
 }
 
 .settings-row:nth-child(odd) {
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 .settings-row-label {
@@ -62,14 +62,14 @@
 
 .settings-contenteditable {
     display: inline-block;
-        border: 1px solid white;
-        background-color: rgba(255, 255, 255, 0.1);
-        box-shadow: 0px 0px 60px 0px rgba(0,0,0, 0.4) inset;
-        width: 30px;
-        height: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    background-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0px 0px 60px 0px rgba(0,0,0, 0.4) inset;
+    width: 34px;
+    height: 20px;
 }
 
 
 #settings-btn-retun {
-    
+
 }

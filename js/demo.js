@@ -738,14 +738,17 @@ $('#control-button').on('touchend mouseup', function() {
 
 $('#btn-create-game').on('touchstart mousedown', function(event) {
     event.preventDefault();
-    $('#btn-gamemenu-container').fadeOut("slow");
-    createGame();
+    $('#btn-gamemenu-container').fadeOut("slow").promise().done(function() {
+        createGame();
+    });
+
 });
 
 $('#btn-join-game').on('touchstart mousedown', function(event) {
     event.preventDefault();
-    $('#btn-gamemenu-container').fadeOut("slow");
-    joinGamePopup();
+    $('#btn-gamemenu-container').fadeOut("slow").promise().done(function() {
+        joinGamePopup();
+    });
 });
 
 $('#btn-restart-game').on('touchstart mousedown', function(event) {
@@ -777,10 +780,19 @@ $('#btn-return').on('touchstart mousedown', function(event) {
         $('#main').load('include/controllers.html');
     });
 });
+
 $('#btn-singleplayer').on('touchstart mousedown', function(event) {
     event.preventDefault();
-    $('#btn-gamemenu-container').fadeOut("slow");
-    startSingleplayer();
+    $('#btn-gamemenu-container').fadeOut("slow").promise().done(function() {
+        startSingleplayer();
+    });
+});
+
+$('#btn-home').on('touchstart mousedown', function(event) {
+    event.preventDefault();
+    $('#btn-gamemenu-container').fadeOut("slow").promise().done(function() {
+        $('body').load('index.html');
+    });
 });
 
 // Set transition time for cool-down-bar. Placed here instead of static CSS to give a more sensible transition time based on the chosen coolDownPeriod
