@@ -155,6 +155,10 @@
     font-weight: 700;
 }
 
+.msg-button {
+    margin: 10px auto;
+}
+
 .button-main-menu {
     display: inline-block;
     width: 150px;
@@ -263,21 +267,12 @@ input:focus {
 .msg {
     font-size: 20px;
     font-weight: 100;
-    margin: 10px 10px 20px 10px;
+    margin: 0px 10px 20px 10px;
     text-align: left;
     line-height: 130%;
     color: white;
 
 }
-
-.msg h1 {
-    font-size: 45px;
-    font-weight: 700;
-    color: white;
-    margin-bottom: 15px;
-    margin-top: 10px;
-}
-
 
 #join-fail {
     font-size: 16px;

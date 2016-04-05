@@ -518,7 +518,7 @@ function restartGame() {
 function singlePlayerPopup() {
 
     var input = `   <div class='msg'>
-                        <h1>Oh no!</h1>
+                        <h2>Oh no!</h2>
                         It seems noone joined the game in time. Do you want to enter singleplayer mode?
                     </div>
                     <div id='btn-singleplayer' class='msg-button' onclick='startSingleplayer();'>Singleplayer Mode</div>
