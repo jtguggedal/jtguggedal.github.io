@@ -42,6 +42,10 @@ var allowJoin = true;
 var vibratePossible = "vibrate" in navigator;
 var firstHit = true;
 
+// RGB LED colors
+
+var rgbLed = {green: 0, red: 1, blue: 2, off: 100};
+
 //** For local testing, set local to 1 to avoid Web Bluetooth errors
 var local = 0;
 
@@ -538,7 +542,7 @@ function singlePlayerPopup() {
 //      If a player wants to just drive the car without creating a new game, this function is called
 //**
 
-function startSingleplayer () {
+function startSingleplayer() {
     singlePlayer = true;
     $('#message').html('s').fadeIn(500).promise().done(function() {
         $('#points').text('');
@@ -567,13 +571,17 @@ function notificationCallback(dataArray) {
         if(!preventSlotFirst && !preventSlot) {
                 startSlot();
         } else if(!preventHit && newNotificationValue) {
+
+            // If the player is hit...
             preventHit = 1;
             setTimeout(function() {
                 preventHit = 0;
+                rgbSetColor('green');
             }, timeBetweenHits);
             if(gameOn == 1) {
                 score--;
                 vibrate(500);   // vibrates for 500 ms
+                rgbSetColor('red');
                 $('#points').text('♥ ' + score);
                 console.log(score);
             }
@@ -583,7 +591,6 @@ function notificationCallback(dataArray) {
         }
         prevNotificationArray = dataArray;
         console.log('Notification mottatt: ' + dataArray + ' tidligere: ' + prevNotificationArray);
-
     } else {
         console.log('Uendret notification mottatt: ' + dataArray);
     }
@@ -718,6 +725,17 @@ function vibrate(duration, interval = 0, repeats = 1) {
         }
     }
 }
+
+
+//**
+//      Function control RGB LEDs on the DK
+//**
+
+function rgbSetColor(color) {
+    charVal[5] = rgbLed.color;
+    priorityWrite(charVal);
+}
+
 //**
 //      Buttons and actions
 //**
