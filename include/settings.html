@@ -9,8 +9,10 @@
                     Write value to RGB LED
                 </div>
                 <div class="settings-row-setting">
+                    <div class="settings-value-setter">
                         <div id="settings-rgbValue" class="settings-contenteditable" contenteditable="true">
                         </div>
+                    </div>
                     <div id='btn-rgb-send' class="btn-debug">Send</div>
                 </div>
             </div>
@@ -59,7 +61,6 @@
 
 
 <script>
-    var newSettings = new Object;
 
     // Populate settings boxes
     $('#settings-timeToJoin').text(timeToJoin);

@@ -3,20 +3,8 @@
 //      Gloabl settings
 //**
 
-
-//** Array for BLE packets
-var charVal = new Uint8Array(20);
-
-//** Gloabl joystick variables
-var outputRight;
-var outputLeft;
-var tapEnd = 1;
-
-//** Global variables needed to control and monitor the data flow over BLE
-var writePermission = 1;            // When set to 1, the players can control the cars
-var discardedPackets = [];          // Array to hold arrays that are created by touch events but never sent over BLE, kind of equivalent to packet loss
-var priorityPacket = 0;             // Events like button press, that happen rarely compared to joystick events, are given priority to ensure that the DK gets the information
-var prevNotificationArray = [];     // The notification characteristic handler uses this array to ensure that it only triggers actions when new values are sent
+//** Object to hold the new settings that may be set
+var newSettings = new Object;
 
 //** Game settings
 var score = newSettings.score || 5;                      // Number of lives each player starts with
@@ -34,6 +22,23 @@ var speedCoeff = 0.78;              // This is the default speed coefficient tha
 var name;                           // The player may enter a name that will also be stored in the database when participating in a game session. Not yet implemented in GUI.
 var gameId;                         // When either creating or joining a game, the game ID is stored
 var playerId;                       // Each player in a game session receives a unique player ID
+
+
+
+//** Array for BLE packets
+var charVal = new Uint8Array(20);
+
+
+//** Gloabl joystick variables
+var outputRight;
+var outputLeft;
+var tapEnd = 1;
+
+//** Global variables needed to control and monitor the data flow over BLE
+var writePermission = 1;            // When set to 1, the players can control the cars
+var discardedPackets = [];          // Array to hold arrays that are created by touch events but never sent over BLE, kind of equivalent to packet loss
+var priorityPacket = 0;             // Events like button press, that happen rarely compared to joystick events, are given priority to ensure that the DK gets the information
+var prevNotificationArray = [];     // The notification characteristic handler uses this array to ensure that it only triggers actions when new values are sent
 
 // Some flags used to avoid errors
 var singlePlayer = false;
