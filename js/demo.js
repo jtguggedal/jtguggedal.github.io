@@ -19,10 +19,10 @@ var priorityPacket = 0;             // Events like button press, that happen rar
 var prevNotificationArray = [];     // The notification characteristic handler uses this array to ensure that it only triggers actions when new values are sent
 
 //** Game settings
-var score = score || 5;                      // Number of lives each player starts with
-var timeToJoin = timeToJoin || 25;                // Interval from games is created until it starts [s]
-var timeBetweenHits = 2000;         // Time from one hit to next possible [ms]
-var coolDownPeriod = 1500;          // Shortest allowed interval between shots fired [ms]
+var score = newSettings.score || 5;                      // Number of lives each player starts with
+var timeToJoin = newSettings.timeToJoin || 25;                // Interval from games is created until it starts [s]
+var timeBetweenHits = newSettings.timeBetweenHits || 2000;         // Time from one hit to next possible [ms]
+var coolDownPeriod = newSettings.coolDownPeriod || 1500;          // Shortest allowed interval between shots fired [ms]
 var coolDownStatus = 0;             // Players starts with no need of 'cool down'
 var gameOn = 0;                     // Game is by default not started automatically
 var allowCreate = 1;                // Players are allowed to create their own games
@@ -732,7 +732,7 @@ function vibrate(duration, interval = 0, repeats = 1) {
 //**
 
 function rgbSetColor(color) {
-    charVal[5] = rgbLed.color;
+    charVal[5] = rgbLed[color]];
     priorityWrite(charVal);
 }
 
