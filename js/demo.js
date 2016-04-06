@@ -574,17 +574,17 @@ game.notificationCallback = function(dataArray) {
 //**
 
 game.gameWon = function() {
-    gameOn = 0;
+    this.ameOn = 0;
 
-    charVal[10] = 0;
-    charVal[11] = 0;
-    charVal[12] = 0;
-    charVal[13] = 0;
+    ble.charVal[10] = 0;
+    ble.charVal[11] = 0;
+    ble.charVal[12] = 0;
+    ble.charVal[13] = 0;
 
-    if(!local) {
+    if(!game.local) {
         console.log('won');
-        priorityWrite(charVal);
-        writePermission = 0;
+        priorityWrite(ble.charVal);
+        game.writePermission = 0;
     }
     vibrate(300, 400, 5);
     $('#game-message').html('You won :)');
@@ -598,19 +598,18 @@ game.gameWon = function() {
 //**
 
 game.gameLost = function(status = "") {
-    gameOn = 0;
+    this.gameOn = 0;
 
-    charVal[10] = 0;
-    charVal[11] = 0;
-    charVal[12] = 0;
-    charVal[13] = 0;
+    ble.charVal[10] = 0;
+    ble.charVal[11] = 0;
+    ble.charVal[12] = 0;
+    ble.charVal[13] = 0;
 
-    if(!local) {
-        console.log('lost');
-        priorityWrite(charVal);
-        writePermission = 0;
+    if(!game.local) {
+        game.priorityWrite(ble.charVal);
+        game.writePermission = 0;
     }
-    vibrate(300, 400, 5);
+    game.vibrate(300, 400, 5);
     $('#game-message').html('You lost :(');
     $('#game-message').fadeIn('slow');
     $('body').css({'background': '-webkit-radial-gradient(center, ellipse cover, rgba(143, 2, 34, 1) 0%,rgba(38, 0, 0, 1) 100%)'});
@@ -622,20 +621,20 @@ game.gameLost = function(status = "") {
 //**
 
 game.shoot = function() {
-    if(!coolDownStatus) {
-        coolDownStatus = 1;
-        if(!local) {
+    if(!game.coolDownStatus) {
+        game.coolDownStatus = 1;
+        if(!game.local) {
             setBit(1, 0, 1);
             console.log('shoot');
-            priorityWrite(charVal);
+            ble.priorityWrite(ble.charVal);
             setTimeout(function() {
                 setBit(1,0,0);
                 console.log('shoot off');
-                priorityWrite(charVal);
+                ble.priorityWrite(ble.charVal);
             }, 50);
         }
-        vibrate(100);
-        coolDown();
+        game.vibrate(100);
+        game.coolDown();
     }
 }
 
@@ -646,24 +645,24 @@ game.shoot = function() {
 //**
 
 game.coolDown = function() {
-    var timeOut = coolDownPeriod;
+    var timeOut = game.coolDownPeriod;
     var e = document.getElementById("cool-down-bar");
     var width = 1;
     var interval = setInterval(coolDownCounter, timeOut/100);
-    coolDownStatus = 1;
+    game.coolDownStatus = 1;
     function coolDownCounter() {
         if (width >= 100) {
             clearInterval(interval);
-            coolDownStatus = 0;
+            game.coolDownStatus = 0;
             e.style.backgroundColor = '#367d59';
         } else {
             width++;
             e.style.width = width + '%';
 
             if(width <= 35)
-                e.style.backgroundColor = 'red';
+                e.style.backgroundColor = 'rgb(203, 8, 8)';
             else if(width <= 90)
-                e.style.backgroundColor = 'orange';
+                e.style.backgroundColor = 'rgb(242, 142, 8)';
             else
                 e.style.backgroundColor = '#367d59';
         }
@@ -682,7 +681,7 @@ game.printDiscardedPackets = function() {
 //**
 
 game.vibrate = function(duration, interval = 0, repeats = 1) {
-    if(vibratePossible) {
+    if(game.vibratePossible) {
         if(interval) {
             var n = 1;
             var repeat = setInterval(function() {

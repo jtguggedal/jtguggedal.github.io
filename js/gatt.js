@@ -34,16 +34,16 @@ var ble = {
         navigator.bluetooth.requestDevice(
             {filters: [{services: [this.mainServiceUUID]}]})
             .then(device => {
-                bluetoothDevice = device;
-                // Adding event listener to detect loss of connection
+                this.bluetoothDevice = device;
+                // Adding event listener to detect loss of connection (not used for now because of errors on some phones)
                 //bluetoothDevice.addEventListener('gattserverdisconnected', disconnectHandler);
-                console.log('> Found ' + bluetoothDevice.name);
+                console.log('> Found ' + this.bluetoothDevice.name);
                 console.log('Connecting to GATT Server...');
-                return bluetoothDevice.connectGATT()
+                return this.bluetoothDevice.connectGATT()
                 .then(gattServer => {
-                    mainServer = gattServer;
+                    this.mainServer = gattServer;
                     console.log('> Bluetooth Device connected: ');
-                    connectionStatus(1);
+                    this.connectionStatus(1);
 
                 });
             })
@@ -51,18 +51,18 @@ var ble = {
             // When matching device is found and selected, get the main service
             .then(server => {
                 console.log('Getting main Service...');
-                return mainServer.getPrimaryService(mainServiceUUID);
+                return this.mainServer.getPrimaryService(this.mainServiceUUID);
             })
             .then(service => {
                 // Storing the main service object globally for easy access from other functions
-                mainService = service;
+                this.mainService = service;
                 console.log('> serviceReturn: ' + service);
                 return Promise.all([
                     // Get all characteristics and call handler functions for both
-                    service.getCharacteristic(readWriteCharacteristicUUID)
+                    service.getCharacteristic(this.readWriteCharacteristicUUID)
                     .then(readWriteCharacteristicHandler),
-                    service.getCharacteristic(notificationCharacteristicUUID)
-                    .then(notificationCharacteristicHandler)
+                    service.getCharacteristic(this.notificationCharacteristicUUID)
+                    .then(this.notificationCharacteristicHandler)
                 ])
                 // Print errors  to console
                 .catch(error => {
@@ -78,52 +78,52 @@ var ble = {
 
     /** Function for disconnecting th Bluetooth Device **/
     disconnect : function() {
-        if (!bluetoothDevice) {
-            connectionStatus(0);
+        if (!this.bluetoothDevice) {
+            this.connectionStatus(0);
             return;
         }
         console.log('> Disconnecting from Bluetooth Device...');
-        if (bluetoothDevice.gatt.connected) {
-            bluetoothDevice.gatt.disconnect();
-            console.log('> Bluetooth Device connected: ' + bluetoothDevice.gatt.connected);
+        if (this.bluetoothDevice.gatt.connected) {
+            this.bluetoothDevice.gatt.disconnect();
+            console.log('> Bluetooth Device connected: ' + this.bluetoothDevice.gatt.connected);
         } else {
             console.log('> Bluetooth Device is already disconnected');
         }
-        connectionStatus(0);
+        this.connectionStatus(0);
     },
 
     /** Function for handling disconnect event **/
     disconnectHandler : function() {
-        connectionStatus(0);
+        this.connectionStatus(0);
         console.log('>>> Device disconnected.');
     },
 
     /** Function for handling connection status **/
     connectionStatus : function(status) {
         if(status == 1)
-            document.getElementById("connectionStatus").style.backgroundColor = 'green';
+            document.getElementById("connectionStatus").style.backgroundColor = 'rgb(6, 116, 54)';
         else if(status == 0)
-            document.getElementById("connectionStatus").style.backgroundColor = 'red';
+            document.getElementById("connectionStatus").style.backgroundColor = 'rgb(175, 7, 7)';
     },
 
     /** Function for setting up the notification characteristic **/
     notificationCharacteristicHandler : function(characteristic) {
         'use strict';
 
-        // Stores the notification characteristic object globally for easy access
-        notificationCharacteristic = characteristic;
+        // Stores the notification characteristic object to ble object for easy access
+        this.notificationCharacteristic = characteristic;
         console.log('Notifications started.');
 
         // Initiates event listener for notifications sent from DK
-        notificationCharacteristic.addEventListener('characteristicvaluechanged',handleNotification);
+        this.notificationCharacteristic.addEventListener('characteristicvaluechanged',this.handleNotification);
         return characteristic.startNotifications();
     },
 
      /** Function for handling the read and write characteristic **/
     readWriteCharacteristicHandler : function(characteristic) {
         'use strict';
-        // Stores the readWriteCharacteristic globally
-        readWriteCharacteristic = characteristic;
+        // Stores the readWriteCharacteristic to ble object
+        this.readWriteCharacteristic = characteristic;
         return 1;
     },
 
@@ -136,20 +136,20 @@ var ble = {
         let value = event.target.value;
         value = value.buffer ? value : new DataView(value);
 
-        if(value != prevNotification) {
+        if(value != this.prevNotification) {
 
             // Checks if notificationCallback exists, and if it does, calls it with the received data array as argument
-            if (typeof notificationCallback === "function") {
+            if (typeof game.notificationCallback === "function") {
                 var valueArray = new Uint8Array(20);
                 for(var i = 0; i < 20; i++)
                     valueArray[i] = value.getUint8(i);
 
-                notificationCallback(valueArray);
+                game.notificationCallback(valueArray);
             }
         } else {
         }
 
-        prevNotification = value;
+        this.prevNotification = value;
         return value;
 
     },
@@ -163,7 +163,7 @@ var ble = {
         var data = new Uint8Array(20);
 
         // Calls the redValue method in the readWriteCharacteristic
-        readWriteCharacteristic.readValue()
+        this.readWriteCharacteristic.readValue()
           .then(value => {
             // DataView is received from DK
             value = value.buffer ? value : new DataView(value);
@@ -195,11 +195,9 @@ var ble = {
     writeToCharacteristic : function(byteOffset, value) {
         'use strict';
 
-        charVal[byteOffset] = value;
-        console.log('writechar: ' + charVal);
+        this.charVal[byteOffset] = value;
 
-
-        readWriteCharacteristic.writeValue(charVal);
+        this.readWriteCharacteristic.writeValue(this.charVal);
     },
 
     /** Function for writing array to the read and write characteristic **/
@@ -207,11 +205,8 @@ var ble = {
     writeArrayToCharacteristic : function(charVal) {
         'use strict';
 
-        console.log('writechar: ' + charVal);
-
-
-        if(writePermission) {
-            readWriteCharacteristic.writeValue(charVal);
+        if(game.writePermission) {
+            this.readWriteCharacteristic.writeValue(charVal);
             return 1;
         } else {
             return 0;
@@ -224,19 +219,19 @@ var ble = {
     priorityWrite : function(charVal) {
         'use strict';
 
-        priorityPacket = 1;
+        game.priorityPacket = 1;
 
-        if(!writePermission) {
+        if(!game.writePermission) {
             setTimeout( function() {
-                priorityWrite(charVal);
+                this.priorityWrite(charVal);
             }, 20);
             return 0;
         } else {
-            writePermission = 0;
-            return readWriteCharacteristic.writeValue(charVal)
+            game.writePermission = 0;
+            return this.readWriteCharacteristic.writeValue(charVal)
                 .then( writeReturn => {
-                    writePermission = 1;
-                    priorityPacket = 0;
+                    this.writePermission = 1;
+                    game.priorityPacket = 0;
                     console.log('Priority sent: ' + charVal);
             });
         }
