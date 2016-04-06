@@ -222,7 +222,6 @@ var ble = {
         if(!game.writePermission) {
             setTimeout( function() {
                 ble.priorityWrite(charVal);
-                console.log('Priority sending: retrying...');
             }, 20);
             return 0;
         } else {
@@ -231,7 +230,6 @@ var ble = {
                 .then( writeReturn => {
                     game.writePermission = true;
                     game.priorityPacket = 0;
-                    console.log('Priority sent: ' + charVal);
             });
         }
 

@@ -139,7 +139,6 @@ joystick.on('start end', function(evt, data) {
         return ble.readWriteCharacteristic.writeValue(ble.charVal)
                 .then( writeReturn => {
                     game.writePermission = true;
-                    console.log('Sendt: ' + ble.charVal);
             });
     } else {
         // Pushes arrays that were never sent to a discarder packets array to use in debugging
@@ -290,7 +289,7 @@ game.joinGame = function(gId) {
                     } else {
 
                         // If the php file was able to connect the player to the game, information from the returnerd object is stored i global variables
-                        console.log(r);
+
                         game.score = r.score;
                         game.playerName = r.name;
                         game.gameId = r.gameId;
@@ -562,9 +561,8 @@ game.notificationCallback = function(dataArray) {
             }
         }
         game.prevNotificationArray = dataArray;
-        console.log('Notification mottatt: ' + dataArray + ' tidligere: ' + game.prevNotificationArray);
     } else {
-        console.log('Uendret notification mottatt: ' + dataArray);
+        // Unchanged notification array
     }
 }
 
@@ -581,7 +579,6 @@ game.gameWon = function() {
     ble.charVal[13] = 0;
 
     if(!game.local) {
-        console.log('won');
         ble.priorityWrite(ble.charVal);
         game.writePermission = false;
     }
@@ -623,16 +620,13 @@ game.shoot = function() {
     if(!game.coolDownStatus) {
         game.coolDownStatus = 1;
         if(!game.local) {
-            console.log(ble.charVal);
             ble.setBit(1, 0, 1);
-            console.log('shoot');
-            console.log(ble.charVal);
             ble.priorityWrite(ble.charVal);
+
             setTimeout(function() {
-                ble.setBit(1,0,0);
-                console.log('shoot off');
+                ble.setBit(1, 0, 0);
                 ble.priorityWrite(ble.charVal);
-            }, 60);
+            }, 100);
         }
         game.vibrate(100);
         game.coolDown();
@@ -669,7 +663,6 @@ game.coolDown = function() {
     }
 }
 
-
 //** Print to console array containing packets that's not been sent  **/
 
 game.printDiscardedPackets = function() {
@@ -698,7 +691,6 @@ game.vibrate = function(duration, interval = 0, repeats = 1) {
     }
 }
 
-
 //**
 //      Function control RGB LEDs on the DK
 //**
@@ -717,13 +709,6 @@ $('#control-button').on('touchstart mousedown', function(event) {
     $(this).css({'box-shadow': '0px 0px 10px 3px rgba(0,0,0, 0.2)', 'height': '115px', 'width': '115px', 'transition-timing-function' : 'ease'});
     if(game.coolDownStatus != 1)
         game.shoot();
-});
-
-$('#control-button').on('touchend mouseup', function() {
-    $(this).css({'box-shadow': '0px 0px 30px 10px rgba(0,0,0, 0.15)', 'height': '120px', 'width': '120px', 'transition-timing-function' : 'ease'});
-    if(!game.local) {
-        ble.priorityWrite(game.charVal);
-    }
 });
 
 $('#btn-create-game').on('touchstart mousedown', function(event) {
