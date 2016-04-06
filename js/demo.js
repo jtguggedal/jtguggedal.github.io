@@ -15,7 +15,7 @@ if(typeof game === 'undefined')
 game.score = game.score || 5;                               // Number of lives each player starts with
 game.timeToJoin = game.timeToJoin || 25;                    // Interval from games is created until it starts [s]
 game.timeBetweenHits = game.timeBetweenHits || 2000;        // Time from one hit to next possible [ms]
-game.coolDownPeriod = game.coolDownPeriod || 1500;          // Shortest allowed interval between shots fired [ms]
+game.coolDownPeriod = game.coolDownPeriod || 2000;          // Shortest allowed interval between shots fired [ms]
 game.coolDownStatus = 0;                                    // Players starts with no need of 'cool down'
 game.gameOn = 0;                                            // Game is by default not started automatically
 game.allowCreate = 1;                                       // Players are allowed to create their own games
@@ -236,7 +236,7 @@ game.joinGamePopup = function(fail = false) {
                         <div id='btn-join-popup' class='msg-button'>
                             Join
                         </div>
-                        <div id="btn-return" class="msg-button" onclick="restartGame()">
+                        <div id="btn-return" class="msg-button" onclick="game.restartGame()">
                             Return
                         </div>
                     </div>`;
