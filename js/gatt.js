@@ -60,7 +60,7 @@ var ble = {
                 return Promise.all([
                     // Get all characteristics and call handler functions for both
                     service.getCharacteristic(this.readWriteCharacteristicUUID)
-                    .then(readWriteCharacteristicHandler),
+                    .then(this.readWriteCharacteristicHandler),
                     service.getCharacteristic(this.notificationCharacteristicUUID)
                     .then(this.notificationCharacteristicHandler)
                 ])
