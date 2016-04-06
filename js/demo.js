@@ -498,8 +498,8 @@ game.singlePlayerPopup = function() {
                         <h2>Oh no!</h2>
                         It seems noone joined the game in time. Do you want to enter singleplayer mode?
                     </div>
-                    <div id='btn-singleplayer' class='msg-button' onclick='startSingleplayer();'>Singleplayer Mode</div>
-                    <div id='btn-main-menu' class='msg-button' onclick='restartGame();'>Main Menu</div>`;
+                    <div id='btn-singleplayer' class='msg-button' onclick='game.startSingleplayer();'>Singleplayer Mode</div>
+                    <div id='btn-main-menu' class='msg-button' onclick='game.restartGame();'>Main Menu</div>`;
 
 
     $('#message-container').fadeOut(500).promise().done(function() {
