@@ -673,7 +673,7 @@ game.coolDown = function() {
 //** Print to console array containing packets that's not been sent  **/
 
 game.printDiscardedPackets = function() {
-    console.log(discardedPackets);
+    console.log(game.discardedPackets);
 }
 
 //**
