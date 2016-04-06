@@ -98,7 +98,6 @@
 
     $('#btn-rgb-send').on('touchstart mousedown', function(event) {
         event.preventDefault;
-        charVal = new Uint8Array(20);
         charVal[5] = $('#settings-rgbValue').text().trim();
         console.log(charVal);
         priorityWrite(charVal);
