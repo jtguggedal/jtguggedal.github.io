@@ -123,7 +123,7 @@ var ble = {
     readWriteCharacteristicHandler : function(characteristic) {
         'use strict';
         // Stores the readWriteCharacteristic to ble object
-        this.readWriteCharacteristic = characteristic;
+        ble.readWriteCharacteristic = characteristic;
         return 1;
     },
 
@@ -136,7 +136,7 @@ var ble = {
         let value = event.target.value;
         value = value.buffer ? value : new DataView(value);
 
-        if(value != this.prevNotification) {
+        if(value != ble.prevNotification) {
 
             // Checks if notificationCallback exists, and if it does, calls it with the received data array as argument
             if (typeof game.notificationCallback === "function") {
@@ -149,7 +149,7 @@ var ble = {
         } else {
         }
 
-        this.prevNotification = value;
+        ble.prevNotification = value;
         return value;
 
     },
@@ -163,7 +163,7 @@ var ble = {
         var data = new Uint8Array(20);
 
         // Calls the redValue method in the readWriteCharacteristic
-        this.readWriteCharacteristic.readValue()
+        ble.readWriteCharacteristic.readValue()
           .then(value => {
             // DataView is received from DK
             value = value.buffer ? value : new DataView(value);
@@ -195,9 +195,9 @@ var ble = {
     writeToCharacteristic : function(byteOffset, value) {
         'use strict';
 
-        this.charVal[byteOffset] = value;
+        ble.charVal[byteOffset] = value;
 
-        this.readWriteCharacteristic.writeValue(this.charVal);
+        ble.readWriteCharacteristic.writeValue(ble.charVal);
     },
 
     /** Function for writing array to the read and write characteristic **/
@@ -206,7 +206,7 @@ var ble = {
         'use strict';
 
         if(game.writePermission) {
-            this.readWriteCharacteristic.writeValue(charVal);
+            ble.readWriteCharacteristic.writeValue(charVal);
             return 1;
         } else {
             return 0;
