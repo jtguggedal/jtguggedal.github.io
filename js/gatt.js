@@ -16,8 +16,6 @@ var ble = {
     readWriteCharacteristicUUID : '00001525-1212-efde-1523-785feabcd123',
     notificationCharacteristicUUID : '00001524-1212-efde-1523-785feabcd123',
 
-    charVal : new Uint8Array(20),
-
     bluetoothDevice : '',
     mainServer : '',
     mainService : '',
@@ -218,24 +216,22 @@ var ble = {
 
     /** Function for sending data with high priority, pausing other sendings **/
 
-    priorityWrite : function(array) {
-        'use strict';
-
+    priorityWrite : function(charVal) {
         game.priorityPacket = 1;
 
         if(!game.writePermission) {
             setTimeout( function() {
-                ble.priorityWrite(array);
+                ble.priorityWrite(charVal);
                 console.log('Priority sending: retrying...');
             }, 20);
             return 0;
         } else {
-            game.writePermission = false;
-            return ble.readWriteCharacteristic.writeValue(array)
+            game.writePermission = 0;
+            return ble.readWriteCharacteristic.writeValue(charVal)
                 .then( writeReturn => {
                     game.writePermission = true;
                     game.priorityPacket = 0;
-                    console.log('Priority sent: ' + array);
+                    console.log('Priority sent: ' + charVal);
             });
         }
 

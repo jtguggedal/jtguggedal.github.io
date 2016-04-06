@@ -34,6 +34,8 @@ game.allowJoin = true;
 game.vibratePossible = "vibrate" in navigator;
 game.firstHit = true;
 
+ble.charVal = new Uint8Array(20);
+
 //** Global variables needed to control and monitor the data flow over BLE
 game.writePermission = true;         // When true, the players can control the cars
 game.discardedPackets = [];          // Array to hold arrays that are created by touch events but never sent over BLE, kind of equivalent to packet loss
@@ -131,7 +133,7 @@ joystick.on('start end', function(evt, data) {
     ble.charVal[13] = outputRight;          // Motor 4
     ble.charVal[17] = directionRight;
 
-    if( ble.readWriteCharacteristic &&  (game.writePermission == 1) && (game.priorityPacket != 1) && !game.local) {
+    if( ble.readWriteCharacteristic &&  (game.writePermission == true) && (game.priorityPacket != 1) && !game.local) {
         game.writePermission = false;
 
         return ble.readWriteCharacteristic.writeValue(ble.charVal)
@@ -141,7 +143,7 @@ joystick.on('start end', function(evt, data) {
             });
     } else {
         // Pushes arrays that were never sent to a discarder packets array to use in debugging
-        discardedPackets.push(ble.charVal);
+        game.discardedPackets.push(ble.charVal);
     }
 });
 
@@ -387,7 +389,7 @@ game.startGame = function() {
             }, 800);
 
             // Allow the players to control the car and shoot, and let the game begin!
-            game.writePermission = 1;
+            game.writePermission = true;
             game.gameOn = 1;
 
             // Start updating the game status if the game is not single player
@@ -581,7 +583,7 @@ game.gameWon = function() {
     if(!game.local) {
         console.log('won');
         ble.priorityWrite(ble.charVal);
-        game.writePermission = 0;
+        game.writePermission = false;
     }
     vibrate(300, 400, 5);
     $('#game-message').html('You won :)');
@@ -604,7 +606,7 @@ game.gameLost = function(status = "") {
 
     if(!game.local) {
         ble.priorityWrite(ble.charVal);
-        game.writePermission = 0;
+        game.writePermission = false;
     }
     game.vibrate(300, 400, 5);
     $('#game-message').html('You lost :(');
@@ -621,14 +623,16 @@ game.shoot = function() {
     if(!game.coolDownStatus) {
         game.coolDownStatus = 1;
         if(!game.local) {
+            console.log(ble.charVal);
             ble.setBit(1, 0, 1);
             console.log('shoot');
+            console.log(ble.charVal);
             ble.priorityWrite(ble.charVal);
             setTimeout(function() {
                 ble.setBit(1,0,0);
                 console.log('shoot off');
                 ble.priorityWrite(ble.charVal);
-            }, 50);
+            }, 60);
         }
         game.vibrate(100);
         game.coolDown();
@@ -646,7 +650,6 @@ game.coolDown = function() {
     var e = document.getElementById("cool-down-bar");
     var width = 1;
     var interval = setInterval(coolDownCounter, timeOut/100);
-    game.coolDownStatus = 1;
     function coolDownCounter() {
         if (width >= 100) {
             clearInterval(interval);
