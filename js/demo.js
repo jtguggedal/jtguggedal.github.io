@@ -624,11 +624,11 @@ game.shoot = function() {
     if(!game.coolDownStatus) {
         game.coolDownStatus = 1;
         if(!game.local) {
-            setBit(1, 0, 1);
+            ble.setBit(1, 0, 1);
             console.log('shoot');
             ble.priorityWrite(ble.charVal);
             setTimeout(function() {
-                setBit(1,0,0);
+                ble.setBit(1,0,0);
                 console.log('shoot off');
                 ble.priorityWrite(ble.charVal);
             }, 50);
