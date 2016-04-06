@@ -78,8 +78,8 @@ var ble = {
 
     /** Function for disconnecting th Bluetooth Device **/
     disconnect : function() {
-        if (!this.bluetoothDevice) {
-            this.connectionStatus(0);
+        if (!ble.bluetoothDevice) {
+            ble.connectionStatus(0);
             return;
         }
         console.log('> Disconnecting from Bluetooth Device...');
@@ -89,12 +89,12 @@ var ble = {
         } else {
             console.log('> Bluetooth Device is already disconnected');
         }
-        this.connectionStatus(0);
+        ble.connectionStatus(0);
     },
 
     /** Function for handling disconnect event **/
     disconnectHandler : function() {
-        this.connectionStatus(0);
+        ble.connectionStatus(0);
         console.log('>>> Device disconnected.');
     },
 
@@ -111,11 +111,11 @@ var ble = {
         'use strict';
 
         // Stores the notification characteristic object to ble object for easy access
-        this.notificationCharacteristic = characteristic;
+        ble.notificationCharacteristic = characteristic;
         console.log('Notifications started.');
 
         // Initiates event listener for notifications sent from DK
-        this.notificationCharacteristic.addEventListener('characteristicvaluechanged',this.handleNotification);
+        ble.notificationCharacteristic.addEventListener('characteristicvaluechanged',ble.handleNotification);
         return characteristic.startNotifications();
     },
 

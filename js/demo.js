@@ -154,7 +154,7 @@ $('#joystick-container').on("touchend", function() {
     ble.charVal[11] = 0;
     ble.charVal[12] = 0;
     ble.charVal[13] = 0;
-    priorityWrite(ble.charVal);
+    ble.priorityWrite(ble.charVal);
 });
 
 
@@ -583,7 +583,7 @@ game.gameWon = function() {
 
     if(!game.local) {
         console.log('won');
-        priorityWrite(ble.charVal);
+        ble.priorityWrite(ble.charVal);
         game.writePermission = 0;
     }
     vibrate(300, 400, 5);
@@ -606,7 +606,7 @@ game.gameLost = function(status = "") {
     ble.charVal[13] = 0;
 
     if(!game.local) {
-        game.priorityWrite(ble.charVal);
+        ble.priorityWrite(ble.charVal);
         game.writePermission = 0;
     }
     game.vibrate(300, 400, 5);
@@ -722,7 +722,7 @@ $('#control-button').on('touchstart mousedown', function(event) {
 $('#control-button').on('touchend mouseup', function() {
     $(this).css({'box-shadow': '0px 0px 30px 10px rgba(0,0,0, 0.15)', 'height': '120px', 'width': '120px', 'transition-timing-function' : 'ease'});
     if(!game.local) {
-        game.priorityWrite(game.charVal);
+        ble.priorityWrite(game.charVal);
     }
 });
 

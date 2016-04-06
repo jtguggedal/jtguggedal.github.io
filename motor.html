@@ -5,11 +5,11 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-beta1/jquery.js"></script>  
-    <script src="js/gatt.js"></script>  
-    <script src="js/setBit.js"></script>  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-beta1/jquery.js"></script>
+    <script src="js/gatt.js"></script>
+    <script src="js/ble.setBit.js"></script>
     <title>Motorstyring</title>
-    
+
     <style>
     	@import url(https://fonts.googleapis.com/css?family=Open+Sans|Roboto:400,500,700,300);
     	body {
@@ -20,28 +20,28 @@
     	div {
     		margin: 10px;
     	}
-    	
+
     	h1, h3 {
     		text-align: center;
     	}
-    	
+
     	ul {
     		margin-top: 10px;
     		margin-bottom: 30px;
     		font-size: 14px;
     	}
-    	
+
     	label {
     		display: inline-block;
     		width: 120px;
     		font-weight: 500;
     	}
-    	
+
     	input[type="text"] {
     		width: 220px;
     		padding: 5px;
     	}
-    	
+
     	button {
     		padding: 10px;
     		margin-right: 30px;
@@ -71,7 +71,7 @@
         fieldset input {
             margin-bottom: 10px;
         }
-    	
+
     	#main {
     		max-width: 400px;
     		margin: 20px auto;
@@ -79,20 +79,20 @@
     		padding: 10px;
     		/*box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.1);*/
     	}
-    	
+
     	.button-container {
     		margin: 10px auto 30px auto;
 			max-width: 460px;
-			text-align: center;		
+			text-align: center;
 
     	}
-    	
+
     	#ledon, #ledoff {
     		color: white;
     		margin-top: 20px;
     		margin-bottom: 20px;
     	}
-    	
+
         .servo-btn {
             padding: 15px;
             font-size: 30px;
@@ -107,9 +107,9 @@
             color: white;
         }
 
-    
+
     </style>
-    
+
 
   </head>
 
@@ -131,7 +131,7 @@
                     <input type="radio" name="m1_direction" value="0"> Bakover <br>
                     <hr>
                     <input type="text" id="m1_speed" value="0-255" > Hastighet: 0-255<br>
-                    
+
 
                     <button id="m1_init">Send verdier</button>
 
@@ -146,7 +146,7 @@
                     <input type="radio" name="m2_direction" value="0"> Bakover <br>
                     <hr>
                     <input type="text" id="m2_speed" value="0-255" > Hastighet: 0-255<br>
-                    
+
 
                     <button id="m2_init">Send verdier</button>
 
@@ -160,7 +160,7 @@
                     <input type="radio" name="m3_direction" value="0"> Bakover <br>
                     <hr>
                     <input type="text" id="m3_speed" value="0-255" > Hastighet: 0-255<br>
-                    
+
 
                     <button id="m3_init">Send verdier</button>
 
@@ -174,16 +174,16 @@
                     <input type="radio" name="m4_direction" value="0"> Bakover <br>
                     <hr>
                     <input type="text" id="m4_speed" value="0-255" > Hastighet: 0-255<br>
-                    
+
 
                     <button id="m4_init">Send verdier</button>
 
                 </fieldset>
-				
+
 				<fieldset>
-                    
+
 					<legend>All motors at once</legend>
-                    
+
 					<input type="radio" name="all_power" value="0" checked> Av<br>
                     <input type="radio" name="all_power" value="1"> På<br>
                     <hr>
@@ -191,7 +191,7 @@
                     <input type="radio" name="all_direction" value="0"> Bakover <br>
                     <hr>
                     <input type="text" id="all_speed" value="0-255" > Hastighet: 0-255<br>
-                    
+
 
                     <button id="all_init">Send verdier</button>
 
@@ -199,14 +199,14 @@
 		  </div>
 
 
-		
-		
-		
+
+
+
 	<!-- // END OF MAIN -->
 	</div>
 
-  
-    
+
+
     <script>
 
         var charVal = new Uint8Array(20);
@@ -220,23 +220,23 @@
             console.log(power);
             if(power == 1) {
                 // Set speed
-                setBit(10, 'b', speed);
+                ble.setBit(10, 'b', speed);
 
                 // Set direction
-                setBit(14, 'b', direction);
+                ble.setBit(14, 'b', direction);
             } else if(power == 0) {
                 // Set speed to 0
-                setBit(10, 'b', 0);
-                setBit(14, 'b', 1);
+                ble.setBit(10, 'b', 0);
+                ble.setBit(14, 'b', 1);
             }
 
-            if(readWriteCharacteristic) {
-                readWriteCharacteristic.writeValue(charVal);
+            if(ble.readWriteCharacteristic) {
+                ble.readWriteCharacteristic.writeValue(charVal);
                 console.log(charVal);
             }
         });
-      			
-      		
+
+
 
         // Motor 2
         $('#m2_init').click( function() {
@@ -247,22 +247,22 @@
 
             if(power == 1) {
                 // Set speed
-                setBit(11, 'b', speed);
+                ble.setBit(11, 'b', speed);
 
                 // Set direction
-                setBit(15, 'b', direction);
+                ble.setBit(15, 'b', direction);
             } else if(power == 0) {
                 // Set speed to 0
-                setBit(11, 'b', 0);
-                setBit(15, 'b', 1);
+                ble.setBit(11, 'b', 0);
+                ble.setBit(15, 'b', 1);
             }
 
-            if(readWriteCharacteristic) {
-                readWriteCharacteristic.writeValue(charVal);
+            if(ble.readWriteCharacteristic) {
+                ble.readWriteCharacteristic.writeValue(charVal);
                 console.log(charVal);
             }
         });
-            
+
 
         // Motor 3
         $('#m3_init').click( function() {
@@ -272,24 +272,24 @@
 
             if(power == 1) {
                 // Set speed
-                setBit(12, 'b', speed);
+                ble.setBit(12, 'b', speed);
 
                 // Set direction
-                setBit(16, 'b', direction);
+                ble.setBit(16, 'b', direction);
             } else if(power == 0) {
                 // Set speed to 0
-                setBit(12, 'b', 0);
-                setBit(16, 'b', 1);
+                ble.setBit(12, 'b', 0);
+                ble.setBit(16, 'b', 1);
             }
 
-            if(readWriteCharacteristic) {
-                readWriteCharacteristic.writeValue(charVal);
+            if(ble.readWriteCharacteristic) {
+                ble.readWriteCharacteristic.writeValue(charVal);
                 console.log(charVal);
 
 
             }
         });
-            
+
 
         // Motor 4
         $('#m4_init').click( function() {
@@ -299,23 +299,23 @@
 
             if(power == 1) {
                 // Set speed
-                setBit(13, 'b', speed);
+                ble.setBit(13, 'b', speed);
 
                 // Set direction
-                setBit(17, 'b', direction);
+                ble.setBit(17, 'b', direction);
             } else if(power == 0) {
                 // Set speed to 0
-                setBit(13, 'b', 0);
-                setBit(17, 'b', 1);
+                ble.setBit(13, 'b', 0);
+                ble.setBit(17, 'b', 1);
             }
 
-            if(readWriteCharacteristic) {
-                readWriteCharacteristic.writeValue(charVal);
+            if(ble.readWriteCharacteristic) {
+                ble.readWriteCharacteristic.writeValue(charVal);
                 console.log(charVal);
             }
         });
-            	
-            
+
+
 
         // All motors
         $('#all_init').click( function() {
@@ -325,47 +325,47 @@
 
             if(power == 1) {
                 // Set speed
-                setBit(10, 'b', speed);
-                setBit(11, 'b', speed);
-                setBit(12, 'b', speed);
-                setBit(13, 'b', speed);
+                ble.setBit(10, 'b', speed);
+                ble.setBit(11, 'b', speed);
+                ble.setBit(12, 'b', speed);
+                ble.setBit(13, 'b', speed);
 
                 // Set direction
-                setBit(14, 'b', direction);
-                setBit(15, 'b', direction);
-                setBit(16, 'b', direction);
-                setBit(17, 'b', direction);
+                ble.setBit(14, 'b', direction);
+                ble.setBit(15, 'b', direction);
+                ble.setBit(16, 'b', direction);
+                ble.setBit(17, 'b', direction);
             } else if(power == 0) {
                 // Set speed to 0
-                setBit(10, 'b', 0);
-                setBit(14, 'b', 1);
-				
-				setBit(11, 'b', 0);
-                setBit(15, 'b', 1);
-				
-				setBit(12, 'b', 0);
-                setBit(16, 'b', 1);
-				
-				setBit(13, 'b', 0);
-                setBit(17, 'b', 1);
-				
+                ble.setBit(10, 'b', 0);
+                ble.setBit(14, 'b', 1);
+
+				ble.setBit(11, 'b', 0);
+                ble.setBit(15, 'b', 1);
+
+				ble.setBit(12, 'b', 0);
+                ble.setBit(16, 'b', 1);
+
+				ble.setBit(13, 'b', 0);
+                ble.setBit(17, 'b', 1);
+
             }
 
-            if(readWriteCharacteristic) {
-                readWriteCharacteristic.writeValue(charVal);
+            if(ble.readWriteCharacteristic) {
+                ble.readWriteCharacteristic.writeValue(charVal);
                 console.log(charVal);
             }
         });
-            	
-				
-				
 
-    </script>
-    
-  
 
 
 
-    
+    </script>
+
+
+
+
+
+
   </body>
 </html>
