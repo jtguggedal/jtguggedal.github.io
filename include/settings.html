@@ -63,10 +63,10 @@
 <script>
 
     // Populate settings boxes
-    $('#settings-timeToJoin').text(timeToJoin);
-    $('#settings-lives').text(score);
-    $('#settings-coolDownPeriod').text(coolDownPeriod/1000);
-    $('#settings-timeBetweenHits').text(timeBetweenHits/1000);
+    $('#settings-timeToJoin').text(game.timeToJoin);
+    $('#settings-lives').text(game.score);
+    $('#settings-coolDownPeriod').text(game.coolDownPeriod/1000);
+    $('#settings-timeBetweenHits').text(game.timeBetweenHits/1000);
 
     // Save the new settings
     $('#settings-timeToJoin').focusout( function() {
