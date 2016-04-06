@@ -732,7 +732,7 @@ function vibrate(duration, interval = 0, repeats = 1) {
 //**
 
 function rgbSetColor(color) {
-    charVal[5] = rgbLed[color]];
+    charVal[5] = rgbLed[color];
     priorityWrite(charVal);
 }
 
