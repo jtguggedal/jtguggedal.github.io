@@ -70,23 +70,23 @@
 
     // Save the new settings
     $('#settings-timeToJoin').focusout( function() {
-        newSettings.timeToJoin = $(this).text().trim();
-        console.log('Time to join: ' + timeToJoin);
+        game.timeToJoin = $(this).text().trim();
+        console.log('Time to join: ' + game.timeToJoin);
     });
 
     $('#settings-lives').focusout( function() {
-        newSettings.score = $(this).text().trim();
-        console.log('Number of lives: ' + score);
+        game.score = $(this).text().trim();
+        console.log('Number of lives: ' + game.score);
     });
 
     $('#settings-coolDownPeriod').focusout( function() {
-        newSettings.coolDownPeriod = $(this).text().trim() * 1000;
-        console.log('Cooldown time: ' + coolDownPeriod);
+        game.coolDownPeriod = $(this).text().trim() * 1000;
+        console.log('Cooldown time: ' + game.coolDownPeriod);
     });
 
     $('#settings-timeBetweenHits').focusout( function() {
-        newSettings.timeBetweenHits = $(this).text().trim() * 1000;
-        console.log('Time between hits: ' + timeBetweenHits);
+        game.timeBetweenHits = $(this).text().trim() * 1000;
+        console.log('Time between hits: ' + game.timeBetweenHits);
     });
 
     // Return to game menu
@@ -98,8 +98,8 @@
 
     $('#btn-rgb-send').on('touchstart mousedown', function(event) {
         event.preventDefault;
-        charVal[5] = $('#settings-rgbValue').text().trim();
-        console.log(charVal);
-        priorityWrite(charVal);
+        ble.charVal[5] = $('#settings-rgbValue').text().trim();
+        console.log(ble.charVal);
+        priorityWrite(ble.charVal);
     });
 </script>

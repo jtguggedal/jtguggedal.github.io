@@ -3,56 +3,52 @@
 //      Gloabl settings
 //**
 
-//** Object to hold the new settings that may be set
-var newSettings = new Object;
+//** Object to hold the new settings that may be set in the settings page
+if(typeof gameSettings === 'undefined')
+    var gameSettings = new Object;
+
+//** Object to hold game settings
+if(typeof game === 'undefined')
+    var game = new Object;
 
 //** Game settings
-var score = newSettings.score || 5;                      // Number of lives each player starts with
-var timeToJoin = newSettings.timeToJoin || 25;                // Interval from games is created until it starts [s]
-var timeBetweenHits = newSettings.timeBetweenHits || 2000;         // Time from one hit to next possible [ms]
-var coolDownPeriod = newSettings.coolDownPeriod || 1500;          // Shortest allowed interval between shots fired [ms]
-var coolDownStatus = 0;             // Players starts with no need of 'cool down'
-var gameOn = 0;                     // Game is by default not started automatically
-var allowCreate = 1;                // Players are allowed to create their own games
-var preventHit = 0;                // Variable to prevent being hit before timeBetweenHits is out
-var updateInterval = 500;           // Interval for game updates to and from the server [ms]
+game.score = game.score || 5;                             // Number of lives each player starts with
+game.timeToJoin = game.timeToJoin || 25;                  // Interval from games is created until it starts [s]
+game.timeBetweenHits = game.timeBetweenHits || 2000;      // Time from one hit to next possible [ms]
+game.coolDownPeriod = game.coolDownPeriod || 1500;        // Shortest allowed interval between shots fired [ms]
+game.coolDownStatus = 0;                                         // Players starts with no need of 'cool down'
+game.gameOn = 0;                                                 // Game is by default not started automatically
+game.allowCreate = 1;                                            // Players are allowed to create their own games
+game.preventHit = 0;                                             // Variable to prevent being hit before timeBetweenHits is out
+game.updateInterval = 500;                                       // Interval for game updates to and from the server [ms]
 
-var speedCoeff = 0.78;              // This is the default speed coefficient that limits the maximum speed of the car and makes the speed boost power-up possible
-                                    // The coeffcient has a linear relationship with the output current to the motors, and ranges from 0 to 1
-var name;                           // The player may enter a name that will also be stored in the database when participating in a game session. Not yet implemented in GUI.
-var gameId;                         // When either creating or joining a game, the game ID is stored
-var playerId;                       // Each player in a game session receives a unique player ID
+game.speedCoeff = 0.78;             // This is the default speed coefficient that limits the maximum speed of the car and makes the speed boost power-up possible
+                                        //  -->  The coeffcient has a linear relationship with the output current to the motors, and ranges from 0 to 1
+game.playerName;                    // The player may enter a name that will also be stored in the database when participating in a game session. Not yet implemented in GUI.
+game.gameId;                        // When either creating or joining a game, the game ID is stored
+game.playerId;                      // Each player in a game session receives a unique player ID
 
-
+game.singlePlayer = false;
+game.ameMenuDown = true;
+game.allowJoin = true;
+game.vibratePossible = "vibrate" in navigator;
+game.firstHit = true;
 
 //** Array for BLE packets
-var charVal = new Uint8Array(20);
-
-
-//** Gloabl joystick variables
-var outputRight;
-var outputLeft;
-var tapEnd = 1;
+ble.charVal = new Uint8Array(20);
 
 //** Global variables needed to control and monitor the data flow over BLE
-var writePermission = 1;            // When set to 1, the players can control the cars
-var discardedPackets = [];          // Array to hold arrays that are created by touch events but never sent over BLE, kind of equivalent to packet loss
-var priorityPacket = 0;             // Events like button press, that happen rarely compared to joystick events, are given priority to ensure that the DK gets the information
-var prevNotificationArray = [];     // The notification characteristic handler uses this array to ensure that it only triggers actions when new values are sent
-
-// Some flags used to avoid errors
-var singlePlayer = false;
-var gameMenuDown = true;
-var allowJoin = true;
-var vibratePossible = "vibrate" in navigator;
-var firstHit = true;
+game.writePermission = true;         // When true, the players can control the cars
+game.discardedPackets = [];          // Array to hold arrays that are created by touch events but never sent over BLE, kind of equivalent to packet loss
+game.priorityPacket = 0;             // Events like button press, that happen rarely compared to joystick events, are given priority to ensure that the DK gets the information
+game.prevNotificationArray = [];     // The notification characteristic handler uses this array to ensure that it only triggers actions when new values are sent
 
 // RGB LED colors
 
-var rgbLed = {green: 0, red: 1, blue: 2, off: 100};
+game.rgbLed = {green: 0, red: 1, blue: 2, off: 100};
 
 //** For local testing, set local to 1 to avoid Web Bluetooth errors
-var local = 0;
+game.local = 0;
 
 
 //**
@@ -67,13 +63,15 @@ var joystick = nipplejs.create({
     size: 150,
     restOpacity: 0.9
 });
+game.joystickPos = joystick.position;
 
-var pos = joystick.position;
 
 joystick.on('start end', function(evt, data) {
-        // Needs to stop car here
+        // May send 'stop packet' to the car here
     }).on('move', function(evt, data) {
 
+    var outputRight;
+    var outputLeft;
 
     var x = data.position.x-110;
     var y = -1*(data.position.y-155);
@@ -93,92 +91,70 @@ joystick.on('start end', function(evt, data) {
     if(speed > 255)
         speed = 255;
 
-    if(tapEnd == 1) {
-        outputRight = outputLeft = 0;
-        tapEnd = 0;
-    } else {
-        if(angle >= 10 && angle <= 85) {
-            outputRight = (angle/85)*speed;
-            outputLeft = speed;
-        } else if(angle > 85 && angle < 95) {
-            outputLeft = outputRight = speed;
-        } else if(angle >= 95 && angle <= 160) {
-            outputRight = speed;
-            outputLeft = ((180-angle)/80)*speed;
-        } else if(angle > 160 && angle < 200) {
-            outputRight = speed;
-            directionRight = 1;
-            outputLeft = speed;
-            directionLeft = 0;
-        } else if(angle >= 200 && angle <= 265) {
-            outputRight = speed;
-            outputLeft = ((angle-180)/80)*speed;
-        } else if(angle > 265 && angle < 275) {
-            outputRight = outputLeft = speed;
-        } else if(angle >= 275 && angle <= 340) {
-            outputRight = ((360-angle)/80)*speed;
-            outputLeft = speed;
-        } else if(angle > 340 || angle < 20) {
-            outputRight = speed;
-            directionRight = 0;
-            outputLeft = speed;
-            directionLeft = 1;
-        }
-
+    if(angle >= 10 && angle <= 85) {
+        outputRight = (angle/85)*speed;
+        outputLeft = speed;
+    } else if(angle > 85 && angle < 95) {
+        outputLeft = outputRight = speed;
+    } else if(angle >= 95 && angle <= 160) {
+        outputRight = speed;
+        outputLeft = ((180-angle)/80)*speed;
+    } else if(angle > 160 && angle < 200) {
+        outputRight = speed;
+        directionRight = 1;
+        outputLeft = speed;
+        directionLeft = 0;
+    } else if(angle >= 200 && angle <= 265) {
+        outputRight = speed;
+        outputLeft = ((angle-180)/80)*speed;
+    } else if(angle > 265 && angle < 275) {
+        outputRight = outputLeft = speed;
+    } else if(angle >= 275 && angle <= 340) {
+        outputRight = ((360-angle)/80)*speed;
+        outputLeft = speed;
+    } else if(angle > 340 || angle < 20) {
+        outputRight = speed;
+        directionRight = 0;
+        outputLeft = speed;
+        directionLeft = 1;
     }
 
-    $('#pos-x').html('x: ' + x + 'px');
-    $('#pos-y').html('y: ' + y + 'px');
-    $('#speed').html('Hastighet: ' + speed);
-    $('#angle').html('Vinkel: ' + angle);
-    $('#output-left').html('Pådrag V: ' + Math.round(outputLeft));
-    $('#output-right').html('Pådrag H: ' + Math.round(outputRight));
+    outputRight *= game.speedCoeff;
+    outputLeft *= game.speedCoeff;
 
-    $("#sliderLeft").val(outputLeft);
-    $("#sliderRight").val(outputRight);
+    ble.charVal[10] = outputRight;          // Motor 1
+    ble.charVal[14] = directionRight;
 
+    ble.charVal[11] = outputLeft;           // Motor 2
+    ble.charVal[15] = directionLeft;
 
-    outputRight *= speedCoeff;
-    outputLeft *= speedCoeff;
+    ble.charVal[12] = outputLeft;           // Motor 3
+    ble.charVal[16] = directionLeft;
 
-    charVal[10] = outputRight;          // Motor 1
-    charVal[14] = directionRight;
+    ble.charVal[13] = outputRight;          // Motor 4
+    ble.charVal[17] = directionRight;
 
-    charVal[11] = outputLeft;           // Motor 2
-    charVal[15] = directionLeft;
+    if( ble.readWriteCharacteristic &&  (game.writePermission == 1) && (game.priorityPacket != 1) && !game.local) {
+        game.writePermission = false;
 
-    charVal[12] = outputLeft;           // Motor 3
-    charVal[16] = directionLeft;
-
-    charVal[13] = outputRight;          // Motor 4
-    charVal[17] = directionRight;
-
-    console.log('params set');
-
-
-
-    if( readWriteCharacteristic &&  (writePermission == 1) && (priorityPacket != 1) && !local) {
-        writePermission = 0;
-
-        return readWriteCharacteristic.writeValue(charVal)
+        return ble.readWriteCharacteristic.writeValue(ble.charVal)
                 .then( writeReturn => {
-                    writePermission = 1;
-                    console.log('Sendt: ' + charVal);
+                    game.writePermission = true;
+                    console.log('Sendt: ' + ble.charVal);
             });
     } else {
         // Pushes arrays that were never sent to a discarder packets array to use in debugging
-        discardedPackets.push(charVal);
+        discardedPackets.push(ble.charVal);
     }
 });
 
 // Make sure the car stops when the joystick is released
 $('#joystick-container').on("touchend", function() {
-    tapEnd = 1;
-    charVal[10] = 0;
-    charVal[11] = 0;
-    charVal[12] = 0;
-    charVal[13] = 0;
-    priorityWrite(charVal);
+    ble.charVal[10] = 0;
+    ble.charVal[11] = 0;
+    ble.charVal[12] = 0;
+    ble.charVal[13] = 0;
+    priorityWrite(ble.charVal);
 });
 
 
@@ -193,15 +169,15 @@ $('#joystick-container').on("touchend", function() {
 //      Function that creates a new game sessions with it's own 'unique' ID (not really unique, but unique enough for this purpose..)
 //**
 
-function createGame() {
+game.createGame = function() {
 
     // Check that it's actually allowed to create a new game session before initiating. Two sessions may not be initiated by the same player at once.
-    if(allowCreate) {
+    if(this.allowCreate) {
         // Prevents multiple games being created
-        allowCreate = 0;
+        this.allowCreate = 0;
 
         // Variables needed to time the start of the game for all players
-        var countDown = timeToJoin;
+        var countDown = this.timeToJoin;
 
         // Sets text to be shown while game is being created and
         $('#message-container').fadeIn(300);
@@ -210,21 +186,19 @@ function createGame() {
         // Send AJAX request to PHP page that creates game ID and entry in database. Object with player and game information is returned as JSONP
         // to avoid cross-domain issues. Should consider to use JSON if the php page may run on local server.
 
-        //$.getJSON('php/game.php?t=create&ttj=' + timeToJoin + '&pname=' + name + '&l=' + score + '&callback=?', function(r) {
-
-        $.getJSON('https://cpanel2.proisp.no/~stangtqr/pwt/game.php?t=create&ttj=' + timeToJoin + '&pname=' + name + '&l=' + score + '&callback=?', function(r) {
+        $.getJSON('https://cpanel2.proisp.no/~stangtqr/pwt/game.php?t=create&ttj=' + this.timeToJoin + '&pname=' + this.playerName + '&l=' + this.score + '&callback=?', function(r) {
 
             // Returned object is stored to global variables for easy access for all functions
             console.log(r);
             console.log(r.name);
-            score = r.score;
-            name = r.name;
-            gameId = r.gameId;
-            playerId = r.id;
+            this.score = r.score;
+            this.playerName = r.name;
+            this.gameId = r.gameId;
+            this.playerId = r.id;
 
             // Push new gameId to #message so other players may see it and join in
             $('#message').fadeOut(500).promise().done( function() {
-                $(this).text(gameId).fadeIn(500);
+                $(this).text(game.gameId).fadeIn(500);
             });
 
         });
@@ -232,7 +206,7 @@ function createGame() {
         // Starts timer before startgame() is called. Really bad solution, and should be replaced by a promise chained to the countdown clock itself.
         $('#game-info').show();
         setTimeout(function() {
-            startGame();
+            game.startGame();
         }, 1000*countDown+1);
 
         // Countdown clock
@@ -254,8 +228,8 @@ function createGame() {
 //      Functions that displays a text input where a player can enter game ID to join a game created by another player
 //**
 
-function joinGamePopup(fail = 0) {
-    allowJoin = true;
+game.joinGamePopup = function(fail = false) {
+    this.allowJoin = true;
     var input = `
                     <div id="join-fail"></div>
                     <input type='text' id='game-id' placeholder='GAME ID' maxlength='5' size='5' autofocus>
@@ -282,7 +256,7 @@ function joinGamePopup(fail = 0) {
     $('#btn-join-popup').on('touchstart mousedown', function() {
         var pin = $('#game-id').val();
         $('#game-info').fadeOut(300).promise().done(function() {
-            joinGame(pin);
+            game.joinGame(pin);
         });
     });
 }
@@ -292,9 +266,9 @@ function joinGamePopup(fail = 0) {
 //**
 //**    @parameter       gId        the ID2 of the game the player wants to join
 
-function joinGame(gId) {
-    if(allowJoin == true) {
-        allowJoin = false;
+game.joinGame = function(gId) {
+    if(this.allowJoin == true) {
+        this.allowJoin = false;
         // #message fades out
         $('#message').fadeOut(100).promise().done( function() {
 
@@ -305,23 +279,23 @@ function joinGame(gId) {
                 // AJAX request to php file that taes care of the database connection and makes sure that the new player gets a playerId in return
                 // and is connected to the right game session
                 // JSONP is used to avoid cross-domain issues when php page is placed on a diffrent domain than this script. Consider to replace by JSON if not needed.
-                $.getJSON('https://cpanel2.proisp.no/~stangtqr/pwt/game.php?t=join&gid=' + gId + '&pname=' + name + '&callback=?', function(r) {
+                $.getJSON('https://cpanel2.proisp.no/~stangtqr/pwt/game.php?t=join&gid=' + gId + '&pname=' + game.playerName + '&callback=?', function(r) {
                 //$.getJSON('php/game.php?t=join&gid=' + gId + '&pname=' + name + '&callback=?', function(r) {
 
                     // Check if the game had started or did'nt exist and therefore could not be joined
                     if(r.gameStatus == 'not_exist' || r.gameStatus == 'started') {
                         $('#message').fadeOut(500).promise().done( function() {
-                            joinGamePopup(1);
+                            game.joinGamePopup(1);
                         });
 
                     } else {
 
                         // If the php file was able to connect the player to the game, information from the returnerd object is stored i global variables
                         console.log(r);
-                        score = r.score;
-                        name = r.name;
-                        gameId = r.gameId;
-                        playerId = r.id;
+                        game.score = r.score;
+                        game.playerName = r.name;
+                        game.gameId = r.gameId;
+                        game.playerId = r.id;
 
                         // This is an attempt to time the start of the game and sync all players. Works fine in tests, but by no means good enough
                         // and should be replaced. In short, it uses the php server's timestamp to sync the new players joining the game, and is therefore
@@ -346,7 +320,7 @@ function joinGame(gId) {
                                 clearInterval(countDownInterval);
 
                                 // Start the game
-                                startGame();
+                                game.startGame();
                             }
                         }, 1000);
                     }
@@ -361,7 +335,7 @@ function joinGame(gId) {
 //**
 //**    The player will now be able to control the car, and the browser starts polling the server via updateGame()
 
-function startGame() {
+game.startGame = function() {
 
     // Array that contains start messages
     var startMsg = ['Ready...', 'Set...', 'Go!'];
@@ -376,10 +350,9 @@ function startGame() {
     // Runs updateGame() one single time to check if other players have joined the game.
     // updateGame() returns a promise with the following alternative values when resolved: 'updated', 'finished', 'single_player'
     // If the creator is the only player, a popup will appear with an option to enter single player mode
-    if(!singlePlayer) {
-        updateGame()
+    if(!game.singlePlayer) {
+        game.updateGame()
         .then( status => {
-            console.log('status: ', status);
             if(status != 'single_player') {
                 repeat = setInterval(function() {
                     startMessages();
@@ -405,8 +378,6 @@ function startGame() {
             setTimeout(function() {
                 $('#message').css({'color': 'rgba(0,0,0,0)', 'transition': 'color 0.4s'});
             }, 600);
-
-        console.log(n);
         n++;
 
         if(n >= startMsg.length) {
@@ -419,12 +390,12 @@ function startGame() {
             }, 800);
 
             // Allow the players to control the car and shoot, and let the game begin!
-            writePermission = 1;
-            gameOn = 1;
+            game.writePermission = 1;
+            game.gameOn = 1;
 
             // Start updating the game status if the game is not single player
-            if(!singlePlayer)
-                updateGame();
+            if(!game.singlePlayer)
+                game.updateGame();
         }
     }
 }
@@ -433,8 +404,8 @@ function startGame() {
 //      Function that updates the game info at a given interval set in the updatePeriod variable. By default every 2 seconds.
 //**
 
-var firstUpdate = 1;
-function updateGame() {
+game.firstUpdate = true;
+game.updateGame = function() {
     return new Promise(function(resolve, reject) {
         sendRequest();
         function sendRequest() {
@@ -442,27 +413,27 @@ function updateGame() {
             //  in each game session and returned updated player object and game status
             //  Is set up to use JSONP to handle cross-domain issues if necessary. Should consider to be removed and replaced by JSON if not needed.
             //  Other options are to use WebSocket or long polling instead of frequent AJAX requests in cases when possible
-            $.getJSON('https://cpanel2.proisp.no/~stangtqr/pwt/game.php?t=u&gid=' + gameId + '&pid=' + playerId + '&pname=' + name + '&l=' + score + '&callback=?', function(r) {
+            $.getJSON('https://cpanel2.proisp.no/~stangtqr/pwt/game.php?t=u&gid=' + game.gameId + '&pid=' + game.playerId + '&pname=' + game.playerName + '&l=' + game.score + '&callback=?', function(r) {
             //$.getJSON('php/game.php?t=u&gid=' + gameId + '&pid=' + playerId + '&pname=' + name + '&l=' + score + '&callback=?', function(r) {
 
                 //  Checking the gameStatus property of the received object to see if game is still active
                 //  The game is active as long as the status is 10. As soon as only one player still has points left, the returnes gameStatus
                 //  changes to this player's ID
-                if(firstUpdate != 0 && r.gameStatus == 1) {
+                if(game.firstUpdate != false && r.gameStatus == 1) {
                     // If the first update returns that the player who created the game has won, it means that no other players joined the game in time
                     // The player will then be presented a message with question to drive about a bit in single player mode
-                    gameOn = 0;
+                    game.gameOn = 0;
                     setTimeout(function() {
-                        singlePlayerPopup();
+                        game.singlePlayerPopup();
                     }, 1000);
                     resolve('single_player');
-                } else if((r.gameStatus == 10) && (score <= 0) && (r.score != score)) {
-                    updateGame();
+                } else if((r.gameStatus == 10) && (game.score <= 0) && (r.score != game.score)) {
+                    game.updateGame();
                     resolve('updateAgain');
                 } else if(r.gameStatus == 10) {
                     if(score <= 0)
                         // The game is active, but the players is out of points
-                        gameLost('active');
+                        game.gameLost('active');
                     else {
                         // The game is still active, and the player has more lives left
                     }
@@ -470,28 +441,26 @@ function updateGame() {
                 } else if(r.gameStatus != 10) {
                     //  Since the status is no longer 10, ie the game is over, perform check to see if the player has won or lost the game,
                     //  and call functions accordingly
-                    if(r.gameStatus == playerId) {
+                    if(r.gameStatus == game.playerId) {
                         // The game is over and player won the game
-                        gameWon();
+                        game.gameWon();
                     } else {
                         // The game is over and another player won
-                        gameLost();
+                        game.gameLost();
                     }
                     resolve('finished');
                 }
                 else {
                     reject(Error('Failed to update'));
                 }
-                firstUpdate = 0;
-                // Debug
-                console.log(r);
+                game.firstUpdate = false;
             });
             // Update every given interval as long as the game is ongoing, which is as long as gameStatus is 10 in the returned JSONP in this function
-            if(gameOn) {
+            if(game.gameOn) {
                 setTimeout(function() {
-                    if(gameOn)
+                    if(game.gameOn)
                         sendRequest();
-                }, updateInterval);
+                }, game.updateInterval);
             }
         }
     });
@@ -504,13 +473,13 @@ function updateGame() {
 //**
 //**    If a new game is created, a new gameId is now set and the players will have to rejoin the new session even if they were part of the previous one
 
-function restartGame() {
+game.restartGame = function() {
 
     // Allow the player to create a new game
-    allowCreate = 1;
+    game.allowCreate = 1;
 
     // Stop the ongoing game and gameUpdate()
-    gameOn = 0;
+    game.gameOn = 0;
 
     // Avoid cached version of the controllers-file
     var time = new Date();
@@ -524,7 +493,7 @@ function restartGame() {
 //      Popup-menu opened when a player creates a game and no other players join in time
 //**
 
-function singlePlayerPopup() {
+game.singlePlayerPopup = function() {
 
     var input = `   <div class='msg'>
                         <h2>Oh no!</h2>
@@ -547,13 +516,13 @@ function singlePlayerPopup() {
 //      If a player wants to just drive the car without creating a new game, this function is called
 //**
 
-function startSingleplayer() {
-    singlePlayer = true;
+game.startSingleplayer = function() {
+    game.singlePlayer = true;
     $('#message').html('s').fadeIn(500).promise().done(function() {
         $('#points').text('');
         $('#btn-sim-hit').hide();
         $('#btn-slotmachine').hide();
-        startGame();
+        game.startGame();
         $('#message-container').fadeIn(500);
     });
 };
@@ -566,36 +535,35 @@ function startSingleplayer() {
 //////////////////////////////////////////////*
 
 
-function notificationCallback(dataArray) {
-    var newNotificationValue = !(dataArray.length == prevNotificationArray.length && dataArray.every(function(v,i) { return v === prevNotificationArray[i]})) ? true : false;
-    var preventSlotFirst = (firstHit && (dataArray[0] == 1 || dataArray[1] == 1 || dataArray[2] == 1 || dataArray[3] == 1)) ? true : false;
-    var preventSlot = (dataArray[4] == prevNotificationArray[4]) ? true : false ;
-    firstHit = false;
+game.notificationCallback = function(dataArray) {
+    var newNotificationValue = !(dataArray.length == game.prevNotificationArray.length && dataArray.every(function(v,i) { return v === game.prevNotificationArray[i]})) ? true : false;
+    var preventSlotFirst = (game.firstHit && (dataArray[0] == 1 || dataArray[1] == 1 || dataArray[2] == 1 || dataArray[3] == 1)) ? true : false;
+    var preventSlot = (dataArray[4] == game.prevNotificationArray[4]) ? true : false ;
+    game.firstHit = false;
 
-    if(gameOn) {
+    if(game.gameOn) {
         if(!preventSlotFirst && !preventSlot) {
-                startSlot();
+                game.startSlot();
         } else if(!preventHit && newNotificationValue) {
 
             // If the player is hit...
             preventHit = 1;
             setTimeout(function() {
                 preventHit = 0;
-                rgbSetColor('green');
-            }, timeBetweenHits);
-            if(gameOn == 1) {
-                score--;
-                vibrate(500);   // vibrates for 500 ms
-                rgbSetColor('red');
-                $('#points').text('♥ ' + score);
-                console.log(score);
+                game.rgbSetColor('green');
+            }, game.timeBetweenHits);
+            if(game.gameOn == 1) {
+                game.score--;
+                game.vibrate(500);   // vibrates for 500 ms
+                game.rgbSetColor('red');
+                $('#points').text('♥ ' + game.score);
             }
-            if(score < 0) {
-                score = 0;
+            if(game.score < 0) {
+                game.score = 0;
             }
         }
-        prevNotificationArray = dataArray;
-        console.log('Notification mottatt: ' + dataArray + ' tidligere: ' + prevNotificationArray);
+        game.prevNotificationArray = dataArray;
+        console.log('Notification mottatt: ' + dataArray + ' tidligere: ' + game.prevNotificationArray);
     } else {
         console.log('Uendret notification mottatt: ' + dataArray);
     }
@@ -605,7 +573,7 @@ function notificationCallback(dataArray) {
 //      Function called when the player wins a game
 //**
 
-function gameWon() {
+game.gameWon = function() {
     gameOn = 0;
 
     charVal[10] = 0;
@@ -629,7 +597,7 @@ function gameWon() {
 //      Function called when the player loses a game
 //**
 
-function gameLost(status = "") {
+game.gameLost = function(status = "") {
     gameOn = 0;
 
     charVal[10] = 0;
@@ -653,7 +621,7 @@ function gameLost(status = "") {
 //      Function to add 'shooting' functionality. Is called when the fire button is pushed
 //**
 
-function shoot() {
+game.shoot = function() {
     if(!coolDownStatus) {
         coolDownStatus = 1;
         if(!local) {
@@ -677,7 +645,7 @@ function shoot() {
 //      Function to ensure that a player can't shoot again before a certain time has passed. The 'cool-down time' is set in the timeOute variable [ms]
 //**
 
-function coolDown() {
+game.coolDown = function() {
     var timeOut = coolDownPeriod;
     var e = document.getElementById("cool-down-bar");
     var width = 1;
@@ -705,7 +673,7 @@ function coolDown() {
 
 //** Print to console array containing packets that's not been sent  **/
 
-function printDiscardedPackets() {
+game.printDiscardedPackets = function() {
     console.log(discardedPackets);
 }
 
@@ -713,7 +681,7 @@ function printDiscardedPackets() {
 //      Vibration
 //**
 
-function vibrate(duration, interval = 0, repeats = 1) {
+game.vibrate = function(duration, interval = 0, repeats = 1) {
     if(vibratePossible) {
         if(interval) {
             var n = 1;
@@ -736,9 +704,9 @@ function vibrate(duration, interval = 0, repeats = 1) {
 //      Function control RGB LEDs on the DK
 //**
 
-function rgbSetColor(color) {
-    charVal[5] = rgbLed[color];
-    priorityWrite(charVal);
+game.rgbSetColor = function(color) {
+    ble.charVal[5] = game.rgbLed[color];
+    ble.priorityWrite(ble.charVal);
 }
 
 //**
@@ -748,21 +716,21 @@ function rgbSetColor(color) {
 $('#control-button').on('touchstart mousedown', function(event) {
     event.preventDefault();
     $(this).css({'box-shadow': '0px 0px 10px 3px rgba(0,0,0, 0.2)', 'height': '115px', 'width': '115px', 'transition-timing-function' : 'ease'});
-    if(coolDownStatus != 1)
-        shoot();
+    if(game.coolDownStatus != 1)
+        game.shoot();
 });
 
 $('#control-button').on('touchend mouseup', function() {
     $(this).css({'box-shadow': '0px 0px 30px 10px rgba(0,0,0, 0.15)', 'height': '120px', 'width': '120px', 'transition-timing-function' : 'ease'});
-    if(!local) {
-        priorityWrite(charVal);
+    if(!game.local) {
+        game.priorityWrite(game.charVal);
     }
 });
 
 $('#btn-create-game').on('touchstart mousedown', function(event) {
     event.preventDefault();
     $('#btn-gamemenu-container').fadeOut("slow").promise().done(function() {
-        createGame();
+        game.createGame();
     });
 
 });
@@ -770,23 +738,23 @@ $('#btn-create-game').on('touchstart mousedown', function(event) {
 $('#btn-join-game').on('touchstart mousedown', function(event) {
     event.preventDefault();
     $('#btn-gamemenu-container').fadeOut("slow").promise().done(function() {
-        joinGamePopup();
+        game.joinGamePopup();
     });
 });
 
 $('#btn-restart-game').on('touchstart mousedown', function(event) {
     event.preventDefault();
-    restartGame();
+    game.restartGame();
 });
 
 $('#btn-slotmachine').on('touchstart mousedown', function(event) {
     event.preventDefault();
-    startSlot();
+    game.startSlot();
 });
 
 $('#btn-reconnect').on('touchstart mousedown', function(event) {
     event.preventDefault();
-    connect();
+    ble.connect();
 });
 
 // This 'sim-hit' button triggers the same events with the same parameters as would be the case if the player's car was 'hit' by IR
@@ -794,7 +762,7 @@ $('#btn-sim-hit').on('touchstart mousedown', function(event) {
     event.preventDefault();
     var hitArray = new Uint8Array(20);
     hitArray[1] = 1;
-    notificationCallback(hitArray);
+    game.notificationCallback(hitArray);
 });
 
 $('#btn-return').on('touchstart mousedown', function(event) {
@@ -809,7 +777,7 @@ $('#btn-return').on('touchstart mousedown', function(event) {
 $('#btn-singleplayer').on('touchstart mousedown', function(event) {
     event.preventDefault();
     $('#btn-gamemenu-container').fadeOut("slow").promise().done(function() {
-        startSingleplayer();
+        game.startSingleplayer();
     });
 });
 
@@ -823,32 +791,32 @@ $('#btn-home').on('touchstart mousedown', function(event) {
 });
 
 // Set transition time for cool-down-bar. Placed here instead of static CSS to give a more sensible transition time based on the chosen coolDownPeriod
-$('#cool-down-bar').css('transition', 'background-color ' + coolDownPeriod*3/5000 + 's');
+$('#cool-down-bar').css('transition', 'background-color ' + game.coolDownPeriod*3/5000 + 's');
 
 $('.wait-till-game').css('visibility', 'visible');
 $('.wait-till-game').hide();
 
 // Populate the #points with the score (needs 'manual' update incase it is changed by joining a game with different settings than set here)
-$('#points').text('♥ ' + score);
+$('#points').text('♥ ' + game.score);
 
 
 $('#btn-menu').on('touchstart mousedown', function (event) {
     event.preventDefault();
-    toggleGameMenu();
+    game.toggleGameMenu();
 });
 
-function toggleGameMenu() {
-    if (gameMenuDown == true){
+game.toggleGameMenu = function() {
+    if (game.gameMenuDown == true){
         $('#slide-menu').animate({height: "60px"},'slow');
         $('#btn-menu').animate({bottom: "50px"},'slow');
 
-        gameMenuDown = false;
+        game.gameMenuDown = false;
     }
-    else if (gameMenuDown == false){
+    else if (game.gameMenuDown == false){
         $('#slide-menu').animate({height: "0px"},'slow');
         $('#btn-menu').animate({bottom: "10px"},'slow');
 
-        gameMenuDown = true;
+        game.gameMenuDown = true;
     }
 };
 
