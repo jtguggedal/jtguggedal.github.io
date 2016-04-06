@@ -223,14 +223,14 @@ var ble = {
 
         if(!game.writePermission) {
             setTimeout( function() {
-                this.priorityWrite(charVal);
+                ble.priorityWrite(charVal);
             }, 20);
             return 0;
         } else {
             game.writePermission = 0;
-            return this.readWriteCharacteristic.writeValue(charVal)
+            return ble.readWriteCharacteristic.writeValue(charVal)
                 .then( writeReturn => {
-                    this.writePermission = 1;
+                    ble.writePermission = 1;
                     game.priorityPacket = 0;
                     console.log('Priority sent: ' + charVal);
             });
