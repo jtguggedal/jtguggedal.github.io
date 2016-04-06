@@ -12,18 +12,18 @@ if(typeof game === 'undefined')
     var game = new Object;
 
 //** Game settings
-game.score = game.score || 5;                             // Number of lives each player starts with
-game.timeToJoin = game.timeToJoin || 25;                  // Interval from games is created until it starts [s]
-game.timeBetweenHits = game.timeBetweenHits || 2000;      // Time from one hit to next possible [ms]
-game.coolDownPeriod = game.coolDownPeriod || 1500;        // Shortest allowed interval between shots fired [ms]
-game.coolDownStatus = 0;                                         // Players starts with no need of 'cool down'
-game.gameOn = 0;                                                 // Game is by default not started automatically
-game.allowCreate = 1;                                            // Players are allowed to create their own games
-game.preventHit = 0;                                             // Variable to prevent being hit before timeBetweenHits is out
-game.updateInterval = 500;                                       // Interval for game updates to and from the server [ms]
+game.score = game.score || 5;                               // Number of lives each player starts with
+game.timeToJoin = game.timeToJoin || 25;                    // Interval from games is created until it starts [s]
+game.timeBetweenHits = game.timeBetweenHits || 2000;        // Time from one hit to next possible [ms]
+game.coolDownPeriod = game.coolDownPeriod || 1500;          // Shortest allowed interval between shots fired [ms]
+game.coolDownStatus = 0;                                    // Players starts with no need of 'cool down'
+game.gameOn = 0;                                            // Game is by default not started automatically
+game.allowCreate = 1;                                       // Players are allowed to create their own games
+game.preventHit = 0;                                        // Variable to prevent being hit before timeBetweenHits is out
+game.updateInterval = 500;                                  // Interval for game updates to and from the server [ms]
 
 game.speedCoeff = 0.78;             // This is the default speed coefficient that limits the maximum speed of the car and makes the speed boost power-up possible
-                                        //  -->  The coeffcient has a linear relationship with the output current to the motors, and ranges from 0 to 1
+                                    //  -->  The coeffcient has a linear relationship with the output current to the motors, and ranges from 0 to 1
 game.playerName;                    // The player may enter a name that will also be stored in the database when participating in a game session. Not yet implemented in GUI.
 game.gameId;                        // When either creating or joining a game, the game ID is stored
 game.playerId;                      // Each player in a game session receives a unique player ID
@@ -170,12 +170,12 @@ $('#joystick-container').on("touchend", function() {
 game.createGame = function() {
 
     // Check that it's actually allowed to create a new game session before initiating. Two sessions may not be initiated by the same player at once.
-    if(this.allowCreate) {
+    if(game.allowCreate) {
         // Prevents multiple games being created
-        this.allowCreate = 0;
+        game.allowCreate = 0;
 
         // Variables needed to time the start of the game for all players
-        var countDown = this.timeToJoin;
+        var countDown = game.timeToJoin;
 
         // Sets text to be shown while game is being created and
         $('#message-container').fadeIn(300);
@@ -184,15 +184,16 @@ game.createGame = function() {
         // Send AJAX request to PHP page that creates game ID and entry in database. Object with player and game information is returned as JSONP
         // to avoid cross-domain issues. Should consider to use JSON if the php page may run on local server.
 
-        $.getJSON('https://cpanel2.proisp.no/~stangtqr/pwt/game.php?t=create&ttj=' + this.timeToJoin + '&pname=' + this.playerName + '&l=' + this.score + '&callback=?', function(r) {
+        $.getJSON('https://cpanel2.proisp.no/~stangtqr/pwt/game.php?t=create&ttj=' + game.timeToJoin + '&pname=' + game.playerName + '&l=' + game.score + '&callback=?', function(r) {
 
             // Returned object is stored to global variables for easy access for all functions
             console.log(r);
             console.log(r.name);
-            this.score = r.score;
-            this.playerName = r.name;
-            this.gameId = r.gameId;
-            this.playerId = r.id;
+            game.score = r.score;
+            game.playerName = r.name;
+            game.gameId = r.gameId;
+            game.playerId = r.id;
+            console.log(game.gameId);
 
             // Push new gameId to #message so other players may see it and join in
             $('#message').fadeOut(500).promise().done( function() {
@@ -227,7 +228,7 @@ game.createGame = function() {
 //**
 
 game.joinGamePopup = function(fail = false) {
-    this.allowJoin = true;
+    game.allowJoin = true;
     var input = `
                     <div id="join-fail"></div>
                     <input type='text' id='game-id' placeholder='GAME ID' maxlength='5' size='5' autofocus>
@@ -265,8 +266,8 @@ game.joinGamePopup = function(fail = false) {
 //**    @parameter       gId        the ID2 of the game the player wants to join
 
 game.joinGame = function(gId) {
-    if(this.allowJoin == true) {
-        this.allowJoin = false;
+    if(game.allowJoin == true) {
+        game.allowJoin = false;
         // #message fades out
         $('#message').fadeOut(100).promise().done( function() {
 
