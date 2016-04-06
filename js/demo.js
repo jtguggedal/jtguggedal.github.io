@@ -34,9 +34,6 @@ game.allowJoin = true;
 game.vibratePossible = "vibrate" in navigator;
 game.firstHit = true;
 
-//** Array for BLE packets
-ble.charVal = new Uint8Array(20);
-
 //** Global variables needed to control and monitor the data flow over BLE
 game.writePermission = true;         // When true, the players can control the cars
 game.discardedPackets = [];          // Array to hold arrays that are created by touch events but never sent over BLE, kind of equivalent to packet loss
