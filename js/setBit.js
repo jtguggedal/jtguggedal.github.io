@@ -17,15 +17,15 @@
 		} else {
 			// Enkelt-bit skal settes
 			// Sjekker om den aktuelle biten allerede er satt høy
-			if(ble.charVal[byteOffset] & this.bitMask[bitOffset]) {
+			if(ble.charVal[byteOffset] & ble.bitMask[bitOffset]) {
 				if(value == 0) {
 					// Dersom biten er høy og ny verdi er lav, byttes denne
-					ble.charVal[byteOffset] -= this.bitMask[bitOffset];
+					ble.charVal[byteOffset] -= ble.bitMask[bitOffset];
 				}
 			} else {
 					// Dersom biten er lav og ny verdi er høy, byttes den2
 				 if (value == 1) {
-					ble.charVal[byteOffset] += this.bitMask[bitOffset];
+					ble.charVal[byteOffset] += ble.bitMask[bitOffset];
 				}
 			}
 		}

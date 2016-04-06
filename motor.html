@@ -209,7 +209,6 @@
 
     <script>
 
-        var charVal = new Uint8Array(20);
         //var readWriteCharacteristic = 1;
 
         // Motor 1
@@ -231,8 +230,8 @@
             }
 
             if(ble.readWriteCharacteristic) {
-                ble.readWriteCharacteristic.writeValue(charVal);
-                console.log(charVal);
+                ble.readWriteCharacteristic.writeValue(ble.charVal);
+                console.log(ble.charVal);
             }
         });
 
@@ -258,8 +257,8 @@
             }
 
             if(ble.readWriteCharacteristic) {
-                ble.readWriteCharacteristic.writeValue(charVal);
-                console.log(charVal);
+                ble.readWriteCharacteristic.writeValue(ble.charVal);
+                console.log(ble.charVal);
             }
         });
 
@@ -283,8 +282,8 @@
             }
 
             if(ble.readWriteCharacteristic) {
-                ble.readWriteCharacteristic.writeValue(charVal);
-                console.log(charVal);
+                ble.readWriteCharacteristic.writeValue(ble.charVal);
+                console.log(ble.charVal);
 
 
             }
@@ -310,8 +309,8 @@
             }
 
             if(ble.readWriteCharacteristic) {
-                ble.readWriteCharacteristic.writeValue(charVal);
-                console.log(charVal);
+                ble.readWriteCharacteristic.writeValue(ble.charVal);
+                console.log(ble.charVal);
             }
         });
 
@@ -352,8 +351,8 @@
             }
 
             if(ble.readWriteCharacteristic) {
-                ble.readWriteCharacteristic.writeValue(charVal);
-                console.log(charVal);
+                ble.readWriteCharacteristic.writeValue(ble.charVal);
+                console.log(ble.charVal);
             }
         });
 
