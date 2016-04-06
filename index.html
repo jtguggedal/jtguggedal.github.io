@@ -33,8 +33,14 @@
 
             <h1 id="welcome">Physical Web Toy</h1>
             <div id="main-message">
-    			<div onclick="game_init();" id='connect' class="button">Start</div>
-                <div onclick="disconnect();" id='disconnect'class="button">About</div>
+    			<div onclick="game_init();" id='connect' class="button-main-menu">
+                    <img src="img/play.png">
+                    Start
+                </div>
+                <div onclick="disconnect();" id='disconnect'class="button-main-menu">
+                    <img src="img/about.png">
+                    About
+                </div>
             </div>
 
 
@@ -51,7 +57,7 @@
 
         function game_init() {
             toggleFullscreen();
-            connect();
+            ble.connect();
             $('#fullscreen').show();
 			$('#footer').hide();
             $('#connectionStatus').fadeIn();
