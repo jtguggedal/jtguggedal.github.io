@@ -519,8 +519,6 @@ game.startSingleplayer = function() {
     game.singlePlayer = true;
     $('#message').html('s').fadeIn(500).promise().done(function() {
         $('#points').text('');
-        $('#btn-sim-hit').hide();
-        $('#btn-slotmachine').hide();
         game.startGame();
         $('#message-container').fadeIn(500);
     });
