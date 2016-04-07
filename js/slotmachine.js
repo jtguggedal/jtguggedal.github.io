@@ -3,11 +3,11 @@ var slot = slot || {};
 
 slot.spinTime = 2500;		// The duration the slot spins when first triggered, 2,5 seconds
 slot.duration = 10000;		// The duration of the power-up
-slot.running = false;		// Variable to make sure the function startSlot| can not be triggered when it is already running
+slot.running = false;		// Variable to make sure the method start() can not be triggered when it is already running
 slot.powerups = ["boost", "rapidfire", "shield", "health"];
 slot.prevVal = 0;
 
-slot.startSlot = function  () {
+slot.start = function() {
 	if(slot.running == false){
 		var randomPower;
 		slot.running = true;
@@ -16,7 +16,7 @@ slot.startSlot = function  () {
 		$('span').toggleClass(randomPower);
 		$('span').addClass('spin_forward');
 
-		randomPower = slot.powerups[Math.floor(Math.random() * powerups.length)];
+		randomPower = slot.powerups[Math.floor(Math.random() * slot.powerups.length)];
 		$('span').toggleClass(randomPower);
 
 		setTimeout(function (){
@@ -29,7 +29,9 @@ slot.stop = function(powerup){
 	$('span').removeClass('spin_forward');
 	console.log(powerup);
 	slot.activatePowerup(powerup);
-	setTimeout(slot.fadeout(powerup), slot.duration);
+	setTimeout(function() {
+		slot.fadeout(powerup);
+	}, slot.duration);
 };
 
 slot.fadeout = function(powerup) {

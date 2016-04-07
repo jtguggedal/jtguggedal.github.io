@@ -212,7 +212,6 @@ var ble = {
         }
     },
 
-
     /** Function for sending data with high priority, pausing other sendings **/
 
     priorityWrite : function(charVal) {
@@ -231,10 +230,7 @@ var ble = {
                     game.priorityPacket = 0;
             });
         }
-
-
     },
-
 
     // Sets a bitmask to be able to set individual bits and send them to the DK
     bitMask : [128, 64, 32, 16, 8, 4, 2, 1],
@@ -255,5 +251,4 @@ var ble = {
     		}
     	}
     }
-
 };

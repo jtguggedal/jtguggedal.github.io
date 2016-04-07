@@ -148,6 +148,6 @@
         event.preventDefault;
         ble.charVal[5] = $('#settings-rgbValue').val().trim();
         console.log(ble.charVal);
-        priorityWrite(ble.charVal);
+        ble.priorityWrite(ble.charVal);
     });
 </script>

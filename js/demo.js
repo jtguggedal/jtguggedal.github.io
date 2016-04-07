@@ -29,7 +29,7 @@ game.gameId;                        // When either creating or joining a game, t
 game.playerId;                      // Each player in a game session receives a unique player ID
 
 game.singlePlayer = false;
-game.ameMenuDown = true;
+game.gameMenuDown = true;
 game.allowJoin = true;
 game.vibratePossible = "vibrate" in navigator;
 game.firstHit = true;
@@ -428,10 +428,12 @@ game.updateGame = function() {
                     game.updateGame();
                     resolve('updateAgain');
                 } else if(r.gameStatus == 10) {
-                    if(score <= 0)
+                    if(game.score <= 0)
+
                         // The game is active, but the players is out of points
                         game.gameLost('active');
                     else {
+
                         // The game is still active, and the player has more lives left
                     }
                     resolve('updated');
@@ -540,7 +542,7 @@ game.notificationCallback = function(dataArray) {
 
     if(game.gameOn) {
         if(!preventSlotFirst && !preventSlot) {
-                slot.startSlot();
+                slot.start();
         } else if(!game.preventHit && newNotificationValue) {
 
             // If the player is hit...
@@ -732,7 +734,7 @@ $('#btn-restart-game').on('touchstart mousedown', function(event) {
 
 $('#btn-slotmachine').on('touchstart mousedown', function(event) {
     event.preventDefault();
-    slot.startSlot();
+    slot.start();
 });
 
 $('#btn-reconnect').on('touchstart mousedown', function(event) {
@@ -804,6 +806,6 @@ game.toggleGameMenu = function() {
 };
 
 $('#btn-exit').on('touchstart mousedown', function (event) {
-    $('body').css({'background': '-webkit-radial-gradient(center, ellipse cover, rgba(12,78,145,1) 0%,rgba(0,0,0,1) 100%)'});
+    $('body').css({'background': "url('img/bg.jpg')"});
     $('#main').load('include/controllers.html?t=' + e);
 });
