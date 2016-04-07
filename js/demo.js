@@ -742,14 +742,6 @@ $('#btn-reconnect').on('touchstart mousedown', function(event) {
     ble.connect();
 });
 
-// This 'sim-hit' button triggers the same events with the same parameters as would be the case if the player's car was 'hit' by IR
-$('#btn-sim-hit').on('touchstart mousedown', function(event) {
-    event.preventDefault();
-    var hitArray = new Uint8Array(20);
-    hitArray[1] = 1;
-    game.notificationCallback(hitArray);
-});
-
 $('#btn-return').on('touchstart mousedown', function(event) {
     event.preventDefault();
     $('#message-container').fadeOut("slow").promise().done(function() {

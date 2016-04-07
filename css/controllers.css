@@ -1,4 +1,3 @@
-
 /***  Stylesheet for game controllers  ***/
 
 #control-container {
@@ -10,7 +9,6 @@
 #joystick-container, #fire-button-container {
     display: inline-block;
 }
-
 
 #joystick-container {
     width: 150px;
@@ -211,6 +209,11 @@
     z-index: 100;
     box-shadow: 0px 0px 20px 2px rgba(0, 0, 0, 0.4);
     cursor: pointer;
+}
+
+#btn-menu img {
+    width: 40px;
+    margin-top: 6px;
 }
 
 #slide-menu {
