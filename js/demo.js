@@ -34,8 +34,6 @@ game.allowJoin = true;
 game.vibratePossible = "vibrate" in navigator;
 game.firstHit = true;
 
-ble.charVal = new Uint8Array(20);
-
 //** Global variables needed to control and monitor the data flow over BLE
 game.writePermission = true;         // When true, the players can control the cars
 game.discardedPackets = [];          // Array to hold arrays that are created by touch events but never sent over BLE, kind of equivalent to packet loss
@@ -542,13 +540,13 @@ game.notificationCallback = function(dataArray) {
 
     if(game.gameOn) {
         if(!preventSlotFirst && !preventSlot) {
-                game.startSlot();
-        } else if(!preventHit && newNotificationValue) {
+                slot.startSlot();
+        } else if(!game.preventHit && newNotificationValue) {
 
             // If the player is hit...
-            preventHit = 1;
+            game.preventHit = 1;
             setTimeout(function() {
-                preventHit = 0;
+                game.preventHit = 0;
                 game.rgbSetColor('green');
             }, game.timeBetweenHits);
             if(game.gameOn == 1) {
@@ -734,7 +732,7 @@ $('#btn-restart-game').on('touchstart mousedown', function(event) {
 
 $('#btn-slotmachine').on('touchstart mousedown', function(event) {
     event.preventDefault();
-    game.startSlot();
+    slot.startSlot();
 });
 
 $('#btn-reconnect').on('touchstart mousedown', function(event) {

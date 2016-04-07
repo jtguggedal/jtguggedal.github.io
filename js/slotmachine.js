@@ -1,58 +1,78 @@
-	var slotSpinTime = 2500;		// The duration the slot spins when first triggered, 2,5 seconds
-	var slotDuration = 10000;		// The duration of the power-up
-	var running = false;			// Variable to make sure the function startSlot| can not be triggered when it is already running
 
-function startSlot () {
-	if(running == false){
+var slot = slot || {};
+
+slot.spinTime = 2500;		// The duration the slot spins when first triggered, 2,5 seconds
+slot.duration = 10000;		// The duration of the power-up
+slot.running = false;		// Variable to make sure the function startSlot| can not be triggered when it is already running
+slot.powerups = ["boost", "rapidfire", "shield", "health"];
+slot.prevVal = 0;
+
+slot.startSlot = function  () {
+	if(slot.running == false){
 		var randomPower;
-		var powerups = ["boost", "rapidfire", "shield", "health"];
-		
-		running = true;
-		
-		$('#slotmachine-container').fadeIn(1000);						// Slotmachine fades in during 1 second
+		slot.running = true;
+
+		$('#slotmachine-container').fadeIn(1000);
 		$('span').toggleClass(randomPower);
 		$('span').addClass('spin_forward');
-			
-		randomPower = powerups[Math.floor(Math.random() * powerups.length)];
-		$('span').toggleClass(randomPower); 
 
-		setTimeout(function (){stopSlot(randomPower);}, slotSpinTime);								// stopSlot is triggered and the slotmachine stops after rotating for 2,5 seconds
+		randomPower = slot.powerups[Math.floor(Math.random() * powerups.length)];
+		$('span').toggleClass(randomPower);
+
+		setTimeout(function (){
+			slot.stop(randomPower);
+		}, slot.spinTime);
 	}
 };
 
-function stopSlot(powerup){
+slot.stop = function(powerup){
 	$('span').removeClass('spin_forward');
 	console.log(powerup);
-	activatePowerup(powerup);
-	setTimeout(slotFadeout, slotDuration);								// slotFadeout is triggered after 10 seconds
- }
- 
-function slotFadeout() {
-	$('#slotmachine-container').fadeOut(1000); 							// Slotmachine fades out over the course of 1 second
-	deactivatePowerup();
-	running = false;
- }
+	slot.activatePowerup(powerup);
+	setTimeout(slot.fadeout(powerup), slot.duration);
+};
 
-function activatePowerup (powerup) {
-	switch (powerup) {
+slot.fadeout = function(powerup) {
+	$('#slotmachine-container').fadeOut(1000);
+	slot.deactivatePowerup(powerup);
+	slot.running = false;
+};
+
+slot.activatePowerup = function(powerup) {
+	switch(powerup) {
 		case "boost":
-			speedCoeff = 1;
+			slot.prevVal = game.speedCoeff;
+			game.speedCoeff = 1;
 			break;
 		case "rapidfire":
-			coolDownPeriod = 500;
+			slot.prevVal = game.coolDownPeriod;
+			game.coolDownPeriod = 500;
 			break;
 		case "shield":
-			preventShot = 1;
+			slot.prevVal = game.preventShot;
+			game.preventShot = 1;
 			break;
 		case "health":
-			score++
-			$('#points').text('♥ ' + score);
+			game.score++
+			$('#points').text('♥ ' + game.score);
 			break;
 	};
 };
 
-function deactivatePowerup () {
-	speedCoeff = 0.78;
-	coolDownPeriod = 1500;
-	preventShot = 0;
+slot.deactivatePowerup = function(powerup) {
+	switch(powerup) {
+		case "boost":
+			slot.speedCoeff = slot.prevVal;
+			break;
+		case "rapidfire":
+			slot.coolDownPeriod = slot.prevVal;
+			break;
+		case "shield":
+			slot.preventShot = slot.prevVal;
+			break;
+		case "health":
+			game.score++
+			$('#points').text('♥ ' + game.score);
+			break;
+	};
 };

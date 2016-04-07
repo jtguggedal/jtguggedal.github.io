@@ -15,14 +15,13 @@ var ble = {
     mainServiceUUID : '00001523-1212-efde-1523-785feabcd123',
     readWriteCharacteristicUUID : '00001525-1212-efde-1523-785feabcd123',
     notificationCharacteristicUUID : '00001524-1212-efde-1523-785feabcd123',
-
     bluetoothDevice : '',
     mainServer : '',
     mainService : '',
     readWriteCharacteristic : '',
     notificationCharacteristic : '',
     notificationContent : '',
-
+    charVal : new Uint8Array(20),
     prevNotification : '',
 
     /** Function for establishing BLE connection to device advertising the main service **/
@@ -36,10 +35,10 @@ var ble = {
             .then(device => {
                 this.bluetoothDevice = device;
                 // Adding event listener to detect loss of connection (not used for now because of errors on some phones)
-                //bluetoothDevice.addEventListener('gattserverdisconnected', disconnectHandler);
+                bluetoothDevice.addEventListener('gattserverdisconnected', disconnectHandler);
                 console.log('> Found ' + this.bluetoothDevice.name);
                 console.log('Connecting to GATT Server...');
-                return this.bluetoothDevice.connectGATT()
+                return this.bluetoothDevice.gatt.connect()
                 .then(gattServer => {
                     this.mainServer = gattServer;
                     console.log('> Bluetooth Device connected: ');
@@ -234,5 +233,27 @@ var ble = {
         }
 
 
+    },
+
+
+    // Sets a bitmask to be able to set individual bits and send them to the DK
+    bitMask : [128, 64, 32, 16, 8, 4, 2, 1],
+
+    // Function that sets individual bits in ble.charVal
+    setBit : function(byteOffset, bitOffset, value) {
+    	if(bitOffset == 'b') {
+    		ble.charVal[byteOffset] = value;
+    	} else {
+    		if(ble.charVal[byteOffset] & ble.bitMask[bitOffset]) {
+    			if(value == 0) {
+    				ble.charVal[byteOffset] -= ble.bitMask[bitOffset];
+    			}
+    		} else {
+    			 if (value == 1) {
+    				ble.charVal[byteOffset] += ble.bitMask[bitOffset];
+    			}
+    		}
+    	}
     }
+
 };
