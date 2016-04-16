@@ -1,0 +1,174 @@
+<!doctype html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            div {
+                margin: 10px;
+            }
+
+            .label {
+                display: inline-block;
+                width: 250px;
+            }
+
+            input {
+                width: 50px;
+                height: 20px;
+            }
+
+            button {
+                height: 30px;
+                margin: 10px;
+                display: inline-block;
+            }
+        </style>
+    </head>
+    <body>
+
+        <div>
+            <button onclick="connect();">Koble til</button>
+            <button onclick="disconnect();">Koble fra</button>
+        </div>
+        <div>
+            <span class="label">Byte 1 (LED, 0-255):</span><input type="number" id="byte1" value="0">
+        </div>
+        <div>
+            <span class="label">Byte 2 (servo, 0-10):</span><input type="number" id="byte2" value="0">
+        </div>
+        <div>
+            <span class="label">Byte 10 (motor 1 hastighet, 0-255):</span><input type="number" id="byte10">
+        </div>
+        <div>
+            <span class="label">Byte 11 (motor 2 hastighet, 0-255):</span><input type="number" id="byte11">
+        </div>
+        <div>
+            <span class="label">Byte 12 (motor 3 hastighet, 0-255):</span><input type="number" id="byte12">
+        </div>
+        <div>
+            <span class="label">Byte 13 (motor 4 hastighet, 0-255):</span><input type="number" id="byte13">
+        </div>
+        <div>
+            <span class="label">Byte 14 (motor 1 retning, 0-1):</span><input type="number" id="byte14" value="1">
+        </div>
+        <div>
+            <span class="label">Byte 15 (motor 2 retning, 0-1):</span><input type="number" id="byte15" value="1">
+        </div>
+        <div>
+            <span class="label">Byte 16 (motor 3 retning, 0-1):</span><input type="number" id="byte16" value="1">
+        </div>
+        <div>
+            <span class="label">Byte 17 (motor 4 retning, 0-1):</span><input type="number" id="byte17" value="1">
+        </div>
+
+        <button onclick="writeArray()">Send</button>
+
+
+        <script>
+
+            var mainServiceUUID = '00001523-1212-efde-1523-785feabcd123';
+            var readWriteCharUUID = '00001525-1212-efde-1523-785feabcd123';
+            var notificationCharUUID = '00001524-1212-efde-1523-785feabcd123';
+            var bluetoothDevice;
+            var mainServer;
+            var mainService;
+            var readWriteChar;
+            var notificationChar;
+            var notificationContent;
+            var charVal = new Uint8Array(20);
+
+
+            // Connect to device with specified serviceUUID and characteristic UUIDs
+            function connect() {
+                'use strict'
+
+                console.log('Requesting Bluetooth Device...');
+                navigator.bluetooth.requestDevice({
+                    filters: [{ services: [mainServiceUUID ]}]
+                })
+                .then( device => {
+                    bluetoothDevice = device;
+                    console.log('> Found ' + bluetoothDevice.name);
+                    console.log('Connecting to GATT Server...');
+
+                    return bluetoothDevice.connectGATT()
+                    .then( gattServer => {
+                        mainServer = gattServer;
+                        console.log('> Bluetooth Device connected: ');
+                    })
+                })
+                .then( server => {
+                    return mainServer.getPrimaryService(mainServiceUUID);
+                })
+                .then( service => {
+                    mainService = service;
+                    console.log('> serviceReturn: ' + service);
+                    return Promise.all([
+                        service.getCharacteristic(readWriteCharUUID)
+                        .then( char => {readWriteChar = char }),
+                        service.getCharacteristic(notificationCharUUID)
+                        .then(notificationCharHandler)
+                    ])
+                })
+                .catch(error => {
+                    console.log('>' + error);
+                });
+            }
+
+
+            function disconnect() {
+                if (!bluetoothDevice) {
+                    console.log('> No Bluetooth Device connected');
+                    return;
+                }
+                console.log('> Disconnecting from Bluetooth Device...');
+                if (bluetoothDevice.gatt.connected) {
+                    bluetoothDevice.gatt.disconnect();
+                    console.log('> Bluetooth Device connected: ' + bluetoothDevice.gatt.connected);
+                } else {
+                    console.log('> Bluetooth Device is already disconnected');
+                }
+            }
+
+
+
+            /** Function for setting up the notification characteristic **/
+            function notificationCharHandler(characteristic) {
+                'use strict';
+
+                // Stores the notification characteristic object to ble object for easy access
+                notificationChar = characteristic;
+                console.log('Notifications started.');
+
+                // Initiates event listener for notifications sent from DK
+                notificationChar.addEventListener('characteristicvaluechanged', handleNotification);
+                return characteristic.startNotifications();
+            }
+
+            /** Function for handling notifications **/
+            function handleNotification(event) {
+                'use strict';
+
+                // The received notification consists of a buffer or DataView, assigned to value
+                let value = event.target.value;
+                value = value.buffer ? value : new DataView(value);
+
+                return value;
+
+            }
+
+            function writeArray() {
+                charVal[1] = document.getElementById('byte1').value;
+                charVal[2] = document.getElementById('byte2').value;
+                for(n = 10; n <= 17; n++) {
+                    charVal[n] = document.getElementById('byte'+ n).value;
+                }
+                readWriteChar.writeValue(charVal)
+                .then(() => {return 1})
+            }
+
+
+
+        </script>
+    </body>
+</html>
