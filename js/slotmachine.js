@@ -72,9 +72,5 @@ slot.deactivatePowerup = function(powerup) {
 		case "shield":
 			slot.preventShot = slot.prevVal;
 			break;
-		case "health":
-			game.score++
-			$('#points').text('♥ ' + game.score);
-			break;
 	};
 };
