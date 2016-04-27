@@ -41,7 +41,7 @@ game.prevNotificationArray = [];                            // The notification 
 game.rgbLed = {green: 0, red: 1, blue: 2, off: 100};
 
 //** For local testing, set local to 1 to avoid Web Bluetooth errors
-game.local = 0;
+game.local = 1;
 
 
 //**
@@ -145,11 +145,11 @@ joystick.on('end', function(evt, data) {
     }
 });
 
-    ble.charVal[10] = 0;
-    ble.charVal[11] = 0;
+    /*ble.charVal[10] = 0;
+    ble.charVal[11] = 0; 
     ble.charVal[12] = 0;
     ble.charVal[13] = 0;
-    ble.priorityWrite(ble.charVal);
+    ble.priorityWrite(ble.charVal);*/
 
 //////////////////////////////////////////////*
 //                                          //*
