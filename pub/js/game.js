@@ -41,7 +41,7 @@ game.prevNotificationArray = [];                            // The notification 
 game.rgbLed = {green: 0, red: 1, blue: 2, off: 100};
 
 //** For local testing, set local to 1 to avoid Web Bluetooth errors
-game.local = 1;
+game.local = 0;
 
 
 //**
@@ -145,11 +145,7 @@ joystick.on('end', function(evt, data) {
     }
 });
 
-    /*ble.charVal[10] = 0;
-    ble.charVal[11] = 0; 
-    ble.charVal[12] = 0;
-    ble.charVal[13] = 0;
-    ble.priorityWrite(ble.charVal);*/
+
 
 //////////////////////////////////////////////*
 //                                          //*
@@ -178,7 +174,7 @@ game.createGame = function() {
         // Send AJAX request to PHP page that creates game ID and entry in database. Object with player and game information is returned as JSONP
         // to avoid cross-domain issues. Should consider to use JSON if the php page may run on local server.
 
-        $.getJSON('php/game.php?t=create&ttj=' + game.timeToJoin + '&pname=' + game.playerName + '&l=' + game.score + '&callback=?', function(r) {
+        $.getJSON('https://cpanel2.proisp.no/~stangtqr/pwt/game.php?t=create&ttj=' + game.timeToJoin + '&pname=' + game.playerName + '&l=' + game.score + '&callback=?', function(r) {
 
             // Returned object is stored to global variables for easy access for all functions
             game.score = r.score;
@@ -269,7 +265,7 @@ game.joinGame = function(gId) {
                 // AJAX request to php file that taes care of the database connection and makes sure that the new player gets a playerId in return
                 // and is connected to the right game session
                 // JSONP is used to avoid cross-domain issues when php page is placed on a diffrent domain than this script. Consider to replace by JSON if not needed.
-                $.getJSON('php/game.php?t=join&gid=' + gId + '&pname=' + game.playerName + '&callback=?', function(r) {
+                $.getJSON('https://cpanel2.proisp.no/~stangtqr/pwt/game.php?t=join&gid=' + gId + '&pname=' + game.playerName + '&callback=?', function(r) {
 
                     // Check if the game had started or did'nt exist and therefore could not be joined
                     if(r.gameStatus == 'not_exist' || r.gameStatus == 'started') {
@@ -405,7 +401,7 @@ game.updateGame = function() {
             //  in each game session and returned updated player object and game status
             //  Is set up to use JSONP to handle cross-domain issues if necessary. Should consider to be removed and replaced by JSON if not needed.
             //  This is for testing only. Consider other options like WebSocket or long polling instead of frequent AJAX requests in cases when possible
-            $.getJSON('php/game.php?t=u&gid=' + game.gameId + '&pid=' + game.playerId + '&pname=' + game.playerName + '&l=' + game.score + '&callback=?', function(r) {
+            $.getJSON('https://cpanel2.proisp.no/~stangtqr/pwt/game.php?t=u&gid=' + game.gameId + '&pid=' + game.playerId + '&pname=' + game.playerName + '&l=' + game.score + '&callback=?', function(r) {
 
                 //  Checking the gameStatus property of the received object to see if game is still active
                 //  The game is active as long as the status is 10. As soon as only one player still has points left, the returnes gameStatus
@@ -878,5 +874,5 @@ game.toggleGameMenu = function() {
 
 $('#btn-exit').on('touchstart mousedown', function (event) {
     $('body').css({'background': "url('img/bg.jpg')"});
-    $('#main').load('controllers.html?t=' + e);
+    $('#main').load('controllers.html?t=');
 });

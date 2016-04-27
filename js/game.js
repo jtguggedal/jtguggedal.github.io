@@ -1,15 +1,11 @@
 
 //**
-//      Gloabl settings
+//      Demo: RC car controlled over Bluetooth using Web Bluetooth API
 //**
-
-//** Object to hold the new settings that may be set in the settings page
-if(typeof gameSettings === 'undefined')
-    var gameSettings = new Object;
 
 //** Object to hold game settings
 if(typeof game === 'undefined')
-    var game = new Object;
+    var game = new Object();
 
 //** Game settings
 game.score = game.score || 5;                               // Number of lives each player starts with
@@ -20,13 +16,13 @@ game.coolDownStatus = 0;                                    // Players starts wi
 game.gameOn = 0;                                            // Game is by default not started automatically
 game.allowCreate = 1;                                       // Players are allowed to create their own games
 game.preventHit = 0;                                        // Variable to prevent being hit before timeBetweenHits is out
-game.updateInterval = 500;                                  // Interval for game updates to and from the server [ms]
+game.updateInterval = 1000;                                  // Interval for game updates to and from the server [ms]
 
-game.speedCoeff = 0.78;             // This is the default speed coefficient that limits the maximum speed of the car and makes the speed boost power-up possible
-                                    //  -->  The coeffcient has a linear relationship with the output current to the motors, and ranges from 0 to 1
-game.playerName;                    // The player may enter a name that will also be stored in the database when participating in a game session. Not yet implemented in GUI.
-game.gameId;                        // When either creating or joining a game, the game ID is stored
-game.playerId;                      // Each player in a game session receives a unique player ID
+game.speedCoeff = 0.78;                                     // This is the default speed coefficient that limits the maximum speed of the car and makes the speed boost power-up possible
+                                                            //  -->  The coeffcient has a linear relationship with the output current to the motors, and ranges from 0 to 1
+game.playerName;                                            // The player may enter a name that will also be stored in the database when participating in a game session. Not yet implemented in GUI.
+game.gameId;                                                // When either creating or joining a game, the game ID is stored
+game.playerId;                                              // Each player in a game session receives a unique player ID
 
 game.singlePlayer = false;
 game.gameMenuDown = true;
@@ -34,11 +30,11 @@ game.allowJoin = true;
 game.vibratePossible = "vibrate" in navigator;
 game.firstHit = true;
 
-//** Global variables needed to control and monitor the data flow over BLE
-game.writePermission = true;         // When true, the players can control the cars
-game.discardedPackets = [];          // Array to hold arrays that are created by touch events but never sent over BLE, kind of equivalent to packet loss
-game.priorityPacket = 0;             // Events like button press, that happen rarely compared to joystick events, are given priority to ensure that the DK gets the information
-game.prevNotificationArray = [];     // The notification characteristic handler uses this array to ensure that it only triggers actions when new values are sent
+//** Properties needed to control and monitor the data flow over BLE
+game.writePermission = true;                                // When true, it's it's possible to write to the GATT characteristic
+game.discardedPackets = [];                                 // Array to hold arrays that are created by touch events but never sent over BLE, kind of equivalent to packet loss
+game.priorityPacket = 0;                                    // Events like button press, that happen rarely compared to joystick events, are given priority to ensure that the DK gets the information
+game.prevNotificationArray = [];                            // The notification characteristic handler uses this array to ensure that it only triggers actions when new values are sent
 
 // RGB LED colors
 
@@ -49,7 +45,7 @@ game.local = 0;
 
 
 //**
-//     Joystick, based on the amazing nippleJS: http://yoannmoinet.github.io/nipplejs/
+//     Joystick, based on the amazing nippleJS by @yoannmoinet: http://yoannmoinet.github.io/nipplejs/
 //**
 
 var joystick = nipplejs.create({
@@ -63,78 +59,83 @@ var joystick = nipplejs.create({
 game.joystickPos = joystick.position;
 
 
-joystick.on('start end', function(evt, data) {
+joystick.on('end', function(evt, data) {
         // May send 'stop packet' to the car here
+        ble.charVal[10] = 0;
+        ble.charVal[11] = 0;
+        ble.charVal[12] = 0;
+        ble.charVal[13] = 0;
+        ble.priorityWrite(ble.charVal);
     }).on('move', function(evt, data) {
 
-    var outputRight;
-    var outputLeft;
+    if( ble.readWriteChar &&  (game.writePermission == true) && (game.priorityPacket != 1) && !game.local) {
+        var outputRight;
+        var outputLeft;
 
-    var x = data.position.x-110;
-    var y = -1*(data.position.y-155);
-    var hypotenus = Math.sqrt((Math.pow(x, 2)) + (Math.pow(y, 2)));
-    var speed = Math.round((255/75)*hypotenus);
-    var angle = (180/Math.PI)*Math.acos(x/hypotenus);
-    var directionRight, directionLeft;
-    if(y < 0) {
-        angle = 360 - angle;
-        directionRight = directionLeft = 0;
-    } else {
-        directionRight = directionLeft = 1;
-    }
+        var x = data.position.x-110;
+        var y = -1*(data.position.y-155);
+        var hypotenus = Math.sqrt((Math.pow(x, 2)) + (Math.pow(y, 2)));
+        var speed = Math.round((255/75)*hypotenus);
+        var angle = (180/Math.PI)*Math.acos(x/hypotenus);
+        var directionRight, directionLeft;
+        if(y < 0) {
+            angle = 360 - angle;
+            directionRight = directionLeft = 0;
+        } else {
+            directionRight = directionLeft = 1;
+        }
 
-    angle = Math.round(angle);
+        angle = Math.round(angle);
 
-    if(speed > 255)
-        speed = 255;
+        if(speed > 255)
+            speed = 255;
 
-    if(angle >= 10 && angle <= 85) {
-        outputRight = (angle/85)*speed;
-        outputLeft = speed;
-    } else if(angle > 85 && angle < 95) {
-        outputLeft = outputRight = speed;
-    } else if(angle >= 95 && angle <= 160) {
-        outputRight = speed;
-        outputLeft = ((180-angle)/80)*speed;
-    } else if(angle > 160 && angle < 200) {
-        outputRight = speed;
-        directionRight = 1;
-        outputLeft = speed;
-        directionLeft = 0;
-    } else if(angle >= 200 && angle <= 265) {
-        outputRight = speed;
-        outputLeft = ((angle-180)/80)*speed;
-    } else if(angle > 265 && angle < 275) {
-        outputRight = outputLeft = speed;
-    } else if(angle >= 275 && angle <= 340) {
-        outputRight = ((360-angle)/80)*speed;
-        outputLeft = speed;
-    } else if(angle > 340 || angle < 20) {
-        outputRight = speed;
-        directionRight = 0;
-        outputLeft = speed;
-        directionLeft = 1;
-    }
+        if(angle >= 10 && angle <= 85) {
+            outputRight = (angle/85)*speed;
+            outputLeft = speed;
+        } else if(angle > 85 && angle < 95) {
+            outputLeft = outputRight = speed;
+        } else if(angle >= 95 && angle <= 160) {
+            outputRight = speed;
+            outputLeft = ((180-angle)/80)*speed;
+        } else if(angle > 160 && angle < 200) {
+            outputRight = speed;
+            directionRight = 1;
+            outputLeft = speed;
+            directionLeft = 0;
+        } else if(angle >= 200 && angle <= 265) {
+            outputRight = speed;
+            outputLeft = ((angle-180)/80)*speed;
+        } else if(angle > 265 && angle < 275) {
+            outputRight = outputLeft = speed;
+        } else if(angle >= 275 && angle <= 340) {
+            outputRight = ((360-angle)/80)*speed;
+            outputLeft = speed;
+        } else if(angle > 340 || angle < 20) {
+            outputRight = speed;
+            directionRight = 0;
+            outputLeft = speed;
+            directionLeft = 1;
+        }
 
-    outputRight *= game.speedCoeff;
-    outputLeft *= game.speedCoeff;
+        outputRight *= game.speedCoeff;
+        outputLeft *= game.speedCoeff;
 
-    ble.charVal[10] = outputRight;          // Motor 1
-    ble.charVal[14] = directionRight;
+        ble.charVal[10] = outputRight;          // Motor 1
+        ble.setBit(14, 0, directionRight);
 
-    ble.charVal[11] = outputLeft;           // Motor 2
-    ble.charVal[15] = directionLeft;
+        ble.charVal[11] = outputLeft;           // Motor 2
+        ble.setBit(14, 1, directionLeft);
 
-    ble.charVal[12] = outputLeft;           // Motor 3
-    ble.charVal[16] = directionLeft;
+        ble.charVal[12] = outputLeft;           // Motor 3
+        ble.setBit(14, 2, directionLeft);
 
-    ble.charVal[13] = outputRight;          // Motor 4
-    ble.charVal[17] = directionRight;
+        ble.charVal[13] = outputRight;          // Motor 4
+        ble.setBit(14, 3, directionRight);
 
-    if( ble.readWriteCharacteristic &&  (game.writePermission == true) && (game.priorityPacket != 1) && !game.local) {
         game.writePermission = false;
 
-        return ble.readWriteCharacteristic.writeValue(ble.charVal)
+        return ble.readWriteChar.writeValue(ble.charVal)
                 .then( writeReturn => {
                     game.writePermission = true;
             });
@@ -142,15 +143,6 @@ joystick.on('start end', function(evt, data) {
         // Pushes arrays that were never sent to a discarder packets array to use in debugging
         game.discardedPackets.push(ble.charVal);
     }
-});
-
-// Make sure the car stops when the joystick is released
-$('#joystick-container').on("touchend", function() {
-    ble.charVal[10] = 0;
-    ble.charVal[11] = 0;
-    ble.charVal[12] = 0;
-    ble.charVal[13] = 0;
-    ble.priorityWrite(ble.charVal);
 });
 
 
@@ -185,13 +177,10 @@ game.createGame = function() {
         $.getJSON('https://cpanel2.proisp.no/~stangtqr/pwt/game.php?t=create&ttj=' + game.timeToJoin + '&pname=' + game.playerName + '&l=' + game.score + '&callback=?', function(r) {
 
             // Returned object is stored to global variables for easy access for all functions
-            console.log(r);
-            console.log(r.name);
             game.score = r.score;
             game.playerName = r.name;
             game.gameId = r.gameId;
             game.playerId = r.id;
-            console.log(game.gameId);
 
             // Push new gameId to #message so other players may see it and join in
             $('#message').fadeOut(500).promise().done( function() {
@@ -277,7 +266,6 @@ game.joinGame = function(gId) {
                 // and is connected to the right game session
                 // JSONP is used to avoid cross-domain issues when php page is placed on a diffrent domain than this script. Consider to replace by JSON if not needed.
                 $.getJSON('https://cpanel2.proisp.no/~stangtqr/pwt/game.php?t=join&gid=' + gId + '&pname=' + game.playerName + '&callback=?', function(r) {
-                //$.getJSON('php/game.php?t=join&gid=' + gId + '&pname=' + name + '&callback=?', function(r) {
 
                     // Check if the game had started or did'nt exist and therefore could not be joined
                     if(r.gameStatus == 'not_exist' || r.gameStatus == 'started') {
@@ -389,6 +377,8 @@ game.startGame = function() {
             // Allow the players to control the car and shoot, and let the game begin!
             game.writePermission = true;
             game.gameOn = 1;
+            ble.setBit(1, 1, 1);
+            ble.priorityWrite(ble.charVal);
 
             // Start updating the game status if the game is not single player
             if(!game.singlePlayer)
@@ -406,12 +396,12 @@ game.updateGame = function() {
     return new Promise(function(resolve, reject) {
         sendRequest();
         function sendRequest() {
+
             //  AJAX request to php-file that communicates with database and handles information about all the players
             //  in each game session and returned updated player object and game status
             //  Is set up to use JSONP to handle cross-domain issues if necessary. Should consider to be removed and replaced by JSON if not needed.
-            //  Other options are to use WebSocket or long polling instead of frequent AJAX requests in cases when possible
+            //  This is for testing only. Consider other options like WebSocket or long polling instead of frequent AJAX requests in cases when possible
             $.getJSON('https://cpanel2.proisp.no/~stangtqr/pwt/game.php?t=u&gid=' + game.gameId + '&pid=' + game.playerId + '&pname=' + game.playerName + '&l=' + game.score + '&callback=?', function(r) {
-            //$.getJSON('php/game.php?t=u&gid=' + gameId + '&pid=' + playerId + '&pname=' + name + '&l=' + score + '&callback=?', function(r) {
 
                 //  Checking the gameStatus property of the received object to see if game is still active
                 //  The game is active as long as the status is 10. As soon as only one player still has points left, the returnes gameStatus
@@ -479,17 +469,20 @@ game.restartGame = function() {
 
     // Stop the ongoing game and gameUpdate()
     game.gameOn = 0;
+    ble.setBit(1, 1, 0);
+    ble.priorityWrite(ble.charVal);
 
     // Avoid cached version of the controllers-file
     var time = new Date();
     var e = time.getTime();
 
     // AJAX request to restart the game session without interefering with the Bluetooth connection
-    $('#main').load('include/controllers.html?t=' + e);
+    $('#main').load('controllers.html?t=' + e);
 }
 
 //**
-//      Popup-menu opened when a player creates a game and no other players join in time
+//      Popup-menu opened when a player creates a game and no other players join in time.
+//      This is a temporary solution, and the html should be taken out of the js when fully functional
 //**
 
 game.singlePlayerPopup = function() {
@@ -570,7 +563,7 @@ game.notificationCallback = function(dataArray) {
 //**
 
 game.gameWon = function() {
-    this.ameOn = 0;
+    this.gameOn = 0;
 
     ble.charVal[10] = 0;
     ble.charVal[11] = 0;
@@ -578,6 +571,7 @@ game.gameWon = function() {
     ble.charVal[13] = 0;
 
     if(!game.local) {
+        ble.setBit(1, 1, 0);
         ble.priorityWrite(ble.charVal);
         game.writePermission = false;
     }
@@ -601,6 +595,7 @@ game.gameLost = function(status = "") {
     ble.charVal[13] = 0;
 
     if(!game.local) {
+        ble.setBit(1, 1, 0);
         ble.priorityWrite(ble.charVal);
         game.writePermission = false;
     }
@@ -700,6 +695,88 @@ game.rgbSetColor = function(color) {
 }
 
 //**
+//      Slot machine to enable powerups
+//**
+
+var slot = slot || {};
+
+slot.spinTime = 2500;		// The duration the slot spins when first triggered, 2,5 seconds
+slot.duration = 10000;		// The duration of the power-up
+slot.running = false;		// Variable to make sure the method start() can not be triggered when it is already running
+slot.powerups = ["boost", "rapidfire", "shield", "health"];
+slot.prevVal = 0;
+
+slot.start = function() {
+	if(slot.running == false){
+		var randomPower;
+		slot.running = true;
+
+		$('#slotmachine-container').fadeIn(1000);
+		$('span').toggleClass(randomPower);
+		$('span').addClass('spin_forward');
+
+		randomPower = slot.powerups[Math.floor(Math.random() * slot.powerups.length)];
+		$('span').toggleClass(randomPower);
+
+		setTimeout(function (){
+			slot.stop(randomPower);
+		}, slot.spinTime);
+	}
+};
+
+slot.stop = function(powerup){
+	$('span').removeClass('spin_forward');
+	slot.activatePowerup(powerup);
+	setTimeout(function() {
+		slot.fadeout(powerup);
+	}, slot.duration);
+};
+
+slot.fadeout = function(powerup) {
+	$('#slotmachine-container').fadeOut(1000);
+	slot.deactivatePowerup(powerup);
+	slot.running = false;
+};
+
+slot.activatePowerup = function(powerup) {
+	switch(powerup) {
+		case "boost":
+			slot.prevVal = game.speedCoeff;
+			game.speedCoeff = 1;
+			break;
+		case "rapidfire":
+			slot.prevVal = game.coolDownPeriod;
+			game.coolDownPeriod = 500;
+			break;
+		case "shield":
+			slot.prevVal = game.preventShot;
+			game.preventShot = 1;
+			break;
+		case "health":
+			game.score++
+			$('#points').text('♥ ' + game.score);
+			break;
+	};
+};
+
+slot.deactivatePowerup = function(powerup) {
+	switch(powerup) {
+		case "boost":
+			slot.speedCoeff = slot.prevVal;
+			break;
+		case "rapidfire":
+			slot.coolDownPeriod = slot.prevVal;
+			break;
+		case "shield":
+			slot.preventShot = slot.prevVal;
+			break;
+		case "health":
+			break;
+	};
+};
+
+
+//**
 //      Buttons and actions
 //**
 
@@ -743,7 +820,7 @@ $('#btn-reconnect').on('touchstart mousedown', function(event) {
 $('#btn-return').on('touchstart mousedown', function(event) {
     event.preventDefault();
     $('#message-container').fadeOut("slow").promise().done(function() {
-        $('#main').load('include/controllers.html', function() {
+        $('#main').load('controllers.html', function() {
             $(this).fadeIn(200);
         });
     });
@@ -775,7 +852,7 @@ $('.wait-till-game').hide();
 $('#points').text('♥ ' + game.score);
 
 
-$('#btn-menu').on('touchstart mousedown', function (event) {
+$('#btn-menu').on('touch click', function (event) {
     event.preventDefault();
     game.toggleGameMenu();
 });
@@ -797,5 +874,5 @@ game.toggleGameMenu = function() {
 
 $('#btn-exit').on('touchstart mousedown', function (event) {
     $('body').css({'background': "url('img/bg.jpg')"});
-    $('#main').load('include/controllers.html?t=' + e);
+    $('#main').load('controllers.html?t=');
 });

@@ -2,24 +2,24 @@
 //  Functions for connecting to BLE device and setting up main service and characteristics                      //
 //                                                                                                              //
 //  connect                             Searches for devices that matches the filter criterias                  //
-//  notificationCharacteristicHandler   Sets up event listener for the notification characteristic              //
+//  notificationCharHandler             Sets up event listener for the notification characteristic              //
 //  handleNotification                  Event handler for changes in the notifications                          //
-//  readWriteCharacteristicHandler      Sets up the readWriteCharacteristic                                     //
-//  readFromCharacteristic              Function for reading values from the readWriteCharacteristic            //
-//  writeToCharacteristic               Function for reading chosen values from the readWriteCharacterstic      //
+//  readWriteCharHandler                Sets up the readWriteCharacteristic                                     //
+//  readFromChar                        Function for reading values from the readWriteCharacteristic            //
+//  writeToChar                         Function for reading chosen values from the readWriteCharacterstic      //
 
 
 //* Creatig BLE object
 var ble = {
     /** Declaring the necessary global variables **/
     mainServiceUUID : '00001523-1212-efde-1523-785feabcd123',
-    readWriteCharacteristicUUID : '00001525-1212-efde-1523-785feabcd123',
-    notificationCharacteristicUUID : '00001524-1212-efde-1523-785feabcd123',
+    readWriteCharUUID : '00001525-1212-efde-1523-785feabcd123',
+    notificationCharUUID : '00001524-1212-efde-1523-785feabcd123',
     bluetoothDevice : '',
     mainServer : '',
     mainService : '',
-    readWriteCharacteristic : '',
-    notificationCharacteristic : '',
+    readWriteChar : '',
+    notificationChar : '',
     notificationContent : '',
     charVal : new Uint8Array(20),
     prevNotification : '',
@@ -31,21 +31,21 @@ var ble = {
         // Searching for Bluetooth devices that match the filter criteria
         console.log('Requesting Bluetooth Device...');
         navigator.bluetooth.requestDevice(
-            {filters: [{services: [this.mainServiceUUID]}]})
-            .then(device => {
-                this.bluetoothDevice = device;
-                // Adding event listener to detect loss of connection (not used for now because of errors on some phones)
-                //bluetoothDevice.addEventListener('gattserverdisconnected', disconnectHandler);
-                console.log('> Found ' + this.bluetoothDevice.name);
-                console.log('Connecting to GATT Server...');
-                return this.bluetoothDevice.connectGATT()
-                .then(gattServer => {
-                    this.mainServer = gattServer;
-                    console.log('> Bluetooth Device connected: ');
-                    this.connectionStatus(1);
+            { filters:[{ services: [ this.mainServiceUUID ]}] })
+        .then(device => {
+            this.bluetoothDevice = device;
+            // Adding event listener to detect loss of connection
+            //bluetoothDevice.addEventListener('gattserverdisconnected', disconnectHandler);
+            console.log('> Found ' + this.bluetoothDevice.name);
+            console.log('Connecting to GATT Server...');
+            return this.bluetoothDevice.connectGATT()
+            .then(gattServer => {
+                this.mainServer = gattServer;
+                console.log('> Bluetooth Device connected: ');
+                this.connectionStatus(1);
 
-                });
-            })
+            });
+        })
 
             // When matching device is found and selected, get the main service
             .then(server => {
@@ -58,10 +58,10 @@ var ble = {
                 console.log('> serviceReturn: ' + service);
                 return Promise.all([
                     // Get all characteristics and call handler functions for both
-                    service.getCharacteristic(this.readWriteCharacteristicUUID)
-                    .then(this.readWriteCharacteristicHandler),
-                    service.getCharacteristic(this.notificationCharacteristicUUID)
-                    .then(this.notificationCharacteristicHandler)
+                    service.getCharacteristic(this.readWriteCharUUID)
+                    .then(this.readWriteCharHandler),
+                    service.getCharacteristic(this.notificationCharUUID)
+                    .then(this.notificationCharHandler)
                 ])
                 // Print errors  to console
                 .catch(error => {
@@ -106,23 +106,23 @@ var ble = {
     },
 
     /** Function for setting up the notification characteristic **/
-    notificationCharacteristicHandler : function(characteristic) {
+    notificationCharHandler : function(characteristic) {
         'use strict';
 
         // Stores the notification characteristic object to ble object for easy access
-        ble.notificationCharacteristic = characteristic;
+        ble.notificationChar = characteristic;
         console.log('Notifications started.');
 
         // Initiates event listener for notifications sent from DK
-        ble.notificationCharacteristic.addEventListener('characteristicvaluechanged',ble.handleNotification);
+        ble.notificationChar.addEventListener('characteristicvaluechanged',ble.handleNotification);
         return characteristic.startNotifications();
     },
 
      /** Function for handling the read and write characteristic **/
-    readWriteCharacteristicHandler : function(characteristic) {
+    readWriteCharHandler : function(characteristic) {
         'use strict';
-        // Stores the readWriteCharacteristic to ble object
-        ble.readWriteCharacteristic = characteristic;
+        // Stores the readWriteChar to ble object
+        ble.readWriteChar = characteristic;
         return 1;
     },
 
@@ -155,14 +155,14 @@ var ble = {
 
     /** Function for reading from the read and write characteristic **/
     //  Parameter      byteOffset      int, 0-19    or  string, 'all'
-    readFromCharacteristic : function(byteOffset) {
+    readFromChar : function(byteOffset) {
         'use strict';
 
         // Data is sent from DK as a 20 byte long Uint8Array, stores in the data variable
         var data = new Uint8Array(20);
 
-        // Calls the redValue method in the readWriteCharacteristic
-        ble.readWriteCharacteristic.readValue()
+        // Calls the redValue method in the readWriteChar
+        ble.readWriteChar.readValue()
           .then(value => {
             // DataView is received from DK
             value = value.buffer ? value : new DataView(value);
@@ -191,21 +191,21 @@ var ble = {
     /** Function for writing to the read and write characteristic **/
     //  Parameters      byteOffset      int, 0-19
     //                  value           int, 0-255
-    writeToCharacteristic : function(byteOffset, value) {
+    writeToChar : function(byteOffset, value) {
         'use strict';
 
         ble.charVal[byteOffset] = value;
 
-        ble.readWriteCharacteristic.writeValue(ble.charVal);
+        ble.readWriteChar.writeValue(ble.charVal);
     },
 
     /** Function for writing array to the read and write characteristic **/
     //  Parameters      charVal     Uint8Array, maximum 20 bytes long
-    writeArrayToCharacteristic : function(charVal) {
+    writeArrayToChar : function(charVal) {
         'use strict';
 
         if(game.writePermission) {
-            ble.readWriteCharacteristic.writeValue(charVal);
+            ble.readWriteChar.writeValue(charVal);
             return 1;
         } else {
             return 0;
@@ -224,7 +224,7 @@ var ble = {
             return 0;
         } else {
             game.writePermission = 0;
-            return ble.readWriteCharacteristic.writeValue(charVal)
+            return ble.readWriteChar.writeValue(charVal)
                 .then( writeReturn => {
                     game.writePermission = true;
                     game.priorityPacket = 0;
