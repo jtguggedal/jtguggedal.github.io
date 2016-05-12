@@ -1,7 +1,7 @@
 #slotmachine {
   width: 100px;
   height: 100px;
-  padding: 0px 0px 0px;
+  padding: 0;
   margin: 0 auto;
   border: px solid rgba(0, 13, 29, 0.9);
   border-radius: 10px;
@@ -11,16 +11,16 @@
   overflow: hidden;
   position: relative;
   display: inline-block;
-  box-shadow: 0px 0px 60px 0px rgba(0,0,0, 0.4);
+  box-shadow: 0px 0px 30px 0px rgba(0,0,0, 0.4) inset;
 }
 
-span {
+#slotmachine span {
   position: absolute;
   top: -200px;
   left: -393px;
   height: 500px;
   width: 500px;
-  background: url('../pics/powerups.png') no-repeat;
+  background: url('../img/powerups.png') no-repeat;
 }
 
 #slotmachine-container {
@@ -36,7 +36,7 @@ span {
   -webkit-transform:rotate(0deg);
   -moz-transform: rotate(0deg);
   transform: rotate(0deg);
-  
+
 }
 .rapidfire {
   -webkit-transform:rotate(90deg);
@@ -47,7 +47,7 @@ span {
 .shield {
   -webkit-transform:rotate(180deg);
   -moz-transform:rotate(180deg);
-  transform:rotate(180deg);  
+  transform:rotate(180deg);
 }
 
 .health {
@@ -63,11 +63,11 @@ span {
 }
 
 @-webkit-keyframes rotate {
-  from { -webkit-transform:rotate(0deg) } 
+  from { -webkit-transform:rotate(0deg) }
   to { -webkit-transform:rotate(360deg) }
 }
 
 @-moz-keyframes rotate {
-  from { -moz-transform:rotate(0deg) } 
+  from { -moz-transform:rotate(0deg) }
   to { -moz-transform:rotate(360deg) }
 }
