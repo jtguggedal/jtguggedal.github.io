@@ -233,7 +233,7 @@ var ble = {
     },
 
     // Sets a bitmask to be able to set individual bits and send them to the DK
-    bitMask : [128, 64, 32, 16, 8, 4, 2, 1],
+    bitMask : [0b10000000, 0b01000000, 0b00100000, 0b00010000, 0b00001000, 0b00000100, 0b00000010, 0b00000001],
 
     // Function that sets individual bits in ble.charVal
     setBit : function(byteOffset, bitOffset, value) {
