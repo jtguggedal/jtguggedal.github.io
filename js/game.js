@@ -546,7 +546,8 @@ game.notificationCallback = function(dataArray) {
                 game.score--;
                 game.vibrate(500);   // vibrates for 500 ms
                 game.rgbSetColor('red');
-                $('#points').text('♥ ' + game.score);
+                if(!game.singlePlayer)
+                    $('#points').text('♥ ' + game.score);
             }
             if(game.score < 0) {
                 game.score = 0;
@@ -749,12 +750,13 @@ slot.activatePowerup = function(powerup) {
 			game.coolDownPeriod = 500;
 			break;
 		case "shield":
-			slot.prevVal = game.preventShot;
-			game.preventShot = 1;
+			slot.prevVal = game.preventHit;
+			game.preventHit = 1;
 			break;
 		case "health":
-			game.score++
-			$('#points').text('♥ ' + game.score);
+			game.score++;
+            if(!game.singlePlayer)
+                $('#points').text('♥ ' + game.score);
 			break;
 	};
 };
@@ -762,13 +764,13 @@ slot.activatePowerup = function(powerup) {
 slot.deactivatePowerup = function(powerup) {
 	switch(powerup) {
 		case "boost":
-			slot.speedCoeff = slot.prevVal;
+			game.speedCoeff = slot.prevVal;
 			break;
 		case "rapidfire":
-			slot.coolDownPeriod = slot.prevVal;
+			game.coolDownPeriod = slot.prevVal;
 			break;
 		case "shield":
-			slot.preventShot = slot.prevVal;
+			game.preventHit = slot.prevVal;
 			break;
 		case "health":
 			break;
