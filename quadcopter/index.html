@@ -101,6 +101,25 @@
         <script src="js/ble.js"></script>
         <script>
 
+            // Give input elements index corresponding to relevant bytes in characteristics
+            var inputMap = [    'placeholder',
+                                '#roll-slave-p', '#roll-slave-i', '#roll-slave-d',
+                                '#pitch-slave-p', '#pitch-slave-i', '#pitch-slave-d',
+                                '#yaw-slave-p', '#yaw-slave-i', '#yaw-slave-d',
+                                '#roll-master-p', '#roll-master-i', '#roll-master-d',
+                                '#pitch-master-p', '#pitch-master-i', '#pitch-master-d',
+                                '#yaw-master-p', '#yaw-master-i', '#yaw-master-d']
+
+            // Get PID values on connect
+            function readPidData() {
+                txChar.readValue()
+                .then(originalPidData => {
+                    console.log("Original PID data received:", originalPidData);
+
+                    // Write PID data to input boxes
+
+                });
+            }
 
             // Use connect() in ble.js to connect to quadcopter
             addListener('#button-connect', 'click', connect);
