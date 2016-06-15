@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>BLE quadcopter controller</title>
+        <meta charset="utf-8">
+        <meta name="description" content="BLE quadcopter controller">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="css/normal.css">
+        <link rel="stylesheet" type="text/css" href="css/style.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    </head>
+    <body>
+        <div id="frame">
+            <div id="connectionStatus">
+                Connection status
+            </div>
+            <div id="header">
+                <h1>BLE quadcopter tuning</h1>
+            </div>
+            <div id="main">
+                <div class="button-row">
+                    <button type="button" id="button-connect">Connect</button>
+                    <button type="button" id="button-send">Send data</button>
+                </div>
+                <div class="pid-tuning-group">
+                    <fieldset class="pid-tuning-field throttle">
+                        <legend>Throttle</legend>
+                        <label for="throttle" class="pid-tuning-label">Throttle:</label>
+                        <input type="number" id="throttle" class="pid-tuning-input">
+                    </fieldset>
+                </div>
+                <div class="pid-tuning-group">
+                    <fieldset class="pid-tuning-field">
+                        <legend>Roll - slave</legend>
+                        <label for="roll-slave-p" class="pid-tuning-label">P:</label>
+                        <input type="number" id="roll-slave-p" class="pid-tuning-input">
+                        <label for="roll-slave-i" class="pid-tuning-label">I:</label>
+                        <input type="number" id="roll-slave-i" class="pid-tuning-input">
+                        <label for="roll-slave-d" class="pid-tuning-label">D:</label>
+                        <input type="number" id="roll-slave-d" class="pid-tuning-input">
+                    </fieldset>
+                </div>
+                <div class="pid-tuning-group">
+                    <fieldset class="pid-tuning-field">
+                        <legend>Roll - master</legend>
+                        <label for="roll-master-p" class="pid-tuning-label">P:</label>
+                        <input type="number" id="roll-master-p" class="pid-tuning-input">
+                        <label for="roll-master-i" class="pid-tuning-label">I:</label>
+                        <input type="number" id="roll-master-i" class="pid-tuning-input">
+                        <label for="roll-master-d" class="pid-tuning-label">D:</label>
+                        <input type="number" id="roll-master-d" class="pid-tuning-input">
+                    </fieldset>
+                </div>
+                <div class="pid-tuning-group">
+                    <fieldset class="pid-tuning-field">
+                        <legend>Pitch - slave</legend>
+                        <label for="pitch-slave-p" class="pid-tuning-label">P:</label>
+                        <input type="number"  id="pitch-slave-p" class="pid-tuning-input">
+                        <label for="pitch-slave-i" class="pid-tuning-label">I:</label>
+                        <input type="number" id="pitch-slave-i" class="pid-tuning-input">
+                        <label for="pitch-slave-d" class="pid-tuning-label">D:</label>
+                        <input type="number"  id="pitch-slave-d" class="pid-tuning-input">
+                    </fieldset>
+                </div>
+                <div class="pid-tuning-group">
+                    <fieldset class="pid-tuning-field">
+                        <legend>Pitch - master</legend>
+                        <label for="pitch-master-p" class="pid-tuning-label">P:</label>
+                        <input type="number" id="pitch-master-p" class="pid-tuning-input">
+                        <label for="pitch-master-i" class="pid-tuning-label">I:</label>
+                        <input type="number" id="pitch-master-i" class="pid-tuning-input">
+                        <label for="pitch-master-d" class="pid-tuning-label">D:</label>
+                        <input type="number" id="pitch-master-d" class="pid-tuning-input">
+                    </fieldset>
+                </div>
+                <div class="pid-tuning-group">
+                    <fieldset class="pid-tuning-field">
+                        <legend>Yaw - slave</legend>
+                        <label for="yaw-slave-p" class="pid-tuning-label">P:</label>
+                        <input type="number" id="yaw-slave-p" class="pid-tuning-input">
+                        <label for="yaw-slave-i" class="pid-tuning-label">I:</label>
+                        <input type="number" id="yaw-slave-i" class="pid-tuning-input">
+                        <label for="yaw-slave-d" class="pid-tuning-label">D:</label>
+                        <input type="number" id="yaw-slave-d" class="pid-tuning-input">
+                    </fieldset>
+                </div>
+                <div class="pid-tuning-group">
+                    <fieldset class="pid-tuning-field">
+                        <legend>Yaw - master</legend>
+                        <label for="yaw-master-p" class="pid-tuning-label">P:</label>
+                        <input type="number" id="yaw-master-p" class="pid-tuning-input">
+                        <label for="yaw-master-i" class="pid-tuning-label">I:</label>
+                        <input type="number" id="yaw-master-i" class="pid-tuning-input">
+                        <label for="yaw-master-d" class="pid-tuning-label">D:</label>
+                        <input type="number" id="yaw-master-d" class="pid-tuning-input">
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+
+        <script src="js/ble.js"></script>
+        <script>
+
+
+            // Use connect() in ble.js to connect to quadcopter
+            addListener('#button-connect', 'click', connect);
+
+            // Send throttle and PID data to quadcopter
+            addListener('#button-send', 'click', sendData);
+
+            function sendData() {
+
+                // Get all PID input data and store to right index of charVal
+                rxCharVal[1] = select('#roll-slave-p').value;
+                rxCharVal[2] = select('#roll-slave-i').value;
+                rxCharVal[3] = select('#roll-slave-d').value;
+
+                rxCharVal[4] = select('#roll-master-p').value;
+                rxCharVal[5] = select('#roll-master-i').value;
+                rxCharVal[6] = select('#roll-master-d').value;
+
+                rxCharVal[7] = select('#pitch-slave-p').value;
+                rxCharVal[8] = select('#pitch-slave-i').value;
+                rxCharVal[9] = select('#pitch-slave-d').value;
+
+                rxCharVal[10] = select('#pitch-master-p').value;
+                rxCharVal[11] = select('#pitch-master-i').value;
+                rxCharVal[12] = select('#pitch-master-d').value;
+
+                rxCharVal[13] = select('#yaw-slave-p').value;
+                rxCharVal[14] = select('#yaw-slave-i').value;
+                rxCharVal[15] = select('#yaw-slave-d').value;
+
+                rxCharVal[16] = select('#yaw-master-p').value;
+                rxCharVal[17] = select('#yaw-master-i').value;
+                rxCharVal[18] = select('#yaw-master-d').value;
+
+                // Get all control input data and store to right index of exCharVal
+                exCharVal[1] = select('#throttle').value;
+
+                // Sending PID data with rxChar over BLE
+                writeArrayToChar(rxChar, rxCharVal)
+                .then( (status) => {
+                    console.log("Data sent:", rxCharVal);
+                })
+                .then( () => {
+                    // Sending throttle data with exChar over BLE
+                    writeArrayToChar(exChar, exCharVal)
+                    .then( (status) => {
+                        console.log("Data sent:", exCharVal);
+                    })
+                    .catch( (error) => {
+                        console.log('Control data sending failed', error)
+                    });
+                })
+                .catch( (error) => {
+                    console.log('PID data sending failed', error)
+                });
+            }
+
+            // Roll and pitch parameters should always the same
+            select('#roll-slave-p').addEventListener('input', function() {
+                select('#pitch-slave-p').value = this.value;
+            });
+
+            select('#roll-slave-i').addEventListener('input', function() {
+                select('#pitch-slave-i').value = this.value;
+            });
+
+            select('#roll-slave-d').addEventListener('input', function() {
+                select('#pitch-slave-d').value = this.value;
+            });
+
+            select('#pitch-slave-p').addEventListener('input', function() {
+                select('#roll-slave-p').value = this.value;
+            });
+
+            select('#pitch-slave-i').addEventListener('input', function() {
+                select('#roll-slave-i').value = this.value;
+            });
+
+            select('#pitch-slave-d').addEventListener('input', function() {
+                select('#roll-slave-d').value = this.value;
+            });
+
+            select('#roll-master-p').addEventListener('input', function() {
+                select('#pitch-master-p').value = this.value;
+            });
+
+            select('#roll-master-i').addEventListener('input', function() {
+                select('#pitch-master-i').value = this.value;
+            });
+
+            select('#roll-master-d').addEventListener('input', function() {
+                select('#pitch-master-d').value = this.value;
+            });
+
+            select('#pitch-master-p').addEventListener('input', function() {
+                select('#roll-master-p').value = this.value;
+            });
+
+            select('#pitch-master-i').addEventListener('input', function() {
+                select('#roll-master-i').value = this.value;
+            });
+
+            select('#pitch-master-d').addEventListener('input', function() {
+                select('#roll-master-d').value = this.value;
+            });
+
+            // Function for short-hand access to querySelector
+            function select(query) {
+                return document.querySelector(query);
+            }
+
+            // Function for short-hand access to adding eventListener to element
+            function addListener(selector, eventType, func) {
+                return document.querySelector(selector).addEventListener(eventType, func);
+            }
+        </script>
+    </body>
+</html>

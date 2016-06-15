@@ -1,0 +1,69 @@
+/* Stylesheet for BLE quadcopter */
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,300,700,900);
+
+body {
+    font-family: "Roboto";
+}
+
+h1 {
+
+}
+
+input[type=number].pid-tuning-input {
+    width: 50px;
+    margin-right: 20px;
+    border: 1px solid #BBB;
+}
+
+fieldset.pid-tuning-field {
+    width: 300px;
+    background-color: #FBFBFB;
+    border: 1px solid #DDD;
+}
+
+fieldset.throttle {
+    width: 150px;
+}
+
+legend {
+    font-weight: 700;
+}
+
+#connectionStatus {
+	padding: 2px 5px;
+	background-color: rgb(195, 7, 12);
+	color: white;
+	visibility: ;
+	text-align: center;
+	border-radius: 2px;
+	position: fixed;
+	margin-left: auto;
+	margin-right: auto;
+	top: 10px;
+	right: 10px;
+	font-size: 12px;
+}
+
+#frame {
+    padding: 20px;
+}
+
+#header {
+
+}
+
+#main {
+
+}
+
+.button-row {
+    margin-bottom: 20px;
+}
+
+.button-row > button {
+    margin-right: 30px;
+}
+
+.pid-tuning-group {
+    margin: 20px 0;
+}
