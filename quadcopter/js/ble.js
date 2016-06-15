@@ -144,7 +144,7 @@ function readPidData() {
 
         // Convert from dataView to Uint8Array and save original PID data for possible reset
         originalPidData = new Uint8Array(originalPid.buffer, 0, 20);
-        console.log("Original PID data received:", originalPid);*/
+        console.log("Original PID data received:", originalPid);
 
         // Write original PID data to input boxes
         for(var i = 1; i <= 18; i++) {
