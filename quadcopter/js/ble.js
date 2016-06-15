@@ -2,10 +2,10 @@
 //      BLE connection to quadcopter
 //
 
-var serviceUUID = '6E400001-B5A3-F393-E0A9-E50E24DCCA9E';
-var txCharUUID = '6E400002-B5A3-F393-E0A9-E50E24DCCA9E';
-var rxCharUUID = '6E400003-B5A3-F393-E0A9-E50E24DCCA9E';
-var exCharUUID = '6E400004-B5A3-F393-E0A9-E50E24DCCA9E';
+var serviceUUID = '6e400001-b5a3-f393-e0a9-a50e24dccA9e';
+var txCharUUID = '6e400002-b5a3-f393-e0a9-a50e24dccA9e';
+var rxCharUUID = '6e400003-b5a3-f393-e0a9-a50e24dccA9e';
+var exCharUUID = '6e400004-b5a3-f393-e0a9-a50e24dccA9e';
 var bluetoothDevice;
 var mainServer;
 var mainService;
