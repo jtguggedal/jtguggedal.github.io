@@ -47,7 +47,7 @@ var originalPidData;
     // When matching device is found and selected, get the main service
     .then(server => {
         console.log('Getting main Service...');
-        return mainServer.getPrimaryService(mainServiceUUID);
+        return mainServer.getPrimaryService(serviceUUID);
     })
     .then(service => {
 
