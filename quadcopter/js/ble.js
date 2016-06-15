@@ -111,11 +111,11 @@ function disconnectHandler() {
 /** Function for writing array to the read and write characteristic **/
 //  Parameters      charVal             Uint8Array, maximum 20 bytes long
 //                  characteristic      BLE characteristic object
-function writeArrayToChar(char, charVal) {
+function writeArrayToChar(char, data) {
     'use strict';
     return new Promise(function(resolve, reject) {
         if(writePermission) {
-            char.writeValue(charVal)
+            char.writeValue(data)
             .then( () => {
                 resolve('Sending successful');
             })
@@ -139,7 +139,7 @@ var inputMap = [    'placeholder',
 
 // Get PID values from quadcopter on connect
 function readPidData() {
-    /*txChar.readValue()
+    txChar.readValue()
     .then(originalPid => {
 
         // Convert from dataView to Uint8Array and save original PID data for possible reset
@@ -148,10 +148,10 @@ function readPidData() {
 
         // Write original PID data to input boxes
         for(var i = 1; i <= 18; i++) {
-            select(inputMap[i]).value = exCharVal[i];
+            select(inputMap[i]).value = rxCharVal[i];
         }
         return originalPidData;
-    //});
+    });
 }
 
 // Reset PID values to original
@@ -175,7 +175,7 @@ function sendData() {
     }
 
     // Get all control input data and store to right index of exCharVal
-    exCharVal[1] = select('#throttle').value;
+    exCharVal[0] = select('#throttle').value;
 
     // Sending PID data with rxChar over BLE
     writeArrayToChar(rxChar, rxCharVal)
