@@ -76,7 +76,7 @@ var originalPidData;
         .then( () => {
             connectionStatus(1);
             var inputs = document.getElementsByTagName('input');
-            for(i = 0; i < inputs.length; i++){
+            for( var i = 0; i < inputs.length; i++){
                 inputs[i].disabled = false;
             }
         })
