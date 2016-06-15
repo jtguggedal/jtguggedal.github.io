@@ -18,7 +18,7 @@ var exCharVal = new Uint8Array(20);
 var prevTx;
 
 // Function for connecting to quadcopter
-connect = function() {
+ function connect() {
     'use strict'
 
     // Options for Bluetooth devices to show in Chooser UI
