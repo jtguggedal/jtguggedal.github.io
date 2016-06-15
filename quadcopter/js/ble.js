@@ -114,7 +114,7 @@ function disconnectHandler() {
 function writeArrayToChar(char, charVal) {
     'use strict';
     return new Promise(function(resolve, reject) {
-        //if(writePermission) {
+        if(writePermission) {
             char.writeValue(charVal)
             .then( () => {
                 resolve('Sending successful');
