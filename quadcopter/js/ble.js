@@ -84,9 +84,9 @@ var writePermission = true;
         ])
         .then( () => {
             connectionStatus(1);
-            //if (typeof onConnect == 'function') {
-            //    onConnect();
-            //}
+            if (typeof onConnect == 'function') {
+                onConnect();
+            }
         })
 
         // Print errors  to console
