@@ -69,11 +69,17 @@ var writePermission = true;
                 characteristic.addEventListener('characteristicvaluechanged', rxHandleNotification);
                 console.log('RX characteristic ok');
                 return characteristic.startNotifications();
+            })
+            .catch(error => {
+                console.log("Failed in RX char init", error);
             }),
             service.getCharacteristic(exCharUUID)
             .then(characteristic => {
                 exChar = characteristic
                 console.log('EX characteristic ok');
+            })
+            .catch(error => {
+                console.log("Failed in EX char init", error);
             })
         ])
         .then( () => {
@@ -116,6 +122,12 @@ function rxHandleNotification(event) {
     txCharVal = originalPidData;
     console.log("Original PID data received:", originalPid);
 
+    // Enable input elements
+    var inputs = document.getElementsByTagName('input');
+    for( var i = 0; i < inputs.length; i++){
+        inputs[i].disabled = false;
+    }
+    
     // Write original PID data to input boxes
     for(var i = 1; i <= 18; i++) {
         select(inputMap[i]).value = originalPidData[i];
