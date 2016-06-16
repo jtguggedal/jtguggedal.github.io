@@ -76,9 +76,8 @@ var writePermission = true;
         ])
         .then( () => {
             connectionStatus(1);
-            var inputs = document.getElementsByTagName('input');
-            for( var i = 0; i < inputs.length; i++){
-                inputs[i].disabled = false;
+            if (typeof onConnect == 'function') {
+                onConnect();
             }
         })
 

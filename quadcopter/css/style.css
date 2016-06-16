@@ -3,16 +3,33 @@
 
 body {
     font-family: "Roboto";
+    background-color: #F9F9F9;
 }
 
 h1 {
     font-size: 30px;
 }
 
+button {
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);
+    background-color: #052033;
+    border: none;
+    color: white;
+    padding: 5px 11px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border: 1px solid white;
+}
+
 input[type=number].pid-tuning-input {
-    width: 50px;
+    width: 43px;
     margin-right: 20px;
     border: 1px solid #BBB;
+    padding-left: 7px;
 }
 
 fieldset.pid-tuning-field {
@@ -35,12 +52,11 @@ legend {
 	color: white;
 	visibility: ;
 	text-align: center;
-	border-radius: 2px;
-	position: fixed;
+	position: absolute;
 	margin-left: auto;
 	margin-right: auto;
-	top: 10px;
-	right: 10px;
+	top: 5px;
+	right: 5px;
 	font-size: 12px;
 }
 

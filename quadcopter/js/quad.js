@@ -25,19 +25,25 @@ function readPidData() {
     });
 }
 
-// Reset PID values to original
-function resetPid() {
-    for(var i = 1; i <= 18; i++) {
-        select(inputMap[i]).value = originalPidData[i];
-    }
-}
-
 // Use connect() to connect to quadcopter
 addListener('#button-connect', 'click', connect);
 
 // Send throttle and PID data to quadcopter
 addListener('#button-send', 'click', sendData);
 
+// Send throttle and PID data to quadcopter
+addListener('#button-reset', 'click', resetPid);
+
+
+// Function to be called on connect to set input properties
+function onConnect() {
+    var inputs = document.getElementsByTagName('input');
+    for( var i = 0; i < inputs.length; i++){
+        inputs[i].disabled = false;
+    }
+}
+
+// Function for sending both PID and controller data to quadcopter
 function sendData() {
 
     // Get all PID input data and store to right index of charVal
@@ -66,6 +72,14 @@ function sendData() {
         console.log('PID data sending failed:', error)
     });
 }
+
+// Reset PID values to original
+function resetPid() {
+    for(var i = 1; i <= 18; i++) {
+        select(inputMap[i]).value = originalPidData[i];
+    }
+}
+
 
 // Roll and pitch parameters should always the same
 select('#roll-slave-p').addEventListener('input', function() {

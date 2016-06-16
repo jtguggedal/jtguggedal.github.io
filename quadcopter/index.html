@@ -21,79 +21,79 @@
                 <div class="button-row">
                     <button type="button" id="button-connect">Connect</button>
                     <button type="button" id="button-send">Update</button>
-                    <button type="button" id="button-send">Reset</button>
+                    <button type="button" id="button-reset">Reset</button>
                 </div>
                 <div class="pid-tuning-group">
                     <fieldset class="pid-tuning-field throttle">
                         <legend>Throttle</legend>
                         <label for="throttle" class="pid-tuning-label">Throttle:</label>
-                        <input type="number" id="throttle" class="pid-tuning-input" disabled>
+                        <input type="number" id="throttle" class="pid-tuning-input" min="0" max="255" value="0" disabled>
                     </fieldset>
                 </div>
                 <div class="pid-tuning-group">
                     <fieldset class="pid-tuning-field">
                         <legend>Roll - slave</legend>
                         <label for="roll-slave-p" class="pid-tuning-label">P:</label>
-                        <input type="number" id="roll-slave-p" class="pid-tuning-input" disabled>
+                        <input type="number" id="roll-slave-p" class="pid-tuning-input" min="0" max="255" disabled>
                         <label for="roll-slave-i" class="pid-tuning-label">I:</label>
-                        <input type="number" id="roll-slave-i" class="pid-tuning-input" disabled>
+                        <input type="number" id="roll-slave-i" class="pid-tuning-input" min="0" max="255" disabled>
                         <label for="roll-slave-d" class="pid-tuning-label">D:</label>
-                        <input type="number" id="roll-slave-d" class="pid-tuning-input" disabled>
+                        <input type="number" id="roll-slave-d" class="pid-tuning-input" min="0" max="255" disabled>
                     </fieldset>
                 </div>
                 <div class="pid-tuning-group">
                     <fieldset class="pid-tuning-field">
                         <legend>Roll - master</legend>
                         <label for="roll-master-p" class="pid-tuning-label">P:</label>
-                        <input type="number" id="roll-master-p" class="pid-tuning-input" disabled>
+                        <input type="number" id="roll-master-p" class="pid-tuning-input" min="0" max="255" disabled>
                         <label for="roll-master-i" class="pid-tuning-label">I:</label>
-                        <input type="number" id="roll-master-i" class="pid-tuning-input" disabled>
+                        <input type="number" id="roll-master-i" class="pid-tuning-input" min="0" max="255" disabled>
                         <label for="roll-master-d" class="pid-tuning-label">D:</label>
-                        <input type="number" id="roll-master-d" class="pid-tuning-input" disabled>
+                        <input type="number" id="roll-master-d" class="pid-tuning-input" min="0" max="255" disabled>
                     </fieldset>
                 </div>
                 <div class="pid-tuning-group">
                     <fieldset class="pid-tuning-field">
                         <legend>Pitch - slave</legend>
                         <label for="pitch-slave-p" class="pid-tuning-label">P:</label>
-                        <input type="number"  id="pitch-slave-p" class="pid-tuning-input" disabled>
+                        <input type="number"  id="pitch-slave-p" class="pid-tuning-input" min="0" max="255" disabled>
                         <label for="pitch-slave-i" class="pid-tuning-label">I:</label>
-                        <input type="number" id="pitch-slave-i" class="pid-tuning-input" disabled>
+                        <input type="number" id="pitch-slave-i" class="pid-tuning-input" min="0" max="255" disabled>
                         <label for="pitch-slave-d" class="pid-tuning-label">D:</label>
-                        <input type="number"  id="pitch-slave-d" class="pid-tuning-input" disabled>
+                        <input type="number"  id="pitch-slave-d" class="pid-tuning-input" min="0" max="255" disabled>
                     </fieldset>
                 </div>
                 <div class="pid-tuning-group">
                     <fieldset class="pid-tuning-field">
                         <legend>Pitch - master</legend>
                         <label for="pitch-master-p" class="pid-tuning-label">P:</label>
-                        <input type="number" id="pitch-master-p" class="pid-tuning-input" disabled>
+                        <input type="number" id="pitch-master-p" class="pid-tuning-input" min="0" max="255" disabled>
                         <label for="pitch-master-i" class="pid-tuning-label">I:</label>
-                        <input type="number" id="pitch-master-i" class="pid-tuning-input" disabled>
+                        <input type="number" id="pitch-master-i" class="pid-tuning-input" min="0" max="255" disabled>
                         <label for="pitch-master-d" class="pid-tuning-label">D:</label>
-                        <input type="number" id="pitch-master-d" class="pid-tuning-input" disabled>
+                        <input type="number" id="pitch-master-d" class="pid-tuning-input" min="0" max="255" disabled>
                     </fieldset>
                 </div>
                 <div class="pid-tuning-group">
                     <fieldset class="pid-tuning-field">
                         <legend>Yaw - slave</legend>
                         <label for="yaw-slave-p" class="pid-tuning-label">P:</label>
-                        <input type="number" id="yaw-slave-p" class="pid-tuning-input" disabled>
+                        <input type="number" id="yaw-slave-p" class="pid-tuning-input" min="0" max="255" disabled>
                         <label for="yaw-slave-i" class="pid-tuning-label">I:</label>
-                        <input type="number" id="yaw-slave-i" class="pid-tuning-input" disabled>
+                        <input type="number" id="yaw-slave-i" class="pid-tuning-input" min="0" max="255" disabled>
                         <label for="yaw-slave-d" class="pid-tuning-label">D:</label>
-                        <input type="number" id="yaw-slave-d" class="pid-tuning-input" disabled>
+                        <input type="number" id="yaw-slave-d" class="pid-tuning-input" min="0" max="255" disabled>
                     </fieldset>
                 </div>
                 <div class="pid-tuning-group">
                     <fieldset class="pid-tuning-field">
                         <legend>Yaw - master</legend>
                         <label for="yaw-master-p" class="pid-tuning-label">P:</label>
-                        <input type="number" id="yaw-master-p" class="pid-tuning-input" disabled>
+                        <input type="number" id="yaw-master-p" class="pid-tuning-input" min="0" max="255" disabled>
                         <label for="yaw-master-i" class="pid-tuning-label">I:</label>
-                        <input type="number" id="yaw-master-i" class="pid-tuning-input" disabled>
+                        <input type="number" id="yaw-master-i" class="pid-tuning-input" min="0" max="255" disabled>
                         <label for="yaw-master-d" class="pid-tuning-label">D:</label>
-                        <input type="number" id="yaw-master-d" class="pid-tuning-input" disabled>
+                        <input type="number" id="yaw-master-d" class="pid-tuning-input" min="0" max="255" disabled>
                     </fieldset>
                 </div>
             </div>
