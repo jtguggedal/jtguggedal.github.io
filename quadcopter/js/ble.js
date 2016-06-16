@@ -68,7 +68,7 @@ var writePermission = true;
                 rxChar = characteristic;
                 characteristic.addEventListener('characteristicvaluechanged', rxHandleNotification);
                 console.log('RX characteristic ok');
-                return characteristic.startNotifications();
+                characteristic.startNotifications();
             })
             .catch(error => {
                 console.log("Failed in RX char init", error);
@@ -127,7 +127,7 @@ function rxHandleNotification(event) {
     for( var i = 0; i < inputs.length; i++){
         inputs[i].disabled = false;
     }
-    
+
     // Write original PID data to input boxes
     for(var i = 1; i <= 18; i++) {
         select(inputMap[i]).value = originalPidData[i];
