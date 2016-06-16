@@ -119,8 +119,8 @@ function writeArrayToChar(char, data) {
             .then( () => {
                 resolve('Sending successful');
             })
-            .catch( () => {
-                reject('Sending failed');
+            .catch( (error) => {
+                reject('Sending failed', error);
             })
         } else {
             reject('No permission to write');
@@ -161,7 +161,7 @@ function resetPid() {
     }
 }
 
-// Use connect() in ble.js to connect to quadcopter
+// Use connect() to connect to quadcopter
 addListener('#button-connect', 'click', connect);
 
 // Send throttle and PID data to quadcopter
