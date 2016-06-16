@@ -15,8 +15,8 @@ var exChar;
 var txContent;
 var txCharVal = new Uint8Array(20);
 var exCharVal = new Uint8Array(20);
-var prevTx;
-var originalPidData;
+var prevTx = new Uint8Array(20);
+var originalPidData = new Uint8Array(20);
 var writePermission = true;
 
 // Function for connecting to quadcopter
