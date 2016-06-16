@@ -99,14 +99,19 @@ var writePermission = true;
 function rxHandleNotification(event) {
     'use strict';
 
+    console.log(event);
+
     // The received notification consists of a DataView object, assigned to value
     let value = event.target.value;
     value = value.buffer ? value : new DataView(value);
+
+    console.log(value);
 
     var valueArray = new Uint8Array(20);
     for(var i = 0; i < 20; i++)
         valueArray[i] = value.getUint8(i);
 
+    console.log(valueArray);
     originalPidData = valueArray;
     txCharVal = originalPidData;
     console.log("Original PID data received:", originalPid);
