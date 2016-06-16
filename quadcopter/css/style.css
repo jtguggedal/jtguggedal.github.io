@@ -25,6 +25,10 @@ button {
     border: 1px solid white;
 }
 
+button:focus {
+    outline:0;
+}
+
 input[type=number].pid-tuning-input {
     width: 43px;
     margin-right: 20px;

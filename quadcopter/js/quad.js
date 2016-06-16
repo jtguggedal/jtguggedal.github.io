@@ -5,24 +5,24 @@ var inputMap = [    'placeholder',
                     '#yaw-slave-p', '#yaw-slave-i', '#yaw-slave-d',
                     '#roll-master-p', '#roll-master-i', '#roll-master-d',
                     '#pitch-master-p', '#pitch-master-i', '#pitch-master-d',
-                    '#yaw-master-p', '#yaw-master-i', '#yaw-master-d']
-
+                    '#yaw-master-p', '#yaw-master-i', '#yaw-master-d'];
 
 // Get PID values from quadcopter on connect
 function readPidData() {
-    txChar.readValue()
-    .then(originalPid => {
+    return txChar.readValue()
+        .then(originalPid => {
 
-        // Convert from dataView to Uint8Array and save original PID data for possible reset
-        originalPidData = new Uint8Array(originalPid.buffer, 0, 20);
-        console.log("Original PID data received:", originalPid);
+            // Convert from dataView to Uint8Array and save original PID data for possible reset
+            originalPidData = new Uint8Array(originalPid.buffer, 0, 20);
+            txCharVal = originalPidData;
+            console.log("Original PID data received:", originalPid);
 
-        // Write original PID data to input boxes
-        for(var i = 1; i <= 18; i++) {
-            select(inputMap[i]).value = txCharVal[i];
-        }
-        return originalPidData;
-    });
+            // Write original PID data to input boxes
+            for(var i = 1; i <= 18; i++) {
+                select(inputMap[i]).value = originalPidData[i];
+            }
+            resolve(originalPidData);
+        });
 }
 
 // Use connect() to connect to quadcopter
@@ -37,10 +37,16 @@ addListener('#button-reset', 'click', resetPid);
 
 // Function to be called on connect to set input properties
 function onConnect() {
+
+    // Read original PID values
+    readPidData();
+
+    // Enable input elements
     var inputs = document.getElementsByTagName('input');
     for( var i = 0; i < inputs.length; i++){
         inputs[i].disabled = false;
     }
+
 }
 
 // Function for sending both PID and controller data to quadcopter
