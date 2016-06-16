@@ -65,8 +65,10 @@ var writePermission = true;
             }),
             service.getCharacteristic(rxCharUUID)
             .then(characteristic => {
-                rxChar = characteristic
+                rxChar = characteristic;
+                characteristic.addEventListener('characteristicvaluechanged', rxHandleNotification);
                 console.log('RX characteristic ok');
+                return characteristic.startNotifications();
             }),
             service.getCharacteristic(exCharUUID)
             .then(characteristic => {
@@ -91,6 +93,30 @@ var writePermission = true;
     .catch(error => {
         console.log('Argh! ' + error);
     });
+}
+
+// Handle notifications received from the quadcopter
+function rxHandleNotification(event) {
+    'use strict';
+
+    // The received notification consists of a DataView object, assigned to value
+    let value = event.target.value;
+    value = value.buffer ? value : new DataView(value);
+
+    var valueArray = new Uint8Array(20);
+    for(var i = 0; i < 20; i++)
+        valueArray[i] = value.getUint8(i);
+
+    originalPidData = valueArray;
+    txCharVal = originalPidData;
+    console.log("Original PID data received:", originalPid);
+
+    // Write original PID data to input boxes
+    for(var i = 1; i <= 18; i++) {
+        select(inputMap[i]).value = originalPidData[i];
+    }
+
+    return value;
 }
 
 // Function to notify when connection to BLE device is established
