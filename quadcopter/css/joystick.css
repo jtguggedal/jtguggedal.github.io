@@ -1,0 +1,16 @@
+/* Joystick stylesheet */
+
+#joystick-container {
+    position: static;
+    top: 0;
+    display: inline-block;
+}
+
+#joystickLeft {
+    position: absolute;
+}
+
+#debug-container {
+    clear: both;
+    display: inline-block;
+}

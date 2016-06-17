@@ -148,13 +148,3 @@ select('#pitch-master-i').addEventListener('input', function() {
 select('#pitch-master-d').addEventListener('input', function() {
     select('#roll-master-d').value = this.value;
 });
-
-// Function for short-hand access to querySelector
-function select(query) {
-    return document.querySelector(query);
-}
-
-// Function for short-hand access to adding eventListener to element
-function addListener(selector, eventType, func) {
-    return document.querySelector(selector).addEventListener(eventType, func);
-}

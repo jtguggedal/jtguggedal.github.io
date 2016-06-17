@@ -9,6 +9,7 @@ html {
 	background: radial-gradient(ellipse at center,  rgba(29, 76, 122, 1) 0%, rgba(8, 21, 34, 1) 100%);
 
 }
+
 body {
 	position: absolute;
 	font-family: "Lato";
@@ -21,7 +22,6 @@ body {
 	overflow: hidden;
 	background: #F9F9F9;
 	background-size: cover;
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0c4e91', endColorstr='#f7000000',GradientType=1 );
 	overflow: hidden;
 	-webkit-user-select: none;
 	-moz-user-select: none;
@@ -29,49 +29,17 @@ body {
 	user-select: none;
 }
 
-#footer {
-	height: 40px;
-	width: 100%;
-    background-color: #052033;
-	position: fixed;
-	bottom: 0;
-	margin: 0;
-	clear: both;
-	vertical-align: middle;
-	z-index: 10;
-	box-shadow: 0px 0px 20px 2px rgba(0, 0, 0, 0.4);
-}
-
-.footer-logo {
-	height: 18px;
-	margin: 12px 30px 0 30px;
-}
-
-#main {
-	width: 100%;
-	height: 100%;
-	margin-top: 10px;
-	margin-left: auto;
-	margin-right: auto;
-}
-
-#main-message {
-	margin-top: 60px;
-}
-
 h1 {
-	color: #444;
+	color: #222;
 	font-size: 50px;
 	text-align: center;
 	margin: 25px auto 30px auto;
 	text-shadow: 1px 1px 15px rgba(0, 0, 0, 0);
     font-family: "Alegreya Sans";
+	font-size: 30px;
 	width: 100%;;
 	border-radius: 3px;
 	padding: 30px 0 0px 0;
-    /*background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.5));
-    background-color: rgba(214, 10, 10, 0);
-	box-shadow: 0px 0px 20px 2px rgba(0, 0, 0, 0.0);*/
 }
 
 h2 {
@@ -105,6 +73,41 @@ input[type=range] {
 	-webkit-appearance: slider-vertical; /* WebKit */
 }
 
+#main {
+	width: 100%;
+	height: 100%;
+	margin-top: 10px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.loaded-content {
+	height: 100%;
+	width: 100%;
+}
+
+#main-message {
+	margin-top: 60px;
+}
+
+.button-main-menu {
+    display: inline-block;
+    width: 150px;
+    height: 35px;
+    padding-top: 10px;
+    margin: 13px 20px;
+    background-color: #367d59;
+    border: 2px solid white;
+    border-radius: 2px;
+    text-align: center;
+    cursor: pointer;
+    box-shadow: 1px 1px 20px 0px rgba(0,0,0, 0.3);
+    color: #FFF;
+    font-size: 18px;
+    font-weight: 700;
+    vertical-align: top;
+}
+
 #connectionStatus {
 	display: none;
 	padding: 2px 5px;
@@ -121,6 +124,25 @@ input[type=range] {
 	right: 10px;
 	font-size: 12px;
 }
+
+#footer {
+	height: 40px;
+	width: 100%;
+    background-color: #052033;
+	position: fixed;
+	bottom: 0;
+	margin: 0;
+	clear: both;
+	vertical-align: middle;
+	z-index: 10;
+	box-shadow: 0px 0px 20px 2px rgba(0, 0, 0, 0.4);
+}
+
+.footer-logo {
+	height: 18px;
+	margin: 12px 30px 0 30px;
+}
+
 
 /* Button to activate fullscreen */
 
@@ -150,14 +172,12 @@ input[type=range] {
         width: 100%;
         height: 100%;
 		font-size: 25px;
-		background: -moz-radial-gradient(center, ellipse cover,  rgba(29, 76, 122, 1) 0%, rgba(0,0,0,0.97) 100%);
-		background: -webkit-radial-gradient(center, ellipse cover,  rgba(29, 76, 122, 1) 0%,rgba(0,0,0,0.97) 100%);
-		background: radial-gradient(ellipse at center,  rgba(29, 76, 122, 1) 0%, rgba(8, 21, 34, 1) 100%);
-        color: white;
+		color: #222;
         margin: 0;
         padding: 0;
         vertical-align: middle;
         text-align: center;
+		background: #F9F9F9;
         font-weight: 700;
         padding-top: 200px;
         z-index: 1000;

@@ -157,24 +157,6 @@
     margin: 10px auto;
 }
 
-.button-main-menu {
-    display: inline-block;
-    width: 150px;
-    height: 35px;
-    padding-top: 10px;
-    margin: 13px 20px;
-    background-color: #367d59;
-    border: 2px solid white;
-    border-radius: 2px;
-    text-align: center;
-    cursor: pointer;
-    box-shadow: 1px 1px 20px 0px rgba(0,0,0, 0.3);
-    color: #FFF;
-    font-size: 18px;
-    font-weight: 700;
-    vertical-align: top;
-}
-
 .button-main-menu img {
     margin: 8px auto 8px auto;
     display: block;

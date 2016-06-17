@@ -2,18 +2,14 @@
 <!doctype html>
 <html lang="en">
   <head>
-
+    <title>Quadcopter</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Physical Web RC Car">
+    <meta name="description" content="BLE quadcopter">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
-    <script src="js/ble.js"></script>
-	<link rel="stylesheet" type="text/css" href="css/slotmachine.css"></link>
-    <link rel="stylesheet" type="text/css" href="css/control.css?"></link>
-    <link rel="stylesheet" type="text/css" href="css/controllers.css"></link>
-
-    <title>Quadcopter</title>
-
+    <link rel="stylesheet" type="text/css" href="css/normal.css">
+    <link rel="stylesheet" type="text/css" href="css/control.css">
+    <script src="js/func.js"></script>
   </head>
 
     <body>
@@ -26,44 +22,33 @@
         </div>
         <div id="connectionStatus">Connection status</div>
 
-        <div id="fullscreen" onclick="">Click for fullscreen</div>
+        <div id="fullscreen">Click for fullscreen</div>
 
         <div id="main">
-
-            <h1 id="welcome">Quadcopter</h1>
+            <h1>Quadcopter</h1>
             <div id="main-message">
-    			<div onclick="game_init();" id='connect' class="button-main-menu">
+    			<div id='button-connect' class="button-main-menu">
                     Connect
                 </div>
             </div>
-
-
         </div>
 		<div id="footer">
 			<img src="img/nordic.png" id="nordiclogo" class="footer-logo"></img>
 		</div>
 
 		<script>
+            // Button actions
+            addListener('#button-connect', 'click', start);
 
-        //*** Initialize game **/
-
-        function game_init() {
-            toggleFullscreen();
-            ble.connect();
-            $('#fullscreen').show();
-			$('#footer').hide();
-            $('#connectionStatus').fadeIn();
-            var time = new Date();
-            var e = time.getTime();
-            setTimeout(function() {
-                $('#main').load('controllers.html?t=' + e);
-            }, 1000);
-        }
+            // Show joysticks
+            function start() {
+                select('#main').innerHTML = "";
+                select('#main').innerHTML = '<object type="text/html" data="index.html" class="loaded-content" ></object>';
 
 
+                //connect();
+            }
 		</script>
-
-
 
         <script>
             // Enable fullscreen
@@ -100,18 +85,10 @@
                 toggleFullscreen();
             });
 
-            (function() {
-                var time = new Date();
-                var e = time.getTime();
-                $('head').append('<link rel="stylesheet" href="css/settings.css?' + e + '" type="text/css" />');
-            })();
-
-
         </script>
 
-
-
-
+        <script src="js/ble.js"></script>
+        <script src="js/nipple.js"></script>
 
     </body>
 </html>

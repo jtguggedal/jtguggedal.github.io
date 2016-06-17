@@ -21,3 +21,49 @@ function sumArray(a) {
     }
     return a.reduce(add, 0);
 }
+
+
+// Function for short-hand access to querySelector
+function select(query) {
+    return document.querySelector(query);
+}
+
+
+// Function for short-hand access to adding eventListener to element
+function addListener(selector, eventType, func) {
+    return document.querySelector(selector).addEventListener(eventType, func);
+}
+
+
+// XHR wrapped in a promise
+function loadFile(url) {
+
+    return new Promise(function(resolve, reject) {
+        var request = new XMLHttpRequest();
+        request.open('GET', url);
+        request.responseType = 'document';
+
+        // When the request loads, check whether it was successful
+        request.onload = function() {
+        if (request.status === 200) {
+
+        // If successful, resolve the promise by passing back the request response
+            resolve(request.response);
+        } else {
+
+        // If it fails, reject the promise with a error message
+            reject(Error('File didn\'t load successfully; error code:' + request.statusText));
+        }
+      };
+
+      request.onerror = function() {
+
+      // Also deal with the case when the entire request fails to begin with
+      // This is probably a network error, so reject the promise with an appropriate message
+          reject(Error('There was a network error.'));
+      };
+      
+      // Send the request
+      request.send();
+    });
+  }
