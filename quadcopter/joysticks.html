@@ -2,6 +2,9 @@
 <html>
     <head>
         <title>Joystick testing</title>
+        <meta charset="utf-8">
+        <meta name="description" content="BLE quadcopter controller">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" type="text/css" href="css/joystick.css">
         <script src="js/func.js"></script>
         <script src="js/ble.js"></script>
@@ -35,6 +38,7 @@
             //     Joystick, based on the amazing nippleJS by @yoannmoinet: http://yoannmoinet.github.io/nipplejs/
             //**
 
+            // Joystick left
             var joystickLeft = nipplejs.create({
                 zone: document.getElementById('joystick-left'),
                 mode: 'static',
@@ -43,15 +47,15 @@
                 size: 150,
                 restOpacity: 0.9
             });
-            joystickPos = joystickLeft.position;
+            joystickLeftPos = joystickLeft.position;
 
 
             joystickLeft.on('end', function(evt, data) {
                 // Executes when joystick is released
                 if(printPosition) {
-                    select('#debug-angle').innerHTML = 'Angle: ' + data.angle.degree.toFixed(0);
-                    select('#debug-distance').innerHTML = 'Distance: ' + data.distance.toFixed(1);
-                    select('#debug-output').innerHTML = 'Output [%]: ' + output.toFixed(1) + ' %';
+                    select('#debug-angle').innerHTML = 'Angle: 0';
+                    select('#debug-distance').innerHTML = 'Distance: 0';
+                    select('#debug-output').innerHTML = 'Output [%]: 0';
                     //console.log(data);
                 }
             }).on('move', function(evt, data) {
@@ -61,6 +65,40 @@
                 var output = (data.distance / (joystickLeft.options.size / 2)) * 100;
 
                 if(printPosition) {
+                    select('#debug-angle').innerHTML = 'Angle: ' + data.angle.degree.toFixed(0);
+                    select('#debug-distance').innerHTML = 'Distance: ' + data.distance.toFixed(1);
+                    select('#debug-output').innerHTML = 'Output [%]: ' + output.toFixed(1) + ' %';
+                    //console.log(data);
+                }
+            })
+
+            // Joystick right
+            var joystickRight = nipplejs.create({
+                zone: document.getElementById('joystick-right'),
+                mode: 'static',
+                position: {right: '100px', top: '100px'},
+                color: 'rgb(42, 115, 100)',
+                size: 150,
+                restOpacity: 0.9
+            });
+
+            joystickRightPos = joystickRight.position;
+
+            joystickRight.on('end', function(evt, data) {
+                // Executes when joystick is released
+                if(!printPosition) {
+                    select('#debug-angle').innerHTML = 'Angle: ' + data.angle.degree.toFixed(0);
+                    select('#debug-distance').innerHTML = 'Distance: ' + data.distance.toFixed(1);
+                    select('#debug-output').innerHTML = 'Output [%]: ' + output.toFixed(1) + ' %';
+                    //console.log(data);
+                }
+            }).on('move', function(evt, data) {
+
+                // Executes on every new touch event from joystick
+
+                var output = (data.distance / (joystickRight.options.size / 2)) * 100;
+
+                if(!printPosition) {
                     select('#debug-angle').innerHTML = 'Angle: ' + data.angle.degree.toFixed(0);
                     select('#debug-distance').innerHTML = 'Distance: ' + data.distance.toFixed(1);
                     select('#debug-output').innerHTML = 'Output [%]: ' + output.toFixed(1) + ' %';
