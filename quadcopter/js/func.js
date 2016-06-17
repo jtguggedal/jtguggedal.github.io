@@ -1,13 +1,15 @@
 
-// Check if two arrays are equal
-function arraysEqual(arr1, arr2) {
+// Check if two arrays are equal, with option to specify index interval to check
+function arraysEqual(arr1, arr2, lower = 0, upper = 0) {
     if(arr1.length !== arr2.length)
         return false;
-    for(var i = arr1.length; i--;) {
+
+    var upperL = (upper == 0 ? arr1.length : upper);
+
+    for(var i = upperL; i >= lower; i--) {
         if(arr1[i] !== arr2[i])
             return false;
     }
-
     return true;
 }
 

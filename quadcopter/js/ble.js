@@ -113,7 +113,7 @@ function rxHandleNotification(event) {
     for(var i = 0; i < 20; i++)
         valueArray[i] = value.getUint8(i);
 
-    if((sumArray(valueArray) != 0) && (!arraysEqual(valueArray, prevRxValue))) {
+    if((sumArray(valueArray) != 0) && (!arraysEqual(valueArray, prevRxValue, 1, 18))) {
         originalPidData = rxCharVal = prevRxValue = valueArray;
         console.log("Original PID data received:", originalPidData);
 
