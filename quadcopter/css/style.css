@@ -29,6 +29,10 @@ button:focus {
     outline:0;
 }
 
+div.pid-tuning-group > button {
+    margin-left: 35px;
+}
+
 input[type=number].pid-tuning-input {
     width: 43px;
     margin-right: 20px;
@@ -44,6 +48,7 @@ fieldset.pid-tuning-field {
 
 fieldset.throttle {
     width: 150px;
+    display: inline-block;
 }
 
 legend {

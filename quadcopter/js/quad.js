@@ -25,6 +25,8 @@ function readPidData() {
         });
 }
 
+/** Button actions **/
+
 // Use connect() to connect to quadcopter
 addListener('#button-connect', 'click', connect);
 
@@ -33,6 +35,9 @@ addListener('#button-send', 'click', sendData);
 
 // Send throttle and PID data to quadcopter
 addListener('#button-reset', 'click', resetPid);
+
+// Send throttle and PID data to quadcopter
+addListener('#button-stop', 'click', stopQuad);
 
 
 // Function to be called on connect to set input properties
@@ -86,6 +91,14 @@ function resetPid() {
     }
 }
 
+function stopQuad() {
+    exCharVal[0] = 0;
+    writeArrayToChar(exChar, exCharVal)
+    .then( () => {
+        select('#throttle').value = 0;
+        console.log("Quadcopter stopped. Data sent:", exCharVal);
+    })
+}
 
 // Roll and pitch parameters should always the same
 select('#roll-slave-p').addEventListener('input', function() {
