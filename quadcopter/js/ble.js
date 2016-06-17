@@ -105,7 +105,6 @@ var writePermission = true;
 function rxHandleNotification(event) {
     'use strict';
 
-    console.log(event);
     // The received notification consists of a DataView object, assigned to value
     let value = event.target.value;
     value = value.buffer ? value : new DataView(value);
