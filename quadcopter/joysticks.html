@@ -22,24 +22,24 @@
         </div>
         <div id="debug-containerLeft">
             <p id="debug-angleLeft">
-                Angle: 0
+                <b>Angle</b>: 0
             </p>
             <p id="debug-distanceLeft">
-                Distance: 0
+                <b>Distance</b>: 0
             </p>
             <p id="debug-outputLeft">
-                Output: 0
+                <b>Output</b>: 0
             </p>
         </div>
         <div id="debug-containerRight">
             <p id="debug-angleRight">
-                Angle: 0
+                <b>Angle</b>: 0
             </p>
             <p id="debug-distanceRight">
-                Distance: 0
+                <b>Distance</b>: 0
             </p>
             <p id="debug-outputRight">
-                Output: 0
+                <b>Output</b>: 0
             </p>
         </div>
         <script>
@@ -64,9 +64,9 @@
             joystickLeft.on('end', function(evt, data) {
                 // Executes when joystick is released
                 if(printPosition) {
-                    select('#debug-angleLeft').innerHTML = 'Angle: 0';
-                    select('#debug-distanceLeft').innerHTML = 'Distance: 0';
-                    select('#debug-outputLeft').innerHTML = 'Output [%]: 0';
+                    select('#debug-angleLeft').innerHTML = '<b>Angle</b>: 0';
+                    select('#debug-distanceLeft').innerHTML = '<b>Distance</b>: 0';
+                    select('#debug-outputLeft').innerHTML = '<b>Output [%]</b>: 0';
                     //console.log(data);
                 }
             }).on('move', function(evt, data) {
@@ -76,9 +76,9 @@
                 var output = (data.distance / (joystickLeft.options.size / 2)) * 100;
 
                 if(printPosition) {
-                    select('#debug-angleLeft').innerHTML = 'Angle: ' + data.angle.degree.toFixed(0);
-                    select('#debug-distanceLeft').innerHTML = 'Distance: ' + data.distance.toFixed(1);
-                    select('#debug-outputLeft').innerHTML = 'Output [%]: ' + output.toFixed(1) + ' %';
+                    select('#debug-angleLeft').innerHTML = '<b>Angle</b>: ' + data.angle.degree.toFixed(0);
+                    select('#debug-distanceLeft').innerHTML = '<b>Distance</b>: ' + data.distance.toFixed(1);
+                    select('#debug-outputLeft').innerHTML = '<b>Output [%]</b>: ' + output.toFixed(1) + ' %';
                     //console.log(data);
                 }
             })
@@ -98,9 +98,9 @@
             joystickRight.on('end', function(evt, data) {
                 // Executes when joystick is released
                 if(printPosition) {
-                    select('#debug-angleRight').innerHTML = 'Angle: 0';
-                    select('#debug-distanceRight').innerHTML = 'Distance: 0';
-                    select('#debug-outputRight').innerHTML = 'Output [%]: 0';
+                    select('#debug-angleRight').innerHTML = '<b>Angle</b>: 0';
+                    select('#debug-distanceRight').innerHTML = '<b>Distance</b>: 0';
+                    select('#debug-outputRight').innerHTML = '<b>Output [%]</b>: 0';
                     //console.log(data);
                 }
             }).on('move', function(evt, data) {
@@ -110,9 +110,9 @@
                 var output = (data.distance / (joystickRight.options.size / 2)) * 100;
 
                 if(printPosition) {
-                    select('#debug-angleRight').innerHTML = 'Angle: ' + data.angle.degree.toFixed(0);
-                    select('#debug-distanceRight').innerHTML = 'Distance: ' + data.distance.toFixed(1);
-                    select('#debug-outputRight').innerHTML = 'Output [%]: ' + output.toFixed(1) + ' %';
+                    select('#debug-angleRight').innerHTML = '<b>Angle</b>: ' + data.angle.degree.toFixed(0);
+                    select('#debug-distanceRight').innerHTML = '<b>Distance</b>: ' + data.distance.toFixed(1);
+                    select('#debug-outputRight').innerHTML = '<b>Output [%]</b>: ' + output.toFixed(1) + ' %';
                     //console.log(data);
                 }
             })

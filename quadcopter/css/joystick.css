@@ -1,5 +1,11 @@
 /* Joystick stylesheet */
 
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:100,300,400,500,700|Lato:400,500,700,300,100|Alegreya+Sans);
+
+body {
+    font-family: 'Roboto';
+}
+
 #joystick-container {
     position: static;
     top: 0;
@@ -10,7 +16,27 @@
     position: absolute;
 }
 
-#debug-container {
-    clear: both;
+#joystickLeft {
+    position: absolute;
+
+}
+
+#debug-containerLeft {
     display: inline-block;
+    position: absolute;
+    bottom: 50px;
+    left: 60px;
+}
+
+
+#debug-containerRight {
+    position: absolute;
+    bottom: 50px;
+    right: 20px;
+    width: 160px;
+}
+
+p {
+    font-size: 12px;
+    line-height: 80%;
 }
