@@ -13,9 +13,9 @@ var rxChar;
 var txChar;
 var exChar;
 var txContent;
-var txCharVal = new Uint8Array(20);
+var rxCharVal = new Uint8Array(20);
 var exCharVal = new Uint8Array(20);
-var prevTx = new Uint8Array(20);
+var prevRxValue = new Uint8Array(20);
 var originalPidData = new Uint8Array(20);
 var writePermission = true;
 
@@ -105,32 +105,28 @@ var writePermission = true;
 function rxHandleNotification(event) {
     'use strict';
 
-    console.log(event);
-
     // The received notification consists of a DataView object, assigned to value
     let value = event.target.value;
     value = value.buffer ? value : new DataView(value);
-
-    console.log(value);
 
     var valueArray = new Uint8Array(20);
     for(var i = 0; i < 20; i++)
         valueArray[i] = value.getUint8(i);
 
-    console.log(valueArray);
-    originalPidData = valueArray;
-    txCharVal = originalPidData;
-    console.log("Original PID data received:", originalPid);
+    if(!arraysEqual(valueArray, prevRxValue)) {
+        originalPidData = rxCharVal = prevRxValue = valueArray;
+        console.log("Original PID data received:", originalPidData);
 
-    // Enable input elements
-    var inputs = document.getElementsByTagName('input');
-    for( var i = 0; i < inputs.length; i++){
-        inputs[i].disabled = false;
-    }
+        // Enable input elements
+        var inputs = document.getElementsByTagName('input');
+        for( var i = 0; i < inputs.length; i++){
+            inputs[i].disabled = false;
+        }
 
-    // Write original PID data to input boxes
-    for(var i = 1; i <= 18; i++) {
-        select(inputMap[i]).value = originalPidData[i];
+        // Write original PID data to input boxes
+        for(var i = 1; i <= 18; i++) {
+            select(inputMap[i]).value = originalPidData[i];
+        }
     }
 
     return value;
