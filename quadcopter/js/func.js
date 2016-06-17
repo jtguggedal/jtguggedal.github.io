@@ -10,3 +10,12 @@ function arraysEqual(arr1, arr2) {
 
     return true;
 }
+
+
+// Function to return sum of array values
+function sumArray(a) {
+    function add(a, b) {
+        return a + b;
+    }
+    return a.reduce(add, 0);
+}

@@ -39,7 +39,7 @@ addListener('#button-reset', 'click', resetPid);
 function onConnect() {
 
     // Read original PID values
-    readPidData();
+    // readPidData();
 
     // Enable input elements
     var inputs = document.getElementsByTagName('input');
