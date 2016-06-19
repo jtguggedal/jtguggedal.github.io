@@ -14,11 +14,18 @@ body {
 
 #joystickLeft {
     position: absolute;
+    height: 300px;
+    width: 300px;
+    top: 150px;
 }
 
 #joystickLeft {
     position: absolute;
+}
 
+#debug-container {
+    height: 100%;
+    padding-top: 0;
 }
 
 #debug-containerLeft {
@@ -33,6 +40,10 @@ body {
     width: 160px;
     margin: 0 auto;
     text-align: right;
+}
+
+.collection_0 > .front {
+    top: 75px;
 }
 
 p {

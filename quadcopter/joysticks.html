@@ -20,27 +20,29 @@
 
             </div>
         </div>
-        <div id="debug-containerLeft">
-            <p id="debug-angleLeft">
-                <b>Angle</b>: 0
-            </p>
-            <p id="debug-distanceLeft">
-                <b>Distance</b>: 0
-            </p>
-            <p id="debug-outputLeft">
-                <b>Output [%]</b>: 0
-            </p>
-        </div>
-        <div id="debug-containerRight">
-            <p id="debug-angleRight">
-                <b>Angle</b>: 0
-            </p>
-            <p id="debug-distanceRight">
-                <b>Distance</b>: 0
-            </p>
-            <p id="debug-outputRight">
-                <b>Output [%]</b>: 0
-            </p>
+        <div id="debug-container">
+            <div id="debug-containerLeft">
+                <p id="debug-angleLeft">
+                    <b>Angle</b>: 0
+                </p>
+                <p id="debug-distanceLeft">
+                    <b>Distance</b>: 0
+                </p>
+                <p id="debug-outputLeft">
+                    <b>Output [%]</b>: 0
+                </p>
+            </div>
+            <div id="debug-containerRight">
+                <p id="debug-angleRight">
+                    <b>Angle</b>: 0
+                </p>
+                <p id="debug-distanceRight">
+                    <b>Distance</b>: 0
+                </p>
+                <p id="debug-outputRight">
+                    <b>Output [%]</b>: 0
+                </p>
+            </div>
         </div>
         <script>
             var printPosition = 1;
@@ -51,15 +53,19 @@
 
             // Joystick left
             var joystickLeft = nipplejs.create({
-                zone: document.getElementById('joystick-left'),
+                zone: select('#joystick-left'),
                 mode: 'static',
-                position: {left: '100px', top: '100px'},
+                position: {left: '100px', top: '45%'},
                 color: 'rgb(42, 115, 100)',
                 size: 150,
                 restOpacity: 0.9
             });
             joystickLeftPos = joystickLeft.position;
 
+            // Function for positioning the left joystick correctly when released
+            function reapplyLeft(el) {
+                select(el).style.top = "75px";
+            }
 
             joystickLeft.on('end', function(evt, data) {
                 // Executes when joystick is released
@@ -68,6 +74,9 @@
                     select('#debug-distanceLeft').innerHTML = '<b>Distance</b>: 0';
                     select('#debug-outputLeft').innerHTML = '<b>Output [%]</b>: 0';
                     //console.log(data);
+
+                    reapplyLeft('.collection_0 > .front');
+
                 }
             }).on('move', function(evt, data) {
 
@@ -87,7 +96,7 @@
             var joystickRight = nipplejs.create({
                 zone: document.getElementById('joystick-right'),
                 mode: 'static',
-                position: {right: '-40px', top: '100px'},
+                position: {right: '-40px', top: '45%'},
                 color: 'rgb(42, 115, 100)',
                 size: 150,
                 restOpacity: 0.9
