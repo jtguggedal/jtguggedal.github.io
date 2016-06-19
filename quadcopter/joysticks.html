@@ -22,25 +22,19 @@
         </div>
         <div id="debug-container">
             <div id="debug-containerLeft">
-                <p id="debug-angleLeft">
-                    <b>Angle</b>: 0
+                <p id="debug-throttleLeft">
+                    <b>Throttle [%]</b>: 0
                 </p>
-                <p id="debug-distanceLeft">
-                    <b>Distance</b>: 0
-                </p>
-                <p id="debug-outputLeft">
-                    <b>Output [%]</b>: 0
+                <p id="debug-yawLeft">
+                    <b>Yaw</b>: 0
                 </p>
             </div>
             <div id="debug-containerRight">
-                <p id="debug-angleRight">
-                    <b>Angle</b>: 0
+                <p id="debug-pitchRight">
+                    <b>Pitch</b>: 0
                 </p>
-                <p id="debug-distanceRight">
-                    <b>Distance</b>: 0
-                </p>
-                <p id="debug-outputRight">
-                    <b>Output [%]</b>: 0
+                <p id="debug-rollRight">
+                    <b>Roll</b>: 0
                 </p>
             </div>
         </div>
@@ -70,9 +64,8 @@
             joystickLeft.on('end', function(evt, data) {
                 // Executes when joystick is released
                 if(printPosition) {
-                    select('#debug-angleLeft').innerHTML = '<b>Angle</b>: 0';
-                    select('#debug-distanceLeft').innerHTML = '<b>Distance</b>: 0';
-                    select('#debug-outputLeft').innerHTML = '<b>Output [%]</b>: 0';
+                    select('#debug-throttleLeft').innerHTML = '<b>Throttle [%]</b>: 0';
+                    select('#debug-yawLeft').innerHTML = '<b>Yaw</b>: 0';
                     //console.log(data);
 
                     reapplyLeft('.collection_0 > .front');
@@ -84,10 +77,20 @@
 
                 var output = (data.distance / (joystickLeft.options.size / 2)) * 100;
 
+                var throttle = ((data.distance * Math.sin(data.angle.radian) + 75) / joystickLeft.options.size) * 100;
+                var yaw = ((data.distance * Math.cos(data.angle.radian) + 75) / joystickLeft.options.size) * 100;
+
+                if(yaw < 50){
+                    yaw = 2 * (50 - yaw);
+                    yawDir = "left";
+                } else if(yaw > 50) {
+                    yaw = 2*(yaw - 50);
+                    yawDir = "right";
+                }
+
                 if(printPosition) {
-                    select('#debug-angleLeft').innerHTML = '<b>Angle</b>: ' + data.angle.degree.toFixed(0);
-                    select('#debug-distanceLeft').innerHTML = '<b>Distance</b>: ' + data.distance.toFixed(1);
-                    select('#debug-outputLeft').innerHTML = '<b>Output [%]</b>: ' + output.toFixed(1) + ' %';
+                    select('#debug-throttleLeft').innerHTML = '<b>Throttle [%]</b>: ' + throttle.toFixed(1) + ' %';
+                    select('#debug-yawLeft').innerHTML = '<b>Yaw</b>: ' + yaw.toFixed(1) + ' ' + yawDir;
                     //console.log(data);
                 }
             })
@@ -107,21 +110,40 @@
             joystickRight.on('end', function(evt, data) {
                 // Executes when joystick is released
                 if(printPosition) {
-                    select('#debug-angleRight').innerHTML = '<b>Angle</b>: 0';
-                    select('#debug-distanceRight').innerHTML = '<b>Distance</b>: 0';
-                    select('#debug-outputRight').innerHTML = '<b>Output [%]</b>: 0';
+                    select('#debug-pitchRight').innerHTML = '<b>Pitch</b>: 0';
+                    select('#debug-rollRight').innerHTML = '<b>Roll</b>: 0';
                     //console.log(data);
                 }
             }).on('move', function(evt, data) {
 
                 // Executes on every new touch event from joystick
 
+                var pitch = ((data.distance * Math.sin(data.angle.radian) + 75) / joystickRight.options.size) * 100;
+                var roll = ((data.distance * Math.cos(data.angle.radian) + 75) / joystickRight.options.size) * 100;
+
+                if(roll < 50){
+                    roll = 2 * (50 - roll);
+                    rollDir = "left";
+                } else if(roll > 50) {
+                    roll = 2*(roll - 50);
+                    rollDir = "right";
+                }
+
+
+                if(pitch < 50){
+                    pitch = 2 * (50 - pitch);
+                    pitchDir = "down";
+                } else if(pitch > 50) {
+                    pitch = 2*(pitch - 50);
+                    pitchDir = "up";
+                }
+
+
                 var output = (data.distance / (joystickRight.options.size / 2)) * 100;
 
                 if(printPosition) {
-                    select('#debug-angleRight').innerHTML = '<b>Angle</b>: ' + data.angle.degree.toFixed(0);
-                    select('#debug-distanceRight').innerHTML = '<b>Distance</b>: ' + data.distance.toFixed(1);
-                    select('#debug-outputRight').innerHTML = '<b>Output [%]</b>: ' + output.toFixed(1) + ' %';
+                    select('#debug-pitchRight').innerHTML = '<b>Pitch</b>: ' + pitch.toFixed(0) + ' ' + pitchDir;
+                    select('#debug-rollRight').innerHTML = '<b>Roll</b>: ' + roll.toFixed(1) + ' ' + rollDir;
                     //console.log(data);
                 }
             })

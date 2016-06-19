@@ -37,9 +37,10 @@ body {
 
 #debug-containerRight {
     position: relative;
-    width: 160px;
+    width: 100px;
     margin: 0 auto;
-    text-align: right;
+    margin-right: 30%;
+    text-align: left;
 }
 
 .collection_0 > .front {
