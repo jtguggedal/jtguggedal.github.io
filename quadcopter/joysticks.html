@@ -100,11 +100,19 @@
                 exCharVal[output.yawLeft] = 0;
 
                 // Try to send data
-                exChar.writeValue(exCharVal)
-                .then( () => {
-                    console.log('Sent: ', exCharVal);
-                });
-
+                if(writePermission) {
+                    exChar.writeValue(exCharVal)
+                    .then( () => {
+                        console.log('Sent: ', exCharVal);
+                    });
+                } else {
+                    setTimeout( function() {
+                        exChar.writeValue(exCharVal)
+                        .then( () => {
+                            console.log('Sent: ', exCharVal);
+                        });
+                    }, 100);
+                }
                 // console.log(exCharVal);
 
                 if(printPosition) {
@@ -141,10 +149,12 @@
                 exCharVal[output.yawLeft] = parseInt(yawLeft);
 
                 // Try to send data
-                exChar.writeValue(exCharVal)
-                .then( () => {
-                    console.log('Sent: ', exCharVal);
-                });
+                if(writePermission) {
+                    exChar.writeValue(exCharVal)
+                    .then( () => {
+                        console.log('Sent: ', exCharVal);
+                    });
+                }
 
                 // Debug
                 if(printPosition) {
@@ -174,12 +184,14 @@
                 exCharVal[output.rollLeft] = 0;
                 exCharVal[output.pitchForward] = 0;
                 exCharVal[output.pitchBackward] = 0;
-                
+
                 // Try to send data
-                exChar.writeValue(exCharVal)
-                .then( () => {
-                    console.log('Sent: ', exCharVal);
-                });
+                if(writePermission) {
+                    exChar.writeValue(exCharVal)
+                    .then( () => {
+                        console.log('Sent: ', exCharVal);
+                    });
+                }
 
                 // console.log(exCharVal);
 
@@ -226,10 +238,12 @@
                 exCharVal[output.pitchBackward] = parseInt(pitchBackward);
 
                 // Try to send data
-                exChar.writeValue(exCharVal)
-                .then( () => {
-                    console.log('Sent: ', exCharVal);
-                });
+                if(writePermission) {
+                    exChar.writeValue(exCharVal)
+                    .then( () => {
+                        console.log('Sent: ', exCharVal);
+                    });
+                }
 
                 //console.log(exCharVal);
 
