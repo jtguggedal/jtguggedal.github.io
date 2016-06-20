@@ -154,9 +154,11 @@ function writeArrayToChar(char, data) {
     'use strict';
     return new Promise(function(resolve, reject) {
         if(writePermission) {
+            writePermission = false;
             char.writeValue(data)
             .then( () => {
                 resolve('Sending successful');
+                writePermission = true;
             })
             .catch( (error) => {
                 reject('Sending failed', error);

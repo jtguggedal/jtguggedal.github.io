@@ -136,15 +136,11 @@
                 exCharVal[output.yawRight] = parseInt(yawRight);
                 exCharVal[output.yawLeft] = parseInt(yawLeft);
 
-                // Check writePermission and try to send data
-                if(writePermission) {
-                    writePermission = false;
-                    writeArrayToChar(exChar, exCharVal)
-                    .then( () => {
-                        writePermission = true;
-                        console.log('Sent: ', exCharVal);
-                    });
-                }
+                // Try to send data
+                writeArrayToChar(exChar, exCharVal)
+                .then( () => {
+                    console.log('Sent: ', exCharVal);
+                });
 
                 // Debug
                 if(printPosition) {
