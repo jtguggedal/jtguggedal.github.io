@@ -213,14 +213,11 @@
                 exCharVal[output.pitchForward] = parseInt(pitchForward);
                 exCharVal[output.pitchBackward] = parseInt(pitchBackward);
 
-                // Check writePermission and try to send data
-                if(writePermission) {
-                    writePermission = false;
-                    writeArrayToChar(exChar, exCharVal)
-                    .then( () => {
-                        writePermission = true;
-                    });
-                }
+                // Try to send data
+                exChar.writeValue(exCharVal)
+                .then( () => {
+                    console.log('Sent: ', exCharVal);
+                });
 
                 //console.log(exCharVal);
 
