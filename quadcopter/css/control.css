@@ -148,7 +148,7 @@ input[type=range] {
     top: 0px;
     left: 0px;
     padding: 4px;
-    background-color: #222;
+	background-color: rgba(5, 32, 51, 0.8);
     color: white;
     z-index: 10;
 }

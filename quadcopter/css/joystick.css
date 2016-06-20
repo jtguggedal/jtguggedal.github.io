@@ -51,6 +51,44 @@ p:last-child {
     box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
 }
 
+
+/*  Settings  */
+#button-settings {
+    background-color: rgba(5, 32, 51, 0.8);
+    position: absolute;
+    top: 0;
+    right: 20px;
+    height: 35px;
+    width: 35px;
+    margin: 0 auto;
+    border-radius: 0 0 2px 2px;
+    padding: 4px;
+}
+
+#button-settings > img {
+    width: 100%;
+}
+
+#settings-container {
+    display: none;
+    position: absolute;
+    width: 100%;
+    margin: 0;
+    top: 30px;
+    background-color: white;
+}
+
+#settings-inner-container {
+    position: relative;
+    margin: 0 auto;
+    width: 400px;
+    background-color: white;
+}
+
+.heading-menu {
+    text-align: center;
+}
+
 /*  Debugging  */
 #debug-container {
     height: 100%;

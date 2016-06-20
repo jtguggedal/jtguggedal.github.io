@@ -35,12 +35,34 @@
                 </p>
             </div>
         </div>
+        <div id="button-settings">
+            <img src="img/settings.png">
+        </div>
+        <div id="settings-container">
+            <div id="settings-inner-container">
+                <h2 class="heading-menu">Settings</h2>
+                <div class="settings-row">
+                    <span class="settings-row-label">Maximum roll angle</span>
+                    <span class="settings-row-option">60</span>
+                </div>
+                <div class="settings-row">
+                    <span class="settings-row-label">Maximum pitch angle</span>
+                    <span class="settings-row-option">60</span>
+                </div>
+            </div>
+        </div>
+
         <script>
-            var printPosition = 1;
 
             //**
             //     Joystick, based on the amazing nippleJS by @yoannmoinet: http://yoannmoinet.github.io/nipplejs/
             //**
+
+
+            // Settings for joystick
+            var printPosition = 1;
+            var maxRoll = 60;
+            var maxPitch = 60;
 
             // Define byte indexes for joystick data
             var output =    {
@@ -85,7 +107,7 @@
                     // Debug
                     select('#debug-throttleLeft').innerHTML = '<b>Throttle</b>: 0';
                     select('#debug-yawLeft').innerHTML = '<b>Yaw</b>: 0';
-                    //console.log(data); 
+                    //console.log(data);
 
                     reapplyLeft('.collection_0 > .front');
 
@@ -113,6 +135,15 @@
                 exCharVal[output.throttle] = parseInt(throttle);
                 exCharVal[output.yawRight] = parseInt(yawRight);
                 exCharVal[output.yawLeft] = parseInt(yawLeft);
+
+                // Check writePermission and try to send data
+                if(writePermission) {
+                    writePermission = false;
+                    writeArrayToChar(exChar, exCharVal)
+                    .then( () => {
+                        writePermission = true;
+                    });
+                }
 
                 // Debug
                 if(printPosition) {
@@ -162,21 +193,21 @@
                 var pitchBackward = 0;
 
                 if(roll < 50){
-                    roll = 180 * (50 - roll) / 50;
+                    roll = maxRoll * (50 - roll) / 50;
                     rollDir = "left";
                     rollLeft = roll;
                 } else if(roll > 50) {
-                    roll = 180 * (roll - 50) / 50;
+                    roll = maxRoll * (roll - 50) / 50;
                     rollDir = "right";
                     rollRight = roll;
                 }
 
                 if(pitch < 50){
-                    pitch = 180 * (50 - pitch) / 50;
+                    pitch = maxPitch * (50 - pitch) / 50;
                     pitchDir = "backward";
                     pitchBackward = pitch;
                 } else if(pitch > 50) {
-                    pitch = 180 * (pitch - 50) / 50;
+                    pitch = maxPitch * (pitch - 50) / 50;
                     pitchDir = "forward";
                     pitchForward = pitch;
                 }
@@ -186,6 +217,15 @@
                 exCharVal[output.rollLeft] = parseInt(rollLeft);
                 exCharVal[output.pitchForward] = parseInt(pitchForward);
                 exCharVal[output.pitchBackward] = parseInt(pitchBackward);
+
+                // Check writePermission and try to send data
+                if(writePermission) {
+                    writePermission = false;
+                    writeArrayToChar(exChar, exCharVal)
+                    .then( () => {
+                        writePermission = true;
+                    });
+                }
 
                 //console.log(exCharVal);
 
