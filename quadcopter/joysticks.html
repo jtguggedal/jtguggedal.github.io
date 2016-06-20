@@ -137,7 +137,7 @@
                 exCharVal[output.yawLeft] = parseInt(yawLeft);
 
                 // Try to send data
-                writeArrayToChar(exChar, exCharVal)
+                exChar.writeValue(exCharVal)
                 .then( () => {
                     console.log('Sent: ', exCharVal);
                 });
