@@ -23,7 +23,7 @@
         <div id="debug-container">
             <div id="debug-containerLeft">
                 <p id="debug-throttleLeft">
-                    <b>Throttle [%]</b>: 0
+                    <b>Throttle</b>: 0
                 </p>
                 <p id="debug-yawLeft">
                     <b>Yaw</b>: 0
@@ -50,7 +50,7 @@
                 zone: select('#joystick-left'),
                 mode: 'static',
                 position: {left: '100px', top: '45%'},
-                color: 'rgb(42, 115, 100)',
+                color: '#245582',
                 size: 150,
                 restOpacity: 0.9
             });
@@ -64,7 +64,7 @@
             joystickLeft.on('end', function(evt, data) {
                 // Executes when joystick is released
                 if(printPosition) {
-                    select('#debug-throttleLeft').innerHTML = '<b>Throttle [%]</b>: 0';
+                    select('#debug-throttleLeft').innerHTML = '<b>Throttle</b>: 0';
                     select('#debug-yawLeft').innerHTML = '<b>Yaw</b>: 0';
                     //console.log(data);
 
@@ -81,16 +81,16 @@
                 var yaw = ((data.distance * Math.cos(data.angle.radian) + 75) / joystickLeft.options.size) * 100;
 
                 if(yaw < 50){
-                    yaw = 2 * (50 - yaw);
+                    yaw = 100 * (50 - yaw) / 50;
                     yawDir = "left";
                 } else if(yaw > 50) {
-                    yaw = 2*(yaw - 50);
+                    yaw = 100 * (yaw - 50) / 50;
                     yawDir = "right";
                 }
 
                 if(printPosition) {
-                    select('#debug-throttleLeft').innerHTML = '<b>Throttle [%]</b>: ' + throttle.toFixed(1) + ' %';
-                    select('#debug-yawLeft').innerHTML = '<b>Yaw</b>: ' + yaw.toFixed(1) + ' ' + yawDir;
+                    select('#debug-throttleLeft').innerHTML = '<b>Throttle</b>: ' + throttle.toFixed(0) + ' %';
+                    select('#debug-yawLeft').innerHTML = '<b>Yaw</b>: ' + yaw.toFixed(0) + '% ' + yawDir;
                     //console.log(data);
                 }
             })
@@ -100,7 +100,7 @@
                 zone: document.getElementById('joystick-right'),
                 mode: 'static',
                 position: {right: '-40px', top: '45%'},
-                color: 'rgb(42, 115, 100)',
+                color: '#367d59',
                 size: 150,
                 restOpacity: 0.9
             });
@@ -122,28 +122,28 @@
                 var roll = ((data.distance * Math.cos(data.angle.radian) + 75) / joystickRight.options.size) * 100;
 
                 if(roll < 50){
-                    roll = 2 * (50 - roll);
+                    roll = 180 * (50 - roll) / 50;
                     rollDir = "left";
                 } else if(roll > 50) {
-                    roll = 2*(roll - 50);
+                    roll = 180 * (roll - 50) / 50;
                     rollDir = "right";
                 }
 
 
                 if(pitch < 50){
-                    pitch = 2 * (50 - pitch);
-                    pitchDir = "down";
+                    pitch = 180 * (50 - pitch) / 50;
+                    pitchDir = "backward";
                 } else if(pitch > 50) {
-                    pitch = 2*(pitch - 50);
-                    pitchDir = "up";
+                    pitch = 180 * (pitch - 50) / 50;
+                    pitchDir = "forward";
                 }
 
 
                 var output = (data.distance / (joystickRight.options.size / 2)) * 100;
 
                 if(printPosition) {
-                    select('#debug-pitchRight').innerHTML = '<b>Pitch</b>: ' + pitch.toFixed(0) + ' ' + pitchDir;
-                    select('#debug-rollRight').innerHTML = '<b>Roll</b>: ' + roll.toFixed(1) + ' ' + rollDir;
+                    select('#debug-pitchRight').innerHTML = '<b>Pitch</b>: ' + pitch.toFixed(0) + '&deg; '+ pitchDir;
+                    select('#debug-rollRight').innerHTML = '<b>Roll</b>: ' + roll.toFixed(0)  + '&deg; ' + rollDir;
                     //console.log(data);
                 }
             })

@@ -411,8 +411,8 @@ Nipple.prototype.stylize = function () {
         height: '100%',
         marginLeft: -this.options.size / 2 + 'px',
         marginTop: -this.options.size / 2 + 'px',
-        background: this.options.color,
-        'opacity': '.5'
+        background: '',
+        'opacity': '.6'
     };
 
     styles.front = {
@@ -423,7 +423,7 @@ Nipple.prototype.stylize = function () {
         marginLeft: -this.options.size / 4 + 'px',
         marginTop: -this.options.size / 4 + 'px',
         background: this.options.color,
-        'opacity': '.8'
+        'opacity': '0.9'
     };
 
     u.extend(styles.el, transitStyle);
