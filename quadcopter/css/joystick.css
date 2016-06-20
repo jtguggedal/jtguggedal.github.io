@@ -42,8 +42,8 @@ p:last-child {
 }
 
 .back {
-    border: 0px solid black;
-    background-color: rgb(185, 185, 185);
+    border: 2px solid black;
+    background-color: rgba(185, 185, 185, 0);
     opacity: 0.8;
 }
 
