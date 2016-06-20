@@ -6,8 +6,6 @@
         <meta name="description" content="BLE quadcopter controller">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" type="text/css" href="css/joystick.css">
-        <script src="js/func.js"></script>
-        <script src="js/ble.js"></script>
         <script src="js/nipple.js"></script>
     </head>
     <body>
@@ -100,7 +98,7 @@
                 exCharVal[output.yawRight] = 0;
                 exCharVal[output.yawLeft] = 0;
 
-                //console.log(exCharVal);
+                // console.log(exCharVal);
 
                 if(printPosition) {
 
@@ -115,7 +113,6 @@
             }).on('move', function(evt, data) {
 
                 // Executes on every new touch event from joystick
-
                 var throttle = parseInt(((data.distance * Math.sin(data.angle.radian) + 75) / joystickLeft.options.size) * 100);
                 var yaw = ((data.distance * Math.cos(data.angle.radian) + 75) / joystickLeft.options.size) * 100;
                 var yawRight = 0;
