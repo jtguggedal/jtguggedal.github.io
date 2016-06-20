@@ -39,11 +39,24 @@
             </div>
         </div>
         <script>
+            var writePermission = true;
             var printPosition = 1;
 
             //**
             //     Joystick, based on the amazing nippleJS by @yoannmoinet: http://yoannmoinet.github.io/nipplejs/
             //**
+
+            // Define byte indexes for joystick data
+            var output =    {
+                                throttle : 0,
+                                rollRight : 1,
+                                rollLeft : 2,
+                                pitchForward : 3,
+                                pitchBackward : 4,
+                                yawRight : 5,
+                                yawLeft : 6
+                            };
+
 
             // Joystick left
             var joystickLeft = nipplejs.create({
@@ -63,7 +76,17 @@
 
             joystickLeft.on('end', function(evt, data) {
                 // Executes when joystick is released
+
+                // Set values to zero
+                exCharVal[output.throttle] = 0;
+                exCharVal[output.yawRight] = 0;
+                exCharVal[output.yawLeft] = 0;
+
+                console.log(exCharVal);
+
                 if(printPosition) {
+
+                    // Debug
                     select('#debug-throttleLeft').innerHTML = '<b>Throttle</b>: 0';
                     select('#debug-yawLeft').innerHTML = '<b>Yaw</b>: 0';
                     //console.log(data);
@@ -75,19 +98,30 @@
 
                 // Executes on every new touch event from joystick
 
-                var output = (data.distance / (joystickLeft.options.size / 2)) * 100;
-
-                var throttle = ((data.distance * Math.sin(data.angle.radian) + 75) / joystickLeft.options.size) * 100;
+                var throttle = parseInt(((data.distance * Math.sin(data.angle.radian) + 75) / joystickLeft.options.size) * 100);
                 var yaw = ((data.distance * Math.cos(data.angle.radian) + 75) / joystickLeft.options.size) * 100;
+                var yawRight = 0;
+                var yawLeft = 0;
 
                 if(yaw < 50){
                     yaw = 100 * (50 - yaw) / 50;
                     yawDir = "left";
+                    yawLeft = yaw;
                 } else if(yaw > 50) {
                     yaw = 100 * (yaw - 50) / 50;
                     yawDir = "right";
+                    yawRight = yaw;
                 }
 
+                // Storing and sending joystick data with the EX characteristic
+                exCharVal[output.throttle] = parseInt(throttle);
+                exCharVal[output.yawRight] = parseInt(yawRight);
+                exCharVal[output.yawLeft] = parseInt(yawLeft);
+
+                console.log(throttle);
+                console.log(exCharVal);
+
+                // Debug
                 if(printPosition) {
                     select('#debug-throttleLeft').innerHTML = '<b>Throttle</b>: ' + throttle.toFixed(0) + ' %';
                     select('#debug-yawLeft').innerHTML = '<b>Yaw</b>: ' + yaw.toFixed(0) + '% ' + yawDir;
@@ -109,6 +143,15 @@
 
             joystickRight.on('end', function(evt, data) {
                 // Executes when joystick is released
+
+                // Set values to zero
+                exCharVal[output.rollRight] = 0;
+                exCharVal[output.rollLeft] = 0;
+                exCharVal[output.pitchForward] = 0;
+                exCharVal[output.pitchBackward] = 0;
+
+                console.log(exCharVal);
+
                 if(printPosition) {
                     select('#debug-pitchRight').innerHTML = '<b>Pitch</b>: 0';
                     select('#debug-rollRight').innerHTML = '<b>Roll</b>: 0';
@@ -120,33 +163,55 @@
 
                 var pitch = ((data.distance * Math.sin(data.angle.radian) + 75) / joystickRight.options.size) * 100;
                 var roll = ((data.distance * Math.cos(data.angle.radian) + 75) / joystickRight.options.size) * 100;
+                var rollRight = 0;
+                var rollLeft = 0;
+                var pitchForward = 0;
+                var pitchBackward = 0;
 
                 if(roll < 50){
                     roll = 180 * (50 - roll) / 50;
                     rollDir = "left";
+                    rollLeft = roll;
                 } else if(roll > 50) {
                     roll = 180 * (roll - 50) / 50;
                     rollDir = "right";
+                    rollRight = roll;
                 }
-
 
                 if(pitch < 50){
                     pitch = 180 * (50 - pitch) / 50;
                     pitchDir = "backward";
+                    pitchBackward = pitch;
                 } else if(pitch > 50) {
                     pitch = 180 * (pitch - 50) / 50;
                     pitchDir = "forward";
+                    pitchForward = pitch;
                 }
 
+                // Storing and sending joystick data with the EX characteristic
+                exCharVal[output.rollRight] = parseInt(rollRight);
+                exCharVal[output.rollLeft] = parseInt(rollLeft);
+                exCharVal[output.pitchForward] = parseInt(pitchForward);
+                exCharVal[output.pitchBackward] = parseInt(pitchBackward);
 
-                var output = (data.distance / (joystickRight.options.size / 2)) * 100;
+                console.log(exCharVal);
 
+                if(writePermission) {
+                    writePermission = false;
+                }
+
+                // Debug
                 if(printPosition) {
                     select('#debug-pitchRight').innerHTML = '<b>Pitch</b>: ' + pitch.toFixed(0) + '&deg; '+ pitchDir;
                     select('#debug-rollRight').innerHTML = '<b>Roll</b>: ' + roll.toFixed(0)  + '&deg; ' + rollDir;
                     //console.log(data);
                 }
             })
+
+            // END of joystick
+
+
+
         </script>
     </body>
 </html>
