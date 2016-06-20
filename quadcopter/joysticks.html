@@ -99,6 +99,12 @@
                 exCharVal[output.yawRight] = 0;
                 exCharVal[output.yawLeft] = 0;
 
+                // Try to send data
+                exChar.writeValue(exCharVal)
+                .then( () => {
+                    console.log('Sent: ', exCharVal);
+                });
+
                 // console.log(exCharVal);
 
                 if(printPosition) {
@@ -114,7 +120,7 @@
             }).on('move', function(evt, data) {
 
                 // Executes on every new touch event from joystick
-                var throttle = parseInt(((data.distance * Math.sin(data.angle.radian) + 75) / joystickLeft.options.size) * 100);
+                var throttle = parseInt(((data.distance * Math.sin(data.angle.radian) + 75) / joystickLeft.options.size) * 255);
                 var yaw = ((data.distance * Math.cos(data.angle.radian) + 75) / joystickLeft.options.size) * 100;
                 var yawRight = 0;
                 var yawLeft = 0;
@@ -142,7 +148,7 @@
 
                 // Debug
                 if(printPosition) {
-                    select('#debug-throttleLeft').innerHTML = '<b>Throttle</b>: ' + throttle.toFixed(0) + ' %';
+                    select('#debug-throttleLeft').innerHTML = '<b>Throttle</b>: ' + throttle.toFixed(0);
                     select('#debug-yawLeft').innerHTML = '<b>Yaw</b>: ' + yaw.toFixed(0) + '% ' + yawDir;
                     //console.log(data);
                 }
@@ -168,6 +174,12 @@
                 exCharVal[output.rollLeft] = 0;
                 exCharVal[output.pitchForward] = 0;
                 exCharVal[output.pitchBackward] = 0;
+                
+                // Try to send data
+                exChar.writeValue(exCharVal)
+                .then( () => {
+                    console.log('Sent: ', exCharVal);
+                });
 
                 // console.log(exCharVal);
 
