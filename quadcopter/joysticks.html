@@ -6,6 +6,7 @@
         <meta name="description" content="BLE quadcopter controller">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" type="text/css" href="css/joystick.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
         <script src="js/func.js"></script>
         <script src="js/nipple.js"></script>
     </head>
@@ -37,21 +38,52 @@
         <div id="button-settings">
             <img src="img/settings.png">
         </div>
+        <div id="settings-overlay">
+        </div>
         <div id="settings-container">
             <div id="settings-inner-container">
                 <h2 class="heading-menu">Settings</h2>
                 <div class="settings-row">
-                    <span class="settings-row-label">Maximum roll angle</span>
-                    <span class="settings-row-option">60</span>
+                    <span class="settings-row-label">Maximum roll angle [degrees]</span>
+                    <input type="number" id="settings-maxRoll" class="settings-row-value" value="60">
                 </div>
                 <div class="settings-row">
-                    <span class="settings-row-label">Maximum pitch angle</span>
-                    <span class="settings-row-option">60</span>
+                    <span class="settings-row-label">Maximum pitch angle [degrees]</span>
+                    <input type="number"  id="settings-maxPitch" class="settings-row-value" value="60">
+                </div>
+                <div id="button-settings-container">
+                    <div id="button-settings-save" class="button-settings">
+                        Save
+                    </div>
+                    <div id="button-settings-back" class="button-settings">
+                        Back
+                    </div>
                 </div>
             </div>
         </div>
 
         <script>
+
+            /*  Event listeners  */
+
+            // Settings menu
+            addListener('#button-settings-save', 'click', function() {
+                maxRoll = select('#settings-maxRoll').value;
+                maxPitch = select('#settings-maxPitch').value;
+                $("#settings-container").fadeOut(400);
+                $("#settings-overlay").fadeOut(400);
+            });
+
+            $("#button-settings").click( function() {
+                $("#settings-container").fadeIn(400);
+                $("#settings-overlay").fadeIn(400);
+            });
+
+            $("#button-settings-back, #settings-overlay").click( function() {
+                $("#settings-container").fadeOut(400);
+                $("#settings-overlay").fadeOut(400);
+            });
+
 
             //**
             //     Joystick, based on the amazing nippleJS by @yoannmoinet: http://yoannmoinet.github.io/nipplejs/
@@ -191,7 +223,6 @@
             }).on('move', function(evt, data) {
 
                 // Executes on every new touch event from joystick
-
                 var pitch = ((data.distance * Math.sin(data.angle.radian) + 75) / joystickRight.options.size) * 100;
                 var roll = ((data.distance * Math.cos(data.angle.radian) + 75) / joystickRight.options.size) * 100;
                 var rollRight = 0;

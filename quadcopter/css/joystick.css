@@ -2,6 +2,7 @@
 
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:100,300,400,500,700|Lato:400,500,700,300,100|Alegreya+Sans);
 
+/*  Tags  */
 * {
     box-sizing: border-box;
 }
@@ -19,9 +20,21 @@ p {
     line-height: 80%;
 }
 
+/*  General  */
 p:last-child {
     margin-bottom: 30px;
 }
+
+.heading-menu {
+    text-align: center;
+    background-color: rgba(5, 32, 51, 1);
+    color: white;
+    padding: 3px 0 5px 0;
+    width: 100%;
+    font-size: 22px;
+    border-radius: 2px 2px 0 0;
+}
+
 
 /*  Joystick  */
 #joystick-container {
@@ -58,8 +71,8 @@ p:last-child {
     position: absolute;
     top: 0;
     right: 20px;
-    height: 35px;
-    width: 35px;
+    height: 40px;
+    width: 40px;
     margin: 0 auto;
     border-radius: 0 0 2px 2px;
     padding: 4px;
@@ -73,21 +86,76 @@ p:last-child {
     display: none;
     position: absolute;
     width: 100%;
+    height: 300px;
     margin: 0;
     top: 30px;
-    background-color: white;
 }
 
 #settings-inner-container {
     position: relative;
     margin: 0 auto;
+    padding-bottom: 20px;
     width: 400px;
+    height:;
     background-color: white;
+    z-index: 1001;
+    border-radius: 2px;
+    box-shadow: 0 10px 20px 5;
 }
 
-.heading-menu {
+#settings-overlay {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+}
+
+.settings-row {
+    margin: 5px 20px;
+    font-size: 14px;
+    padding: 4px;
+}
+
+.settings-row:nth-child(even) {
+    background-color: #EEE;
+}
+
+.settings-row-label {
+    display: inline-block;
+    width: 250px;
+    font-weight: 500;
+}
+
+.settings-row-value {
+    width: 40px;
+    float: right;
+    padding-left: 5px;
+}
+
+#button-settings-container {
+    width: 250px;
+    margin: 0 auto;
     text-align: center;
 }
+
+.button-settings {
+    display: inline-block;
+    margin: 20px;
+    margin-bottom: 0;
+    width: 60px;
+    padding: 1px 10px;
+    text-align: center;
+    border: 1px solid white;
+    background-color: rgba(5, 32, 51, 0.8);
+    color: white;
+    font-weight: 500;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
 
 /*  Debugging  */
 #debug-container {
