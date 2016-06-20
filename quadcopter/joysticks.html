@@ -101,16 +101,10 @@
 
                 // Try to send data
                 if(writePermission) {
-                    exChar.writeValue(exCharVal)
-                    .then( () => {
-                        console.log('Sent: ', exCharVal);
-                    });
+                    exWrite();
                 } else {
                     setTimeout( function() {
-                        exChar.writeValue(exCharVal)
-                        .then( () => {
-                            console.log('Sent: ', exCharVal);
-                        });
+                        exWrite();
                     }, 100);
                 }
                 // console.log(exCharVal);
@@ -150,10 +144,7 @@
 
                 // Try to send data
                 if(writePermission) {
-                    exChar.writeValue(exCharVal)
-                    .then( () => {
-                        console.log('Sent: ', exCharVal);
-                    });
+                    exWrite();
                 }
 
                 // Debug
@@ -187,10 +178,7 @@
 
                 // Try to send data
                 if(writePermission) {
-                    exChar.writeValue(exCharVal)
-                    .then( () => {
-                        console.log('Sent: ', exCharVal);
-                    });
+                    exWrite();
                 }
 
                 // console.log(exCharVal);
@@ -239,10 +227,7 @@
 
                 // Try to send data
                 if(writePermission) {
-                    exChar.writeValue(exCharVal)
-                    .then( () => {
-                        console.log('Sent: ', exCharVal);
-                    });
+                    exWrite();
                 }
 
                 //console.log(exCharVal);
@@ -258,6 +243,14 @@
                     //console.log(data);
                 }
             })
+
+            // Function to write to the EX characteristic
+            function exWrite() {
+                exChar.writeValue(exCharVal)
+                .then( () => {
+                    console.log('Sent: ', exCharVal);
+                });
+            }
 
             // END of joystick
 
