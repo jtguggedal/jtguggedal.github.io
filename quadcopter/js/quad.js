@@ -7,6 +7,17 @@ var inputMap = [    'placeholder',
                     '#pitch-master-p', '#pitch-master-i', '#pitch-master-d',
                     '#yaw-master-p', '#yaw-master-i', '#yaw-master-d'];
 
+// Define byte indexes for joystick data
+var output =    {
+                    throttle : 0,
+                    rollRight : 1,
+                    rollLeft : 2,
+                    pitchForward : 3,
+                    pitchBackward : 4,
+                    yawRight : 5,
+                    yawLeft : 6
+                };
+
 // Get PID values from quadcopter on connect
 function readPidData() {
     return txChar.readValue()
@@ -63,7 +74,13 @@ function sendData() {
     }
 
     // Get all control input data and store to right index of exCharVal
-    exCharVal[0] = select('#throttle').value;
+    exCharVal[output.throttle]      = select('#throttle').value;
+    exCharVal[output.rollRight]     = select('#roll-right').value;
+    exCharVal[output.rollLeft]      = select('#roll-left').value;
+    exCharVal[output.pitchForward]  = select('#pitch-forward').value;
+    exCharVal[output.pitchBackward] = select('#pitch-backward').value;
+    exCharVal[output.yawRight]      = select('#yaw-right').value;
+    exCharVal[output.yawLeft]       = select('#yaw-left').value;
 
     // Sending PID data with rxChar over BLE
     writeArrayToChar(txChar, txCharVal)
@@ -73,7 +90,7 @@ function sendData() {
         // Sending throttle data with exChar over BLE
         writeArrayToChar(exChar, exCharVal)
         .then( () => {
-            console.log("Data sent:", exCharVal);
+            console.log("Controller data sent:", exCharVal);
         })
         .catch( (error) => {
             console.log('Control data sending failed:', error)
