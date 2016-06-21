@@ -36,7 +36,7 @@ p:last-child {
 }
 
 .shadow-1 {
-    box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.3);
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5));
 }
 
 /*  Connection  */
@@ -78,7 +78,7 @@ p:last-child {
 }
 
 .front {
-    box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.3);
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);
 }
 
 .joystick-post-style {
@@ -105,8 +105,6 @@ p:last-child {
     font-weight: 700;
     text-align: center;
     padding-top: 10px;
-
-
 }
 
 #button-settings > img {
