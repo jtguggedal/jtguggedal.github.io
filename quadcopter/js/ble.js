@@ -157,8 +157,8 @@ function writeArrayToChar(char, data) {
             writePermission = false;
             char.writeValue(data)
             .then( () => {
-                resolve('Sending successful');
                 writePermission = true;
+                resolve('Sending successful');
             })
             .catch( (error) => {
                 reject('Sending failed', error);

@@ -538,9 +538,9 @@
 
             // Function to write to the EX characteristic
             function exWrite() {
-                exChar.writeValue(exCharVal)
-                .then( () => {
-                    console.log('Sent: ', exCharVal);
+                writeArrayToChar(exChar, exCharVal)
+                .then( (p) => {
+                    console.log('Sending: ', p);
                 });
             }
 
