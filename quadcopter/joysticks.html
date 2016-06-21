@@ -447,7 +447,8 @@
                     for( var i = 0; i < inputs.length; i++){
                         inputs[i].disabled = false;
                     }
-                    resetPid();
+
+                    setPid(txCharVal);
                 }
 
                 // Function for sending both PID and controller data to quadcopter
@@ -483,13 +484,20 @@
                     })
                     .catch( (error) => {
                         console.log('PID data sending failed:', error)
-                    }); 
+                    });
                 }
 
                 // Reset PID values to original
                 function resetPid() {
                     for(var i = 1; i <= 18; i++) {
                         select(inputMap[i]).value = originalPidData[i];
+                    }
+                }
+
+                // Set PID values as passed in argument
+                function setPid(val) {
+                    for(var i = 1; i <= 18; i++) {
+                        select(inputMap[i]).value = val[i];
                     }
                 }
 

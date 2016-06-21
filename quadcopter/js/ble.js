@@ -115,7 +115,7 @@ function rxHandleNotification(event) {
         valueArray[i] = value.getUint8(i);
 
     if((sumArray(valueArray) != 0) && (!arraysEqual(valueArray, prevRxValue, 1, 18))) {
-        originalPidData = rxCharVal = prevRxValue = valueArray;
+        originalPidData = rxCharVal = txCharVal = prevRxValue = valueArray;
         console.log("Original PID data received:", originalPidData);
 
         // Enable input elements
