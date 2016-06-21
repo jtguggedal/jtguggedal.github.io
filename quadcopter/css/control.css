@@ -27,12 +27,11 @@ body {
 
 h1 {
 	color: #222;
-	font-size: 50px;
+	font-size: 45px;
 	text-align: center;
-	margin: 25px auto 30px auto;
+	margin: 5px auto 30px auto;
 	text-shadow: 1px 1px 15px rgba(0, 0, 0, 0);
     font-family: "Alegreya Sans";
-	font-size: 35px;
 	width: 100%;;
 	border-radius: 3px;
 	padding: 30px 0 0px 0;
@@ -88,7 +87,7 @@ input[type=range] {
 }
 
 #main-message {
-	margin-top: 60px;
+	margin-top: 40px;
 }
 
 .button-main-menu {
@@ -96,7 +95,7 @@ input[type=range] {
     width: 150px;
     height: 35px;
     padding-top: 10px;
-    margin: 13px 20px;
+    margin: 5px 20px;
     background-color: #367d59;
     border: 2px solid white;
     border-radius: 2px;
