@@ -40,7 +40,6 @@ p:last-child {
 	padding: 2px 5px;
 	background-color: rgb(195, 7, 12);
 	color: white;
-	visibility: ;
 	text-align: center;
 	position: absolute;
 	margin-left: auto;
@@ -197,22 +196,22 @@ p:last-child {
 
 /*  Debugging  */
 #debug-container {
-    height: 100%;
+    height: 100px;
     padding-top: 0;
+    margin: 0 auto;
+    margin-top: 100px;
+    text-align: center;
 }
 
 #debug-containerLeft {
-    position: relative;
-    width: 160px;
-    margin: 0 auto;
+    display: inline-block;
+    width: 120px;
 }
 
 
 #debug-containerRight {
-    position: relative;
+    display: inline-block;
     width: 120px;
-    margin: 0 auto;
-    margin-right: 30%;
     text-align: left;
 }
 

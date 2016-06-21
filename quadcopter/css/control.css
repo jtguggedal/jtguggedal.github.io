@@ -103,23 +103,6 @@ input[type=range] {
     vertical-align: top;
 }
 
-#connectionStatus {
-	display: none;
-	padding: 2px 5px;
-	background-color: rgb(195, 7, 12);
-	color: white;
-	visibility: ;
-	text-align: center;
-	border: 1px solid #CCC;
-	border-radius: 2px;
-	position: fixed;
-	margin-left: auto;
-	margin-right: auto;
-	top: 10px;
-	right: 10px;
-	font-size: 12px;
-}
-
 #footer {
 	height: 40px;
 	width: 100%;
