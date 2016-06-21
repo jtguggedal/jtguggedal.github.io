@@ -240,7 +240,7 @@
                 zone: select('#joystick-left'),
                 mode: 'static',
                 position: {left: '100px', top: '40%'},
-                color: '#245582',
+                color: 'rgb(25, 66, 103)',
                 size: 150,
                 restOpacity: 0.95
             });
@@ -251,8 +251,24 @@
                 select(el).style.top = "75px";
             }
 
+            // Apply style to joysticks on load
+            (function() {
+                setTimeout(function() {
+                    reapplyJoystick();
+                }, 1500);
+            })();
+
             function reapplyJoystick() {
 
+                // Set gradient for front on left joystick
+                var front_l = select(".collection_0 .front").style;
+                var front_r = select(".collection_1 .front").style;
+                var back = select(".back").style;
+
+                front_l.background = "radial-gradient(ellipse at center,  rgba(51, 110, 163, 1) 0%, rgba(25, 66, 103, 1) 100%)";
+                front_r.background = "radial-gradient(ellipse at center,  rgba(79, 156, 117, 1) 0%, rgba(41, 110, 75, 1) 100%)";
+                front_l.opacity = 1;
+                front_r.opacity = 1;
             }
 
             joystickLeft.on('end', function(evt, data) {
@@ -505,7 +521,6 @@
                     exCharVal[0] = 0;
                     writeArrayToChar(exChar, exCharVal)
                     .then( () => {
-                        select('#throttle').value = 0;
                         console.log("Quadcopter stopped. Data sent:", exCharVal);
                     })
                 }

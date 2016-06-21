@@ -72,8 +72,8 @@ p:last-child {
 }
 
 .back {
-    border: 2px solid black;
-    background-color: rgba(185, 185, 185, 0);
+    border: 2px solid #222;
+    background-color: #EEE;
     opacity: 0.8;
 }
 
@@ -209,7 +209,7 @@ p:last-child {
 
 #debug-containerLeft {
     display: inline-block;
-    width: 120px;
+    width: 100px;
 }
 
 
