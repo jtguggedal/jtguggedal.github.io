@@ -52,11 +52,11 @@
                 <h2 class="heading-menu">Settings</h2>
                 <div class="settings-row">
                     <span class="settings-row-label">Maximum roll angle [degrees]</span>
-                    <input type="number" id="settings-maxRoll" class="settings-row-value" value="60">
+                    <input type="number" id="settings-maxRoll" class="settings-row-value" >
                 </div>
                 <div class="settings-row">
                     <span class="settings-row-label">Maximum pitch angle [degrees]</span>
-                    <input type="number"  id="settings-maxPitch" class="settings-row-value" value="60">
+                    <input type="number"  id="settings-maxPitch" class="settings-row-value" >
                 </div>
                 <div id="button-settings-container">
                     <div id="button-settings-save" class="button-settings">
@@ -185,16 +185,18 @@
             /*  Event listeners  */
 
             // Settings menu
+            addListener("#button-settings", "click", function() {
+                $("#settings-container").fadeIn(400);
+                $("#settings-overlay").fadeIn(400);
+                select("#settings-maxRoll").value = maxRoll;
+                select("#settings-maxPitch").value = maxPitch;
+            });
+
             addListener('#button-settings-save', 'click', function() {
                 maxRoll = select('#settings-maxRoll').value;
                 maxPitch = select('#settings-maxPitch').value;
                 $("#settings-container").fadeOut(400);
                 $("#settings-overlay").fadeOut(400);
-            });
-
-            addListener("#button-settings", "click", function() {
-                $("#settings-container").fadeIn(400);
-                $("#settings-overlay").fadeIn(400);
             });
 
             $("#button-settings-back, #settings-overlay, #button-send").click( function() {
@@ -218,8 +220,8 @@
 
             // Settings for joystick
             var printPosition = 1;
-            var maxRoll = 60;
-            var maxPitch = 60;
+            var maxRoll = 20;
+            var maxPitch = 20;
 
             // Define byte indexes for joystick data
             var output =    {
