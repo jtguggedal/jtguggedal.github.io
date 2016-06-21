@@ -35,12 +35,15 @@
                 </p>
             </div>
         </div>
+        <div id="button-settings-pid">
+            Edit PID
+        </div>
         <div id="button-settings">
             <img src="img/settings.png">
         </div>
         <div id="settings-overlay">
         </div>
-        <div id="settings-container">
+        <div id="settings-container" class="overlay-container">
             <div id="settings-inner-container">
                 <h2 class="heading-menu">Settings</h2>
                 <div class="settings-row">
@@ -61,6 +64,9 @@
                 </div>
             </div>
         </div>
+        <div id="settings-container-pid" class="overlay-container">
+
+        </div>
 
         <script>
 
@@ -74,7 +80,7 @@
                 $("#settings-overlay").fadeOut(400);
             });
 
-            $("#button-settings").click( function() {
+            addListener("#button-settings", "click", function() {
                 $("#settings-container").fadeIn(400);
                 $("#settings-overlay").fadeIn(400);
             });
@@ -82,6 +88,14 @@
             $("#button-settings-back, #settings-overlay").click( function() {
                 $("#settings-container").fadeOut(400);
                 $("#settings-overlay").fadeOut(400);
+            });
+
+            // Edit PID
+            addListener("#button-settings-pid", "click", function() {
+                $("#settings-container-pid").fadeIn(400, function() {
+                    $(this).load("index.html");
+                });
+                $("#settings-overlay").fadeIn(400);
             });
 
 

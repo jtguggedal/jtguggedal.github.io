@@ -71,7 +71,7 @@ background: radial-gradient(ellipse at center,  rgba(0,0,0,0) 0%,rgba(0,0,0,0.65
 
 
 /*  Settings  */
-#button-settings {
+#button-settings, #button-settings-pid {
     background-color: rgba(5, 32, 51, 0.8);
     position: absolute;
     top: 0;
@@ -83,11 +83,22 @@ background: radial-gradient(ellipse at center,  rgba(0,0,0,0) 0%,rgba(0,0,0,0.65
     padding: 4px;
 }
 
+#button-settings-pid {
+    right: 130px;
+    color: white;
+    width: 80px;
+    font-weight: 700;
+    text-align: center;
+    padding-top: 10px;
+
+
+}
+
 #button-settings > img {
     width: 100%;
 }
 
-#settings-container {
+.overlay-container {
     display: none;
     position: absolute;
     width: 100%;
