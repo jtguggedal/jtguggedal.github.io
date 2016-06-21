@@ -13,6 +13,9 @@
     </head>
     <body>
         <div id="joystick-container">
+            <div id="connectionStatus">
+                Connection status
+            </div>
             <div id="joystick-left" class="joystick-wrapper">
             </div>
             <div id="joystick-right" class="joystick-wrapper">
@@ -438,7 +441,7 @@
                     }
 
                     // Get all control input data and store to right index of exCharVal
-                    exCharVal[output.throttle]      = select('#throttle').value;
+                    //exCharVal[output.throttle]      = select('#throttle').value;
                     exCharVal[output.rollRight]     = select('#roll-right').value;
                     exCharVal[output.rollLeft]      = select('#roll-left').value;
                     exCharVal[output.pitchForward]  = select('#pitch-forward').value;
