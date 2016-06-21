@@ -5,6 +5,7 @@
         <meta charset="utf-8">
         <meta name="description" content="BLE quadcopter controller">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="css/style.css">
         <link rel="stylesheet" type="text/css" href="css/joystick.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
         <script src="js/func.js"></script>
@@ -65,7 +66,115 @@
             </div>
         </div>
         <div id="settings-container-pid" class="overlay-container">
-
+            <div id="settings-inner-container-pid">
+                <div class="button-row">
+                    <button type="button" id="button-send">Update</button>
+                    <button type="button" id="button-reset">Reset</button>
+                    <button type="button" id="button-stop">Stop</button>
+                </div>
+                <!--
+                <div class="pid-tuning-group">
+                    <fieldset class="pid-tuning-field throttle">
+                        <legend>Throttle</legend>
+                        <label for="throttle" class="pid-tuning-label">Throttle:</label>
+                        <input type="number" id="throttle" class="pid-tuning-input" min="0" max="255" value="0" disabled>
+                    </fieldset>
+                </div>
+                <div class="pid-tuning-group">
+                    <fieldset class="pid-tuning-field">
+                        <legend>Roll</legend>
+                        <label for="roll-right" class="pid-tuning-label">Right:</label>
+                        <input type="number" id="roll-right" class="pid-tuning-input" min="0" max="255" disabled>
+                        <label for="roll-left" class="pid-tuning-label">Left:</label>
+                        <input type="number" id="roll-left" class="pid-tuning-input" min="0" max="255" disabled>
+                    </fieldset>
+                </div>
+                <div class="pid-tuning-group">
+                    <fieldset class="pid-tuning-field">
+                        <legend>Pitch</legend>
+                        <label for="pitch-forward" class="pid-tuning-label">Forward:</label>
+                        <input type="number" id="pitch-forward" class="pid-tuning-input" min="0" max="255" disabled>
+                        <label for="pitch-backward" class="pid-tuning-label">Backward:</label>
+                        <input type="number" id="pitch-backward" class="pid-tuning-input" min="0" max="255" disabled>
+                    </fieldset>
+                </div>
+                <div class="pid-tuning-group">
+                    <fieldset class="pid-tuning-field">
+                        <legend>Yaw</legend>
+                        <label for="yaw-right" class="pid-tuning-label">Right:</label>
+                        <input type="number" id="yaw-right" class="pid-tuning-input" min="0" max="255" disabled>
+                        <label for="yaw-left" class="pid-tuning-label">Left:</label>
+                        <input type="number" id="yaw-left" class="pid-tuning-input" min="0" max="255" disabled>
+                    </fieldset>
+                </div>
+            -->
+                <div class="pid-tuning-group">
+                    <fieldset class="pid-tuning-field">
+                        <legend>Roll - slave</legend>
+                        <label for="roll-slave-p" class="pid-tuning-label">P:</label>
+                        <input type="number" id="roll-slave-p" class="pid-tuning-input" min="0" max="255" disabled>
+                        <label for="roll-slave-i" class="pid-tuning-label">I:</label>
+                        <input type="number" id="roll-slave-i" class="pid-tuning-input" min="0" max="255" disabled>
+                        <label for="roll-slave-d" class="pid-tuning-label">D:</label>
+                        <input type="number" id="roll-slave-d" class="pid-tuning-input" min="0" max="255" disabled>
+                    </fieldset>
+                </div>
+                <div class="pid-tuning-group">
+                    <fieldset class="pid-tuning-field">
+                        <legend>Roll - master</legend>
+                        <label for="roll-master-p" class="pid-tuning-label">P:</label>
+                        <input type="number" id="roll-master-p" class="pid-tuning-input" min="0" max="255" disabled>
+                        <label for="roll-master-i" class="pid-tuning-label">I:</label>
+                        <input type="number" id="roll-master-i" class="pid-tuning-input" min="0" max="255" disabled>
+                        <label for="roll-master-d" class="pid-tuning-label">D:</label>
+                        <input type="number" id="roll-master-d" class="pid-tuning-input" min="0" max="255" disabled>
+                    </fieldset>
+                </div>
+                <div class="pid-tuning-group">
+                    <fieldset class="pid-tuning-field">
+                        <legend>Pitch - slave</legend>
+                        <label for="pitch-slave-p" class="pid-tuning-label">P:</label>
+                        <input type="number"  id="pitch-slave-p" class="pid-tuning-input" min="0" max="255" disabled>
+                        <label for="pitch-slave-i" class="pid-tuning-label">I:</label>
+                        <input type="number" id="pitch-slave-i" class="pid-tuning-input" min="0" max="255" disabled>
+                        <label for="pitch-slave-d" class="pid-tuning-label">D:</label>
+                        <input type="number"  id="pitch-slave-d" class="pid-tuning-input" min="0" max="255" disabled>
+                    </fieldset>
+                </div>
+                <div class="pid-tuning-group">
+                    <fieldset class="pid-tuning-field">
+                        <legend>Pitch - master</legend>
+                        <label for="pitch-master-p" class="pid-tuning-label">P:</label>
+                        <input type="number" id="pitch-master-p" class="pid-tuning-input" min="0" max="255" disabled>
+                        <label for="pitch-master-i" class="pid-tuning-label">I:</label>
+                        <input type="number" id="pitch-master-i" class="pid-tuning-input" min="0" max="255" disabled>
+                        <label for="pitch-master-d" class="pid-tuning-label">D:</label>
+                        <input type="number" id="pitch-master-d" class="pid-tuning-input" min="0" max="255" disabled>
+                    </fieldset>
+                </div>
+                <div class="pid-tuning-group">
+                    <fieldset class="pid-tuning-field">
+                        <legend>Yaw - slave</legend>
+                        <label for="yaw-slave-p" class="pid-tuning-label">P:</label>
+                        <input type="number" id="yaw-slave-p" class="pid-tuning-input" min="0" max="255" disabled>
+                        <label for="yaw-slave-i" class="pid-tuning-label">I:</label>
+                        <input type="number" id="yaw-slave-i" class="pid-tuning-input" min="0" max="255" disabled>
+                        <label for="yaw-slave-d" class="pid-tuning-label">D:</label>
+                        <input type="number" id="yaw-slave-d" class="pid-tuning-input" min="0" max="255" disabled>
+                    </fieldset>
+                </div>
+                <div class="pid-tuning-group">
+                    <fieldset class="pid-tuning-field">
+                        <legend>Yaw - master</legend>
+                        <label for="yaw-master-p" class="pid-tuning-label">P:</label>
+                        <input type="number" id="yaw-master-p" class="pid-tuning-input" min="0" max="255" disabled>
+                        <label for="yaw-master-i" class="pid-tuning-label">I:</label>
+                        <input type="number" id="yaw-master-i" class="pid-tuning-input" min="0" max="255" disabled>
+                        <label for="yaw-master-d" class="pid-tuning-label">D:</label>
+                        <input type="number" id="yaw-master-d" class="pid-tuning-input" min="0" max="255" disabled>
+                    </fieldset>
+                </div>
+            </div>
         </div>
 
         <script>
@@ -85,15 +194,15 @@
                 $("#settings-overlay").fadeIn(400);
             });
 
-            $("#button-settings-back, #settings-overlay").click( function() {
-                $("#settings-container").fadeOut(400);
+            $("#button-settings-back, #settings-overlay, #button-send").click( function() {
+                $("#settings-container, #settings-container-pid").fadeOut(400);
                 $("#settings-overlay").fadeOut(400);
             });
 
             // Edit PID
             addListener("#button-settings-pid", "click", function() {
                 $("#settings-container-pid").fadeIn(400, function() {
-                    $(this).load("index.html");
+                    inputPidData();
                 });
                 $("#settings-overlay").fadeIn(400);
             });
@@ -285,6 +394,142 @@
                     //console.log(data);
                 }
             })
+
+            /*  Updating PID live  */
+
+                // Give input elements index corresponding to relevant bytes in characteristics
+                var inputMap = [    'placeholder',
+                                    '#roll-slave-p', '#roll-slave-i', '#roll-slave-d',
+                                    '#pitch-slave-p', '#pitch-slave-i', '#pitch-slave-d',
+                                    '#yaw-slave-p', '#yaw-slave-i', '#yaw-slave-d',
+                                    '#roll-master-p', '#roll-master-i', '#roll-master-d',
+                                    '#pitch-master-p', '#pitch-master-i', '#pitch-master-d',
+                                    '#yaw-master-p', '#yaw-master-i', '#yaw-master-d'];
+
+                /** Button actions **/
+
+                // Send throttle and PID data to quadcopter
+                addListener('#button-send', 'click', sendData);
+
+                // Send throttle and PID data to quadcopter
+                addListener('#button-reset', 'click', resetPid);
+
+                // Send throttle and PID data to quadcopter
+                addListener('#button-stop', 'click', stopQuad);
+
+
+                // Function to be called on connect to set input properties
+                function inputPidData() {
+
+                    // Enable input elements
+                    var inputs = document.getElementsByTagName('input');
+                    for( var i = 0; i < inputs.length; i++){
+                        inputs[i].disabled = false;
+                    }
+                    resetPid();
+                }
+
+                // Function for sending both PID and controller data to quadcopter
+                function sendData() {
+
+                    // Get all PID input data and store to right index of charVal
+                    for(var i = 1; i <= 18; i++) {
+                        txCharVal[i] = select(inputMap[i]).value;
+                    }
+
+                    // Get all control input data and store to right index of exCharVal
+                    exCharVal[output.throttle]      = select('#throttle').value;
+                    exCharVal[output.rollRight]     = select('#roll-right').value;
+                    exCharVal[output.rollLeft]      = select('#roll-left').value;
+                    exCharVal[output.pitchForward]  = select('#pitch-forward').value;
+                    exCharVal[output.pitchBackward] = select('#pitch-backward').value;
+                    exCharVal[output.yawRight]      = select('#yaw-right').value;
+                    exCharVal[output.yawLeft]       = select('#yaw-left').value;
+
+                    // Sending PID data with rxChar over BLE
+                    writeArrayToChar(txChar, txCharVal)
+                    .then( () => {
+                        console.log("PID data sent:", txCharVal);
+
+                        // Sending throttle data with exChar over BLE
+                        /*writeArrayToChar(exChar, exCharVal)
+                        .then( () => {
+                            console.log("Controller data sent:", exCharVal);
+                        })
+                        .catch( (error) => {
+                            console.log('Control data sending failed:', error)
+                        });*/
+                    })
+                    .catch( (error) => {
+                        console.log('PID data sending failed:', error)
+                    });
+                }
+
+                // Reset PID values to original
+                function resetPid() {
+                    for(var i = 1; i <= 18; i++) {
+                        select(inputMap[i]).value = originalPidData[i];
+                    }
+                }
+
+                function stopQuad() {
+                    exCharVal[0] = 0;
+                    writeArrayToChar(exChar, exCharVal)
+                    .then( () => {
+                        select('#throttle').value = 0;
+                        console.log("Quadcopter stopped. Data sent:", exCharVal);
+                    })
+                }
+
+                // Roll and pitch parameters should always the same
+                select('#roll-slave-p').addEventListener('input', function() {
+                    select('#pitch-slave-p').value = this.value;
+                });
+
+                select('#roll-slave-i').addEventListener('input', function() {
+                    select('#pitch-slave-i').value = this.value;
+                });
+
+                select('#roll-slave-d').addEventListener('input', function() {
+                    select('#pitch-slave-d').value = this.value;
+                });
+
+                select('#pitch-slave-p').addEventListener('input', function() {
+                    select('#roll-slave-p').value = this.value;
+                });
+
+                select('#pitch-slave-i').addEventListener('input', function() {
+                    select('#roll-slave-i').value = this.value;
+                });
+
+                select('#pitch-slave-d').addEventListener('input', function() {
+                    select('#roll-slave-d').value = this.value;
+                });
+
+                select('#roll-master-p').addEventListener('input', function() {
+                    select('#pitch-master-p').value = this.value;
+                });
+
+                select('#roll-master-i').addEventListener('input', function() {
+                    select('#pitch-master-i').value = this.value;
+                });
+
+                select('#roll-master-d').addEventListener('input', function() {
+                    select('#pitch-master-d').value = this.value;
+                });
+
+                select('#pitch-master-p').addEventListener('input', function() {
+                    select('#roll-master-p').value = this.value;
+                });
+
+                select('#pitch-master-i').addEventListener('input', function() {
+                    select('#roll-master-i').value = this.value;
+                });
+
+                select('#pitch-master-d').addEventListener('input', function() {
+                    select('#roll-master-d').value = this.value;
+                });
+
 
             // Function to write to the EX characteristic
             function exWrite() {
