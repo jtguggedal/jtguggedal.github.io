@@ -215,6 +215,38 @@
             });
 
 
+            /*  BLE functions  */
+
+            var originalPidData = new Uint8Array(20);
+
+            // Function called when connection is established and all characteristic
+            // promises are resolved
+            function onConnect() {
+
+                // Read all the original PID values from the quadcopter and
+                // store to originalPidData array
+                readPidData();
+            }
+
+            // Get PID values from quadcopter on connect
+            function readPidData() {
+                return rxChar.readValue()
+                    .then(originalPid => {
+
+                        // Convert from dataView to Uint8Array and save original
+                        // PID data for possible future reset
+                        originalPidData = new Uint8Array(originalPid.buffer, 0, 20);
+                        txCharVal = originalPidData;
+                        console.log("Original PID data received:", originalPidData);
+
+                        // Write original PID data to input boxes
+                        for(var i = 1; i <= 18; i++) {
+                            select(inputMap[i]).value = originalPidData[i];
+                        }
+                    });
+            }
+
+
             //**
             //     Joystick, based on the amazing nippleJS by @yoannmoinet: http://yoannmoinet.github.io/nipplejs/
             //**

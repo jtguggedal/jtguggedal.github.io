@@ -17,7 +17,6 @@ var txCharVal = new Uint8Array(20);
 var rxCharVal = new Uint8Array(20);
 var exCharVal = new Uint8Array(20);
 var prevRxValue = new Uint8Array(20);
-var originalPidData = new Uint8Array(20);
 var writePermission = true;
 
 // Function for connecting to quadcopter
@@ -106,6 +105,7 @@ var writePermission = true;
 function rxHandleNotification(event) {
     'use strict';
 
+/*
     // The received notification consists of a DataView object, assigned to value
     let value = event.target.value;
     value = value.buffer ? value : new DataView(value);
@@ -131,6 +131,7 @@ function rxHandleNotification(event) {
     }
 
     return value;
+*/
 }
 
 // Function to notify when connection to BLE device is established

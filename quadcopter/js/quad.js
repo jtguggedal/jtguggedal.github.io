@@ -21,7 +21,7 @@
 
     // Get PID values from quadcopter on connect
     function readPidData() {
-        return txChar.readValue()
+        return rxChar.readValue()
             .then(originalPid => {
 
                 // Convert from dataView to Uint8Array and save original PID data for possible reset
@@ -33,7 +33,6 @@
                 for(var i = 1; i <= 18; i++) {
                     select(inputMap[i]).value = originalPidData[i];
                 }
-                resolve(originalPidData);
             });
     }
 
