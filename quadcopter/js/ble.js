@@ -105,7 +105,6 @@ var writePermission = true;
 function rxHandleNotification(event) {
     'use strict';
 
-/*
     // The received notification consists of a DataView object, assigned to value
     let value = event.target.value;
     value = value.buffer ? value : new DataView(value);
@@ -131,7 +130,7 @@ function rxHandleNotification(event) {
     }
 
     return value;
-*/
+
 }
 
 // Function to notify when connection to BLE device is established

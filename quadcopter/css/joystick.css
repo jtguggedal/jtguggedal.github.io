@@ -75,6 +75,14 @@ p:last-child {
     border: 1px solid #222;
     background-color: #DDD;
     opacity: 0.8;
+    overflow: hidden;
+}
+
+.back-limits {
+    height: 100%;
+    width: 40px;
+    margin: 0 auto;
+    background-color: #AAA;
 }
 
 .front {

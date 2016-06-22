@@ -236,7 +236,7 @@
                         // Convert from dataView to Uint8Array and save original
                         // PID data for possible future reset
                         originalPidData = new Uint8Array(originalPid.buffer, 0, 20);
-                        txCharVal = originalPidData;
+                        rxCharVal = originalPidData;
                         console.log("Original PID data received:", originalPidData);
 
                         // Write original PID data to input boxes
