@@ -72,8 +72,8 @@ p:last-child {
 }
 
 .back {
-    border: 2px solid #222;
-    background-color: #EEE;
+    border: 1px solid #222;
+    background-color: #DDD;
     opacity: 0.8;
 }
 

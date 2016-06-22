@@ -62,7 +62,7 @@
                     <div id="button-settings-save" class="button-settings">
                         Save
                     </div>
-                    <div id="button-settings-back" class="button-settings">
+                    <div id="button-settings-back" class="button-settings button-settings-back">
                         Back
                     </div>
                 </div>
@@ -73,7 +73,7 @@
                 <div class="button-row">
                     <button type="button" id="button-send">Update</button>
                     <button type="button" id="button-reset">Reset</button>
-                    <button type="button" id="button-stop">Stop</button>
+                    <button type="button" id="button-stop" class="button-settings-back">Back</button>
                 </div>
                 <!--
                 <div class="pid-tuning-group">
@@ -199,9 +199,11 @@
                 $("#settings-overlay").fadeOut(400);
             });
 
-            $("#button-settings-back, #settings-overlay, #button-send").click( function() {
+            $(".button-settings-back, #settings-overlay, #button-send, .overlay-container").click( function() {
                 $("#settings-container, #settings-container-pid").fadeOut(400);
                 $("#settings-overlay").fadeOut(400);
+            }).children().click(function(e) {
+                return false;
             });
 
             // Edit PID
@@ -281,7 +283,7 @@
 
                 // Try to send data
                 if(writePermission) {
- 
+
                     // Setting motor values to zero
                     exWrite('reset')
                     .then(response => {
