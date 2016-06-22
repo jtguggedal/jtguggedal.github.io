@@ -256,6 +256,7 @@
             var printPosition = 1;
             var maxRoll = 20;
             var maxPitch = 20;
+            var yawStabilize = true;
 
             // Define byte indexes for joystick data
             var output =    {
@@ -297,12 +298,18 @@
                 // Set gradient for front on left joystick
                 var front_l = select(".collection_0 .front").style;
                 var front_r = select(".collection_1 .front").style;
-                var back = select(".back").style;
+                var back_l = select(".collection_0 .back");
 
                 front_l.background = "radial-gradient(ellipse at center,  rgba(51, 110, 163, 1) 0%, rgba(25, 66, 103, 1) 100%)";
                 front_r.background = "radial-gradient(ellipse at center,  rgba(79, 156, 117, 1) 0%, rgba(41, 110, 75, 1) 100%)";
                 front_l.opacity = 1;
                 front_r.opacity = 1;
+
+                // Inset borders for yaw in left joystick
+                var el = document.createElement("div");
+                back_l.appendChild(el);
+                el.className += "back-limits";
+
             }
 
             joystickLeft.on('end', function(evt, data) {
@@ -341,7 +348,6 @@
                     //console.log(data);
 
                     reapplyLeft('.collection_0 > .front');
-
                 }
             }).on('move', function(evt, data) {
 
@@ -350,16 +356,25 @@
                 var yaw = ((data.distance * Math.cos(data.angle.radian) + 75) / joystickLeft.options.size) * 100;
                 var yawRight = 0;
                 var yawLeft = 0;
+                var yawScale = joystickLeft.options.size / 100;
+                var joystickCenter = joystickLeft.options.size / 2;
 
-                if(yaw < 50){
-                    yaw = 100 * (50 - yaw) / 50;
-                    yawDir = "left";
-                    yawLeft = yaw;
-                } else if(yaw > 50) {
-                    yaw = 100 * (yaw - 50) / 50;
-                    yawDir = "right";
-                    yawRight = yaw;
+                if(yawStabilize) {
+                    yaw = yaw * yawScale;
+                    if( yaw * yawScale <  (joystickCenter - 20)) {
+                        yaw = 100 * ((joystickCenter - 20 - yaw) / (joystickCenter - 20));
+                        yawDir = "left";
+                        yawLeft = yaw;
+                    } else if(yaw * yawScale >  joystickCenter + 20) {
+                        yaw = 100 * ((joystickCenter + 20 - yaw) / (joystickCenter + 20));
+                        yawDir = "right";
+                        yawRight = yaw;
+                    } else {
+                        yaw = 0;
+                    }
                 }
+
+
 
                 // Storing and sending joystick data with the EX characteristic
                 exCharVal[output.throttle] = parseInt(throttle);
