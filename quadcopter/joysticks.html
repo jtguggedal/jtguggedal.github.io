@@ -498,7 +498,7 @@
                         inputs[i].disabled = false;
                     }
 
-                    setPid(txCharVal);
+                    setPid(rxCharVal);
                 }
 
                 // Function for sending both PID and controller data to quadcopter
@@ -509,16 +509,7 @@
                         txCharVal[i] = select(inputMap[i]).value;
                     }
 
-                    // Get all control input data and store to right index of exCharVal
-                    // exCharVal[output.throttle]      = select('#throttle').value;
-                    // exCharVal[output.rollRight]     = select('#roll-right').value;
-                    // exCharVal[output.rollLeft]      = select('#roll-left').value;
-                    // exCharVal[output.pitchForward]  = select('#pitch-forward').value;
-                    // exCharVal[output.pitchBackward] = select('#pitch-backward').value;
-                    // exCharVal[output.yawRight]      = select('#yaw-right').value;
-                    // exCharVal[output.yawLeft]       = select('#yaw-left').value;
-
-                    // Sending PID data with rxChar over BLE
+                    // Sending PID data with txChar over BLE
                     writeArrayToChar(txChar, txCharVal)
                     .then( () => {
                         console.log("PID data sent:", txCharVal);
