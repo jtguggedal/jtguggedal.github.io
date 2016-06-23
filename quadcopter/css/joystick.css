@@ -90,7 +90,7 @@ p:last-child {
 }
 
 .front {
-    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.7);
 }
 
 .joystick-post-style {
