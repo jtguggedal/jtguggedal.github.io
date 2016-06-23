@@ -39,18 +39,23 @@ p:last-child {
     box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5));
 }
 
+.shadow-0 {
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3));
+}
+
 /*  Connection  */
 #connectionStatus {
+    position: absolute;
+    right: 87px;
+    top: 10px;
 	padding: 2px 5px;
 	background-color: rgb(195, 7, 12);
 	color: white;
 	text-align: center;
-	position: absolute;
-	margin-left: auto;
-	margin-right: auto;
-	top: 5px;
-	right: 300px;
 	font-size: 12px;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
 }
 
 /*  Joystick  */
@@ -215,6 +220,23 @@ p:last-child {
     float: right;
     margin: 0;
     width: 85px;
+}
+
+/*  Battery levels  */
+#battery-level-container {
+    display: none;
+    position: absolute;
+    top: 12px;
+    width: 100%;
+    text-align: center;
+    color: white;
+    font-weight: 700;
+}
+
+#battery-level-inner-container {
+    width: 50px;
+    margin: 0 auto;
+    border: 2px solid white;
 }
 
 /*  Debugging  */

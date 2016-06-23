@@ -13,7 +13,16 @@
     </head>
     <body>
         <div id="connectionStatus">
-            Connection status
+        </div>
+        <div id="battery-level-container">
+            <div id="battery-level-inner-container" class="shadow-0">
+                <span id="battery-level-value">
+                    <!-- Battery level -->
+                </span>
+                <span id="battery-level-unit">
+                    <!-- Battery level unit -->
+                </span>
+            </div>
         </div>
         <div id="joystick-container">
             <div id="joystick-left" class="joystick-wrapper">
@@ -197,14 +206,13 @@
 
         <script>
 
-            // Controller settings
+            // Quadcopter ontroller settings
 
             var maxRoll = 20;
             var maxPitch = 20;
             var yawStabilize = true;
             var yawScale = 153;         // [0 - 255], 153 -> 60%
             var printPosition = true;
-
 
 
             /*  Event listeners  */
@@ -286,6 +294,10 @@
                         for(var i = 1; i <= 18; i++) {
                             select(inputMap[i]).value = originalPidData[i];
                         }
+
+                        // Get battery level and display it
+                        batteryLevel(rxCharVal[0]);
+
                     });
             }
 
@@ -611,6 +623,20 @@
                     .then( () => {
                         console.log("Quadcopter stopped. Data sent:", exCharVal);
                     })
+                }
+
+                // Process battery level
+                function batteryLevel(value) {
+                    select('#battery-level-value').textContent = value;
+                    select('#battery-level-unit').textContent = "%";
+                    select('#battery-level-container').style.display = "block";
+                    var el = select('#battery-level-inner-container');
+                    if(value >= 60)
+                        el.style.cssText = "background-color: rgb(6, 116, 54)"
+                    else if((value >= 30) && (value < 60))
+                        el.style.cssText = "background-color: rgb(251, 173, 0)"
+                    else
+                        el.style.cssText = "background-color: rgb(175, 7, 7)"
                 }
 
                 // Roll and pitch parameters should always the same
