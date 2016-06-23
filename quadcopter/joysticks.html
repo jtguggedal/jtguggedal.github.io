@@ -225,6 +225,10 @@
                 .then( () => {
                     self.css({"background-color": "rgb(6, 116, 54)"});
                     self.text('Sent');
+                    setTimeout(function() {
+                        self.css({"background-color": "rgba(5, 32, 51, 1"});
+                        self.text('Do it');
+                    }, 5000);
                 });
             });
 
