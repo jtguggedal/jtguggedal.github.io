@@ -99,38 +99,13 @@ p:last-child {
 
 
 /*  Settings  */
-#button-settings, #button-settings-pid {
-    background-color: rgba(5, 32, 51, 1);
-    position: absolute;
-    top: 0;
-    right: 20px;
-    height: 40px;
-    width: 40px;
-    margin: 0 auto;
-    border-radius: 0 0 2px 2px;
-    padding: 4px;
-}
-
-#button-settings-pid {
-    right: 130px;
-    color: white;
-    width: 80px;
-    font-weight: 700;
-    text-align: center;
-    padding-top: 10px;
-}
-
-#button-settings > img {
-    width: 100%;
-}
-
 .overlay-container {
     display: none;
     position: absolute;
     width: 100%;
     height: 300px;
     margin: 0;
-    top: 30px;
+    top: 15px;
     z-index: 1000;
     overflow: scroll;
 }
@@ -196,9 +171,35 @@ p:last-child {
     text-align: center;
 }
 
+#button-settings, #button-settings-pid {
+    background-color: rgba(5, 32, 51, 1);
+    position: absolute;
+    top: 0;
+    right: 20px;
+    height: 40px;
+    width: 40px;
+    margin: 0 auto;
+    border-radius: 0 0 2px 2px;
+    padding: 4px;
+}
+
+#button-settings-pid {
+    right: 130px;
+    color: white;
+    width: 80px;
+    font-weight: 700;
+    text-align: center;
+    padding-top: 10px;
+}
+
+#button-settings > img {
+    width: 100%;
+}
+
+
 .button-settings {
     display: inline-block;
-    margin: 0px;
+    margin: 0 10px;
     margin-bottom: 0;
     width: 60px;
     padding: 1px 10px;
@@ -212,6 +213,7 @@ p:last-child {
 
 #button-settings-calibrate {
     float: right;
+    margin: 0;
 }
 
 /*  Debugging  */
