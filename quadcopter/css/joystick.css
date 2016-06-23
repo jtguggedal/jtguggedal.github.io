@@ -93,9 +93,10 @@ p:last-child {
     box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.7);
 }
 
-.joystick-post-style {
-    background: radial-gradient(ellipse at center,  rgba(0,0,0,0) 0%,rgba(0,0,0,0.65) 100%);
+.collection_0 > .front {
+    top: 75px;
 }
+
 
 /*  Settings  */
 #button-settings, #button-settings-pid {
@@ -197,7 +198,7 @@ p:last-child {
 
 .button-settings {
     display: inline-block;
-    margin: 20px;
+    margin: 0px;
     margin-bottom: 0;
     width: 60px;
     padding: 1px 10px;
@@ -209,6 +210,9 @@ p:last-child {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
+#button-settings-calibrate {
+    float: right;
+}
 
 /*  Debugging  */
 #debug-container {
@@ -229,8 +233,4 @@ p:last-child {
     display: inline-block;
     width: 120px;
     text-align: left;
-}
-
-.collection_0 > .front {
-    top: 75px;
 }

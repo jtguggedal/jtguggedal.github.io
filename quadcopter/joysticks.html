@@ -47,6 +47,7 @@
         </div>
         <div id="settings-overlay">
         </div>
+        <!-- Settings menu -->
         <div id="settings-container" class="overlay-container">
             <div id="settings-inner-container">
                 <h2 class="heading-menu">Settings</h2>
@@ -58,6 +59,12 @@
                     <span class="settings-row-label">Maximum pitch angle [degrees]</span>
                     <input type="number"  id="settings-maxPitch" class="settings-row-value" >
                 </div>
+                <div class="settings-row">
+                    <span class="settings-row-label">Calibrate quadcopter</span>
+                    <div id="button-settings-calibrate" class="button-settings" >
+                        Do it
+                    </div>
+                </div>
                 <div id="button-settings-container">
                     <div id="button-settings-save" class="button-settings">
                         Save
@@ -68,6 +75,9 @@
                 </div>
             </div>
         </div>
+        <!-- END settings menu-->
+
+        <!-- PID settings menu -->
         <div id="settings-container-pid" class="overlay-container">
             <div id="settings-inner-container-pid">
                 <div class="button-row">
@@ -179,6 +189,7 @@
                 </div>
             </div>
         </div>
+        <!-- END PID settings menu -->
 
         <script>
 
@@ -206,6 +217,12 @@
                 return false;
             });
 
+            addListener('#button-settings-calibrate', 'click', function() {
+                exCharVal[10] = calibrateCounter;
+                writeArrayToChar(exChar, exCharVal);
+                calibrateCounter++;
+            });
+
             // Edit PID
             addListener("#button-settings-pid", "click", function() {
                 $("#settings-container-pid").fadeIn(400, function() {
@@ -218,6 +235,7 @@
             /*  BLE functions  */
 
             var originalPidData = new Uint8Array(20);
+            var calibrateCounter = 1;
 
             // Function called when connection is established and all characteristic
             // promises are resolved
