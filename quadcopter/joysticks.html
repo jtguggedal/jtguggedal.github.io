@@ -217,10 +217,15 @@
                 return false;
             });
 
-            addListener('#button-settings-calibrate', 'click', function() {
+            $('#button-settings-calibrate').click( function() {
                 exCharVal[10] = calibrateCounter;
-                writeArrayToChar(exChar, exCharVal);
                 calibrateCounter++;
+                var self = this;
+                writeArrayToChar(exChar, exCharVal)
+                .then( () => {
+                    self.css('background-color': 'rgb(6, 116, 54)')
+                    self.text('Sent');
+                });
             });
 
             // Edit PID
