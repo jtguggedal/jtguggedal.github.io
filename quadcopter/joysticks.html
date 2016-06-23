@@ -409,10 +409,12 @@
                     if(yaw <=  (joystickCenter - 20)) {
                         yaw = ((joystickCenter - 20 - yaw) / (joystickCenter - 20));
                         yawDir = "left";
+                        yaw *= yawScale;
                         yawLeft = yaw;
                     } else if(yaw >=  (joystickCenter + 20)) {
                         yaw = ((joystickCenter - 20 ) - (joystickSize - yaw)) / (joystickCenter - 20);
                         yawDir = "right";
+                        yaw *= yawScale;
                         yawRight = yaw;
                     } else {
                         yaw = 0;
@@ -420,7 +422,6 @@
                     }
                 }
 
-                yaw = (yaw * 255) * (yawScale / 255);
 
 
 
