@@ -220,10 +220,10 @@
             $('#button-settings-calibrate').click( function() {
                 exCharVal[10] = calibrateCounter;
                 calibrateCounter++;
-                var self = this;
+                var self = $(this);
                 writeArrayToChar(exChar, exCharVal)
                 .then( () => {
-                    self.css('background-color': 'rgb(6, 116, 54)')
+                    self.css({"background-color": "rgb(6, 116, 54)"});
                     self.text('Sent');
                 });
             });
