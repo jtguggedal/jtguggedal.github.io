@@ -279,7 +279,9 @@
                 size: 150,
                 restOpacity: 0.95
             });
-            joystickLeftPos = joystickLeft.position;
+            var joystickLeftPos = joystickLeft.position;
+            var joystickSize = joystickLeft.options.size;
+            var joystickCenter = joystickSize / 2;
 
             // Function for positioning the left joystick correctly when released
             function reapplyLeft(el) {
@@ -352,25 +354,32 @@
             }).on('move', function(evt, data) {
 
                 // Executes on every new touch event from joystick
-                var throttle = parseInt(((data.distance * Math.sin(data.angle.radian) + 75) / joystickLeft.options.size) * 255);
-                var yaw = ((data.distance * Math.cos(data.angle.radian) + 75) / joystickLeft.options.size) * 100;
+
+                // Throttle is scaled from 0 - 255 to fit into one byte in Uint8Array
+                var throttle = parseInt(((data.distance * Math.sin(data.angle.radian) + 75) / joystickSize) * 255);
+
+                // Yaw is defined in pixels, with the joystick offset of 75px taken into account
+                // TODO - Make joystick size and offset part of the joystick objects
+                var yaw = data.distance * Math.cos(data.angle.radian) + 75;
                 var yawRight = 0;
                 var yawLeft = 0;
-                var yawScale = joystickLeft.options.size / 100;
-                var joystickCenter = joystickLeft.options.size / 2;
 
+                // When yawStabilize is TRUE, a vertical zone in the middle of
+                // the left joystick will result in zero yaw
+                // TODO - Use variable for this zone size (20px each side for now)
+                // and make it adjustable from settings menu
                 if(yawStabilize) {
-                    yaw = yaw * yawScale;
-                    if( yaw * yawScale <  (joystickCenter - 20)) {
+                    if(yaw <=  (joystickCenter - 20)) {
                         yaw = 100 * ((joystickCenter - 20 - yaw) / (joystickCenter - 20));
                         yawDir = "left";
                         yawLeft = yaw;
-                    } else if(yaw * yawScale >  joystickCenter + 20) {
-                        yaw = 100 * ((joystickCenter + 20 - yaw) / (joystickCenter + 20));
+                    } else if(yaw >=  (joystickCenter + 20)) {
+                        yaw = 100 * ((joystickCenter - 20 ) - (joystickSize - yaw)) / (joystickCenter - 20);
                         yawDir = "right";
                         yawRight = yaw;
                     } else {
                         yaw = 0;
+                        yawDir = "";
                     }
                 }
 
@@ -432,8 +441,8 @@
             }).on('move', function(evt, data) {
 
                 // Executes on every new touch event from joystick
-                var pitch = ((data.distance * Math.sin(data.angle.radian) + 75) / joystickRight.options.size) * 100;
-                var roll = ((data.distance * Math.cos(data.angle.radian) + 75) / joystickRight.options.size) * 100;
+                var pitch = ((data.distance * Math.sin(data.angle.radian) + 75) / joystickSize) * 100;
+                var roll = ((data.distance * Math.cos(data.angle.radian) + 75) / joystickSize) * 100;
                 var rollRight = 0;
                 var rollLeft = 0;
                 var pitchForward = 0;
