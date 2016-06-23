@@ -214,6 +214,7 @@ p:last-child {
 #button-settings-calibrate {
     float: right;
     margin: 0;
+    width: 85px;
 }
 
 /*  Debugging  */

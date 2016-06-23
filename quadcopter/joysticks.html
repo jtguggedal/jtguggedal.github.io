@@ -60,9 +60,13 @@
                     <input type="number"  id="settings-maxPitch" class="settings-row-value" >
                 </div>
                 <div class="settings-row">
+                    <span class="settings-row-label">Maximum yaw [%]</span>
+                    <input type="number"  id="settings-yawScale" class="settings-row-value" min="0" max="255">
+                </div>
+                <div class="settings-row">
                     <span class="settings-row-label">Calibrate quadcopter</span>
                     <div id="button-settings-calibrate" class="button-settings" >
-                        Do it
+                        Calibrate
                     </div>
                 </div>
                 <div id="button-settings-container">
@@ -193,6 +197,16 @@
 
         <script>
 
+            // Controller settings
+
+            var maxRoll = 20;
+            var maxPitch = 20;
+            var yawStabilize = true;
+            var yawScale = 153;         // [0 - 255], 153 -> 60%
+            var printPosition = true;
+
+
+
             /*  Event listeners  */
 
             // Settings menu
@@ -201,11 +215,13 @@
                 $("#settings-overlay").fadeIn(400);
                 select("#settings-maxRoll").value = maxRoll;
                 select("#settings-maxPitch").value = maxPitch;
+                select("#settings-yawScale").value = parseInt((100 * yawScale) / 255);
             });
 
             addListener('#button-settings-save', 'click', function() {
                 maxRoll = select('#settings-maxRoll').value;
                 maxPitch = select('#settings-maxPitch').value;
+                yawScale = ((255 * select('#settings-yawScale').value) / 100);
                 $("#settings-container").fadeOut(400);
                 $("#settings-overlay").fadeOut(400);
             });
@@ -280,11 +296,6 @@
 
 
             // Settings for joystick
-            var printPosition = 1;
-            var maxRoll = 20;
-            var maxPitch = 20;
-            var yawStabilize = true;
-
             // Define byte indexes for joystick data
             var output =    {
                                 throttle : 0,
@@ -396,11 +407,11 @@
                 // and make it adjustable from settings menu
                 if(yawStabilize) {
                     if(yaw <=  (joystickCenter - 20)) {
-                        yaw = 100 * ((joystickCenter - 20 - yaw) / (joystickCenter - 20));
+                        yaw = ((joystickCenter - 20 - yaw) / (joystickCenter - 20));
                         yawDir = "left";
                         yawLeft = yaw;
                     } else if(yaw >=  (joystickCenter + 20)) {
-                        yaw = 100 * ((joystickCenter - 20 ) - (joystickSize - yaw)) / (joystickCenter - 20);
+                        yaw = ((joystickCenter - 20 ) - (joystickSize - yaw)) / (joystickCenter - 20);
                         yawDir = "right";
                         yawRight = yaw;
                     } else {
@@ -408,6 +419,8 @@
                         yawDir = "";
                     }
                 }
+
+                yaw = (yaw * 255) * (yawScale / 255);
 
 
 
@@ -426,7 +439,7 @@
                 // Debug
                 if(printPosition) {
                     select('#debug-throttleLeft').innerHTML = '<b>Throttle</b>: ' + throttle.toFixed(0) + '%';
-                    select('#debug-yawLeft').innerHTML = '<b>Yaw</b>: ' + yaw.toFixed(0) + '% ' + yawDir;
+                    select('#debug-yawLeft').innerHTML = '<b>Yaw</b>: ' + parseInt(100 * yaw / 255) + '% ' + yawDir;
                     //console.log(data);
                 }
             })
@@ -649,15 +662,14 @@
                     select('#roll-master-d').value = this.value;
                 });
 
-
             // Function to write to the EX characteristic
             function exWrite(type = 'normal') {
                 if(type == 'reset')
                     exCharVal[output.throttle] = 0;
 
                 return writeArrayToChar(exChar, exCharVal)
-                .then( (p) => {
-                    console.log('Sending: ', p);
+                .then( response => {
+                    // response holds the returned promise
                 });
             }
 
