@@ -382,7 +382,7 @@
                 var back_l = select(".collection_0 .back");
 
                 front_l.background = "radial-gradient(ellipse at center,  rgba(51, 110, 163, 1) 0%, rgba(25, 66, 103, 1) 100%)";
-                front_r.background = "radial-gradient(ellipse at center,  rgba(79, 156, 117, 1) 0%, rgba(41, 110, 75, 1) 100%)";
+                front_r.background = "radial-gradient(ellipse at center,  rgba(196, 2, 2, 1) 0%, rgba(145, 4, 4, 1) 100%)";
                 front_l.opacity = 1;
                 front_r.opacity = 1;
 
@@ -442,19 +442,20 @@
                 var yaw = data.distance * Math.cos(data.angle.radian) + 75;
                 var yawRight = 0;
                 var yawLeft = 0;
+                var yawLimit = yawLimits / 2;
 
                 // When yawStabilize is TRUE, a vertical zone in the middle of
                 // the left joystick will result in zero yaw
                 // TODO - Use variable for this zone size (20px each side for now)
                 // and make it adjustable from settings menu
                 if(yawStabilize) {
-                    if(yaw <=  (joystickCenter - 20)) {
-                        yaw = ((joystickCenter - 20 - yaw) / (joystickCenter - 20));
+                    if(yaw <=  (joystickCenter - yawLimit)) {
+                        yaw = ((joystickCenter - yawLimit - yaw) / (joystickCenter - yawLimit));
                         yawDir = "left";
                         yaw *= yawScale;
                         yawLeft = yaw;
-                    } else if(yaw >=  (joystickCenter + 20)) {
-                        yaw = ((joystickCenter - 20 ) - (joystickSize - yaw)) / (joystickCenter - 20);
+                    } else if(yaw >=  (joystickCenter + yawLimit)) {
+                        yaw = ((joystickCenter - yawLimit ) - (joystickSize - yaw)) / (joystickCenter - yawLimit);
                         yawDir = "right";
                         yaw *= yawScale;
                         yawRight = yaw;
@@ -491,7 +492,7 @@
                 zone: document.getElementById('joystick-right'),
                 mode: 'static',
                 position: {right: '-40px', top: '40%'},
-                color: '#367d59',
+                color: 'rgba(196, 2, 2, 1)',
                 size: 150,
                 restOpacity: 0.9
             });
