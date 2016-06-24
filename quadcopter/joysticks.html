@@ -303,12 +303,12 @@
 
 
             // Debug yaw trimming
-            addListener("#debug-yaw-trim-plus", "click", function() {
+            addListener("#debug-yaw-trim-plus", "touchend", function() {
                 yawTrimValue++;
                 select("#debug-yaw-trim-input").innerHTML = yawTrimValue;
             });
 
-            addListener("#debug-yaw-trim-minus", "click", function() {
+            addListener("#debug-yaw-trim-minus", "touchend", function() {
                 yawTrimValue--;
                 select("#debug-yaw-trim-input").innerHTML = yawTrimValue;
             });
