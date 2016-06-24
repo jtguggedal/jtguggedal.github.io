@@ -123,7 +123,7 @@ function rxHandleNotification(event) {
     // if((sumArray(valueArray) != 0) && (!arraysEqual(valueArray, prevRxValue, 1, 18))) {
 
         // Write original PID data to input boxes on first notification
-        if(initialPidFetch)
+        if(initialPidFetch) {
             originalPidData = rxCharVal = txCharVal = prevRxValue = valueArray;
             console.log("Original PID data received:", originalPidData);
 
