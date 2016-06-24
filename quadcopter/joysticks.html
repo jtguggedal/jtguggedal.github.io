@@ -67,7 +67,7 @@
             Edit PID
         </div>
         <div id="button-settings" >
-            <img src="img/settings.png">
+            <img src="img/wrench.png">
         </div>
         <div id="settings-overlay">
         </div>
@@ -227,12 +227,14 @@
 
             // Quadcopter ontroller settings
 
-            var maxRoll = 20;
-            var maxPitch = 20;
-            var yawStabilize = true;
-            var yawScale = 153;         // [0 - 255], 153 -> 60%
-            var printPosition = true;
-            var yawLimits = 20;         // [px] Width of the are of the yaw controller where yaw = 0
+            var maxRoll         = 20;
+            var maxPitch        = 20;
+            var yawStabilize    = true;
+            var yawScale        = 153;         // [0 - 255], 60% * (255 / 100%) = 153
+            var printPosition   = true;
+            var yawLimits       = 20;           // [px] Width of the are of the yaw controller where yaw = 0
+            var yawTrim         = false;
+            var yawTrimValue    = 0;
 
 
             /*  Event listeners  */
@@ -252,14 +254,14 @@
                 maxPitch = select('#settings-maxPitch').value;
                 yawScale = ((255 * select('#settings-yawScale').value) / 100);
                 yawLimits = select('#settings-yawLimits').value;
-                $("#settings-container").fadeOut(400);
-                $("#settings-overlay").fadeOut(400);
+                $("#settings-container").fadeOut(200);
+                $("#settings-overlay").fadeOut(200);
                 reapplyJoystick();
             });
 
             $(".button-settings-back, #settings-overlay, #button-send, .overlay-container").click( function() {
-                $("#settings-container, #settings-container-pid").fadeOut(400);
-                $("#settings-overlay").fadeOut(400);
+                $("#settings-container, #settings-container-pid").fadeOut(200);
+                $("#settings-overlay").fadeOut(200);
             }).children().click(function(e) {
                 return false;
             });
@@ -281,10 +283,10 @@
 
             // Edit PID
             addListener("#button-settings-pid", "click", function() {
-                $("#settings-container-pid").fadeIn(400, function() {
+                $("#settings-container-pid").fadeIn(200, function() {
                     inputPidData();
                 });
-                $("#settings-overlay").fadeIn(400);
+                $("#settings-overlay").fadeIn(200);
             });
 
 
@@ -466,6 +468,9 @@
                 }
 
                 yaw = parseInt(yaw);
+
+                if(yawTrim)
+                    yaw += yawTrimValue;
 
                 // Storing and sending joystick data with the EX characteristic
                 exCharVal[output.throttle] = parseInt(throttle);
