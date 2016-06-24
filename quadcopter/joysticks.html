@@ -293,10 +293,12 @@
                 setTimeout(function() {
                         // Read all the original PID values from the quadcopter and
                         // store to originalPidData array
-                        readPidData();
+                        readPidData()
+                        .then( () => {
+                            batteryLevel(rxCharVal[0]);
+                        }
 
                         // Get battery level and display it
-                        batteryLevel(rxCharVal[0]);
                 }, 3000);
             }
 
@@ -656,7 +658,7 @@
                         el.style.cssText = "background-color: rgb(251, 173, 0)"
                     else
                         el.style.cssText = "background-color: rgb(209, 6, 6)"
-                } 
+                }
 
                 // Roll and pitch parameters should always the same
                 select('#roll-slave-p').addEventListener('input', function() {
