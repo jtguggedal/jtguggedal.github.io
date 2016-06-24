@@ -478,22 +478,23 @@
                         yaw = ((joystickCenter - yawLimit - yaw) / (joystickCenter - yawLimit));
                         yawDir = "left";
                         yaw *= yawScale;
+                        yaw = parseInt(yaw);
+                        if(yawTrim)
+                            yaw += yawTrimValue;
                         yawLeft = yaw;
                     } else if(yaw >=  (joystickCenter + yawLimit)) {
                         yaw = ((joystickCenter - yawLimit ) - (joystickSize - yaw)) / (joystickCenter - yawLimit);
                         yawDir = "right";
                         yaw *= yawScale;
+                        yaw = parseInt(yaw);
+                        if(yawTrim)
+                            yaw += yawTrimValue;
                         yawRight = yaw;
                     } else {
                         yaw = 0;
                         yawDir = "";
                     }
                 }
-
-                yaw = parseInt(yaw);
-
-                if(yawTrim)
-                    yaw += yawTrimValue;
 
                 // Storing and sending joystick data with the EX characteristic
                 exCharVal[output.throttle] = parseInt(throttle);
