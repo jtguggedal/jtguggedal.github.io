@@ -88,6 +88,10 @@
                     <input type="number"  id="settings-yawScale" class="settings-row-value" min="0" max="255">
                 </div>
                 <div class="settings-row">
+                    <span class="settings-row-label">Size of band where yaw = 0 [%]</span>
+                    <input type="number"  id="settings-yawLimits" class="settings-row-value" min="0" max="100">
+                </div>
+                <div class="settings-row">
                     <span class="settings-row-label">Calibrate quadcopter</span>
                     <div id="button-settings-calibrate" class="button-settings" >
                         Calibrate
@@ -228,6 +232,7 @@
             var yawStabilize = true;
             var yawScale = 153;         // [0 - 255], 153 -> 60%
             var printPosition = true;
+            var yawLimits = 20;         // [px] Width of the are of the yaw controller where yaw = 0
 
 
             /*  Event listeners  */
@@ -239,14 +244,17 @@
                 select("#settings-maxRoll").value = maxRoll;
                 select("#settings-maxPitch").value = maxPitch;
                 select("#settings-yawScale").value = parseInt((100 * yawScale) / 255);
+                select("#settings-yawLimits").value = yawLimits;
             });
 
             addListener('#button-settings-save', 'click', function() {
                 maxRoll = select('#settings-maxRoll').value;
                 maxPitch = select('#settings-maxPitch').value;
                 yawScale = ((255 * select('#settings-yawScale').value) / 100);
+                yawLimits = select('#settings-yawLimits').value;
                 $("#settings-container").fadeOut(400);
                 $("#settings-overlay").fadeOut(400);
+                reapplyJoystick();
             });
 
             $(".button-settings-back, #settings-overlay, #button-send, .overlay-container").click( function() {
@@ -382,6 +390,7 @@
                 var el = document.createElement("div");
                 back_l.appendChild(el);
                 el.className += "back-limits";
+                select('.back-limits').style.width = ((yawLimits * joystickSize) / 100) + 'px';
             }
 
             joystickLeft.on('end', function(evt, data) {
@@ -564,150 +573,152 @@
 
             /*  Updating PID live  */
 
-                // Give input elements index corresponding to relevant bytes in characteristics
-                var inputMap = [    'placeholder',
-                                    '#roll-slave-p', '#roll-slave-i', '#roll-slave-d',
-                                    '#pitch-slave-p', '#pitch-slave-i', '#pitch-slave-d',
-                                    '#yaw-slave-p', '#yaw-slave-i', '#yaw-slave-d',
-                                    '#roll-master-p', '#roll-master-i', '#roll-master-d',
-                                    '#pitch-master-p', '#pitch-master-i', '#pitch-master-d',
-                                    '#yaw-master-p', '#yaw-master-i', '#yaw-master-d'];
+            // Give input elements index corresponding to relevant bytes in characteristics
+            var inputMap = [    'placeholder',
+                                '#roll-slave-p', '#roll-slave-i', '#roll-slave-d',
+                                '#pitch-slave-p', '#pitch-slave-i', '#pitch-slave-d',
+                                '#yaw-slave-p', '#yaw-slave-i', '#yaw-slave-d',
+                                '#roll-master-p', '#roll-master-i', '#roll-master-d',
+                                '#pitch-master-p', '#pitch-master-i', '#pitch-master-d',
+                                '#yaw-master-p', '#yaw-master-i', '#yaw-master-d'];
 
-                /** Button actions **/
+            /** Button actions **/
 
-                // Send throttle and PID data to quadcopter
-                addListener('#button-send', 'click', sendData);
+            // Send throttle and PID data to quadcopter
+            addListener('#button-send', 'click', sendData);
 
-                // Send throttle and PID data to quadcopter
-                addListener('#button-reset', 'click', resetPid);
+            // Send throttle and PID data to quadcopter
+            addListener('#button-reset', 'click', resetPid);
 
-                // Send throttle and PID data to quadcopter
-                addListener('#button-stop', 'click', stopQuad);
+            // Send throttle and PID data to quadcopter
+            addListener('#button-stop', 'click', stopQuad);
 
 
-                // Function to be called on connect to set input properties
-                function inputPidData() {
+            // Function to be called on connect to set input properties
+            function inputPidData() {
 
-                    // Enable input elements
-                    var inputs = document.getElementsByTagName('input');
-                    for( var i = 0; i < inputs.length; i++){
-                        inputs[i].disabled = false;
-                    }
-
-                    setPid(txCharVal);
+                // Enable input elements
+                var inputs = document.getElementsByTagName('input');
+                for( var i = 0; i < inputs.length; i++){
+                    inputs[i].disabled = false;
                 }
 
-                // Function for sending both PID and controller data to quadcopter
-                function sendData() {
+                setPid(txCharVal);
+            }
 
-                    // Get all PID input data and store to right index of charVal
-                    for(var i = 1; i <= 18; i++) {
-                        txCharVal[i] = select(inputMap[i]).value;
-                    }
+            // Function for sending both PID and controller data to quadcopter
+            function sendData() {
 
-                    // Sending PID data with txChar over BLE
-                    writeArrayToChar(txChar, txCharVal)
+                // Get all PID input data and store to right index of charVal
+                for(var i = 1; i <= 18; i++) {
+                    txCharVal[i] = select(inputMap[i]).value;
+                }
+
+                // Sending PID data with txChar over BLE
+                writeArrayToChar(txChar, txCharVal)
+                .then( () => {
+                    console.log("PID data sent:", txCharVal);
+
+                    // Sending throttle data with exChar over BLE
+                    /*writeArrayToChar(exChar, exCharVal)
                     .then( () => {
-                        console.log("PID data sent:", txCharVal);
-
-                        // Sending throttle data with exChar over BLE
-                        /*writeArrayToChar(exChar, exCharVal)
-                        .then( () => {
-                            console.log("Controller data sent:", exCharVal);
-                        })
-                        .catch( (error) => {
-                            console.log('Control data sending failed:', error)
-                        });*/
+                        console.log("Controller data sent:", exCharVal);
                     })
                     .catch( (error) => {
-                        console.log('PID data sending failed:', error)
-                    });
+                        console.log('Control data sending failed:', error)
+                    });*/
+                })
+                .catch( (error) => {
+                    console.log('PID data sending failed:', error)
+                });
+            }
+
+            // Reset PID values to original
+            function resetPid() {
+                for(var i = 1; i <= 18; i++) {
+                    select(inputMap[i]).value = originalPidData[i];
                 }
+            }
 
-                // Reset PID values to original
-                function resetPid() {
-                    for(var i = 1; i <= 18; i++) {
-                        select(inputMap[i]).value = originalPidData[i];
-                    }
+            // Set PID values as passed in argument
+            function setPid(val) {
+                for(var i = 1; i <= 18; i++) {
+                    select(inputMap[i]).value = val[i];
                 }
+            }
 
-                // Set PID values as passed in argument
-                function setPid(val) {
-                    for(var i = 1; i <= 18; i++) {
-                        select(inputMap[i]).value = val[i];
-                    }
-                }
+            function stopQuad() {
+                exCharVal[0] = 0;
+                writeArrayToChar(exChar, exCharVal)
+                .then( () => {
+                    console.log("Quadcopter stopped. Data sent:", exCharVal);
+                })
+            }
 
-                function stopQuad() {
-                    exCharVal[0] = 0;
-                    writeArrayToChar(exChar, exCharVal)
-                    .then( () => {
-                        console.log("Quadcopter stopped. Data sent:", exCharVal);
-                    })
-                }
+            //
 
-                // Process battery level
-                function batteryLevel(value) {
-                    select('#battery-level-value').textContent = value;
-                    select('#battery-level-unit').textContent = "%";
-                    select('#battery-level-container').style.display = "inline-block";
-                    var el = select('#battery-level-output');
-                    if(value >= 60)
-                        el.style.cssText = "background-color: rgb(13, 152, 73)"
-                    else if((value >= 30) && (value < 60))
-                        el.style.cssText = "background-color: rgb(251, 173, 0)"
-                    else
-                        el.style.cssText = "background-color: rgb(209, 6, 6)"
-                }
+            // Process battery level
+            function batteryLevel(value) {
+                select('#battery-level-value').textContent = value;
+                select('#battery-level-unit').textContent = "%";
+                select('#battery-level-container').style.display = "inline-block";
+                var el = select('#battery-level-output');
+                if(value >= 60)
+                    el.style.cssText = "background-color: rgb(13, 152, 73)"
+                else if((value >= 30) && (value < 60))
+                    el.style.cssText = "background-color: rgb(251, 173, 0)"
+                else
+                    el.style.cssText = "background-color: rgb(209, 6, 6)"
+            }
 
-                // Roll and pitch parameters should always the same
-                select('#roll-slave-p').addEventListener('input', function() {
-                    select('#pitch-slave-p').value = this.value;
-                });
+            // Roll and pitch parameters should always the same
+            select('#roll-slave-p').addEventListener('input', function() {
+                select('#pitch-slave-p').value = this.value;
+            });
 
-                select('#roll-slave-i').addEventListener('input', function() {
-                    select('#pitch-slave-i').value = this.value;
-                });
+            select('#roll-slave-i').addEventListener('input', function() {
+                select('#pitch-slave-i').value = this.value;
+            });
 
-                select('#roll-slave-d').addEventListener('input', function() {
-                    select('#pitch-slave-d').value = this.value;
-                });
+            select('#roll-slave-d').addEventListener('input', function() {
+                select('#pitch-slave-d').value = this.value;
+            });
 
-                select('#pitch-slave-p').addEventListener('input', function() {
-                    select('#roll-slave-p').value = this.value;
-                });
+            select('#pitch-slave-p').addEventListener('input', function() {
+                select('#roll-slave-p').value = this.value;
+            });
 
-                select('#pitch-slave-i').addEventListener('input', function() {
-                    select('#roll-slave-i').value = this.value;
-                });
+            select('#pitch-slave-i').addEventListener('input', function() {
+                select('#roll-slave-i').value = this.value;
+            });
 
-                select('#pitch-slave-d').addEventListener('input', function() {
-                    select('#roll-slave-d').value = this.value;
-                });
+            select('#pitch-slave-d').addEventListener('input', function() {
+                select('#roll-slave-d').value = this.value;
+            });
 
-                select('#roll-master-p').addEventListener('input', function() {
-                    select('#pitch-master-p').value = this.value;
-                });
+            select('#roll-master-p').addEventListener('input', function() {
+                select('#pitch-master-p').value = this.value;
+            });
 
-                select('#roll-master-i').addEventListener('input', function() {
-                    select('#pitch-master-i').value = this.value;
-                });
+            select('#roll-master-i').addEventListener('input', function() {
+                select('#pitch-master-i').value = this.value;
+            });
 
-                select('#roll-master-d').addEventListener('input', function() {
-                    select('#pitch-master-d').value = this.value;
-                });
+            select('#roll-master-d').addEventListener('input', function() {
+                select('#pitch-master-d').value = this.value;
+            });
 
-                select('#pitch-master-p').addEventListener('input', function() {
-                    select('#roll-master-p').value = this.value;
-                });
+            select('#pitch-master-p').addEventListener('input', function() {
+                select('#roll-master-p').value = this.value;
+            });
 
-                select('#pitch-master-i').addEventListener('input', function() {
-                    select('#roll-master-i').value = this.value;
-                });
+            select('#pitch-master-i').addEventListener('input', function() {
+                select('#roll-master-i').value = this.value;
+            });
 
-                select('#pitch-master-d').addEventListener('input', function() {
-                    select('#roll-master-d').value = this.value;
-                });
+            select('#pitch-master-d').addEventListener('input', function() {
+                select('#roll-master-d').value = this.value;
+            });
 
             // Function to write to the EX characteristic
             function exWrite(type = 'normal') {
