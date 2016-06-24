@@ -316,3 +316,40 @@ p:last-child {
     width: 120px;
     text-align: left;
 }
+
+#debug-yaw-trim {
+    width: 200px;
+    margin: 10px auto;
+    text-align: center;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+#debug-yaw-trim-wrap {
+    width: 90px;
+    margin: 0 auto;
+}
+
+#debug-yaw-trim-minus,
+#debug-yaw-trim-input,
+#debug-yaw-trim-plus {
+    display: inline-block;
+    height: 25px;
+    margin: 0;
+    width: 25px;
+    float: top;
+    font-size: 17px;
+}
+
+#debug-yaw-trim-minus,
+#debug-yaw-trim-plus {
+    font-weight: 700;
+    background-color: rgba(5, 32, 51, 1);
+    color: white;
+}
+
+#debug-yaw-trim-input {
+    width: 30px;
+    text-align: center;
+    background-color: #EBEBEB;
+}
