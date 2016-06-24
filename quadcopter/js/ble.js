@@ -18,6 +18,7 @@ var rxCharVal = new Uint8Array(20);
 var exCharVal = new Uint8Array(20);
 var prevRxValue = new Uint8Array(20);
 var writePermission = true;
+var initialPidFetch = true;
 
 // Function for connecting to quadcopter
  function connect() {
@@ -113,21 +114,32 @@ function rxHandleNotification(event) {
     for(var i = 0; i < 20; i++)
         valueArray[i] = value.getUint8(i);
 
-    if((sumArray(valueArray) != 0) && (!arraysEqual(valueArray, prevRxValue, 1, 18))) {
-        originalPidData = rxCharVal = txCharVal = prevRxValue = valueArray;
-        console.log("Original PID data received:", originalPidData);
+    // Update battery value
+    batteryLevel(valueArray[0]);
 
-        // Enable input elements
-        var inputs = document.getElementsByTagName('input');
-        for( var i = 0; i < inputs.length; i++){
-            inputs[i].disabled = false;
-        }
+    // TODO check that the received WX characteristic value foesn't differ from
+    // th TX char value after the initial read and overwrites it
 
-        // Write original PID data to input boxes
-        for(var i = 1; i <= 18; i++) {
-            select(inputMap[i]).value = originalPidData[i];
+    // if((sumArray(valueArray) != 0) && (!arraysEqual(valueArray, prevRxValue, 1, 18))) {
+
+        // Write original PID data to input boxes on first notification
+        if(initialPidFetch)
+            originalPidData = rxCharVal = txCharVal = prevRxValue = valueArray;
+            console.log("Original PID data received:", originalPidData);
+
+            // Enable input elements
+            var inputs = document.getElementsByTagName('input');
+            for( var i = 0; i < inputs.length; i++){
+                inputs[i].disabled = false;
+            }
+            for(var i = 1; i <= 18; i++) {
+                select(inputMap[i]).value = originalPidData[i];
+            }
+            initialPidFetch = false;
+        } else {
+
         }
-    }
+    // }
 
     return value;
 

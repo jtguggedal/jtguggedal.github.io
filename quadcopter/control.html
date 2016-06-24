@@ -1,17 +1,16 @@
 
 <!doctype html>
 <html lang="en">
-  <head>
-    <title>Quadcopter</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="BLE quadcopter controller">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="css/normal.css">
-    <link rel="stylesheet" type="text/css" href="css/control.css">
-    <script src="js/func.js"></script>
-  </head>
-
+    <head>
+        <title>Quadcopter</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="BLE quadcopter controller">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="css/normal.css">
+        <link rel="stylesheet" type="text/css" href="css/control.css">
+        <script src="js/func.js"></script>
+    </head>
     <body>
         <div id="orientation-message">
             <div>Please rotate the device 90&#176;
@@ -20,7 +19,9 @@
                </div>
             </div>
         </div>
-        <div id="fullscreen" class="shadow-1">Click for fullscreen</div>
+
+        <div id="fullscreen">
+        </div>
 
         <div id="main">
             <h1>Quadcopter</h1>
@@ -66,7 +67,7 @@
                   elem.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
                 }
 				$('#fullscreen').show();
-                $('#fullscreen').html("Exit fullscreen");
+                $('#fullscreen').html("<img src='img/fullscreen-exit.png'>");
               } else {
                 if (document.exitFullscreen) {
                   document.exitFullscreen();
@@ -77,7 +78,7 @@
                 } else if (document.webkitExitFullscreen) {
                   document.webkitExitFullscreen();
                 }
-                $('#fullscreen').html("Fullscreen");
+                $('#fullscreen').html("<img src='img/fullscreen-enter.png'>");
               }
             }
 

@@ -135,10 +135,14 @@ input[type=range] {
     position: fixed;
     top: 0px;
     left: 0px;
-    padding: 4px;
-	background-color: rgba(5, 32, 51, 1);
+    padding: 7px;
+	padding-left: 14px;
     color: white;
     z-index: 10;
+}
+
+#fullscreen > img {
+	width: 25px;
 }
 
 /****  Message if portrait orientation  *****/

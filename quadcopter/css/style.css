@@ -55,19 +55,6 @@ legend {
     font-weight: 700;
 }
 
-#connectionStatus {
-	padding: 2px 5px;
-	background-color: rgb(195, 7, 12);
-	color: white;
-	visibility: ;
-	text-align: center;
-	position: absolute;
-	margin-left: auto;
-	margin-right: auto;
-	top: 5px;
-	right: 5px;
-	font-size: 12px;
-}
 
 #frame {
     padding: 20px;
