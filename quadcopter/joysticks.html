@@ -474,15 +474,28 @@
                 // TODO - Use variable for this zone size (20px each side for now)
                 // and make it adjustable from settings menu
                 if(yawStabilize) {
+
+                    // Checking if joystick is positioned outside lower and upper limits
                     if(yaw <=  (joystickCenter - yawLimit)) {
+
+                        // Scale yaw values to the area outside limits
                         yaw = ((joystickCenter - yawLimit - yaw) / (joystickCenter - yawLimit));
                         yawDir = "left";
                         yaw *= yawScale;
                         yaw = parseInt(yaw);
+
+                        // Checking and applying yaw trim values
+                        // If the resulting yaw is negative, apply it to opposite side's output
+                        // and set this side's output to 0
                         if(yawTrim)
                             yaw += yawTrimValue;
-                        yawLeft = yaw;
-                        yawRight = 0;
+                        if(yaw < 0) {
+                            yawLeft = 0;
+                            yawRight = -1 * yaw;
+                        } else {
+                            yawLeft = yaw;
+                            yawRight = 0;
+                        }
                     } else if(yaw >=  (joystickCenter + yawLimit)) {
                         yaw = ((joystickCenter - yawLimit ) - (joystickSize - yaw)) / (joystickCenter - yawLimit);
                         yawDir = "right";
@@ -490,8 +503,13 @@
                         yaw = parseInt(yaw);
                         if(yawTrim)
                             yaw -= yawTrimValue;
-                        yawRight = yaw;
-                        yawLeft = 0;
+                        if(yaw < 0) {
+                            yawRight = 0;
+                            yawLeft = -1 * yaw;
+                        } else {
+                            yawRight = yaw;
+                            yawLeft = 0;
+                        }
                     } else {
                         if(yawTrimValue > 0) {
                             yaw = yawLeft = yawTrimValue;
@@ -557,8 +575,8 @@
                 // console.log(exCharVal);
 
                 if(printPosition) {
-                    select('.debug-pitchRight').innerHTML = '<b>Pitch</b>: 0';
-                    select('.debug-rollRight').innerHTML = '<b>Roll</b>: 0';
+                    select('#debug-pitchRight').innerHTML = '<b>Pitch</b>: 0';
+                    select('#debug-rollRight').innerHTML = '<b>Roll</b>: 0';
                     //console.log(data);
                 }
             }).on('move', function(evt, data) {
@@ -607,8 +625,8 @@
 
                 // Debug
                 if(printPosition) {
-                    select('.debug-pitchRight').innerHTML = '<b>Pitch</b>: ' + pitch.toFixed(0) + '&deg; '+ pitchDir;
-                    select('.debug-rollRight').innerHTML = '<b>Roll</b>: ' + roll.toFixed(0)  + '&deg; ' + rollDir;
+                    select('#debug-pitchRight').innerHTML = '<b>Pitch</b>: ' + pitch.toFixed(0) + '&deg; '+ pitchDir;
+                    select('#debug-rollRight').innerHTML = '<b>Roll</b>: ' + roll.toFixed(0)  + '&deg; ' + rollDir;
                     //console.log(data);
                 }
             })
