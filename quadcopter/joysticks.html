@@ -467,7 +467,7 @@
                 var yaw = data.distance * Math.cos(data.angle.radian) + 75;
                 var yawRight = 0;
                 var yawLeft = 0;
-                var yawLimit = (75 / 100) * yawLimits;
+                var yawLimit = ((joystickSize / 2) / 100) * yawLimits;
 
                 // When yawStabilize is TRUE, a vertical zone in the middle of
                 // the left joystick will result in zero yaw
@@ -491,7 +491,7 @@
                             yaw += yawTrimValue;
                         yawRight = yaw;
                     } else {
-                        yaw = 0;
+                        yaw = yawTrimValue;
                         yawDir = "";
                     }
                 }
