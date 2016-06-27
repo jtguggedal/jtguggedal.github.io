@@ -491,8 +491,16 @@
                             yaw += yawTrimValue;
                         yawRight = yaw;
                     } else {
-                        yaw = yawTrimValue;
-                        yawDir = "";
+                        if(yawTrimValue > 0) {
+                            yawLeft = yawTrimValue;
+                            yawDir = "left";
+                        } else if(yawTrimValue < 0) {
+                            yawRight = -1 * yawTrimValue;
+                            yawDrir = "right";
+                        } else {
+                            yaw = 0;
+                            yawDir = "";
+                        }
                     }
                 }
 
