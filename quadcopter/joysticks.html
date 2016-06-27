@@ -62,14 +62,14 @@
                     <b>Roll</b>: 0
                 </p>
             </div>
-            <div id="debug-yaw-trim">
+            <div class="debug-yaw-trim">
                 Yaw trim
-                <div id="debug-yaw-trim-wrap">
-                    <div id="debug-yaw-trim-minus">
+                <div class="debug-yaw-trim-wrap">
+                    <div class="debug-yaw-trim-minus">
                         -
-                    </div><div id="debug-yaw-trim-input">
+                    </div><div class="debug-yaw-trim-input">
                         0
-                    </div><div id="debug-yaw-trim-plus">
+                    </div><div class="debug-yaw-trim-plus">
                         +
                     </div>
                 </div>
@@ -303,14 +303,14 @@
 
 
             // Debug yaw trimming
-            addListener("#debug-yaw-trim-plus", "touchend", function() {
+            addListener(".debug-yaw-trim-plus", "touchend", function() {
                 yawTrimValue++;
-                select("#debug-yaw-trim-input").innerHTML = yawTrimValue;
+                select(".debug-yaw-trim-input").innerHTML = yawTrimValue;
             });
 
-            addListener("#debug-yaw-trim-minus", "touchend", function() {
+            addListener(".debug-yaw-trim-minus", "touchend", function() {
                 yawTrimValue--;
-                select("#debug-yaw-trim-input").innerHTML = yawTrimValue;
+                select(".debug-yaw-trim-input").innerHTML = yawTrimValue;
             });
 
             /*  BLE functions  */
@@ -482,21 +482,25 @@
                         if(yawTrim)
                             yaw += yawTrimValue;
                         yawLeft = yaw;
+                        yawRight = 0;
                     } else if(yaw >=  (joystickCenter + yawLimit)) {
                         yaw = ((joystickCenter - yawLimit ) - (joystickSize - yaw)) / (joystickCenter - yawLimit);
                         yawDir = "right";
                         yaw *= yawScale;
                         yaw = parseInt(yaw);
                         if(yawTrim)
-                            yaw += yawTrimValue;
+                            yaw -= yawTrimValue;
                         yawRight = yaw;
+                        yawLeft = 0;
                     } else {
                         if(yawTrimValue > 0) {
-                            yawLeft = yawTrimValue;
+                            yaw = yawLeft = yawTrimValue;
+                            yawRight = 0;
                             yawDir = "left";
                         } else if(yawTrimValue < 0) {
-                            yawRight = -1 * yawTrimValue;
-                            yawDrir = "right";
+                            yaw = yawRight = -1 * yawTrimValue;
+                            yawLeft = 0;
+                            yawDir = "right";
                         } else {
                             yaw = 0;
                             yawDir = "";
@@ -553,8 +557,8 @@
                 // console.log(exCharVal);
 
                 if(printPosition) {
-                    select('#debug-pitchRight').innerHTML = '<b>Pitch</b>: 0';
-                    select('#debug-rollRight').innerHTML = '<b>Roll</b>: 0';
+                    select('.debug-pitchRight').innerHTML = '<b>Pitch</b>: 0';
+                    select('.debug-rollRight').innerHTML = '<b>Roll</b>: 0';
                     //console.log(data);
                 }
             }).on('move', function(evt, data) {
@@ -603,8 +607,8 @@
 
                 // Debug
                 if(printPosition) {
-                    select('#debug-pitchRight').innerHTML = '<b>Pitch</b>: ' + pitch.toFixed(0) + '&deg; '+ pitchDir;
-                    select('#debug-rollRight').innerHTML = '<b>Roll</b>: ' + roll.toFixed(0)  + '&deg; ' + rollDir;
+                    select('.debug-pitchRight').innerHTML = '<b>Pitch</b>: ' + pitch.toFixed(0) + '&deg; '+ pitchDir;
+                    select('.debug-rollRight').innerHTML = '<b>Roll</b>: ' + roll.toFixed(0)  + '&deg; ' + rollDir;
                     //console.log(data);
                 }
             })
