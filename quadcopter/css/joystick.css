@@ -261,8 +261,9 @@ p:last-child {
     float: right;
 }
 
-.settings-radio-container > input[type=radio] {
+.settings-radio-container > img.controller-mode-radio {
     vertical-align: middle;
+    height: 15px;
 }
 
 

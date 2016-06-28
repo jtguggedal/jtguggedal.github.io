@@ -108,9 +108,9 @@
                     <span class="settings-row-label">Controller mode</span>
                     <span class="settings-radio-container">
                         <span class="settings-radio-label">Attitude:</span>
-                        <input type="radio" id="controller-mode-attitude" value="0" name="controller-mode" >
+                        <img src="img/checked.png" id="controller-mode-attitude" class="controller-mode-radio" >
                         <span class="settings-radio-label">Rate:</span>
-                        <input type="radio" id="controller-mode-rate" value="1" name="controller-mode">
+                        <img src="img/unchecked.png" id="controller-mode-rate"class="controller-mode-radio">
                     </span>
                 </div>
                 <div class="settings-row">
@@ -257,6 +257,7 @@
             var yawLimits       = 20;           // [px] Width of the are of the yaw controller where yaw = 0
             var yawTrim         = true;
             var yawTrimValue    = 0;
+            var controllerMode  = 'attitude';   // 'attitude' or 'rate'
 
 
             /*  Event listeners  */
@@ -278,6 +279,11 @@
                 yawLimits = select('#settings-yawLimits').value;
                 $("#settings-container").fadeOut(200);
                 $("#settings-overlay").fadeOut(200);
+
+                var mode = exCharVal[output.mode];
+                exCharVal = new Uint8Array(20);
+                exCharVal[output.mode] = mode;
+                writeArrayToChar(exChar, exCharVal);
                 reapplyJoystick();
             });
 
@@ -305,14 +311,26 @@
                 });
             });
 
-
+            // Controller mode radio buttons
             addListener('#controller-mode-attitude', 'click', function() {
                 var e = select('#controller-mode-attitude');
-                if(e.checked == true) {
-                    e.checked = true;
+                if(controllerMode != "attitude") {
+                    e.src = "img/checked.png"
+                    controllerMode = "attitude";
+                    exCharVal[output.mode] = 0;
+                    select('#controller-mode-rate').src = "img/unchecked.png";
                 }
             });
 
+            addListener('#controller-mode-rate', 'click', function() {
+                var e = select('#controller-mode-rate');
+                if(controllerMode != "rate") {
+                    e.src = "img/checked.png"
+                    controllerMode = "rate";
+                    exCharVal[output.mode] = 1;
+                    select('#controller-mode-attitude').src = "img/unchecked.png";
+                }
+            });
 
             // Edit PID
             addListener("#button-settings-pid", "click", function() {
@@ -391,7 +409,8 @@
                                 pitchForward : 3,
                                 pitchBackward : 4,
                                 yawRight : 5,
-                                yawLeft : 6
+                                yawLeft : 6,
+                                mode: 11
                             };
 
 
