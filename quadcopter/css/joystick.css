@@ -187,7 +187,7 @@ p:last-child {
 
 .settings-row-label {
     display: inline-block;
-    width: 250px;
+    max-width: 250px;
     font-weight: 500;
 }
 
@@ -250,6 +250,21 @@ p:last-child {
     margin: 0;
     width: 85px;
 }
+
+.settings-radio-label {
+    font-weight: 700;
+    font-size: 12px;
+    margin-left: 15px;
+}
+
+.settings-radio-container {
+    float: right;
+}
+
+.settings-radio-container > input[type=radio] {
+    vertical-align: middle;
+}
+
 
 /*  Battery levels  */
 #battery-level-container {

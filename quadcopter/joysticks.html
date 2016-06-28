@@ -95,6 +95,7 @@
                     <span class="settings-row-label">Maximum pitch angle [degrees]</span>
                     <input type="number"  id="settings-maxPitch" class="settings-row-value" >
                 </div>
+
                 <div class="settings-row">
                     <span class="settings-row-label">Maximum yaw [%]</span>
                     <input type="number"  id="settings-yawScale" class="settings-row-value" min="0" max="255">
@@ -102,6 +103,15 @@
                 <div class="settings-row">
                     <span class="settings-row-label">Size of band where yaw = 0 [%]</span>
                     <input type="number"  id="settings-yawLimits" class="settings-row-value" min="0" max="100">
+                </div>
+                <div class="settings-row">
+                    <span class="settings-row-label">Controller mode</span>
+                    <span class="settings-radio-container">
+                        <span class="settings-radio-label">Attitude:</span>
+                        <input type="radio" id="controller-mode-attitude" value="0" name="controller-mode" >
+                        <span class="settings-radio-label">Rate:</span>
+                        <input type="radio" id="controller-mode-rate" value="1" name="controller-mode">
+                    </span>
                 </div>
                 <div class="settings-row">
                     <span class="settings-row-label">Calibrate quadcopter</span>
@@ -167,7 +177,7 @@
             -->
                 <div class="pid-tuning-group">
                     <fieldset class="pid-tuning-field">
-                        <legend>Roll - slave</legend>
+                        <legend>Roll - rate</legend>
                         <label for="roll-slave-p" class="pid-tuning-label">P:</label>
                         <input type="number" id="roll-slave-p" class="pid-tuning-input" min="0" max="255" disabled>
                         <label for="roll-slave-i" class="pid-tuning-label">I:</label>
@@ -178,7 +188,7 @@
                 </div>
                 <div class="pid-tuning-group">
                     <fieldset class="pid-tuning-field">
-                        <legend>Roll - master</legend>
+                        <legend>Roll - attitude</legend>
                         <label for="roll-master-p" class="pid-tuning-label">P:</label>
                         <input type="number" id="roll-master-p" class="pid-tuning-input" min="0" max="255" disabled>
                         <label for="roll-master-i" class="pid-tuning-label">I:</label>
@@ -189,7 +199,7 @@
                 </div>
                 <div class="pid-tuning-group">
                     <fieldset class="pid-tuning-field">
-                        <legend>Pitch - slave</legend>
+                        <legend>Pitch - rate</legend>
                         <label for="pitch-slave-p" class="pid-tuning-label">P:</label>
                         <input type="number"  id="pitch-slave-p" class="pid-tuning-input" min="0" max="255" disabled>
                         <label for="pitch-slave-i" class="pid-tuning-label">I:</label>
@@ -200,7 +210,7 @@
                 </div>
                 <div class="pid-tuning-group">
                     <fieldset class="pid-tuning-field">
-                        <legend>Pitch - master</legend>
+                        <legend>Pitch - attitude</legend>
                         <label for="pitch-master-p" class="pid-tuning-label">P:</label>
                         <input type="number" id="pitch-master-p" class="pid-tuning-input" min="0" max="255" disabled>
                         <label for="pitch-master-i" class="pid-tuning-label">I:</label>
@@ -211,7 +221,7 @@
                 </div>
                 <div class="pid-tuning-group">
                     <fieldset class="pid-tuning-field">
-                        <legend>Yaw - slave</legend>
+                        <legend>Yaw - rate</legend>
                         <label for="yaw-slave-p" class="pid-tuning-label">P:</label>
                         <input type="number" id="yaw-slave-p" class="pid-tuning-input" min="0" max="255" disabled>
                         <label for="yaw-slave-i" class="pid-tuning-label">I:</label>
@@ -222,7 +232,7 @@
                 </div>
                 <div class="pid-tuning-group">
                     <fieldset class="pid-tuning-field">
-                        <legend>Yaw - master</legend>
+                        <legend>Yaw - attitude</legend>
                         <label for="yaw-master-p" class="pid-tuning-label">P:</label>
                         <input type="number" id="yaw-master-p" class="pid-tuning-input" min="0" max="255" disabled>
                         <label for="yaw-master-i" class="pid-tuning-label">I:</label>
@@ -278,6 +288,8 @@
                 return false;
             });
 
+            //select('input[name="controller-mode"]:checked').value;
+
             $('#button-settings-calibrate').click( function() {
                 exCharVal[10] = calibrateCounter;
                 calibrateCounter++;
@@ -292,6 +304,15 @@
                     }, 5000);
                 });
             });
+
+
+            addListener('#controller-mode-attitude', 'click', function() {
+                var e = select('#controller-mode-attitude');
+                if(e.checked == true) {
+                    e.checked = true;
+                }
+            });
+
 
             // Edit PID
             addListener("#button-settings-pid", "click", function() {
