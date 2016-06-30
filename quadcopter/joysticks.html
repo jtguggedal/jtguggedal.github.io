@@ -147,42 +147,6 @@
                     <button type="button" id="button-reset">Reset</button>
                     <button type="button" id="button-stop" class="button-settings-back">Back</button>
                 </div>
-                <!--
-                <div class="pid-tuning-group">
-                    <fieldset class="pid-tuning-field throttle">
-                        <legend>Throttle</legend>
-                        <label for="throttle" class="pid-tuning-label">Throttle:</label>
-                        <input type="number" id="throttle" class="pid-tuning-input" min="0" max="255" value="0" disabled>
-                    </fieldset>
-                </div>
-                <div class="pid-tuning-group">
-                    <fieldset class="pid-tuning-field">
-                        <legend>Roll</legend>
-                        <label for="roll-right" class="pid-tuning-label">Right:</label>
-                        <input type="number" id="roll-right" class="pid-tuning-input" min="0" max="255" disabled>
-                        <label for="roll-left" class="pid-tuning-label">Left:</label>
-                        <input type="number" id="roll-left" class="pid-tuning-input" min="0" max="255" disabled>
-                    </fieldset>
-                </div>
-                <div class="pid-tuning-group">
-                    <fieldset class="pid-tuning-field">
-                        <legend>Pitch</legend>
-                        <label for="pitch-forward" class="pid-tuning-label">Forward:</label>
-                        <input type="number" id="pitch-forward" class="pid-tuning-input" min="0" max="255" disabled>
-                        <label for="pitch-backward" class="pid-tuning-label">Backward:</label>
-                        <input type="number" id="pitch-backward" class="pid-tuning-input" min="0" max="255" disabled>
-                    </fieldset>
-                </div>
-                <div class="pid-tuning-group">
-                    <fieldset class="pid-tuning-field">
-                        <legend>Yaw</legend>
-                        <label for="yaw-right" class="pid-tuning-label">Right:</label>
-                        <input type="number" id="yaw-right" class="pid-tuning-input" min="0" max="255" disabled>
-                        <label for="yaw-left" class="pid-tuning-label">Left:</label>
-                        <input type="number" id="yaw-left" class="pid-tuning-input" min="0" max="255" disabled>
-                    </fieldset>
-                </div>
-            -->
                 <div class="pid-tuning-group">
                     <fieldset class="pid-tuning-field">
                         <legend>Roll - rate</legend>
@@ -285,19 +249,19 @@
                 maxPitch = select('#settings-maxPitch').value;
                 yawScale = ((255 * select('#settings-yawScale').value) / 100);
                 yawLimits = select('#settings-yawLimits').value;
-                $("#settings-container").fadeOut(200);
-                $("#settings-overlay").fadeOut(200);
+                $("#settings-container").fadeOut(100);
+                $("#settings-overlay").fadeOut(100);
 
                 var mode = exCharVal[output.mode];
-                exCharVal = new Uint8Array(20);
+                exCharVal[output.throttle] = 0;
                 exCharVal[output.mode] = mode;
                 writeArrayToChar(exChar, exCharVal);
                 reapplyJoystick();
             });
 
             $(".button-settings-back, #settings-overlay, #button-send, .overlay-container").click( function() {
-                $("#settings-container, #settings-container-pid").fadeOut(200);
-                $("#settings-overlay").fadeOut(200);
+                $("#settings-container, #settings-container-pid").fadeOut(100);
+                $("#settings-overlay").fadeOut(100);
             }).children().click(function(e) {
                 return false;
             });
