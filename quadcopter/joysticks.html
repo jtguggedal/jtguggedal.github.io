@@ -353,25 +353,33 @@
 
             select(".debug-yaw-trim-input").innerHTML = yawTrimValue;
 
-            addListener(".debug-yaw-trim-plus", "touchend", function() {
+            addListener(".debug-yaw-trim-plus", "touchstart", function() {
                 yawTrimValue++;
                 select(".debug-yaw-trim-input").innerHTML = yawTrimValue;
             });
 
-            addListener(".debug-yaw-trim-minus", "touchend", function() {
+            addListener(".debug-yaw-trim-minus", "touchstart", function() {
                 yawTrimValue--;
                 select(".debug-yaw-trim-input").innerHTML = yawTrimValue;
             });
 
             //  Altitude hold
 
-            addListener("#altitude-checkbox", "click", function() {
+            addListener("#altitude-checkbox", "click", function(event) {
+                event.preventDefault();
+            });
+
+
+            addListener("#altitude-checkbox", "touchstart", function(event) {
                 var self = select("#altitude-checkbox");
+                self.checked = !self.checked;
                 if(self.checked == true)
                     exCharVal[output.altitude] = 1;
                 else
                     exCharVal[output.altitude] = 0;
             });
+
+
 
             /*  BLE functions  */
 
