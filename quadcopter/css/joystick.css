@@ -333,7 +333,7 @@ p:last-child {
     text-align: left;
 }
 
-.debug-yaw-trim {
+.debug-box{
     width: 200px;
     margin: 10px auto;
     text-align: center;
@@ -341,8 +341,8 @@ p:last-child {
     font-size: 14px;
 }
 
-.debug-yaw-trim-wrap {
-    width: 90px;
+.debug-box-wrap {
+    width: 100px;
     margin: 0 auto;
 }
 
@@ -368,4 +368,13 @@ p:last-child {
     width: 40px;
     text-align: center;
     background-color: #EBEBEB;
+}
+
+#altitude-wrap {
+    background-color: #EBEBEB;
+}
+
+#altitude-checkbox {
+    height: 20px;
+    width: 20px;
 }

@@ -62,15 +62,23 @@
                     <b>Roll</b>: 0
                 </p>
             </div>
-            <div class="debug-yaw-trim">
+            <div class="debug-box">
                 Yaw trim
-                <div class="debug-yaw-trim-wrap">
+                <div class="debug-box-wrap">
                     <div class="debug-yaw-trim-minus">
                         -
                     </div><div class="debug-yaw-trim-input">
                         0
                     </div><div class="debug-yaw-trim-plus">
                         +
+                    </div>
+                </div>
+            </div>
+            <div class="debug-box">
+                <div id="altitude-wrap" class="debug-box-wrap">
+                        Altitude hold
+                    <div id="altitude-checkbox-container">
+                        <input type="checkbox" name="altitude-enable" id="altitude-checkbox">
                     </div>
                 </div>
             </div>
@@ -256,7 +264,7 @@
             var printPosition   = true;
             var yawLimits       = 20;           // [px] Width of the are of the yaw controller where yaw = 0
             var yawTrim         = true;
-            var yawTrimValue    = 0;
+            var yawTrimValue    = 20;
             var controllerMode  = 'attitude';   // 'attitude' or 'rate'
 
 
@@ -342,6 +350,9 @@
 
 
             // Debug yaw trimming
+
+            select(".debug-yaw-trim-input").innerHTML = yawTrimValue;
+
             addListener(".debug-yaw-trim-plus", "touchend", function() {
                 yawTrimValue++;
                 select(".debug-yaw-trim-input").innerHTML = yawTrimValue;
