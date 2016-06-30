@@ -340,7 +340,7 @@
                 }
             });
 
-            // Edit PID
+            //  Edit PID
             addListener("#button-settings-pid", "click", function() {
                 $("#settings-container-pid").fadeIn(200, function() {
                     inputPidData();
@@ -349,7 +349,7 @@
             });
 
 
-            // Debug yaw trimming
+            //  Yaw trimming
 
             select(".debug-yaw-trim-input").innerHTML = yawTrimValue;
 
@@ -361,6 +361,16 @@
             addListener(".debug-yaw-trim-minus", "touchend", function() {
                 yawTrimValue--;
                 select(".debug-yaw-trim-input").innerHTML = yawTrimValue;
+            });
+
+            //  Altitude hold
+
+            addListener("#altitude-checkbox", "click", function() {
+                var self = select("#altitude-checkbox");
+                if(self.checked == true)
+                    exCharVal[output.altitude] = 1;
+                else
+                    exCharVal[output.altitude] = 0;
             });
 
             /*  BLE functions  */
@@ -421,7 +431,8 @@
                                 pitchBackward : 4,
                                 yawRight : 5,
                                 yawLeft : 6,
-                                mode: 11
+                                mode: 11,
+                                altitude: 12
                             };
 
 
