@@ -2,10 +2,10 @@
 //      BLE connection to quadcopter
 //
 
-var serviceUUID = '6e400001-b5a3-f393-e0a9-e50e24dcca9e';
-var txCharUUID = '6e400002-b5a3-f393-e0a9-e50e24dcca9e';
-var rxCharUUID = '6e400003-b5a3-f393-e0a9-e50e24dcca9e';
-var exCharUUID = '6e400004-b5a3-f393-e0a9-e50e24dcca9e';
+var serviceUUID     = '6e400001-b5a3-f393-e0a9-e50e24dcca9e';   // Using Nordic UART service
+var txCharUUID      = '6e400002-b5a3-f393-e0a9-e50e24dcca9e';
+var rxCharUUID      = '6e400003-b5a3-f393-e0a9-e50e24dcca9e';
+var exCharUUID      = '6e400004-b5a3-f393-e0a9-e50e24dcca9e';
 var bluetoothDevice;
 var mainServer;
 var mainService;
@@ -13,10 +13,10 @@ var txChar;
 var rxChar;
 var exChar;
 var txContent;
-var txCharVal = new Uint8Array(20);
-var rxCharVal = new Uint8Array(20);
-var exCharVal = new Uint8Array(20);
-var prevRxValue = new Uint8Array(20);
+var txCharVal       = new Uint8Array(20);
+var rxCharVal       = new Uint8Array(20);
+var exCharVal       = new Uint8Array(20);
+var prevRxValue     = new Uint8Array(20);
 var writePermission = true;
 var initialPidFetch = true;
 
