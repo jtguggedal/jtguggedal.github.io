@@ -19,7 +19,7 @@ var output =    {
                     pitchBackward   : 4,
                     yawRight        : 5,
                     yawLeft         : 6,
-                    Calibrate       : 10,
+                    calibrate       : 10,
                     mode            : 11,
                     altitude        : 12
                 };
@@ -61,7 +61,7 @@ $(".button-settings-back, #settings-overlay, #button-send, .overlay-container").
 //select('input[name="controller-mode"]:checked').value;
 
 $('#button-settings-calibrate').click( function() {
-    exCharVal[10] = calibrateCounter;
+    exCharVal[output.calibrate] = calibrateCounter;
     calibrateCounter++;
     var self = $(this);
     writeArrayToChar(exChar, exCharVal)
@@ -142,7 +142,7 @@ addListener("#altitude-checkbox", "touchstart", function(event) {
 /*  BLE functions  */
 
 var originalPidData = new Uint8Array(20);
-var calibrateCounter = 1;
+var calibrateCounter = 0;
 
 // Function called when connection is established and all characteristic
 // promises are resolved
