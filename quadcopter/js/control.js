@@ -60,6 +60,7 @@ $(".button-settings-back, #settings-overlay, #button-send, .overlay-container").
 
 //select('input[name="controller-mode"]:checked').value;
 
+// Function for calibrate button
 $('#button-settings-calibrate').click( function() {
     exCharVal[output.calibrate] = calibrateCounter;
     calibrateCounter++;
