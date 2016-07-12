@@ -182,6 +182,11 @@ game.createGame = function() {
             game.gameId = r.gameId;
             game.playerId = r.id;
 
+            // Sending player ID to Development Kit
+            ble.charVal[19] = game.playerId;
+
+            ble.priorityWrite(ble.charVal);
+
             // Push new gameId to #message so other players may see it and join in
             $('#message').fadeOut(500).promise().done( function() {
                 $(this).text(game.gameId).fadeIn(500);
@@ -281,6 +286,11 @@ game.joinGame = function(gId) {
                         game.playerName = r.name;
                         game.gameId = r.gameId;
                         game.playerId = r.id;
+
+                        // Sending player ID to Development Kit
+                        ble.charVal[19] = game.playerId;
+
+                        ble.priorityWrite(ble.charVal);
 
                         // This is an attempt to time the start of the game and sync all players. Works fine in tests, but by no means good enough
                         // and should be replaced. In short, it uses the php server's timestamp to sync the new players joining the game, and is therefore
