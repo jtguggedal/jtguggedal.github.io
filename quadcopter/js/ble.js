@@ -2,10 +2,14 @@
 //      BLE connection to quadcopter
 //
 
-var serviceUUID     = '6e400020-b5a3-f393-e0a9-e50e24dcca9e';   // Using Nordic UART service
+
+// Using (almost)) the same UUID Nordic UART service and belonging characteristics
+// (UUID changed to avoid listing all kinds of devices that cannot be controlled)
+var serviceUUID     = '6e400020-b5a3-f393-e0a9-e50e24dcca9e';
 var txCharUUID      = '6e400002-b5a3-f393-e0a9-e50e24dcca9e';
 var rxCharUUID      = '6e400003-b5a3-f393-e0a9-e50e24dcca9e';
 var exCharUUID      = '6e400004-b5a3-f393-e0a9-e50e24dcca9e';
+
 var bluetoothDevice;
 var mainServer;
 var mainService;

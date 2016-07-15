@@ -24,6 +24,11 @@ var output =    {
                     altitude        : 12
                 };
 
+
+var originalPidData = new Uint8Array(20);
+var calibrateCounter = 0;
+
+
 /*  Event listeners  */
 
 // Settings menu
@@ -61,18 +66,21 @@ $(".button-settings-back, #settings-overlay, #button-send, .overlay-container").
 //select('input[name="controller-mode"]:checked').value;
 
 // Function for calibrate button
-$('#button-settings-calibrate').click( function() {
+addListener('#button-settings-calibrate', 'click', function() {
     exCharVal[output.calibrate] = calibrateCounter;
     calibrateCounter++;
-    var self = $(this);
+    var el = select('#button-settings-calibrate');
     writeArrayToChar(exChar, exCharVal)
     .then( () => {
-        self.css({"background-color": "rgb(6, 116, 54)"});
-        self.text('Sent');
+        el.style.cssText = "background-color: rgb(6, 116, 54)"
+        var size = el.style.fontSize;
+        el.style.fontSize = "12px";
+        el.textContent = "Calibrating...";
         setTimeout(function() {
-            self.css({"background-color": "rgba(5, 32, 51, 1"});
-            self.text('Calibrate');
-        }, 5000);
+            el.style.cssText = "background-color: rgba(5, 32, 51, 1)"
+            el.style.fontSize = size;
+            el.textContent = "Calibrate";
+        }, 3000);
     });
 });
 
@@ -141,9 +149,6 @@ addListener("#altitude-checkbox", "touchstart", function(event) {
 
 
 /*  BLE functions  */
-
-var originalPidData = new Uint8Array(20);
-var calibrateCounter = 0;
 
 // Function called when connection is established and all characteristic
 // promises are resolved
