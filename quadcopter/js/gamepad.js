@@ -13,7 +13,7 @@ function startGamepad() {
 }
 
 function updateStatus() {
-    scangamepads();
+    scanGamepads();
 
     if(gamepadEnable) {
       for (j in controllers) {
