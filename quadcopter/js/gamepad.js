@@ -41,12 +41,12 @@ function updateStatus() {
             var y = controller.axes[1];
 
             if( x > 0.1) {
-                exCharVal[5] = 200 * x;
+                exCharVal[5] = parseInt(200 * x, 0);
                 exCharVal[6] = 0;
             }
             else if(x < -0.1) {
                 exCharVal[5] = 0;
-                exCharVal[6] = -1 * 200 * x;
+                exCharVal[6] = parseInt(-1 * 200 * x, 0);
             }
             else {
                 exCharVal[5] = 0;
@@ -55,12 +55,12 @@ function updateStatus() {
 
             console.log("X: " + x);
 
-            if(y < 0.05)
+            if(y < -0.05)
                 y = -1 *(controller.axes[1] * 255)
             else
                 y = 0;
 
-            exCharVal[0] = y;
+            exCharVal[0] = parseInt(y, 0);
 
             writeArrayToChar(exChar, exCharVal);
         }
