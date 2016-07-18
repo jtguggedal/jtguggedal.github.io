@@ -63,7 +63,6 @@ function updateStatus() {
             writeArrayToChar(exChar, exCharVal);
         }
     }
-    }
     rAF(updateStatus);
 }
 
