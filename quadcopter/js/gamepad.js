@@ -53,7 +53,9 @@ function updateStatus() {
                 exCharVal[6] = 0;
             }
 
-            if(y > 0.1)
+            console.log("X: " + x);
+
+            if(y < 0.05)
                 y = -1 *(controller.axes[1] * 255)
             else
                 y = 0;
