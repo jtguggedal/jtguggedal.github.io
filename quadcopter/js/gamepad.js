@@ -35,23 +35,12 @@ function removegamepad(gamepad) {
 function updateStatus() {
   scangamepads();
   for (j in controllers) {
-    var controller = controllers[j];
     for (var i=0; i<controller.buttons.length; i++) {
-      var b = buttons[i];
-      var val = controller.buttons[i];
-      var pressed = val == 1.0;
-      if (typeof(val) == "object") {
-        pressed = val.pressed;
-        val = val.value;
-      }
-      var pct = Math.round(val * 100) + "%";
-      if (pressed) {
-      } else {
-      }
+        // Do something with the buttons
     }
 
     for (var i=0; i<controller.axes.length; i++) {
-      var a = axes[i];
+        // Do something with the axes
     }
   }
   rAF(updateStatus);
