@@ -1,11 +1,4 @@
-/*
- * Gamepad API Test
- * Written in 2013 by Ted Mielczarek <ted@mielczarek.org>
- *
- * To the extent possible under law, the author(s) have dedicated all copyright and related and neighboring rights to this software to the public domain worldwide. This software is distributed without any warranty.
- *
- * You should have received a copy of the CC0 Public Domain Dedication along with this software. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
- */
+
 var haveEvents = 'GamepadEvent' in window;
 var controllers = {};
 var rAF = window.mozRequestAnimationFrame ||
@@ -13,17 +6,8 @@ var rAF = window.mozRequestAnimationFrame ||
   window.requestAnimationFrame;
 
 function connecthandler(e) {
-  addgamepad(e.gamepad);
-}
-function addgamepad(gamepad) {
-  controllers[gamepad.index] = gamepad;
-  for (var i=0; i<gamepad.buttons.length; i++) {
-  }
-  for (i=0; i<gamepad.axes.length; i++) {
-  }
-  rAF(updateStatus);
-}
 
+}
 function disconnecthandler(e) {
   removegamepad(e.gamepad);
 }
@@ -33,17 +17,42 @@ function removegamepad(gamepad) {
 }
 
 function updateStatus() {
-  scangamepads();
-  for (j in controllers) {
-    for (var i=0; i<controller.buttons.length; i++) {
-        // Do something with the buttons
-    }
+    scangamepads();
+    for (j in controllers) {
+        var controller = controllers[j];
+        for (var i=0; i<controller.buttons.length; i++) {
+            // Do something with the buttons
+        }
 
-    for (var i=0; i<controller.axes.length; i++) {
-        // Do something with the axes
+        // X-axis is index 0
+        if(writePermission) {
+            var x = controller.axes[0];
+            var y = 0;
+
+            if( x > 0.1) {
+                exCharVal[5] = 200 * x;
+                exCharVal[6] = 0;
+            }
+            else if(x < -0.1) {
+                exCharVal[5] = 0;
+                exCharVal[6] = -1 * 200 * x;
+            }
+            else {
+                exCharVal[5] = 0;
+                exCharVal[6] = 0;
+            }
+
+            if(y > 0.1)
+                y = -1 *(controller.axes[1] * 255)
+            else
+                y = 0;
+
+            exCharVal[0] = y;
+
+            writeArrayToChar(exChar, exCharVal);
+        }
     }
-  }
-  rAF(updateStatus);
+    rAF(updateStatus);
 }
 
 function scangamepads() {
