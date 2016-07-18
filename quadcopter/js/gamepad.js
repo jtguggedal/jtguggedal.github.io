@@ -6,8 +6,17 @@ var rAF = window.mozRequestAnimationFrame ||
   window.requestAnimationFrame;
 
 function connecthandler(e) {
-
+  addgamepad(e.gamepad);
 }
+function addgamepad(gamepad) {
+  controllers[gamepad.index] = gamepad;
+  for (var i=0; i<gamepad.buttons.length; i++) {
+  }
+  for (i=0; i<gamepad.axes.length; i++) {
+  }
+  rAF(updateStatus);
+}
+
 function disconnecthandler(e) {
   removegamepad(e.gamepad);
 }
@@ -22,6 +31,8 @@ function updateStatus() {
         var controller = controllers[j];
         for (var i=0; i<controller.buttons.length; i++) {
             // Do something with the buttons
+
+
         }
 
         // X-axis is index 0
@@ -51,6 +62,7 @@ function updateStatus() {
 
             writeArrayToChar(exChar, exCharVal);
         }
+    }
     }
     rAF(updateStatus);
 }
