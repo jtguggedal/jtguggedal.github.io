@@ -9,6 +9,7 @@ var yawLimits       = 20;           // [px] Width of the are of the yaw controll
 var yawTrim         = true;
 var yawTrimValue    = 20;
 var controllerMode  = 'attitude';   // 'attitude' or 'rate'
+var fsCounter       = 0;            // Fail safe counter, must increase by 1 every time EX char is sent
 
 // Define byte indexes for joystick data in the EX characteristic
 var output =    {
@@ -21,7 +22,8 @@ var output =    {
                     yawLeft         : 6,
                     calibrate       : 10,
                     mode            : 11,
-                    altitude        : 12
+                    altitude        : 12,
+                    failSafe        : 19
                 };
 
 
@@ -533,6 +535,12 @@ function stopQuad() {
     })
 }
 
+
+function failSafe() {
+    fsCounter++;
+    exCharVal[output.failSafe] = fsCounter;;
+}
+
 //
 
 // Process battery level
@@ -600,6 +608,7 @@ select('#pitch-master-d').addEventListener('input', function() {
 
 // Function to write to the EX characteristic
 function exWrite(type = 'normal') {
+    failSafe();
     if(type == 'reset')
         exCharVal[output.throttle] = 0;
 
