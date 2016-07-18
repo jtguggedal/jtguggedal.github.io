@@ -38,7 +38,7 @@ function updateStatus() {
         // X-axis is index 0
         if(writePermission) {
             var x = controller.axes[0];
-            var y = 0;
+            var y = controller.axes[1];
 
             if( x > 0.1) {
                 exCharVal[5] = 200 * x;
