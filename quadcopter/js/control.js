@@ -9,7 +9,7 @@ var yawLimits       = 20;           // [px] Width of the are of the yaw controll
 var yawTrim         = true;
 var yawTrimValue    = 20;
 var controllerMode  = 'attitude';   // 'attitude' or 'rate'
-var fsCounter       = 0;            // Fail safe counter, must increase by 1 every time EX char is sent
+var fsCounter       = 0;            // Failsafe counter, must increase by 1 every time EX char is sent
 
 // Define byte indexes for joystick data in the EX characteristic
 var output =    {
@@ -30,6 +30,16 @@ var output =    {
 var originalPidData = new Uint8Array(20);
 var calibrateCounter = 0;
 
+// Give input elements index corresponding to relevant bytes in characteristics
+var inputMap = [    'placeholder',
+                    '#roll-slave-p', '#roll-slave-i', '#roll-slave-d',
+                    '#pitch-slave-p', '#pitch-slave-i', '#pitch-slave-d',
+                    '#yaw-slave-p', '#yaw-slave-i', '#yaw-slave-d',
+                    '#roll-master-p', '#roll-master-i', '#roll-master-d',
+                    '#pitch-master-p', '#pitch-master-i', '#pitch-master-d',
+                    '#yaw-master-p', '#yaw-master-i', '#yaw-master-d'];
+
+
 
 /*  Event listeners  */
 
@@ -43,6 +53,8 @@ addListener("#button-settings", "click", function() {
     select("#settings-yawLimits").value = yawLimits;
 });
 
+
+// 'Save' button
 addListener('#button-settings-save', 'click', function() {
     maxRoll = select('#settings-maxRoll').value;
     maxPitch = select('#settings-maxPitch').value;
@@ -58,6 +70,8 @@ addListener('#button-settings-save', 'click', function() {
     reapplyJoystick();
 });
 
+
+// Common actions for settings menu buttons and overlays
 $(".button-settings-back, #settings-overlay, #button-send, .overlay-container").click( function() {
     $("#settings-container, #settings-container-pid").fadeOut(100);
     $("#settings-overlay").fadeOut(100);
@@ -65,7 +79,6 @@ $(".button-settings-back, #settings-overlay, #button-send, .overlay-container").
     return false;
 });
 
-//select('input[name="controller-mode"]:checked').value;
 
 // Function for calibrate button
 addListener('#button-settings-calibrate', 'click', function() {
@@ -116,8 +129,7 @@ addListener("#button-settings-pid", "click", function() {
 });
 
 
-//  Yaw trimming
-
+//  Yaw trim buttons
 select(".debug-yaw-trim-input").innerHTML = yawTrimValue;
 
 addListener(".debug-yaw-trim-plus", "touchstart", function() {
@@ -130,12 +142,11 @@ addListener(".debug-yaw-trim-minus", "touchstart", function() {
     select(".debug-yaw-trim-input").innerHTML = yawTrimValue;
 });
 
-//  Altitude hold
 
+//  Altitude hold
 addListener("#altitude-checkbox", "click", function(event) {
     event.preventDefault();
 });
-
 
 addListener("#altitude-checkbox", "touchstart", function(event) {
     var self = select("#altitude-checkbox");
@@ -156,20 +167,23 @@ addListener("#altitude-checkbox", "touchstart", function(event) {
 // promises are resolved
 function onConnect() {
 
-    // TODO fix issues with GATT operation errors
+    // Connect event is fired when connected to the device, but before the
+    // GATT server is connected and characteristics discovered. Uses timeout to avoid
+    // errors when trying to read from the quadcopter before those steps are finished
     setTimeout(function() {
+
             // Read all the original PID values from the quadcopter and
             // store to originalPidData array
             readPidData()
             .then( () => {
+
+                // Display battery level read from the quadcopter
                 batteryLevel(rxCharVal[0]);
             })
-
-            // Get battery level and display it
     }, 1000);
 }
 
-// Get PID values from quadcopter on connect
+// Get PID values from quadcopter
 function readPidData() {
     return rxChar.readValue()
         .then(originalPid => {
@@ -180,12 +194,10 @@ function readPidData() {
             rxCharVal = txCharVal = originalPidData;
             console.log("Original PID data received:", originalPidData);
 
-            // Write original PID data to input boxes
+            // Write original PID data to input boxes in PID menu
             for(var i = 1; i <= 18; i++) {
                 select(inputMap[i]).value = originalPidData[i];
             }
-
-
         });
 }
 
@@ -207,7 +219,7 @@ var joystickLeftPos = joystickLeft.position;
 var joystickSize = joystickLeft.options.size;
 var joystickCenter = joystickSize / 2;
 
-// Function for positioning the left joystick correctly when released
+// Function for positioning the left joystick correctly at the bottom when released
 function reapplyLeft(el) {
     select(el).style.top = "75px";
 }
@@ -219,6 +231,8 @@ function reapplyLeft(el) {
     }, 1500);
 })();
 
+// Doing some changes to the joystick styling on load. This function is used instead
+// of making changes to the nippleJS source files. (static CSS applies to some elements, but not all)
 function reapplyJoystick() {
 
     // Set gradient for front on left joystick
@@ -231,7 +245,7 @@ function reapplyJoystick() {
     front_l.opacity = 1;
     front_r.opacity = 1;
 
-    // Inset borders for yaw in left joystick
+    // Insert borders for yaw in left joystick
     var el = document.createElement("div");
     back_l.appendChild(el);
     el.className += "back-limits";
@@ -249,7 +263,7 @@ joystickLeft.on('end', function(evt, data) {
     // Try to send data
     if(writePermission) {
 
-        // Setting motor values to zero
+        // Setting motor values to zero, repeat until successful
         exWrite('reset')
         .then(response => {
             console.log('Quadcopter stopped: ', response)
@@ -264,14 +278,12 @@ joystickLeft.on('end', function(evt, data) {
             exWrite('reset');
         }, 100);
     }
-    // console.log(exCharVal);
 
     if(printPosition) {
 
         // Debug
         select('#debug-throttleLeft').innerHTML = '<b>Throttle</b>: 0';
         select('#debug-yawLeft').innerHTML = '<b>Yaw</b>: 0';
-        //console.log(data);
 
         reapplyLeft('.collection_0 > .front');
     }
@@ -283,7 +295,7 @@ joystickLeft.on('end', function(evt, data) {
     var throttle = parseInt(((data.distance * Math.sin(data.angle.radian) + 75) / joystickSize) * 255);
 
     // Yaw is defined in pixels, with the joystick offset of 75px taken into account
-    // TODO - Make joystick size and offset part of the joystick objects
+    // TODO - Make joystick size and offset part of the joystick objects?
     var yaw = data.distance * Math.cos(data.angle.radian) + 75;
     var yawRight = 0;
     var yawLeft = 0;
@@ -291,8 +303,6 @@ joystickLeft.on('end', function(evt, data) {
 
     // When yawStabilize is TRUE, a vertical zone in the middle of
     // the left joystick will result in zero yaw
-    // TODO - Use variable for this zone size (20px each side for now)
-    // and make it adjustable from settings menu
     if(yawStabilize) {
 
         // Checking if joystick is positioned outside lower and upper limits
@@ -307,8 +317,9 @@ joystickLeft.on('end', function(evt, data) {
             // Checking and applying yaw trim values
             // If the resulting yaw is negative, apply it to opposite side's output
             // and set this side's output to 0
-            if(yawTrim)
+            if(yawTrim) {
                 yaw += yawTrimValue;
+            }
             if(yaw < 0) {
                 yawLeft = 0;
                 yawRight = -1 * yaw;
@@ -321,8 +332,9 @@ joystickLeft.on('end', function(evt, data) {
             yawDir = "right";
             yaw *= yawScale;
             yaw = parseInt(yaw);
-            if(yawTrim)
+            if(yawTrim) {
                 yaw -= yawTrimValue;
+            }
             if(yaw < 0) {
                 yaw = yawRight = 0;
                 yawLeft = -1 * yaw;
@@ -380,7 +392,6 @@ var joystickRight = nipplejs.create({
 joystickRightPos = joystickRight.position;
 
 joystickRight.on('end', function(evt, data) {
-    // Executes when joystick is released
 
     // Set values to zero
     exCharVal[output.rollRight] = 0;
@@ -441,7 +452,6 @@ joystickRight.on('end', function(evt, data) {
         exWrite();
     }
 
-    //console.log(exCharVal);
 
     // Debug
     if(printPosition) {
@@ -451,18 +461,7 @@ joystickRight.on('end', function(evt, data) {
     }
 })
 
-/*  Updating PID live  */
-
-// Give input elements index corresponding to relevant bytes in characteristics
-var inputMap = [    'placeholder',
-                    '#roll-slave-p', '#roll-slave-i', '#roll-slave-d',
-                    '#pitch-slave-p', '#pitch-slave-i', '#pitch-slave-d',
-                    '#yaw-slave-p', '#yaw-slave-i', '#yaw-slave-d',
-                    '#roll-master-p', '#roll-master-i', '#roll-master-d',
-                    '#pitch-master-p', '#pitch-master-i', '#pitch-master-d',
-                    '#yaw-master-p', '#yaw-master-i', '#yaw-master-d'];
-
-/** Button actions **/
+/*  Updating PID values live  */
 
 // Send throttle and PID data to quadcopter
 addListener('#button-send', 'click', sendData);
@@ -498,15 +497,6 @@ function sendData() {
     writeArrayToChar(txChar, txCharVal)
     .then( () => {
         console.log("PID data sent:", txCharVal);
-
-        // Sending throttle data with exChar over BLE
-        /*writeArrayToChar(exChar, exCharVal)
-        .then( () => {
-            console.log("Controller data sent:", exCharVal);
-        })
-        .catch( (error) => {
-            console.log('Control data sending failed:', error)
-        });*/
     })
     .catch( (error) => {
         console.log('PID data sending failed:', error)
@@ -527,6 +517,18 @@ function setPid(val) {
     }
 }
 
+// Function to write to the EX characteristic
+function exWrite(type = 'normal') {
+    failSafe();
+    if(type == 'reset')
+        exCharVal[output.throttle] = 0;
+
+    return writeArrayToChar(exChar, exCharVal)
+    .then( response => {
+        // response holds the returned promise
+    });
+}
+
 function stopQuad() {
     exCharVal[0] = 0;
     writeArrayToChar(exChar, exCharVal)
@@ -535,15 +537,14 @@ function stopQuad() {
     })
 }
 
-
+// Fail-safe implementation. Byte [19] in EX char must increase by 1 each sending
 function failSafe() {
     fsCounter++;
     exCharVal[output.failSafe] = fsCounter;;
 }
 
-//
 
-// Process battery level
+// Process battery level and display it
 function batteryLevel(value) {
     select('#battery-level-value').textContent = value;
     select('#battery-level-unit').textContent = "%";
@@ -605,17 +606,5 @@ select('#pitch-master-i').addEventListener('input', function() {
 select('#pitch-master-d').addEventListener('input', function() {
     select('#roll-master-d').value = this.value;
 });
-
-// Function to write to the EX characteristic
-function exWrite(type = 'normal') {
-    failSafe();
-    if(type == 'reset')
-        exCharVal[output.throttle] = 0;
-
-    return writeArrayToChar(exChar, exCharVal)
-    .then( response => {
-        // response holds the returned promise
-    });
-}
 
 // END of joystick
