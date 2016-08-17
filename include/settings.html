@@ -137,6 +137,7 @@
     $('#settings-btn-return').on('click', function() {
         game.timeToJoin = $('#settings-timeToJoin').val().trim();
         game.score = $('#settings-lives').val().trim();
+        game.originalScore = game.score;
         game.coolDownPeriod = $('#settings-coolDownPeriod').val().trim() * 1000;
         game.timeBetweenHits = $('#settings-timeBetweenHits').val().trim() * 1000;
         $('#main').fadeOut(200).promise().done( function() { $(this).load('include/controllers.html').fadeIn(200) });

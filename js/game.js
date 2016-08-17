@@ -9,6 +9,7 @@ if(typeof game === 'undefined')
 
 //** Game settings
 game.score = game.score || 5;                               // Number of lives each player starts with
+game.originalScore = game.score;                            // Variable to hold the original score so it can be reset after a game session
 game.timeToJoin = game.timeToJoin || 25;                    // Interval from games is created until it starts [s]
 game.timeBetweenHits = game.timeBetweenHits || 2000;        // Time from one hit to next possible [ms]
 game.coolDownPeriod = game.coolDownPeriod || 2000;          // Shortest allowed interval between shots fired [ms]
@@ -42,6 +43,7 @@ game.rgbLed = {green: 0, red: 1, blue: 2, off: 100};
 
 //** For local testing, set local to 1 to avoid Web Bluetooth errors
 game.local = 0;
+
 
 
 //**
@@ -167,8 +169,11 @@ game.createGame = function() {
         // Variables needed to time the start of the game for all players
         var countDown = game.timeToJoin;
 
+        // Set the score to the original score
+        game.score = game.originalScore;
+
         // Sets text to be shown while game is being created and
-        $('#message-container').fadeIn(300);
+        $('#message-container').fadeIn(200);
         $('#message').text('Creating...');
 
         // Send AJAX request to PHP page that creates game ID and entry in database. Object with player and game information is returned as JSONP
@@ -182,9 +187,14 @@ game.createGame = function() {
             game.gameId = r.gameId;
             game.playerId = r.id;
 
+            // Sending player ID to Development Kit
+            ble.charVal[19] = game.playerId;
+
+            ble.priorityWrite(ble.charVal);
+
             // Push new gameId to #message so other players may see it and join in
-            $('#message').fadeOut(500).promise().done( function() {
-                $(this).text(game.gameId).fadeIn(500);
+            $('#message').fadeOut(200).promise().done( function() {
+                $(this).text(game.gameId).fadeIn(200);
             });
 
         });
@@ -228,9 +238,9 @@ game.joinGamePopup = function(fail = false) {
                         </div>
                     </div>`;
 
-    $('#message').html(input).fadeIn(500);
+    $('#message').html(input).fadeIn(200);
     if(!fail) {
-        $('#message-container').fadeIn(500);
+        $('#message-container').fadeIn(200);
     } else {
         $('#join-fail').text('').fadeOut(100).promise().done( function() {
             $(this).text("Could not join the game. Please try again.").fadeIn(500);
@@ -281,6 +291,11 @@ game.joinGame = function(gId) {
                         game.playerName = r.name;
                         game.gameId = r.gameId;
                         game.playerId = r.id;
+
+                        // Sending player ID to Development Kit
+                        ble.charVal[19] = game.playerId;
+
+                        ble.priorityWrite(ble.charVal);
 
                         // This is an attempt to time the start of the game and sync all players. Works fine in tests, but by no means good enough
                         // and should be replaced. In short, it uses the php server's timestamp to sync the new players joining the game, and is therefore
