@@ -259,10 +259,10 @@
 
         output += 100;
 
-        document.querySelector('#servo-value').innerHTML = parseInt(output - 100) + '%';
-        document.querySelector('#servo-slider').value = output - 100;
+        document.querySelector('#servo-value').innerHTML = (output - 100) + '%';
+        document.querySelector('#servo-slider').value = output;
 
-        sendCommand(CMD_JOYSTICK, output);
+        sendCommand(CMD_JOYSTICK, parseInt(output));
     }
 
     // Function to check controller mode
