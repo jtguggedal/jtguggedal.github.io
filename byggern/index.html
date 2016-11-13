@@ -12,9 +12,10 @@
         #btn-connect-wrapper,
         #status-wrapper,
         #btn-led-wrapper,
-        #servo-servo-wrapper {
+        #servo-servo-wrapper,
+        #mode-chooser-wrapper {
             width: 300px;
-            margin: 60px auto;
+            margin: 40px auto;
             text-align: center;
             cursor: pointer;
         }
@@ -57,6 +58,19 @@
         #servo-slider {
             width: 300px;
         }
+
+        #mode-chooser-wrapper p {
+            font-weight: bold;
+        }
+
+        #mode-chooser-wrapper span {
+            margin-right: 20px;
+        }
+
+        #mode-chooser-wrapper input[type=radio] {
+            margin-right: 10px;
+        }
+
     </style>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
@@ -81,6 +95,20 @@
         </div>
     </div>
 
+    <div id="mode-chooser-wrapper">
+        <p>Select mode</p>
+        <div>
+            <span class="mode-radio-wrapper">
+                <input type="radio" name="mode" value="1" class="mode-radio-btn" id="mode-radio-btn-slider" onchange="setMode()" checked>
+                <label for="mode-radio-btn-slider">Slider</label>
+            </span>
+            <span class="mode-radio-wrapper">
+                <input type="radio" name="mode" value="2" class="mode-radio-btn" id="mode-radio-btn-acc"  onchange="setMode()">
+                <label for="mode-radio-btn-acc">Accelerometer</label>
+            </span>
+        </div>
+    </div>
+
     <div id ="servo-servo-wrapper">
         <p>Set-point</p>
         <input type="range" min="0" max="200" value="100" id="servo-slider" step="1" oninput="sendCommand(0x05, value)">
@@ -90,6 +118,15 @@
 <script>
 
     // Start of Web Bluetooth part
+
+
+    const CMD_JOYSTICK              = 0x01;
+    const MODE_JOYSTICK             = 0x01;
+    const MODE_ACCELEROMETER        = 0x02;
+    const MODE_DEFAULT              = MODE_JOYSTICK;
+
+
+    var mode = MODE_DEFAULT;
 
     var serviceUUID = "00001523-1212-efde-1523-785feabcd123";
     var buttonCharUUID = "00001524-1212-efde-1523-785feabcd123";
@@ -108,6 +145,7 @@
     var ledCharacteristic;
     var buttonCharacteristic;
     var writeAllowed = true;
+    var connected = false;
 
     function connect() {
         log('Searching for devices...');
@@ -154,7 +192,7 @@
     function sendCommand(cmd, value) {
         data = new Uint8Array([cmd, value]);
         var el = document.querySelector('#servo-value').innerHTML = parseInt(value - 100) + '%';
-        if(writeAllowed) {
+        if(writeAllowed && connected) {
             writeAllowed = false;
             ledCharacteristic.writeValue(data)
             .then( () => {
@@ -193,6 +231,7 @@
 
     function setConnectionStatus(status) {
         if (status == 1) {
+            connected = true;
             var el = document.querySelector('#status-wrapper');
             el.style.backgroundColor = 'rgb(24, 126, 65)';
             el.innerHTML = "Connected";
@@ -209,6 +248,40 @@
         log("notification received: ", received[0]);
         log(value);
         return value;
+    }
+
+    // Function to handle orientation events
+    function orientationHandler(event) {
+        var x = event.beta;
+        var output = x * 2.5;
+
+        output = output > 100 ? 100 : output < -100 ? -100 : output;
+
+        output += 100;
+
+        document.querySelector('#servo-value').innerHTML = parseInt(output - 100) + '%';
+        document.querySelector('#servo-slider').value = output - 100;
+
+        sendCommand(CMD_JOYSTICK, output);
+    }
+
+    // Function to check controller mode
+    function setMode()
+    {
+        var el_j = document.querySelector('#mode-radio-btn-slider');
+        var el_a = document.querySelector('#mode-radio-btn-acc');
+
+        if(el_j.checked == true)
+            mode = MODE_JOYSTICK;
+        else if(el_a.checked == true)
+            mode = MODE_ACCELEROMETER;
+
+        if(mode == MODE_JOYSTICK)
+            window.removeEventListener('deviceorientation', orientationHandler);
+        else if(mode == MODE_ACCELEROMETER)
+            window.addEventListener('deviceorientation', orientationHandler);
+
+        log("New mode: " + mode);
     }
 
 
