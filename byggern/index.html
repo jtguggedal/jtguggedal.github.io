@@ -177,6 +177,7 @@
     var buttonCharacteristic;
     var writeAllowed = true;
     var connected = false;
+    var shotPending = false;
 
     function connect() {
         log('Searching for devices...');
@@ -223,7 +224,7 @@
     function sendCommand(cmd, value, highPriority = false) {
         data = new Uint8Array([cmd, value]);
         var el = document.querySelector('#servo-value').innerHTML = parseInt(value - 100) + '%';
-        if(writeAllowed && connected) {
+        if(writeAllowed && connected && !shotPending) {
             writeAllowed = false;
             ledCharacteristic.writeValue(data)
             .then( () => {
@@ -232,6 +233,14 @@
         }
         else if(highPriority == true) {
             // Something smart
+            shotPending = true;
+            setTimeout( function() {
+                ledCharacteristic.writeValue(data)
+                .then( () => {
+                    writeAllowed = true;
+                    shotPending = false;
+                });
+            }, 40);
         }
     }
 
