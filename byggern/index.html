@@ -1,0 +1,222 @@
+<!doctype html>
+<html>
+<head>
+    <title>Web Bluetooth testing site</title>
+
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+
+
+        #btn-connect-wrapper,
+        #status-wrapper,
+        #btn-led-wrapper,
+        #servo-servo-wrapper {
+            width: 300px;
+            margin: 60px auto;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        #btn-connect {
+            width: 150px;
+            height: 30px;
+            margin: 0 auto;
+            background: rgb(17, 67, 92);
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            border: none;
+
+        }
+
+        #status-wrapper,
+        #btn-led-wrapper {
+            width: 100px;
+            padding: 8px;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            border: none;
+            background-color: rgb(190, 10, 10);
+            text-align: center;
+        }
+
+        #status-wrapper {
+            font-size: 12px;
+            padding: 4px;
+        }
+
+        #btn-led-wrapper {
+            background-color: white;
+            border: 1px solid black;
+            color: black;
+        }
+
+        #servo-slider {
+            width: 300px;
+        }
+    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+
+
+    <div id="status-wrapper">
+        <div id ="status-content">
+            Not connected
+        </div>
+    </div>
+
+
+    <div id ="btn-connect-wrapper">
+        <button onClick="connect()" id="btn-connect">Connect</button>
+    </div>
+
+    <div id="btn-led-wrapper" hidden>
+        <div id="btn-led" onClick="toggleLed()">
+            Toggle LED
+        </div>
+    </div>
+
+    <div id ="servo-servo-wrapper">
+        <p>Set-point</p>
+        <input type="range" min="0" max="200" value="100" id="servo-slider" step="1" oninput="sendCommand(0x05, value)">
+        <p id="servo-value">0%</p>
+    </div>
+
+<script>
+
+    // Start of Web Bluetooth part
+
+    var serviceUUID = "00001523-1212-efde-1523-785feabcd123";
+    var buttonCharUUID = "00001524-1212-efde-1523-785feabcd123";
+    var ledCharUUID = "00001525-1212-efde-1523-785feabcd123";
+
+    const uartUUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
+    const uartTxUUID = "6e400002-b5a3-f393-e0a9-e50e24dcca9e";
+    const uartRxUUID = "6e400003-b5a3-f393-e0a9-e50e24dcca9e";
+
+    //serviceUUID = uartUUID;
+    //ledCharUUID = uartTxUUID;
+    //buttonCharUUID = uartRxUUID;
+
+    var bluetoothDevice;
+    var ledButtonService;
+    var ledCharacteristic;
+    var buttonCharacteristic;
+    var writeAllowed = true;
+
+    function connect() {
+        log('Searching for devices...');
+        navigator.bluetooth.requestDevice(
+            {filters: [{services: [serviceUUID]}]}
+        )
+        .then( device => {
+            log('Device found, connecting to GATT server...');
+            bluetoothDevice = device;       // Making device available in global scope
+            return device.gatt.connect();
+        })
+        .then( server => {
+            log('Connected to GATT server, getting specified service...');
+            setConnectionStatus(1);
+            return server.getPrimaryService(serviceUUID);
+        })
+        .then( service => {
+            log('Service found and available in global scope (var ledButtonService). \nGetting specified characteristics...');
+            ledButtonService = service;     // Making service available in global scope
+            return Promise.all([
+                service.getCharacteristic(ledCharUUID)
+                .then( characteristic => {
+                    log('Found LED characteristic, and it\'s now available in global scope (var ledCharacteristic).');
+                    ledCharacteristic = characteristic;
+                }),
+                service.getCharacteristic(buttonCharUUID)
+                .then( characterstic => {
+                    buttonCharacteristic = characterstic
+                    log('Found button characterstic, now available in global scope (var buttonCharacteristic).\nEvent listener added.');
+                    buttonCharacteristic.addEventListener('characteristicvaluechanged', handleNotification);
+                    return buttonCharacteristic.startNotifications();
+                })
+            ]);
+        })
+    }
+
+    function setLed(status) {
+        value = new Uint8Array([status%2]);
+        ledCharacteristic.writeValue(value);
+    }
+
+
+    // Function to send command from web to nRF52 Development Kit
+    function sendCommand(cmd, value) {
+        data = new Uint8Array([cmd, value]);
+        var el = document.querySelector('#servo-value').innerHTML = parseInt(value - 100) + '%';
+        if(writeAllowed) {
+            writeAllowed = false;
+            ledCharacteristic.writeValue(data)
+            .then( () => {
+                writeAllowed = true;
+            });
+        }
+    }
+
+    function setServo(value) {
+        setPoint = new Uint8Array([value]);
+        var el = document.querySelector('#servo-value').innerHTML = parseInt(value - 100) + '%';
+        if(writeAllowed) {
+            writeAllowed = false;
+            ledCharacteristic.writeValue(setPoint)
+            .then( () => {
+                writeAllowed = true;
+            });
+        }
+    }
+
+    var ledCounter = 1;
+    function toggleLed() {
+        value = new Uint8Array([ledCounter%2]);
+        ledCharacteristic.writeValue(value)
+        .then( () => {
+            var el = document.querySelector('#btn-led-wrapper');
+            if(ledCounter%2) {
+                el.style.backgroundColor = "rgb(251, 215, 105)";
+            } else {
+                el.style.backgroundColor = "#FFF";
+            }
+            ledCounter++;
+        })
+    }
+
+
+    function setConnectionStatus(status) {
+        if (status == 1) {
+            var el = document.querySelector('#status-wrapper');
+            el.style.backgroundColor = 'rgb(24, 126, 65)';
+            el.innerHTML = "Connected";
+        }
+    }
+
+    function handleNotification(event) {
+        var value = event.target.value;
+        var received = [];
+        log("notification received: ", value);
+        for(var i = 0; i < value.byteLength; i++) {
+            received[i] = value.getUint8(i);
+        }
+        log("notification received: ", received[0]);
+        log(value);
+        return value;
+    }
+
+
+    // Shorthand logging
+    function log(string) {
+        console.log(string);
+    }
+
+</script>
+</body>
+</html>
