@@ -226,8 +226,10 @@
         var el = document.querySelector('#servo-value').innerHTML = parseInt(value - 100) + '%';
         if(writeAllowed && connected && !shotPending) {
             writeAllowed = false;
-            ledCharacteristic.writeValue(data)
+            return ledCharacteristic.writeValue(data)
             .then( () => {
+                if(shotPending)
+                    sendShot();
                 writeAllowed = true;
             });
         }
@@ -246,7 +248,10 @@
 
     // Function to trigger shot
     function sendShot() {
-        sendCommand(CMD_SHOOT, 1, true);
+        sendCommand(CMD_SHOOT, 1, true)
+        .then( () => {
+            shotPending = false;
+        });
         //sendCommand(CMD_SHOOT, 0, true);
     }
 
