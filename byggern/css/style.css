@@ -1,0 +1,92 @@
+body {
+    font-family: sans-serif;
+}
+
+
+#btn-connect-wrapper,
+#btn-led-wrapper,
+/*#servo-servo-wrapper,*/
+#mode-chooser-wrapper {
+    width: 300px;
+    margin: 30px auto;
+    text-align: center;
+    cursor: pointer;
+}
+
+#btn-connect {
+    width: 150px;
+    height: 30px;
+    margin: 0 auto;
+    background: rgb(17, 67, 92);
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+    border: none;
+
+}
+
+#controller-wrapper {
+    width: 100%;
+}
+
+#status-wrapper,
+#btn-led-wrapper {
+    width: 100px;
+    padding: 3px;
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+    border: none;
+    background-color: rgb(190, 10, 10);
+    text-align: center;
+}
+
+#status-wrapper {
+    position: fixed;
+    right: 0;
+    top: 0;
+    font-size: 12px;
+}
+
+#btn-led-wrapper {
+    background-color: white;
+    border: 1px solid black;
+    color: black;
+}
+
+#servo-slider {
+    width: 300px;
+}
+
+#mode-chooser-wrapper p {
+    font-weight: bold;
+}
+
+#mode-chooser-wrapper span {
+    margin-right: 20px;
+}
+
+#mode-chooser-wrapper input[type=radio] {
+    margin-right: 10px;
+}
+
+#servo-wrapper,
+#shoot-button-wrapper {
+    display: inline-block;
+}
+
+#shoot-button-wrapper {
+    float: right;
+}
+
+#shoot-button {
+    border: 2px solid white;
+    border-radius: 50%;
+    height: 100px;
+    width: 100px;
+    margin-right: 40px;
+    text-align: center;
+    vertical-align: middle;
+    box-shadow: 1px 2px 10px rgba(0, 0, 0, 0.4);
+    background-color: rgb(199, 35, 6);
+}
