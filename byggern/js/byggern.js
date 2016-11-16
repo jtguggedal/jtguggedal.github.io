@@ -196,6 +196,56 @@ document.querySelector('#shoot-button').addEventListener('touchstart', function(
     window.addEventListener('deviceorientation', orientationHandler);
 });
 
+function orientationPreHandler(event) {
+    log(window.orientation);
+}
+
+// Function to start game
+function startGame() {
+
+        // Go to fullscreen
+        toggleFullScreen();
+    // Connect to DK
+    connect();
+
+
+    // Hide overlay
+    var el = document.querySelector('#overlay');
+    el.style.display = 'none';
+
+}
+
+// Check screen orientation
+(function() {
+    if(window.matchMedia("(orientation: portrait)").matches) {
+        var el = document.querySelector('#overlay-rotate');
+
+    }
+    document.querySelector('#overlay-button').addEventListener('click', startGame);
+})();
+
+
+function toggleFullScreen() {
+  if ((document.fullScreenElement && document.fullScreenElement !== null) ||
+   (!document.mozFullScreen && !document.webkitIsFullScreen)) {
+    if (document.documentElement.requestFullScreen) {
+      document.documentElement.requestFullScreen();
+    } else if (document.documentElement.mozRequestFullScreen) {
+      document.documentElement.mozRequestFullScreen();
+    } else if (document.documentElement.webkitRequestFullScreen) {
+      document.documentElement.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
+    }
+  } else {
+    if (document.cancelFullScreen) {
+      document.cancelFullScreen();
+    } else if (document.mozCancelFullScreen) {
+      document.mozCancelFullScreen();
+    } else if (document.webkitCancelFullScreen) {
+      document.webkitCancelFullScreen();
+    }
+  }
+}
+
 // Shorthand logging
 function log(string) {
     console.log(string);
