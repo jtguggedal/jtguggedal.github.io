@@ -175,7 +175,8 @@ function setMode()
 
 
 document.querySelector('#shoot-button').addEventListener('touchstart', function(event) {
-    window.removeEventListener('deviceorientation', orientationHandler);
+    if(mode = MODE_ACCELEROMETER)
+        window.removeEventListener('deviceorientation', orientationHandler);
 
     sendShot();
     var e = this;
@@ -193,7 +194,8 @@ document.querySelector('#shoot-button').addEventListener('touchstart', function(
         e.style.boxShadow = prevBS;
     }, 100);
 
-    window.addEventListener('deviceorientation', orientationHandler);
+    if(mode = MODE_ACCELEROMETER)
+        window.addEventListener('deviceorientation', orientationHandler);
 });
 
 function orientationPreHandler(event) {
@@ -203,11 +205,11 @@ function orientationPreHandler(event) {
 // Function to start game
 function startGame() {
 
-        // Go to fullscreen
-        toggleFullScreen();
+    // Go to fullscreen
+    toggleFullScreen();
+
     // Connect to DK
     connect();
-
 
     // Hide overlay
     var el = document.querySelector('#overlay');
@@ -223,7 +225,6 @@ function startGame() {
     }
     document.querySelector('#overlay-button').addEventListener('click', startGame);
 })();
-
 
 function toggleFullScreen() {
   if ((document.fullScreenElement && document.fullScreenElement !== null) ||
