@@ -151,7 +151,7 @@ function orientationHandler(event) {
     sendCommand(CMD_JOYSTICK, parseInt(output));
     setTimeout(function() {
         window.addEventListener('deviceorientation', orientationHandler);
-    }, 20);
+    }, 30);
 }
 
 // Function to check controller mode
