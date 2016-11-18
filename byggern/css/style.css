@@ -6,14 +6,17 @@ html {
 }
 
 body {
+    position: fixed;
+    top:0;
     margin: 0;
     margin-top: 0;
     font-family: "Proza Libre";
     background-repeat: no-repeat;
     height: 100%;
+    width: 100%;
     background-attachment: fixed;
     background: rgb(255,255,255);
-    background: linear-gradient(135deg,  rgba(255,255,255,1) 0%,rgba(241,241,241,1) 50%,rgba(225,225,225,1) 51%,rgba(246,246,246,1) 100%);
+    background: linear-gradient(135deg, rgba(244, 244, 244, 1) 0%,rgba(255, 255, 255, 1) 40%,rgba(245, 245, 245, 1) 100%);
 }
 
 #container {

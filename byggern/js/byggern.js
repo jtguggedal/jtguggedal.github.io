@@ -68,27 +68,28 @@ function setLed(status) {
 // Function to send command from web to nRF52 Development Kit
 function sendCommand(cmd, value, highPriority = false) {
     data = new Uint8Array([cmd, value]);
-    var el = document.querySelector('#servo-value').innerHTML = parseInt(value - 100) + '%';
+    if(cmd == CMD_JOYSTICK)
+        document.querySelector('#servo-value').innerHTML = parseInt(value - 100) + '%';
     if(writeAllowed && connected && !shotPending) {
         writeAllowed = false;
         return ledCharacteristic.writeValue(data)
         .then( () => {
-            if(shotPending)
-                sendShot();
+            //if(shotPending)
+            //    sendShot();
             writeAllowed = true;
         });
     }
-    else if(highPriority == true) {
-        // Something smart
-        shotPending = true;
-        setTimeout( function() {
-            ledCharacteristic.writeValue(data)
-            .then( () => {
-                writeAllowed = true;
-                shotPending = false;
-            });
-        }, 40);
-    }
+    // else if(highPriority == true) {
+    //     // Something smart
+    //     shotPending = true;
+    //     setTimeout( function() {
+    //         ledCharacteristic.writeValue(data)
+    //         .then( () => {
+    //             writeAllowed = true;
+    //             shotPending = false;
+    //         });
+    //     }, 40);
+    // }
 }
 
 // Function to trigger shot
@@ -98,18 +99,6 @@ function sendShot() {
         shotPending = false;
     });
     //sendCommand(CMD_SHOOT, 0, true);
-}
-
-function setServo(value) {
-    setPoint = new Uint8Array([value]);
-    var el = document.querySelector('#servo-value').innerHTML = parseInt(value - 100) + '%';
-    if(writeAllowed) {
-        writeAllowed = false;
-        ledCharacteristic.writeValue(setPoint)
-        .then( () => {
-            writeAllowed = true;
-        });
-    }
 }
 
 
@@ -175,7 +164,7 @@ function setMode()
 
 
 document.querySelector('#shoot-button').addEventListener('touchstart', function(event) {
-    if(mode = MODE_ACCELEROMETER)
+    if(mode == MODE_ACCELEROMETER)
         window.removeEventListener('deviceorientation', orientationHandler);
 
     sendShot();
@@ -194,7 +183,7 @@ document.querySelector('#shoot-button').addEventListener('touchstart', function(
         e.style.boxShadow = prevBS;
     }, 100);
 
-    if(mode = MODE_ACCELEROMETER)
+    if(mode == MODE_ACCELEROMETER)
         window.addEventListener('deviceorientation', orientationHandler);
 });
 
