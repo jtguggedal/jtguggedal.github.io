@@ -130,6 +130,9 @@ function handleNotification(event) {
     return value;
 }
 
+
+var prevServo = 0;
+
 // Function to handle orientation events
 function orientationHandler(event) {
     window.removeEventListener('deviceorientation', orientationHandler);
@@ -143,7 +146,7 @@ function orientationHandler(event) {
         document.querySelector('#servo-value').innerHTML = (output - 100) + '%';
         document.querySelector('#servo-slider').value = output;
         sendCommand(CMD_JOYSTICK, parseInt(output));
-    } else if(mode == MODE_JOYSTICK) {
+    } else if(mode == MODE_JOYSTICK && (Math.abs(prevServo - output) > 5)) {
         output = (output + 100) / 2;
         ble_send_array[2] = output;
         sendCommand(CMD_JOYSTICK, ble_send_array);
@@ -152,6 +155,7 @@ function orientationHandler(event) {
     setTimeout(function() {
         window.addEventListener('deviceorientation', orientationHandler);
     }, 30);
+    prevServo = output;
 }
 
 // Function to check controller mode
