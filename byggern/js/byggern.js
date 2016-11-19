@@ -149,7 +149,7 @@ function orientationHandler(event) {
     } else if(mode == MODE_JOYSTICK && (Math.abs(prevServo - output) > 5)) {
         output = (output + 100) / 2;
         ble_send_array[2] = output;
-        sendCommand(CMD_JOYSTICK, ble_send_array);
+        //sendCommand(CMD_JOYSTICK, ble_send_array);
     }
 
     setTimeout(function() {
