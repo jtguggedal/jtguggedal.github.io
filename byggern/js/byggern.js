@@ -68,12 +68,12 @@ function setLed(status) {
 
 // Function to send command from web to nRF52 Development Kit
 function sendCommand(cmd, value, highPriority = false) {
-    if(value.constructor != Array) {
+    if(value.constructor != Uint8Array) {
         ble_send_array[0] = cmd;
         ble_send_array[1] = [value];
         if(cmd == CMD_JOYSTICK)
             document.querySelector('#servo-value').innerHTML = parseInt(value - 100) + '%';
-    } else if(value.constructor === Array) {
+    } else if(value.constructor === Uint8Array) {
         ble_send_array[0] = cmd;
         ble_send_array[1] = document.querySelector('#servo-slider').value;
     }
