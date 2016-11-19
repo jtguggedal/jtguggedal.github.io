@@ -73,6 +73,9 @@ function sendCommand(cmd, value, highPriority = false) {
         ble_send_array[1] = [value];
         if(cmd == CMD_JOYSTICK)
             document.querySelector('#servo-value').innerHTML = parseInt(value - 100) + '%';
+    } else if(value.constructor === Array) {
+        ble_send_array[0] = cmd;
+        ble_send_array[1] = document.querySelector('#servo-slider').value;
     }
     if(writeAllowed && connected && !shotPending) {
         writeAllowed = false;
