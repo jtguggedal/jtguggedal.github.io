@@ -143,7 +143,7 @@ function orientationHandler(event) {
     } else if(mode == MODE_JOYSTICK) {
         output = (output + 100) / 2;
         ble_send_array[2] = output;
-        sendCommand(ble_send_array);
+        sendCommand(CMD_JOYSTICK, ble_send_array);
     }
 
     setTimeout(function() {
