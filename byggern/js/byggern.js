@@ -37,7 +37,6 @@ function connect() {
     })
     .then( server => {
         log('Connected to GATT server, getting specified service...');
-        setConnectionStatus(1);
         return server.getPrimaryService(serviceUUID);
     })
     .then( service => {
@@ -54,6 +53,7 @@ function connect() {
                 buttonCharacteristic = characterstic
                 log('Found button characterstic, now available in global scope (var buttonCharacteristic).\nEvent listener added.');
                 buttonCharacteristic.addEventListener('characteristicvaluechanged', handleNotification);
+                setConnectionStatus(1);
                 return buttonCharacteristic.startNotifications();
             })
         ]);
@@ -68,10 +68,12 @@ function setLed(status) {
 
 // Function to send command from web to nRF52 Development Kit
 function sendCommand(cmd, value, highPriority = false) {
-    ble_send_array[0] = cmd;
-    ble_send_array[1] = [value];
-    if(cmd == CMD_JOYSTICK)
-        document.querySelector('#servo-value').innerHTML = parseInt(value - 100) + '%';
+    if(value.constructor != Array) {
+        ble_send_array[0] = cmd;
+        ble_send_array[1] = [value];
+        if(cmd == CMD_JOYSTICK)
+            document.querySelector('#servo-value').innerHTML = parseInt(value - 100) + '%';
+    }
     if(writeAllowed && connected && !shotPending) {
         writeAllowed = false;
         return ledCharacteristic.writeValue(ble_send_array)
@@ -129,7 +131,7 @@ function handleNotification(event) {
 function orientationHandler(event) {
     window.removeEventListener('deviceorientation', orientationHandler);
     var x = event.beta;
-    var output = x * 2.5;
+    var output = x * 3.5;
 
     output = output > 100 ? 100 : output < -100 ? -100 : output;
 
