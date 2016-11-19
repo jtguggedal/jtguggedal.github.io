@@ -23,6 +23,7 @@ var buttonCharacteristic;
 var writeAllowed = true;
 var connected = false;
 var shotPending = false;
+var ble_send_array = new Uint8Array(3);
 
 function connect() {
     log('Searching for devices...');
@@ -67,12 +68,13 @@ function setLed(status) {
 
 // Function to send command from web to nRF52 Development Kit
 function sendCommand(cmd, value, highPriority = false) {
-    data = new Uint8Array([cmd, value]);
+    ble_send_array[0] = cmd;
+    ble_send_array[1] = [value];
     if(cmd == CMD_JOYSTICK)
         document.querySelector('#servo-value').innerHTML = parseInt(value - 100) + '%';
     if(writeAllowed && connected && !shotPending) {
         writeAllowed = false;
-        return ledCharacteristic.writeValue(data)
+        return ledCharacteristic.writeValue(ble_send_array)
         .then( () => {
             //if(shotPending)
             //    sendShot();
@@ -125,19 +127,22 @@ function handleNotification(event) {
 
 // Function to handle orientation events
 function orientationHandler(event) {
-
     window.removeEventListener('deviceorientation', orientationHandler);
     var x = event.beta;
     var output = x * 2.5;
 
     output = output > 100 ? 100 : output < -100 ? -100 : output;
 
-    output += 100;
+    if(mode == MODE_ACCELEROMETER) {
+        output += 100;
+        document.querySelector('#servo-value').innerHTML = (output - 100) + '%';
+        document.querySelector('#servo-slider').value = output;
+        sendCommand(CMD_JOYSTICK, parseInt(output));
+    } else if(mode == MODE_JOYSTICK) {
+        output = (output + 100) / 2;
+        ble_send_array[1] = output;
+    }
 
-    document.querySelector('#servo-value').innerHTML = (output - 100) + '%';
-    document.querySelector('#servo-slider').value = output;
-
-    sendCommand(CMD_JOYSTICK, parseInt(output));
     setTimeout(function() {
         window.addEventListener('deviceorientation', orientationHandler);
     }, 30);
@@ -162,6 +167,8 @@ function setMode()
     log("New mode: " + mode);
 }
 
+// TESTING
+window.addEventListener('deviceorientation', orientationHandler);
 
 document.querySelector('#shoot-button').addEventListener('touchstart', function(event) {
     if(mode == MODE_ACCELEROMETER)
@@ -234,6 +241,21 @@ function toggleFullScreen() {
       document.webkitCancelFullScreen();
     }
   }
+}
+
+document.onkeydown = checkKey;
+
+function checkKey(e) {
+    if (e.keyCode == '37') {
+        var el = document.querySelector('#servo-slider');
+		el.value -= 1;
+        sendCommand(CMD_JOYSTICK, el.value);
+    }
+    else if (e.keyCode == '39') {
+        var el = document.querySelector('#servo-slider');
+		el.value += 1;
+        sendCommand(CMD_JOYSTICK, el.value);
+    }
 }
 
 // Shorthand logging
