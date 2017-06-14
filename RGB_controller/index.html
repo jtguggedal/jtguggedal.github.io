@@ -26,6 +26,7 @@
             border: 1px solid #c3c3c3;
             box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
             cursor: pointer;
+            user-select: none;
         }
 
         #chooserWrapper {
@@ -96,6 +97,7 @@
         }
 
         document.querySelector('#connectBtn').addEventListener('click', function(e) {
+            e.preven
             connect(onConnect);
         });
 
