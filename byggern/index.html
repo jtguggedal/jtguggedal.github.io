@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+<head>
+    <title>Web Bluetooth testing site</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+<body>
+        <div id="overlay">
+            <div id="overlay-content">
+                Ping Pong
+            </div>
+            <div id="overlay-button">
+                Start game
+            </div>
+            <div id="overlay-rotate">
+                Please rotate your device
+                <div>
+                    <img src="img/rotate.png" id="overlay-img">
+                </div>
+            </div>
+        </div>
+        <div id="status-wrapper">
+            <div id ="status-content">
+                Not connected
+            </div>
+        </div>
+        <div id ="btn-connect-wrapper">
+            <button onClick="connect()" id="btn-connect">Connect</button>
+        </div>
+
+        <div id="btn-led-wrapper" hidden>
+            <div id="btn-led" onClick="toggleLed()">
+                Toggle LED
+            </div>
+        </div>
+        <div id="mode-chooser-wrapper">
+            <span class="bold air-over air-under">Select mode</span>
+            <div>
+                <span class="mode-radio-wrapper">
+                    <input type="radio" name="mode" value="1" class="mode-radio-btn" id="mode-radio-btn-slider" onchange="setMode()" checked>
+                    <label for="mode-radio-btn-slider">Slider</label>
+                </span>
+                <span class="mode-radio-wrapper">
+                    <input type="radio" name="mode" value="2" class="mode-radio-btn" id="mode-radio-btn-acc"  onchange="setMode()">
+                    <label for="mode-radio-btn-acc">Accelerometer</label>
+                </span>
+            </div>
+        </div>
+        <div id="controller-wrapper">
+            <div id ="servo-wrapper">
+                <p>Set-point</p>
+                <input type="range" min="0" max="200" value="100" id="servo-slider" step="1" oninput="sendCommand(0x05, value)">
+                <p id="servo-value">0%</p>
+            </div>
+            <div id="shoot-button-wrapper">
+                <div id="shoot-button">
+                </div>
+            </div>
+        </div>
+<script src="js/byggern.js"></script>
+</body>
+</html>

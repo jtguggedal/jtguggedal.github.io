@@ -1,19 +1,21 @@
 
 <!doctype html>
 <html lang="en">
-    <head>
-        <title>Quadcopter</title>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="BLE quadcopter controller">
-        <!-- Origin Trial Token, feature = Web Bluetooth, origin = https://jtguggedal.github.io, expires = 2016-09-20 -->
-        <meta http-equiv="origin-trial" content="AsZ5og5k1AhulBjqnqWblYaDsMuLdFl2Kgb7P7zG/AYkiCP8+7Ueoriz/t+YlO+VosSq5FPee6LKClI5zMiAvg8AAABfeyJvcmlnaW4iOiAiaHR0cHM6Ly9qdGd1Z2dlZGFsLmdpdGh1Yi5pbzo0NDMiLCAiZmVhdHVyZSI6ICJXZWJCbHVldG9vdGgiLCAiZXhwaXJ5IjogMTQ3NDM4MzEwM30=">
+  <head>
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
-        <link rel="stylesheet" type="text/css" href="css/normal.css">
-        <link rel="stylesheet" type="text/css" href="css/control.css">
-        <script src="js/func.js"></script>
-    </head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Physical Web RC Car">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+    <script src="js/ble.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/slotmachine.css"></link>
+    <link rel="stylesheet" type="text/css" href="css/control.css?"></link>
+    <link rel="stylesheet" type="text/css" href="css/controllers.css"></link>
+
+    <title>Quadcopter</title>
+
+  </head>
+
     <body>
         <div id="orientation-message">
             <div>Please rotate the device 90&#176;
@@ -22,37 +24,46 @@
                </div>
             </div>
         </div>
+        <div id="connectionStatus">Connection status</div>
 
-        <div id="fullscreen">
-        </div>
+        <div id="fullscreen" onclick="">Click for fullscreen</div>
 
         <div id="main">
-            <h1>Quadcopter</h1>
+
+            <h1 id="welcome">Quadcopter</h1>
             <div id="main-message">
-    			<div id='button-connect' class="button-main-menu">
+    			<div onclick="game_init();" id='connect' class="button-main-menu">
                     Connect
                 </div>
             </div>
+
+
         </div>
 		<div id="footer">
 			<img src="img/nordic.png" id="nordiclogo" class="footer-logo"></img>
 		</div>
 
 		<script>
-            // Button actions
-            addListener('#button-connect', 'click', start);
 
-            // Show joysticks
-            function start() {
-                select('#main').innerHTML = "";
-                //select('#main').innerHTML = '<object type="text/html" data="joysticks.html" class="loaded-content" ></object>';
+        //*** Initialize game **/
 
-                $("#main").load("joysticks.html");
+        function game_init() {
+            toggleFullscreen();
+            connect();
+            $('#fullscreen').show();
+			$('#footer').hide();
+            $('#connectionStatus').fadeIn();
+            var time = new Date();
+            var e = time.getTime();
+            setTimeout(function() {
+                $('#main').load('controllers.html?t=' + e);
+            }, 1000);
+        }
 
-                toggleFullscreen();
-                connect();
-            }
+
 		</script>
+
+
 
         <script>
             // Enable fullscreen
@@ -70,7 +81,7 @@
                   elem.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
                 }
 				$('#fullscreen').show();
-                $('#fullscreen').html("<img src='img/fullscreen-exit.png'>");
+                $('#fullscreen').html("Exit fullscreen");
               } else {
                 if (document.exitFullscreen) {
                   document.exitFullscreen();
@@ -81,7 +92,7 @@
                 } else if (document.webkitExitFullscreen) {
                   document.webkitExitFullscreen();
                 }
-                $('#fullscreen').html("<img src='img/fullscreen-enter.png'>");
+                $('#fullscreen').html("Fullscreen");
               }
             }
 
@@ -89,12 +100,18 @@
                 toggleFullscreen();
             });
 
+            (function() {
+                var time = new Date();
+                var e = time.getTime();
+                $('head').append('<link rel="stylesheet" href="css/settings.css?' + e + '" type="text/css" />');
+            })();
+
+
         </script>
 
-        <script src="js/ble.js"></script>
-        <script src="js/func.js"></script>
-        <script src="js/nipple.js"></script>
-        <script src="js/gamepad.js"></script>
+
+
+
 
     </body>
 </html>

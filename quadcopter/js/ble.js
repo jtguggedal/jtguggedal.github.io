@@ -2,14 +2,10 @@
 //      BLE connection to quadcopter
 //
 
-
-// Using (almost)) the same UUID Nordic UART service and belonging characteristics
-// (UUID changed to avoid listing all kinds of devices that cannot be controlled)
-var serviceUUID     = '6e400020-b5a3-f393-e0a9-e50e24dcca9e';
-var txCharUUID      = '6e400002-b5a3-f393-e0a9-e50e24dcca9e';
-var rxCharUUID      = '6e400003-b5a3-f393-e0a9-e50e24dcca9e';
-var exCharUUID      = '6e400004-b5a3-f393-e0a9-e50e24dcca9e';
-
+var serviceUUID = '6e400001-b5a3-f393-e0a9-e50e24dcca9e';
+var txCharUUID = '6e400002-b5a3-f393-e0a9-e50e24dcca9e';
+var rxCharUUID = '6e400003-b5a3-f393-e0a9-e50e24dcca9e';
+var exCharUUID = '6e400004-b5a3-f393-e0a9-e50e24dcca9e';
 var bluetoothDevice;
 var mainServer;
 var mainService;
@@ -17,12 +13,12 @@ var txChar;
 var rxChar;
 var exChar;
 var txContent;
-var txCharVal       = new Uint8Array(20);
-var rxCharVal       = new Uint8Array(20);
-var exCharVal       = new Uint8Array(20);
-var prevRxValue     = new Uint8Array(20);
+var txCharVal = new Uint8Array(20);
+var rxCharVal = new Uint8Array(20);
+var exCharVal = new Uint8Array(20);
+var prevRxValue = new Uint8Array(20);
+var originalPidData = new Uint8Array(20);
 var writePermission = true;
-var initialPidFetch = true;
 
 // Function for connecting to quadcopter
  function connect() {
@@ -118,35 +114,23 @@ function rxHandleNotification(event) {
     for(var i = 0; i < 20; i++)
         valueArray[i] = value.getUint8(i);
 
-    // Update battery value
-    batteryLevel(valueArray[0]);
+    if((sumArray(valueArray) != 0) && (!arraysEqual(valueArray, prevRxValue, 1, 18))) {
+        originalPidData = rxCharVal = prevRxValue = valueArray;
+        console.log("Original PID data received:", originalPidData);
 
-    // TODO check that the received WX characteristic value foesn't differ from
-    // th TX char value after the initial read and overwrites it
-
-    // if((sumArray(valueArray) != 0) && (!arraysEqual(valueArray, prevRxValue, 1, 18))) {
-
-        // Write original PID data to input boxes on first notification
-        if(initialPidFetch) {
-            originalPidData = rxCharVal = txCharVal = prevRxValue = valueArray;
-            console.log("Original PID data received:", originalPidData);
-
-            // Enable input elements
-            var inputs = document.getElementsByTagName('input');
-            for( var i = 0; i < inputs.length; i++){
-                inputs[i].disabled = false;
-            }
-            for(var i = 1; i <= 18; i++) {
-                select(inputMap[i]).value = originalPidData[i];
-            }
-            initialPidFetch = false;
-        } else {
-
+        // Enable input elements
+        var inputs = document.getElementsByTagName('input');
+        for( var i = 0; i < inputs.length; i++){
+            inputs[i].disabled = false;
         }
-    // }
+
+        // Write original PID data to input boxes
+        for(var i = 1; i <= 18; i++) {
+            select(inputMap[i]).value = originalPidData[i];
+        }
+    }
 
     return value;
-
 }
 
 // Function to notify when connection to BLE device is established
@@ -170,10 +154,8 @@ function writeArrayToChar(char, data) {
     'use strict';
     return new Promise(function(resolve, reject) {
         if(writePermission) {
-            writePermission = false;
             char.writeValue(data)
             .then( () => {
-                writePermission = true;
                 resolve('Sending successful');
             })
             .catch( (error) => {

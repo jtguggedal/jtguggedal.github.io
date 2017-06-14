@@ -4,8 +4,11 @@
 html {
 	margin: 0;
 	padding: 0;
-}
+	background: -moz-radial-gradient(center, ellipse cover,  rgba(29, 76, 122, 1) 0%, rgba(0,0,0,0.97) 100%);
+	background: -webkit-radial-gradient(center, ellipse cover,  rgba(29, 76, 122, 1) 0%,rgba(0,0,0,0.97) 100%);
+	background: radial-gradient(ellipse at center,  rgba(29, 76, 122, 1) 0%, rgba(8, 21, 34, 1) 100%);
 
+}
 body {
 	position: absolute;
 	font-family: "Lato";
@@ -25,16 +28,49 @@ body {
 	user-select: none;
 }
 
+#footer {
+	height: 40px;
+	width: 100%;
+    background-color: #052033;
+	position: fixed;
+	bottom: 0;
+	margin: 0;
+	clear: both;
+	vertical-align: middle;
+	z-index: 10;
+	box-shadow: 0px 0px 20px 2px rgba(0, 0, 0, 0.4);
+}
+
+.footer-logo {
+	height: 18px;
+	margin: 12px 30px 0 30px;
+}
+
+#main {
+	width: 100%;
+	height: 100%;
+	margin-top: 10px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#main-message {
+	margin-top: 60px;
+}
+
 h1 {
 	color: #222;
-	font-size: 45px;
+	font-size: 50px;
 	text-align: center;
-	margin: 5px auto 30px auto;
+	margin: 25px auto 30px auto;
 	text-shadow: 1px 1px 15px rgba(0, 0, 0, 0);
     font-family: "Alegreya Sans";
 	width: 100%;;
 	border-radius: 3px;
 	padding: 30px 0 0px 0;
+    /*background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.5));
+    background-color: rgba(214, 10, 10, 0);
+	box-shadow: 0px 0px 20px 2px rgba(0, 0, 0, 0.0);*/
 }
 
 h2 {
@@ -68,64 +104,22 @@ input[type=range] {
 	-webkit-appearance: slider-vertical; /* WebKit */
 }
 
-
-.shadow-1 {
-    box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.3);
-}
-
-
-#main {
-	width: 100%;
-	height: 100%;
+#connectionStatus {
+	display: none;
+	padding: 2px 5px;
+	background-color: rgb(195, 7, 12);
+	color: white;
+	visibility: ;
+	text-align: center;
+	border: 1px solid #CCC;
+	border-radius: 2px;
+	position: fixed;
 	margin-left: auto;
 	margin-right: auto;
+	top: 10px;
+	right: 10px;
+	font-size: 12px;
 }
-
-.loaded-content {
-	height: 100%;
-	width: 100%;
-}
-
-#main-message {
-	margin-top: 40px;
-}
-
-.button-main-menu {
-    display: inline-block;
-    width: 150px;
-    height: 35px;
-    padding-top: 10px;
-    margin: 5px 20px;
-    background-color: #367d59;
-    border: 2px solid white;
-    border-radius: 2px;
-    text-align: center;
-    cursor: pointer;
-    box-shadow: 1px 1px 20px 0px rgba(0,0,0, 0.3);
-    color: #FFF;
-    font-size: 18px;
-    font-weight: 700;
-    vertical-align: top;
-}
-
-#footer {
-	height: 40px;
-	width: 100%;
-    background-color: rgba(5, 32, 51, 1);
-	position: fixed;
-	bottom: 0;
-	margin: 0;
-	clear: both;
-	vertical-align: middle;
-	z-index: 10;
-	box-shadow: 0px 0px 20px 2px rgba(0, 0, 0, 0.4);
-}
-
-.footer-logo {
-	height: 18px;
-	margin: 12px 30px 0 30px;
-}
-
 
 /* Button to activate fullscreen */
 
@@ -135,14 +129,10 @@ input[type=range] {
     position: fixed;
     top: 0px;
     left: 0px;
-    padding: 7px;
-	padding-left: 14px;
+    padding: 4px;
+    background-color: #222;
     color: white;
     z-index: 10;
-}
-
-#fullscreen > img {
-	width: 25px;
 }
 
 /****  Message if portrait orientation  *****/
