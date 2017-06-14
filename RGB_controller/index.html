@@ -1,0 +1,122 @@
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="css/themes.css">
+    <script type="text/javascript" src="js/colorpicker.js"></script>
+    <script type="text/javascript" src="js/ble.js"></script>
+    <style type="text/css">
+        @import url('https://fonts.googleapis.com/css?family=Lato');
+
+        body {
+            font-family: Lato;
+            box-sizing: border-box;
+        }
+
+        #connectWrapper {
+            width: 250px;
+            margin: 20px auto;
+        }
+
+        #connectBtn {
+            margin: auto;
+            padding: 8px 6px;
+            width: 80px;
+            font-size: 16px;
+            font-weight: 700;
+            text-align: center;
+            border: 1px solid #c3c3c3;
+            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+        }
+
+        #chooserWrapper {
+            width: 250px;
+            margin: 10px auto;
+        }
+
+        #picker {
+            display: inline-block;
+            width: 200px;
+            height: 200px;
+            border: 2px solid white;
+        }
+
+        #slide {
+            display: inline-block;
+            width: 30px;
+            height: 200px;
+            border: 3px solid white;
+        }
+
+        #chosenColor {
+            margin: 20px auto;
+            height: 30px;
+            width: 90%;
+        }
+
+        #ledSelectorWrapper {
+            font-weight: bold;
+        }
+
+        #ledSelector {
+            width: 60px;
+            height: 40px;
+            margin-left: 20px;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div id="wrapper">
+        <div id="connectWrapper">
+            <div id="connectBtn">
+                Connect
+            </div>
+        </div>
+        <div id="chooserWrapper">
+            <div id="ledSelectorWrapper">
+                LED number
+                <input id="ledSelector" type="number" value="0" min="0" max="23"></input>
+            </div>
+            <div id="picker"></div>
+            <div id="slide"></div>
+        </div>
+        <div id="chosenColor"></div>
+    </div>
+    <script type="text/javascript">
+        var bleBusy = false;
+        rgbArray = new Uint8Array(20);
+
+        function onConnect() {
+            var el = document.querySelector("#connectBtn");
+            el.style.backgroundColor = "rgb(12, 136, 77)";
+            el.innerText = "Connected";
+            el.style.color = "white";
+        }
+
+        document.querySelector('#connectBtn').addEventListener('click', function(e) {
+            connect(onConnect);
+        });
+
+        ColorPicker (
+            document.getElementById('slide'),
+            document.getElementById('picker'),
+            function(hex, hsv, rgb) {
+                var el = document.querySelector('#chosenColor');
+                el.style.backgroundColor = hex;
+                if(!bleBusy) {
+                    bleBusy = true;
+
+                    rgbArray[0] = rgb.g.toFixed();
+                    rgbArray[1] = rgb.r.toFixed();
+                    rgbArray[2] = rgb.b.toFixed();
+                    rgbArray[3] = document.querySelector('#ledSelector').value;
+
+                    sendData(rgbArray)
+                    .then( ()=> { bleBusy = false; });
+                }
+        });
+    </script>
+</body>
+</html>

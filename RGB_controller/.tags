@@ -1,0 +1,40 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+$	.\js\colorpicker.js	/^    function $(el, attrs, children) {$/;"	f
+ColorPicker	.\js\colorpicker.js	/^    function ColorPicker(slideElement, pickerElement, callback) {$/;"	c
+ColorPicker.fixIndicators	.\js\colorpicker.js	/^    ColorPicker.fixIndicators = function(slideIndicator, pickerIndicator) {$/;"	f
+ColorPicker.hex2hsv	.\js\colorpicker.js	/^    ColorPicker.hex2hsv = function(hex) {$/;"	f
+ColorPicker.hex2rgb	.\js\colorpicker.js	/^    ColorPicker.hex2rgb = function(hex) {$/;"	f
+ColorPicker.hsv2hex	.\js\colorpicker.js	/^    ColorPicker.hsv2hex = function(hsv) {$/;"	f
+ColorPicker.hsv2rgb	.\js\colorpicker.js	/^    ColorPicker.hsv2rgb = function(hsv) {$/;"	f
+ColorPicker.positionIndicators	.\js\colorpicker.js	/^    ColorPicker.positionIndicators = function(slideIndicator, pickerIndicator, mouseSlide, mousePicker) {$/;"	f
+ColorPicker.rgb2hex	.\js\colorpicker.js	/^    ColorPicker.rgb2hex = function(rgb) {$/;"	f
+ColorPicker.setHex	.\js\colorpicker.js	/^    ColorPicker.prototype.setHex = function(hex) {$/;"	m
+ColorPicker.setHsv	.\js\colorpicker.js	/^    ColorPicker.prototype.setHsv = function(hsv) {$/;"	m
+ColorPicker.setRgb	.\js\colorpicker.js	/^    ColorPicker.prototype.setRgb = function(rgb) {$/;"	m
+addEventListener	.\js\colorpicker.js	/^    function addEventListener(element, event, listener) {$/;"	f
+characteristic	.\js\ble.js	/^var characteristic;$/;"	v
+colorpickerHTMLSnippet	.\js\colorpicker.js	/^    var colorpickerHTMLSnippet = [$/;"	v
+connect	.\js\ble.js	/^function connect(callback) {$/;"	f
+device	.\js\ble.js	/^var device;$/;"	v
+enableDragging	.\js\colorpicker.js	/^    function enableDragging(ctx, element, listener) {$/;"	f
+hsv2rgb	.\js\colorpicker.js	/^    function hsv2rgb(hsv) {$/;"	f
+log	.\js\ble.js	/^function log(string){$/;"	f
+mousePosition	.\js\colorpicker.js	/^    function mousePosition(evt) {$/;"	f
+onConnect	.\index.html	/^        function onConnect() {$/;"	f
+pickerListener	.\js\colorpicker.js	/^    function pickerListener(ctx, pickerElement) {$/;"	f
+rgb2hsv	.\js\colorpicker.js	/^    function rgb2hsv(rgb) {$/;"	f
+sendData	.\js\ble.js	/^function sendData(dataArray) {$/;"	f
+server	.\js\ble.js	/^var server;$/;"	v
+service	.\js\ble.js	/^var service;$/;"	v
+setColor	.\js\colorpicker.js	/^     function setColor(ctx, hsv, rgb, hex) {$/;"	f
+setColor.mousePicker.x	.\js\colorpicker.js	/^             x: ctx.s * ctx.pickerElement.offsetWidth,$/;"	p
+setColor.mouseSlide.y	.\js\colorpicker.js	/^             y: (ctx.h * ctx.slideElement.offsetHeight) \/ 360,$/;"	p
+slideListener	.\js\colorpicker.js	/^    function slideListener(ctx, slideElement, pickerElement) {$/;"	f
+this.callback	.\js\colorpicker.js	/^            this.callback = function(hex, hsv, rgb, pickerCoordinate, slideCoordinate) {$/;"	m
+uniqID	.\js\colorpicker.js	/^    var uniqID = 0;$/;"	v
+wrapper	.\js\colorpicker.js	/^        var wrapper = evt.target.parentNode.parentNode;$/;"	v
