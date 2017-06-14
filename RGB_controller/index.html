@@ -2,7 +2,7 @@
 <head>
     <link rel="stylesheet" type="text/css" href="css/themes.css">
     <script type="text/javascript" src="js/colorpicker.js"></script>
-    <script type="text/javascript" src="js/ble.js"></script>
+    <script type="text/javascript" src="js/ble.js?1"></script>
     <style type="text/css">
         @import url('https://fonts.googleapis.com/css?family=Lato');
 
@@ -114,6 +114,8 @@
                     rgbArray[1] = rgb.r.toFixed();
                     rgbArray[2] = rgb.b.toFixed();
                     rgbArray[3] = document.querySelector('#ledSelector').value;
+
+                    log("Sending:", rgbArray)
 
                     sendData(rgbArray)
                     .then( ()=> { bleBusy = false; });
