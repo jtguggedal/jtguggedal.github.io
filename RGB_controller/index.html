@@ -2,84 +2,30 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="css/themes.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
     <script type="text/javascript" src="js/colorpicker.js"></script>
     <script type="text/javascript" src="js/ble.js?2"></script>
-    <style type="text/css">
-        @import url('https://fonts.googleapis.com/css?family=Lato');
-
-        body {
-            font-family: Lato;
-            box-sizing: border-box;
-        }
-
-        #connectWrapper {
-            width: 250px;
-            margin: 20px auto;
-        }
-
-        #connectBtn {
-            margin: auto;
-            padding: 8px 6px;
-            width: 80px;
-            font-size: 16px;
-            font-weight: 700;
-            text-align: center;
-            border: 1px solid #c3c3c3;
-            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
-            cursor: pointer;
-            user-select: none;
-        }
-
-        #chooserWrapper {
-            width: 250px;
-            margin: 10px auto;
-        }
-
-        #picker {
-            display: inline-block;
-            width: 200px;
-            height: 200px;
-            border: 2px solid white;
-        }
-
-        #slide {
-            display: inline-block;
-            width: 30px;
-            height: 200px;
-            border: 3px solid white;
-        }
-
-        #chosenColor {
-            margin: 20px auto;
-            height: 30px;
-            width: 90%;
-        }
-
-        #ledSelectorWrapper {
-            font-weight: bold;
-        }
-
-        #ledSelector {
-            width: 60px;
-            height: 40px;
-            margin-left: 20px;
-            text-align: center;
-            font-size: 20px;
-            font-weight: bold;
-        }
-    </style>
 </head>
 <body>
     <div id="wrapper">
+        <h1>RGB controller</h1>
         <div id="connectWrapper">
             <div id="connectBtn">
                 Connect
             </div>
         </div>
         <div id="chooserWrapper">
-            <div id="ledSelectorWrapper">
-                LED number
-                <input id="ledSelector" type="number" value="0" min="0" max="23"></input>
+            <div class="selectorWrapper">
+                <span class="selectorLabel">
+                    LED number
+                </span>
+                <input id="ledSelector" class="selectorInput" type="number" value="0" min="0" max="23"></input>
+            </div>
+            <div class="selectorWrapper">
+                <span class="selectorLabel">
+                    Sequence number
+                </span>
+                <input id="sequenceSelector" class="selectorInput" type="number" value="0" min="0" max="10"></input>
             </div>
             <div id="picker"></div>
             <div id="slide"></div>
@@ -88,7 +34,12 @@
     </div>
     <script type="text/javascript">
         var bleBusy = false;
-        rgbArray = new Uint8Array(10);
+        var rgbArray = new Uint8Array(10);
+        const redOffset = 1;
+        const greenOffset = 0;
+        const blueOffset = 2;
+        const ledNumberOffset = 3;
+        const sequenceOffset = 4;
 
         function onConnect() {
             var el = document.querySelector("#connectBtn");
@@ -98,8 +49,24 @@
         }
 
         document.querySelector('#connectBtn').addEventListener('click', function(e) {
-            e.preven
             connect(onConnect);
+        });
+
+        document.querySelector('#sequenceSelector').addEventListener('click', function(e) {
+            if(!bleBusy) {
+                bleBusy = true;
+                rgbArray[sequenceOffset] = document.querySelector('#sequenceSelector').value
+                console.log("Sending:", rgbArray)
+
+                sendData(rgbArray)
+                .then( ()=> {
+                    bleBusy = false;
+                })
+                .catch(error => {
+                    bleBusy = false;
+                    console.log("Error when sending: ", error);
+                })
+            }
         });
 
         ColorPicker (
@@ -111,15 +78,26 @@
                 if(!bleBusy) {
                     bleBusy = true;
 
-                    rgbArray[0] = rgb.g.toFixed();
-                    rgbArray[1] = rgb.r.toFixed();
-                    rgbArray[2] = rgb.b.toFixed();
-                    rgbArray[3] = document.querySelector('#ledSelector').value;
+                    var red = rgb.r.toFixed();
+                    var green = rgb.g.toFixed();
+                    var blue = rgb.b.toFixed();
+                    var ledNumber = document.querySelector('#ledSelector').value;
+
+                    rgbArray[redOffset] = red;
+                    rgbArray[greenOffset] = green;
+                    rgbArray[blueOffset] = blue;
+                    rgbArray[ledNumberOffset] = ledNumber;
 
                     log("Sending:", rgbArray)
 
                     sendData(rgbArray)
-                    .then( ()=> { bleBusy = false; });
+                    .then( ()=> {
+                        bleBusy = false;
+                    })
+                    .catch(error => {
+                        bleBusy = false;
+                        console.log("Error when sending: ", error);
+                    })
                 }
         });
     </script>

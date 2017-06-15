@@ -6,7 +6,7 @@ var characteristic;
 const serviceUUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
 const charUUID = "6e400002-b5a3-f393-e0a9-e50e24dcca9e";
 
-function connect(callback) {
+function connect(callbackOnConnect) {
     log("Scanning for devices with service UUID " + serviceUUID + "...");
     navigator.bluetooth.requestDevice(
         {filters: [{services: [serviceUUID]}]}
@@ -18,7 +18,7 @@ function connect(callback) {
     })
     .then( s => {
         server = s;
-        log("Connected to server " + server + ", getting service...");
+        log("Connected to server " + s + ", getting service...");
         return server.getPrimaryService(serviceUUID);
     })
     .then( sc => {
@@ -29,7 +29,8 @@ function connect(callback) {
     .then(ch => {
         characteristic = ch;
         log("Characteristic " + ch + " found and available globally")
-        callback();
+        if(callbackOnConnect != undefined)
+            callbackOnConnect();
     })
     .catch(error => {
         log("Error: " + error)

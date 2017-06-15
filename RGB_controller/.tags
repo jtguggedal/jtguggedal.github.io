@@ -19,7 +19,7 @@ ColorPicker.setRgb	.\js\colorpicker.js	/^    ColorPicker.prototype.setRgb = func
 addEventListener	.\js\colorpicker.js	/^    function addEventListener(element, event, listener) {$/;"	f
 characteristic	.\js\ble.js	/^var characteristic;$/;"	v
 colorpickerHTMLSnippet	.\js\colorpicker.js	/^    var colorpickerHTMLSnippet = [$/;"	v
-connect	.\js\ble.js	/^function connect(callback) {$/;"	f
+connect	.\js\ble.js	/^function connect(callbackOnConnect) {$/;"	f
 device	.\js\ble.js	/^var device;$/;"	v
 enableDragging	.\js\colorpicker.js	/^    function enableDragging(ctx, element, listener) {$/;"	f
 hsv2rgb	.\js\colorpicker.js	/^    function hsv2rgb(hsv) {$/;"	f
