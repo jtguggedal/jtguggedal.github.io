@@ -11,12 +11,14 @@ h1 {
 }
 
 
-input[type="range"] {
+input[type="range"]#pitch-value   {
     transform: rotate(270deg);
-    margin-top: 70px;
     height: 150px;
 }
 
+input[type="range"]#yaw-value   {
+    margin-right: 20px;
+}
 
 #wrapper {
     margin-left: 40px;
@@ -47,4 +49,9 @@ input[type="range"] {
 #controller-pitch-wrapper {
     float: left;
     vertical-align: top;
+}
+
+#controller-yaw-wrapper {
+    float: right;
+    margin-top: 70px;
 }
