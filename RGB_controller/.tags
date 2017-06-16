@@ -22,8 +22,8 @@ colorpickerHTMLSnippet	.\js\colorpicker.js	/^    var colorpickerHTMLSnippet = [$
 connect	.\js\ble.js	/^function connect(callbackOnConnect) {$/;"	f
 device	.\js\ble.js	/^var device;$/;"	v
 enableDragging	.\js\colorpicker.js	/^    function enableDragging(ctx, element, listener) {$/;"	f
+enableLogging	.\js\ble.js	/^var enableLogging = true;$/;"	v
 hsv2rgb	.\js\colorpicker.js	/^    function hsv2rgb(hsv) {$/;"	f
-log	.\js\ble.js	/^function log(string){$/;"	f
 mousePosition	.\js\colorpicker.js	/^    function mousePosition(evt) {$/;"	f
 onConnect	.\index.html	/^        function onConnect() {$/;"	f
 pickerListener	.\js\colorpicker.js	/^    function pickerListener(ctx, pickerElement) {$/;"	f

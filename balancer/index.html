@@ -1,0 +1,61 @@
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="css/style.css">
+        <title>nRF Balancer</title>
+    </head>
+    <body>
+        <div id="wrapper">
+            <div id="header">
+                <h1>nRF Balancer</h1>
+            </div> <!-- / header -->
+            <div id="connectWrapper">
+                <div id="connectBtn">
+                    Connect
+                </div>
+            </div>
+            <div id="controllers-wrapper">
+                <div id="controller-pitch-wrapper">
+                    <input type="range" id="pitch-value" min="1" max="255">
+                    <div id="pitch-value-output">0°</div>
+                </div>
+            </div> <!-- / controllers-wrapper -->
+
+        </div> <!-- / wrapper -->
+        <script src="js/ble.js" type="text/javascript"></script>
+        <script>
+            const MAX_ANGLE_PITCH = 10;
+            const PITCH_ANGLE_BYTE_OFFSET = 0;
+
+            var connected = false;
+            var bleBusy = false;
+
+            var bleDataArray = new Uint8Array(3);
+
+            var elPitchRange = document.querySelector("#pitch-value");
+            var elPitchOutput = document.querySelector('#pitch-value-output');
+            var elConnectBtn = document.querySelector('#connectBtn');
+
+            elPitchRange.addEventListener("input", function() {
+                bleDataArray[PITCH_ANGLE_BYTE_OFFSET] = elPitchRange.value;
+                displayPitchAngle();
+                if(connected && !bleBusy) {
+                    bleBusy = true;
+                    sendData(bleDataArray)
+                    .then(() => {
+                        bleBusy = false;
+                        console.log("Sent data ", bleDataArray)
+                    });
+                }
+
+            });
+            elConnectBtn.addEventListener("click", function() {
+                connect(function(){ connected = true; })
+            });
+
+            function displayPitchAngle() {
+                elPitchOutput.innerHTML = (MAX_ANGLE_PITCH*(elPitchRange.value - 128)/127).toFixed(1) + "°";
+            }
+        </script>
+    </body>
+</html>

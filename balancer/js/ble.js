@@ -1,3 +1,4 @@
+
 var device;
 var server;
 var service;
@@ -8,7 +9,8 @@ const serviceUUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
 const characteristicUUID = "6e400002-b5a3-f393-e0a9-e50e24dcca9e";
 
 function connect(callbackOnConnect) {
-    log("Scanning for devices with service UUID " + serviceUUID );
+    if(enableLogging)
+        console.log("Scanning for devices with service UUID " + serviceUUID );
     navigator.bluetooth.requestDevice(
         {filters: [{services: [serviceUUID]}]}
     )
@@ -41,7 +43,6 @@ function connect(callbackOnConnect) {
         console.log("Error: " + error)
     })
 }
-
 
 function sendData(dataArray) {
     return characteristic.writeValue(dataArray);
