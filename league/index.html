@@ -1,0 +1,92 @@
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="css/style.css">
+        <title>Nordic League</title>
+    </head>
+    <body>
+        <div id="wrapper">
+            <div id="header">
+                <h1>Nordic League</h1>
+            </div> <!-- / header -->
+            <div id="connectWrapper">
+                <div id="connectBtn">
+                    Connect
+                </div>
+            </div>
+            <div id="controllers-wrapper">
+                <div id="controller-throttle-wrapper">
+                    <input type="range" id="throttle-value" min="0" max="255">
+                    <div id="throttle-value-output">128</div>
+                </div>
+                <div id="controller-turn-wrapper">
+                    <input type="range" id="turn-value" min="0" max="255">
+                    <div id="turn-value-output">128</div>
+                </div>
+            </div> <!-- / controllers-wrapper -->
+
+        </div> <!-- / wrapper -->
+        <script src="js/ble.js" type="text/javascript"></script>
+        <script>
+            const PRINT_CONTROLLER_DATA = false;
+            const MAX_THROTTLE = 255;
+            const MAX_TURN_RATE = 255;
+            const THROTTLE_BYTE_OFFSET = 0;
+            const TURN_BYTE_OFFSET = 1;
+
+            var connected = false;
+            var bleBusy = false;
+
+            var bleDataArray = new Uint8Array(3);
+
+            var elThrottleRange = document.querySelector("#throttle-value");
+            var elThrottleOutput = document.querySelector('#throttle-value-output');
+            var elTurnRange = document.querySelector("#turn-value");
+            var elTurnOutput = document.querySelector('#turn-value-output');
+            var elConnectBtn = document.querySelector('#connectBtn');
+
+            elConnectBtn.addEventListener("click", function() {
+                connect(function(){ connected = true; })
+            });
+
+            elThrottleRange.addEventListener("input", function() {
+                bleDataArray[THROTTLE_BYTE_OFFSET] = elThrottleRange.value;
+                displayThrottleAngle();
+                if(connected && !bleBusy) {
+                    bleBusy = true;
+                    sendData(bleDataArray)
+                    .then(() => {
+                        bleBusy = false;
+                        if(PRINT_CONTROLLER_DATA)
+                            console.log("Sent data ", bleDataArray)
+                    });
+                }
+
+            });
+
+            elTurnRange.addEventListener("input", function() {
+                bleDataArray[TURN_BYTE_OFFSET] = elTurnRange.value;
+                displayTurnRate();
+                if(connected && !bleBusy) {
+                    bleBusy = true;
+                    sendData(bleDataArray)
+                    .then(() => {
+                        bleBusy = false;
+                        if(PRINT_CONTROLLER_DATA)
+                            console.log("Sent data ", bleDataArray)
+                    });
+                }
+
+            });
+
+            function displayThrottleAngle() {
+                elThrottleOutput.innerHTML = elThrottleRange.value; // (MAX_THROTTLE*(elThrottleRange.value - 128)/127).toFixed(1);
+            }
+
+
+            function displayTurnRate() {
+                elTurnOutput.innerHTML = elTurnRange.value; // (MAX_TURN_RATE*(elTurnRange.value - 128)/127).toFixed(1);
+            }
+        </script>
+    </body>
+</html>
