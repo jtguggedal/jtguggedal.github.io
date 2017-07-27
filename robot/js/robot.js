@@ -1,7 +1,5 @@
 // This script is dependent on ble.js and visual.js
 
-
-
 const logEnabled = true;
 
 const serviceUUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
@@ -22,18 +20,15 @@ const WAVE_HAND                 = 0x09;
 const ROBOT_DANCE               = 0x10;
 const CHEER                     = 0x11;
 
-
 var connected = false;
 var bleBusy = false;
-
 var bleData = new Uint8Array(20);
-
-
 
 function callbackOnConnect() {
     connected = true;
     qs("#connect-btn").style.backgroundColor = "rgb(64, 143, 70)";
-    fadeIn("#content-inner-wrapper");
+    qs("#connect-btn").innerHTML = "Connected";
+    fade.in("#content-inner-wrapper");
 }
 
 // Event listeners
@@ -51,7 +46,7 @@ clickListener("#robot-move-right-hand-up", () => { sendRobotAction(MOVE_RIGHT_HA
 clickListener("#robot-move-right-hand-down", () => { sendRobotAction(MOVE_RIGHT_HAND_DOWN);});
 clickListener("#robot-move-left-hand-up", () => { sendRobotAction(MOVE_LEFT_HAND_UP); });
 clickListener("#robot-move-left-hand-down", () => { sendRobotAction(MOVE_LEFT_HAND_DOWN); });
-clickListener("#robot-wave-hand", () => { bleData[0] = WAVE_HAND; });
+clickListener("#robot-wave-hand", () => { sendRobotAction(WAVE_HAND); });
 clickListener("#robot-dance", () => { sendRobotAction(ROBOT_DANCE); });
 clickListener("#robot-cheer", () => { sendRobotAction(CHEER); });
 
