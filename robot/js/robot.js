@@ -33,7 +33,6 @@ var bleData = new Uint8Array(20);
 function callbackOnConnect() {
     connected = true;
     qs("#connect-btn").style.backgroundColor = "rgb(64, 143, 70)";
-    qs("#content-inner-wrapper").style.display = "block";
     fadeIn("content-inner-wrapper");
 }
 
