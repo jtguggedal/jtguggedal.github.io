@@ -29,7 +29,8 @@ h1 {
 
 #disconnect-wrapper {
     width: 250px;
-    margin-top: 20px;
+    margin-top: 5px;
+    margin-bottom: 10px;
     display: none;
 }
 
