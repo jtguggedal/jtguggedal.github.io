@@ -1,13 +1,16 @@
-@import url('https://fonts.googleapis.com/css?family=Lato');
+@import url('https://fonts.googleapis.com/css?family=Lato|Hind|Cabin');
+@import url('https://fonts.googleapis.com/css?family=Amaranth:700|Exo:800|Fugaz+One|Russo+One');
 
 body {
     box-sizing: border-box;
-    font-family: Lato;
+    font-family: Hind;
 }
 
 
 h1 {
     text-align: center;
+    font-size: 45px;
+    font-family: "Fugaz One";
 }
 
 
@@ -16,16 +19,18 @@ h1 {
 }
 
 #header-wrapper {
-    margin-top: 15px;
+    margin-top: 40px;
 }
 
 #connect-wrapper {
     width: 250px;
-    margin-top: 20px;
+    margin-top: 90px;
 }
 
-#content-wrapper {
-    margin-top: 30px;
+#disconnect-wrapper {
+    width: 250px;
+    margin-top: 20px;
+    display: none;
 }
 
 #content-inner-wrapper {
@@ -34,20 +39,34 @@ h1 {
 }
 
 #connect-btn {
-    margin: auto;
-    padding: 8px 6px;
-    width: 80px;
+    padding: 10px 6px;
+    width: 150px;
+    font-size: 26px;
+    font-weight: 700;
+    text-align: center;
+    border: 2px solid #ffffff;
+    box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    user-select: none;
+    background-color: rgb(63, 159, 221);
+    background: linear-gradient(to top right, #1e5799 0%,#2989d8 50%,#207cca 61%,#7db9e8 100%);
+    color: white;
+}
+
+#disconnect-btn {
+    padding: 5px 4px;
+    width: 120px;
     font-size: 16px;
     font-weight: 700;
     text-align: center;
     border: 2px solid #ffffff;
-    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.3);
     cursor: pointer;
     user-select: none;
-    background-color: rgb(21, 133, 204);
+    background-color: rgb(63, 159, 221);
+    background: linear-gradient(to top right, #1e995e 0%,#1d8b56 50%,#20a264 61%,#23af6c 100%);
     color: white;
 }
-
 .bold { font-weight: bold; }
 .center { text-align: center; }
 .center-div {margin-left: auto; margin-right: auto; }
