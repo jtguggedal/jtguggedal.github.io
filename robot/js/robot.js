@@ -32,7 +32,7 @@ var bleData = new Uint8Array(20);
 
 function callbackOnConnect() {
     connected = true;
-    qs("#connect-btn").style.backgroundColor = rgb(64, 143, 70);
+    qs("#connect-btn").style.backgroundColor = "rgb(64, 143, 70)";
     qs("#content-inner-wrapper").style.display = "block";
     fadeIn("content-inner-wrapper");
 }
@@ -45,25 +45,15 @@ clickListener("#connect-btn", function() {
 });
 
 clickListener("#robot-move-head-forward", () => { sendRobotAction(MOVE_HEAD_FORWARD); });
-
 clickListener("#robot-move-head-left", () => { sendRobotAction(MOVE_HEAD_LEFT); });
-
 clickListener("#robot-move-head-right", () => { sendRobotAction(MOVE_HEAD_RIGHT); });
-
 clickListener("#robot-move-head-side-to-side", () => { sendRobotAction(MOVE_HEAD_SIDE_TO_SIDE); });
-
 clickListener("#robot-move-right-hand-up", () => { sendRobotAction(MOVE_RIGHT_HAND_UP); });
-
 clickListener("#robot-move-right-hand-down", () => { sendRobotAction(MOVE_RIGHT_HAND_DOWN);});
-
 clickListener("#robot-move-left-hand-up", () => { sendRobotAction(MOVE_LEFT_HAND_UP); });
-
 clickListener("#robot-move-left-hand-down", () => { sendRobotAction(MOVE_LEFT_HAND_DOWN); });
-
 clickListener("#robot-wave-hand", () => { bleData[0] = WAVE_HAND; });
-
 clickListener("#robot-dance", () => { sendRobotAction(ROBOT_DANCE); });
-
 clickListener("#robot-cheer", () => { sendRobotAction(CHEER); });
 
 // Helper functions
