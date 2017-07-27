@@ -30,6 +30,7 @@ h1 {
 
 #content-inner-wrapper {
     width: 400px;
+    display: none;
 }
 
 #connect-btn {
@@ -43,7 +44,7 @@ h1 {
     box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.2);
     cursor: pointer;
     user-select: none;
-    background-color: rgb(7, 110, 176);
+    background-color: rgb(21, 133, 204);
     color: white;
 }
 
@@ -55,4 +56,21 @@ h1 {
 
 #robot-sub-title {
     font-size: 18px;
+}
+
+#robot-action-list {
+    width: 300px;
+    margin-top: 20px;
+}
+
+.robot-action-item {
+    width: 200px;
+    margin: 15px auto;
+    padding: 7px 10px;
+    border: 2px solid white;
+    box-shadow: 0 0 6px 1px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    background-color: rgb(83, 21, 125);
+    font-weight: bold;
+    color: white;
 }
