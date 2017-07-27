@@ -26,8 +26,8 @@ var bleData = new Uint8Array(20);
 
 function callbackOnConnect() {
     connected = true;
-    qs("#connect-btn-wrapper").style.display = "none";
-    qs("#disconnect-btn-wrapper").style.display = "block";
+    qs("#connect-wrapper").style.display = "none";
+    qs("#disconnect-wrapper").style.display = "block";
     fade.in("#content-inner-wrapper");
 }
 
