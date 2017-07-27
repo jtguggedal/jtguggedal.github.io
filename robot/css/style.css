@@ -12,11 +12,11 @@ h1 {
 
 
 #wrapper {
-    
+
 }
 
 #header-wrapper {
-
+    margin-top: 15px;
 }
 
 #connect-wrapper {
@@ -29,7 +29,7 @@ h1 {
 }
 
 #content-inner-wrapper {
-    width: 400px;
+    width: 250px;
     display: none;
 }
 
