@@ -14,15 +14,16 @@ function fadeOut(el){
 
 // fade in
 
-function fadeIn(el, display){
-  el.style.opacity = 0;
-  el.style.display = display || "block";
+function fadeIn(selector, display){
+    let el = document.querySelector(selector);
+    el.style.opacity = 0;
+    el.style.display = display || "block";
 
-  (function fade() {
-    var val = parseFloat(el.style.opacity);
-    if (!((val += .1) > 1)) {
-      el.style.opacity = val;
-      requestAnimationFrame(fade);
-    }
-  })();
+    (function fade() {
+        var val = parseFloat(el.style.opacity);
+        if (!((val += .1) > 1)) {
+            el.style.opacity = val;
+            requestAnimationFrame(fade);
+        }
+    })();
 }
