@@ -1,0 +1,42 @@
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="css/style.css">
+        <title>nRF Robot</title>
+    </head>
+    <body>
+        <div id="wrapper">
+            <div id="header-wrapper"  class="center-div">
+                <h1>nRF Robot</h1>
+            </div> <!-- / headerWrapper -->
+            <div id="connect-wrapper" class="center-div">
+                <div id="connect-btn">
+                    Koble til
+                </div>
+            </div>
+            <div id="content-wrapper">
+                <div id="content-inner-wrapper"  class="center-div">
+                    <div id="robot-sub-title" class="center bold">
+                        What should the robot do?
+                    </div><!-- / robot-sub-title -->
+                    <div id="robot-action-list" class="center-div">
+                        <div id="robot-move-head-forward" class="robot-action-item">Move head forward</div>
+                        <div id="robot-move-head-left" class="robot-action-item">Move head left</div>
+                        <div id="robot-move-head-right" class="robot-action-item">Move head right</div>
+                        <div id="robot-move-head-side-to-side" class="robot-action-item">Move head from side to side</div>
+                        <div id="robot-move-right-hand-up" class="robot-action-item">Move right hand up</div>
+                        <div id="robot-move-right-hand-down" class="robot-action-item">Move right hand down</div>
+                        <div id="robot-move-left-hand-up" class="robot-action-item">Move left hand up</div>
+                        <div id="robot-move-left-hand-down" class="robot-action-item">Move left hand down</div>
+                        <div id="robot-wave-hand" class="robot-action-item">Wave</div>
+                        <div id="robot-dance" class="robot-action-item">Dance</div>
+                        <div id="robot-cheer" class="robot-action-item">Cheer</div>
+                    </div>
+                </div> <!-- / content-inner-wrapper -->
+            </div> <!-- / content-wrapper -->
+
+        </div> <!-- / wrapper -->
+        <script src="js/ble.js" type="text/javascript"></script>
+        <script src="js/robot.js" type="text/javascript"></script>
+    </body>
+</html>
