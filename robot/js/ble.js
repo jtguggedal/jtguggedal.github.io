@@ -69,7 +69,7 @@ var ble = (function() {
         .then( () => {
             isBusy = false;
             if(logEnabled)
-                console.log("Successfully sent " + dataArray);
+                console.log("Successfully sent ", dataArray);
         });
     }
 

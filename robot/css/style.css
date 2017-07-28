@@ -1,8 +1,13 @@
 @import url('https://fonts.googleapis.com/css?family=Lato|Hind:500,600,700|Roboto');
 @import url('https://fonts.googleapis.com/css?family=Amaranth:700|Exo:800|Fugaz+One|Russo+One');
 
-body {
+* {
     box-sizing: border-box;
+}
+
+body {
+    height: 100%;
+    border-collapse:collapse;
     font-family: Hind;
     background: linear-gradient(to top right, #231138, #0ea6b5);
     /*background: linear-gradient(to top right, #031A28, #034C78);*/
@@ -23,7 +28,10 @@ h1 {
 
 
 #wrapper {
-
+    height:100%;
+    width: 100%;
+    border-collapse:collapse;
+    display : table;
 }
 
 #header-wrapper {
@@ -86,11 +94,14 @@ h1 {
 }
 
 #logo-wrapper {
-    float: bottom;
-    width: 200px;
-    margin-top: 90px;
-    margin-bottom: 30px;
+    display : table-row;
+    vertical-align : bottom;
     opacity: 1;
+    height: 1px;
+}
+
+#logo-wrapper img {
+    margin-bottom: 70px;
 }
 
 .bold { font-weight: bold; }

@@ -32,8 +32,8 @@ function onConnect() {
 }
 
 var shakeEvent = new Shake({
-    threshold: 15, // optional shake strength threshold
-    timeout: 1000 // optional, determines the frequency of event generation
+    threshold: 15,
+    timeout: 1000
 });
 
 shakeEvent.start();
@@ -53,7 +53,9 @@ clickListener("#connect-btn", function() {
         if(ble.isConnected())
             onConnect();
     })
-    .catch( error => { console.log("Error: " + error); })
+    .catch( error => {
+        console.log("Error: " + error); 
+    })
 });
 
 clickListener("#disconnect-btn", function() {
