@@ -29,6 +29,7 @@ function callbackOnConnect() {
     qs("#connect-wrapper").style.display = "none";
     qs("#disconnect-wrapper").style.display = "block";
     qs("h1").style.fontSize = "30px";
+    qs("#header-wrapper").style.marginTop = "15px"
     fade.in("#content-inner-wrapper");
 }
 

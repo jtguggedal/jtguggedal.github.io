@@ -36,12 +36,12 @@ h1 {
     width: 250px;
     margin-top: 5px;
     margin-bottom: 30px;
-    display: none;
+    display: ;
 }
 
 #content-inner-wrapper {
     width: 300px;
-    display: none;
+    display: ;
 }
 
 .btn {
@@ -66,8 +66,8 @@ h1 {
 }
 
 #disconnect-btn {
-    padding: 5px 4px;
-    width: 120px;
+    padding: 2px 0px;
+    width: 110px;
     font-size: 16px;
     font-weight: 500;
     text-align: center;
@@ -77,14 +77,20 @@ h1 {
     user-select: none;
     background-color: rgb(63, 159, 221);
     background: linear-gradient(to top right, #1e995e 0%,#1d8b56 50%,rgb(32, 162, 100) 61%,#23af6c 100%);
-    background: rgba(59, 148, 12, 0.6);
+    background: rgba(223, 10, 10, 0.6);
     color: white;
 }
 .bold { font-weight: bold; }
 .center { text-align: center; }
 .center-div {margin-left: auto; margin-right: auto; }
+.unselectable { user-select: none; }
+
 
 /* Robot */
+
+#robot-info {
+    color: white;
+}
 
 #robot-sub-title {
     font-size: 18px;
