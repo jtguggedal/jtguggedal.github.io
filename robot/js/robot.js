@@ -50,7 +50,7 @@ window.addEventListener('shake', onShakeEvent, false);
 clickListener("#connect-btn", function() {
     ble.connect(serviceUUID, characteristicUUID)
     .then( () => {
-        if(ble.isConnected)
+        if(ble.isConnected())
             onConnect();
     })
     .catch( error => { console.log("Error: " + error); })
