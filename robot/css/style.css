@@ -23,7 +23,7 @@ h1 {
     font-size: 45px;
     font-family: "Fugaz One";
     color: white;
-    text-shadow: 2px 3px 7px rgba(0, 0, 0, 0.2);
+    text-shadow: 2px 3px 8px rgba(0, 0, 0, 0.2);
 }
 
 
@@ -61,7 +61,7 @@ h1 {
 
 #connect-btn {
     padding: 8px 6px;
-    width: 150px;
+    width: 160px;
     font-size: 26px;
     font-weight: 500;
     text-align: center;
