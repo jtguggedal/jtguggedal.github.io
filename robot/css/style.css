@@ -36,12 +36,12 @@ h1 {
     width: 250px;
     margin-top: 5px;
     margin-bottom: 30px;
-    display: ;
+    display: none;
 }
 
 #content-inner-wrapper {
     width: 300px;
-    display: ;
+    display: none;
 }
 
 .btn {
