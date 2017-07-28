@@ -40,18 +40,15 @@ var shakeEvent = new Shake({
 
 shakeEvent.start();
 
-function shakeEventOccured() {
-
+function shakeEventOccured () {
+    sendRobotAction(WAVE_HAND);
 }
+
 
 // Event listeners
 
 window.addEventListener('shake', shakeEventOccured, false);
 
-//function to call when shake occurs
-function shakeEventOccured () {
-    sendRobotAction(WAVE_HAND);
-}
 
 
 clickListener("#connect-btn", function() {
