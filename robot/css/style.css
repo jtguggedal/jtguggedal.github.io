@@ -7,6 +7,7 @@ body {
     background: linear-gradient(to top right, #231138, #0ea6b5);
     /*background: linear-gradient(to top right, #031A28, #034C78);*/
     /*background: linear-gradient(to top right, #322946, #139ed4);*/
+    background: linear-gradient(to top right, #1b242f, #5b7e92);
 }
 
 
@@ -85,6 +86,7 @@ h1 {
     float: bottom;
     width: 200px;
     margin-top: 90px;
+    margin-bottom: 30px;
     opacity: 1;
 }
 
