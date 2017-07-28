@@ -38,7 +38,7 @@ function callbackOnConnect() {
 
 clickListener("#connect-btn", function() {
     connect(serviceUUID, characteristicUUID)
-    .then( () => { callbackOnConnect } )
+    .then( () => { callbackOnConnect(); } )
 });
 
 clickListener("#disconnect-btn", function() {
