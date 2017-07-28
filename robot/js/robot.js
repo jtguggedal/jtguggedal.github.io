@@ -49,7 +49,7 @@ function shakeEventOccured() {
 window.addEventListener('shake', shakeEventOccured, false);
 
 //function to call when shake occurs
-function shakeEventDidOccur () {
+function shakeEventOccured () {
     sendRobotAction(WAVE_HAND);
 }
 
