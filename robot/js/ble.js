@@ -74,10 +74,10 @@ var ble = (function() {
     }
 
     return {
-        device : device,
+        getDevice : function() { return device },
         connect : connect,
         disconnect : disconnect,
         sendData : sendData,
-        isConnected : function() { return isConnected }
+        isConnected : function() { return isConnected; }
     }
 })();
