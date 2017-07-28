@@ -9,6 +9,7 @@ body {
     /*background: linear-gradient(to top right, #322946, #139ed4);*/
     background: linear-gradient(to top right, #1b242f, #5b7e92);
     background: linear-gradient(to bottom right, #000f46, #1ccee0);
+    background: linear-gradient(to top left, #44a08d, #093637);
 }
 
 
@@ -80,6 +81,7 @@ h1 {
     background-color: rgb(63, 159, 221);
     background: linear-gradient(to top right, #1e995e 0%,#1d8b56 50%,rgb(32, 162, 100) 61%,#23af6c 100%);
     background: rgba(57, 130, 73, 1.0);
+    background: rgba(173, 22, 22, 0.45);
     color: white;
 }
 
