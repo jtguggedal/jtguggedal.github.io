@@ -20,12 +20,10 @@ const WAVE_HAND                 = 0x09;
 const ROBOT_DANCE               = 0x10;
 const CHEER                     = 0x11;
 
-var connected = false;
 var bleBusy = false;
 var bleData = new Uint8Array(20);
 
 function onConnect() {
-    connected = true;
     qs("#connect-wrapper").style.display = "none";
     qs("#disconnect-wrapper").style.display = "block";
     qs("h1").style.fontSize = "35px";
@@ -50,16 +48,16 @@ function onShakeEvent() {
 window.addEventListener('shake', onShakeEvent, false);
 
 clickListener("#connect-btn", function() {
-    connect(serviceUUID, characteristicUUID)
+    ble.connect(serviceUUID, characteristicUUID)
     .then( () => {
-        if(bleIsConnected)
+        if(ble.isConnected)
             onConnect();
     })
     .catch( error => { console.log("Error: " + error); })
 });
 
 clickListener("#disconnect-btn", function() {
-    disconnect()
+    ble.disconnect()
     .then( () => {
         console.log("Device disconnected gracefully");
         window.location.reload()
@@ -82,17 +80,7 @@ clickListener("#robot-dance", () => { sendRobotAction(ROBOT_DANCE); });
 
 function sendRobotAction(action) {
     bleData[ROBOT_ACTION_BYTE_INDEX] = action;
-    return sendData(bleData);
-}
-
-function sendData(data) {
-    bleBusy = true;
-    bleSendData(data)
-    .then( () => {
-        bleBusy = false;
-        if(logEnabled)
-            console.log("Succesfully sent ", data);
-    });
+    return ble.sendData(bleData);
 }
 
 function qs(selector) {
