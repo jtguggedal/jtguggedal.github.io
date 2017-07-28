@@ -33,7 +33,25 @@ function onConnect() {
     fade.in("#content-inner-wrapper");
 }
 
+var shakeEvent = new Shake({
+    threshold: 15, // optional shake strength threshold
+    timeout: 1000 // optional, determines the frequency of event generation
+});
+
+shakeEvent.start();
+
+function shakeEventOccured() {
+
+}
+
 // Event listeners
+
+window.addEventListener('shake', shakeEventOccured, false);
+
+//function to call when shake occurs
+function shakeEventDidOccur () {
+    sendRobotAction(WAVE_HAND);
+}
 
 
 clickListener("#connect-btn", function() {

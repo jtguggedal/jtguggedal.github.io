@@ -54,7 +54,7 @@ function disconnect() {
         if(device.gatt.connected == false)
             resolve();
         else {
-            reject( new Error("Error on disconnect"));
+            reject(new Error("Error on disconnect"));
         }
     })
 }
