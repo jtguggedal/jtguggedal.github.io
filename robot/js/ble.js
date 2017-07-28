@@ -78,6 +78,6 @@ var ble = (function() {
         connect : connect,
         disconnect : disconnect,
         sendData : sendData,
-        isConnected : isConnected
+        isConnected : function() { return isConnected }
     }
 })();
