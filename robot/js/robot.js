@@ -38,12 +38,19 @@ function onConnect() {
 
 clickListener("#connect-btn", function() {
     connect(serviceUUID, characteristicUUID)
-    .then( () => { onConnect(); } )
+    .then( () => {
+        if(bleIsConnected)
+            onConnect();
+    })
+    .catch( error => { console.log("Error: " + error); })
 });
 
 clickListener("#disconnect-btn", function() {
     disconnect()
-    .then( () => { window.location.reload() } );
+    .then( () => {
+        console.log("Device disconnected gracefully");
+        window.location.reload()
+    } );
 });
 
 clickListener("#robot-move-head-forward", () => { sendRobotAction(MOVE_HEAD_FORWARD); });

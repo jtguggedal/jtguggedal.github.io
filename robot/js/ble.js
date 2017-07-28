@@ -10,6 +10,7 @@ var device;
 var server;
 var service;
 var characteristic;
+var bleIsConnected = false;
 var logEnabled = logEnabled | true;
 
 function connect(serviceUUID, characteristicUUID) {
@@ -40,6 +41,7 @@ function connect(serviceUUID, characteristicUUID) {
         characteristic = ch;
         if(logEnabled)
             console.log("Characteristic " + characteristic + " found and available globally")
+        bleIsConnected = true;
     })
     .catch(error => {
         console.log("Error during connect: " + error)
@@ -47,9 +49,13 @@ function connect(serviceUUID, characteristicUUID) {
 }
 
 function disconnect() {
-    return device.gatt.disconnect()
-    .catch( error => {
-        console.log("Error on disconnect: " + error);
+    return new Promise(function(resolve, reject) {
+        device.gatt.disconnect();
+        if(device.gatt.connected == false)
+            resolve();
+        else {
+            reject( new Error("Error on disconnect"));
+        }
     })
 }
 
