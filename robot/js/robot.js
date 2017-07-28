@@ -28,7 +28,7 @@ function onConnect() {
     connected = true;
     qs("#connect-wrapper").style.display = "none";
     qs("#disconnect-wrapper").style.display = "block";
-    qs("h1").style.fontSize = "30px";
+    qs("h1").style.fontSize = "35px";
     qs("#header-wrapper").style.marginTop = "15px"
     fade.in("#content-inner-wrapper");
 }
@@ -40,14 +40,14 @@ var shakeEvent = new Shake({
 
 shakeEvent.start();
 
-function shakeEventOccured() {
-    sendRobotAction(WAVE_HAND);
+function onShakeEvent() {
+    sendRobotAction(ROBOT_DANCE);
 }
 
 
 // Event listeners
 
-window.addEventListener('shake', shakeEventOccured, false);
+window.addEventListener('shake', onShakeEvent, false);
 
 clickListener("#connect-btn", function() {
     connect(serviceUUID, characteristicUUID)
