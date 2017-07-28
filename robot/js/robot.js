@@ -24,7 +24,7 @@ var connected = false;
 var bleBusy = false;
 var bleData = new Uint8Array(20);
 
-function callbackOnConnect() {
+function onConnect() {
     connected = true;
     qs("#connect-wrapper").style.display = "none";
     qs("#disconnect-wrapper").style.display = "block";
@@ -38,7 +38,7 @@ function callbackOnConnect() {
 
 clickListener("#connect-btn", function() {
     connect(serviceUUID, characteristicUUID)
-    .then( () => { callbackOnConnect(); } )
+    .then( () => { onConnect(); } )
 });
 
 clickListener("#disconnect-btn", function() {
