@@ -77,9 +77,17 @@ h1 {
     user-select: none;
     background-color: rgb(63, 159, 221);
     background: linear-gradient(to top right, #1e995e 0%,#1d8b56 50%,rgb(32, 162, 100) 61%,#23af6c 100%);
-    background: rgba(223, 10, 10, 0.6);
+    background: rgba(57, 130, 73, 1.0);
     color: white;
 }
+
+#logo-wrapper {
+    float: bottom;
+    width: 200px;
+    margin-top: 90px;
+    opacity: 1;
+}
+
 .bold { font-weight: bold; }
 .center { text-align: center; }
 .center-div {margin-left: auto; margin-right: auto; }
@@ -107,7 +115,7 @@ h1 {
     margin: 15px auto;
     padding: 7px 10px;
     border: 1px solid rgba(255, 255, 255, 1);
-    box-shadow: 0 0 6px 1px rgba(0, 0, 0, 0.);
+    box-shadow: 0 0 6px 1px rgba(0, 0, 0, 0.2);
     cursor: pointer;
     background-color: rgba(0, 0, 0, 0.2);
     font-weight: 500;

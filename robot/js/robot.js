@@ -40,7 +40,7 @@ var shakeEvent = new Shake({
 
 shakeEvent.start();
 
-function shakeEventOccured () {
+function shakeEventOccured() {
     sendRobotAction(WAVE_HAND);
 }
 
@@ -48,8 +48,6 @@ function shakeEventOccured () {
 // Event listeners
 
 window.addEventListener('shake', shakeEventOccured, false);
-
-
 
 clickListener("#connect-btn", function() {
     connect(serviceUUID, characteristicUUID)
