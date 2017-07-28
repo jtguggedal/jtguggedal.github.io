@@ -1,6 +1,6 @@
 // This script is dependent on ble.js and visual.js
 
-const logEnabled = true;
+var logEnabled = logEnabled | true;
 
 const serviceUUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
 const characteristicUUID = "6e400002-b5a3-f393-e0a9-e50e24dcca9e";
@@ -37,7 +37,13 @@ function callbackOnConnect() {
 
 
 clickListener("#connect-btn", function() {
-    connect(serviceUUID, characteristicUUID, callbackOnConnect);
+    connect(serviceUUID, characteristicUUID)
+    .then( () => { callbackOnConnect } )
+});
+
+clickListener("#disconnect-btn", function() {
+    disconnect()
+    .then( () => { window.location.reload() } );
 });
 
 clickListener("#robot-move-head-forward", () => { sendRobotAction(MOVE_HEAD_FORWARD); });
@@ -50,7 +56,7 @@ clickListener("#robot-move-left-hand-up", () => { sendRobotAction(MOVE_LEFT_HAND
 clickListener("#robot-move-left-hand-down", () => { sendRobotAction(MOVE_LEFT_HAND_DOWN); });
 clickListener("#robot-wave-hand", () => { sendRobotAction(WAVE_HAND); });
 clickListener("#robot-dance", () => { sendRobotAction(ROBOT_DANCE); });
-clickListener("#robot-cheer", () => { sendRobotAction(CHEER); });
+// clickListener("#robot-cheer", () => { sendRobotAction(CHEER); });
 
 // Helper functions
 

@@ -10,41 +10,46 @@ var device;
 var server;
 var service;
 var characteristic;
-var enableLogging = true;
+var logEnabled = logEnabled | true;
 
-function connect(serviceUUID, characteristicUUID, callbackOnConnect) {
-    if(enableLogging)
+function connect(serviceUUID, characteristicUUID) {
+    if(logEnabled)
         console.log("Scanning for devices with service UUID " + serviceUUID );
-    navigator.bluetooth.requestDevice(
+    return navigator.bluetooth.requestDevice(
         {filters: [{services: [serviceUUID]}]}
     )
     .then( d => {
         device = d;
-        if(enableLogging)
+        if(logEnabled)
             console.log("Found device " + device + ", trying to connect to GATT server");
         return device.gatt.connect();
     })
     .then( s => {
         server = s;
-        if(enableLogging)
+        if(logEnabled)
             console.log("Connected to server " + s + ", getting service");
         return server.getPrimaryService(serviceUUID);
     })
     .then( sc => {
         service = sc;
-        if(enableLogging)
+        if(logEnabled)
             console.log("Found service " + service + ", getting characteristic");
         return service.getCharacteristic(characteristicUUID);
     })
     .then(ch => {
         characteristic = ch;
-        if(enableLogging)
+        if(logEnabled)
             console.log("Characteristic " + characteristic + " found and available globally")
-        if(typeof(callbackOnConnect) === "function")
-            callbackOnConnect();
     })
     .catch(error => {
-        console.log("Error: " + error)
+        console.log("Error during connect: " + error)
+    })
+}
+
+function disconnect() {
+    return device.gatt.disconnect()
+    .catch( error => {
+        console.log("Error on disconnect: " + error);
     })
 }
 
