@@ -59,7 +59,7 @@ ColorPicker (
         rgbArray[RED_BYTE_INDEX] = rgb.r.toFixed();
         rgbArray[GREEN_BYTE_INDEX] = rgb.g.toFixed();
         rgbArray[BLUE_BYTE_INDEX] = rgb.b.toFixed();
-        rgbArray[LED_NUMBER_BYTE_OFFSET] = qs('#ledSelector').value;
+        rgbArray[LED_NUMBER_BYTE_OFFSET] = qs('#ledSelector').value | rgbArray[LED_NUMBER_BYTE_OFFSET];
 
         ble.sendData(rgbArray);
     });
