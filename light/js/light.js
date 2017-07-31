@@ -6,6 +6,8 @@ const SEQUENCE_BYTE_INDEX       = 4;
 
 var rgbArray = new Uint8Array(10);
 
+// Event listeners
+
 function onConnect() {
     qs("#connectWrapper").style.display = "none";
     qs("#disconnectWrapper").style.display = "block";
@@ -15,11 +17,19 @@ function onConnect() {
     qs("#description").innerHTML = "Du er nå tilkoblet.";
 }
 
-// clickListener('#connectBtn', function(e) {
-//     ble.connect()
-//     .then( () => { onConnect() });
-// });
-//
+clickListener('#connectBtn', function(e) {
+    ble.connect()
+    .then( () => { onConnect() });
+});
+
+clickListener('#disconnectBtn', function(e) {
+    ble.disconnect()
+    .then( () => {
+        console.log("Device disconnected gracefully");
+        window.location.reload();
+    } );
+});
+
 // clickListener('#sequenceSelector', function(e) {
 //         rgbArray[SEQUENCE_BYTE_INDEX] = qs('#sequenceSelector').value
 //         ble.sendData(rgbArray);
