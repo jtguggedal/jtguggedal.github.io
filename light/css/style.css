@@ -57,7 +57,7 @@ h1 {
 
 
 #chooserWrapper {
-    width: 255px;
+    width: 275px;
     margin: 10px auto;
     margin-top: 30px;
     display: none;
@@ -129,7 +129,7 @@ h1 {
 
 #slide {
     display: inline-block;
-    width: 30px;
+    width: 50px;
     height: 200px;
     border: 2px solid white;
 }
