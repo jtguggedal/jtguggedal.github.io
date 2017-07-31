@@ -4,8 +4,8 @@
 
 var logEnabled = logEnabled | true;
 
-const serviceUUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
-const characteristicUUID = "6e400002-b5a3-f393-e0a9-e50e24dcca9e";
+const serviceUUID               = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
+const characteristicUUID        = "6e400002-b5a3-f393-e0a9-e50e24dcca9e";
 
 const ROBOT_ACTION_BYTE_INDEX   = 0;
 

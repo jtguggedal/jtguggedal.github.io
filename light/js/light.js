@@ -1,3 +1,8 @@
+
+const serviceUUID               = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
+const characteristicUUID        = "6e400002-b5a3-f393-e0a9-e50e24dcca9e";
+
+
 const RED_BYTE_INDEX            = 1;
 const GREEN_BYTE_INDEX          = 0;
 const BLUE_BYTE_INDEX           = 2;
@@ -18,8 +23,11 @@ function onConnect() {
 }
 
 clickListener('#connectBtn', function(e) {
-    ble.connect()
-    .then( () => { onConnect() });
+    ble.connect(serviceUUID, characteristicUUID, true)
+    .then( () => {
+        if(ble.isConnected())
+            onConnect();
+    });
 });
 
 clickListener('#disconnectBtn', function(e) {
