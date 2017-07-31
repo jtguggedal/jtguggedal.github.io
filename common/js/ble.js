@@ -1,14 +1,17 @@
 /*
- *  Interface
+ *  Interface for BLE object
  *
- *  connect(serviceUUID, characteristicUUID, callbackOnConnect)
- *  sendData(dataArray) - dataArray is a Uint8Array of max 20 bytes
+ *  connect(serviceUUID, characteristicUUID) - returns promise
+ *  disconnect() - returns promise
+ *  sendData(dataArray) - dataArray: Uint8Array of maximum 20 bytes
+ *  getDevice() - returns BLE device object
+ *  isConnected() - returns bool if a peripheral is connected
  *
  */
 
 /*jshint esversion: 6 */
 
-var ble = (function() {
+var ble = (function(logEnabled) {
 
     var device;
     var server;
@@ -16,9 +19,10 @@ var ble = (function() {
     var characteristic;
     var isConnected = false;
     var isBusy = false;
-    var logEnabled = logEnabled | true;
+    var logEnabled = false;
 
-    var connect = function(serviceUUID, characteristicUUID) {
+    var connect = function(serviceUUID, characteristicUUID, _logEnabled) {
+        logEnabled = _logEnabled | logEnabled;
         if (logEnabled)
             console.log("Scanning for devices with service UUID " + serviceUUID);
         return navigator.bluetooth.requestDevice({

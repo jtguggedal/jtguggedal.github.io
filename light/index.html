@@ -1,0 +1,51 @@
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="css/themes.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <script type="text/javascript" src="js/colorpicker.js"></script>
+    <script type="text/javascript" src="../common/js/ble.js?2"></script>
+    <script type="text/javascript" src="../common/js/helper.js"></script>
+</head>
+<body>
+    <div id="wrapper">
+        <h1>nRF Light</h1>
+        <div id="description" class="center-div center">
+            Koble til for å bestemme fargen på lysene.
+        </div>
+        <div id="connectWrapper">
+            <div id="connectBtn" class="btn">
+                Koble til
+            </div>
+        </div> <!-- / connectWrapper -->
+        <div id="chooserWrapper" class="btnWrapper">
+            <!--<div class="selectorWrapper">
+                <span class="selectorLabel">
+                    LED number
+                </span>
+                <input id="ledSelector" class="selectorInput" type="number" value="0" min="0" max="150"></input>
+            </div>
+            <div class="selectorWrapper">
+                <span class="selectorLabel">
+                    Sequence number
+                </span>
+                <input id="sequenceSelector" class="selectorInput" type="number" value="0" min="0" max="10"></input>
+            </div>-->
+            <div id="picker" class="center-div"></div>
+            <div id="slide" class="center-div"></div>
+        </div> <!-- / chooserWrapper -->
+        <!--<div id="chosenColor"></div>-->
+
+
+        <div id="disconnectWrapper" class="btnWrapper">
+            <div id="disconnectBtn" class="btn">
+                Koble fra
+            </div>
+        </div> <!-- / disconnectWrapper -->
+        <div id="logoWrapper" class="center-div center">
+            <img src="../common/img/nordic-logo-white.png">
+        </div><!-- / logoWrapper -->
+    </div> <!-- / wrapper -->
+    <script src="js/light.js" type="text/javascript"></script>
+</body>
+</html>

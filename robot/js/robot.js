@@ -48,7 +48,7 @@ function onShakeEvent() {
 window.addEventListener('shake', onShakeEvent, false);
 
 clickListener("#connect-btn", function() {
-    ble.connect(serviceUUID, characteristicUUID)
+    ble.connect(serviceUUID, characteristicUUID, true)
     .then( () => {
         if(ble.isConnected())
             onConnect();

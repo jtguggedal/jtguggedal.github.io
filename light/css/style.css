@@ -1,0 +1,164 @@
+@import url('https://fonts.googleapis.com/css?family=Lato|Hind');
+@import url('https://fonts.googleapis.com/css?family=Amaranth:700|Exo:800|Fugaz+One|Russo+One');
+
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    border-collapse:collapse;
+    font-family: Hind;
+    /*background: linear-gradient(to top right, #231138, #0ea6b5);*/
+    /*background: linear-gradient(to top right, #031A28, #034C78);*/
+    /*background: linear-gradient(to top right, #322946, #139ed4);*/
+    /*background: linear-gradient(to top right, #1b242f, #5b7e92);*/
+    /*background: linear-gradient(to top left, #44a08d, #093637);*/
+    background: linear-gradient(to bottom right, #000f46, #1ccee0);
+    margin: 0;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    color: white;
+}
+
+h1 {
+    margin-top: 40px;
+    text-align: center;
+    font-size: 45px;
+    font-family: "Fugaz One";
+    color: white;
+    text-shadow: 2px 3px 8px rgba(0, 0, 0, 0.2);
+}
+
+
+#wrapper {
+    height:100%;
+    width: 100%;
+    border-collapse:collapse;
+    display : table;
+}
+
+
+#disconnectWrapper {
+    display: none;
+}
+
+
+#logoWrapper {
+    display : table-row;
+    vertical-align : bottom;
+    opacity: 1;
+    height: 1px;
+}
+
+#logoWrapper img {
+    margin-bottom: 30px;
+}
+
+
+#chooserWrapper {
+    width: 255px;
+    margin: 10px auto;
+    margin-top: 30px;
+    display: none;
+}
+
+
+.bold { font-weight: bold; }
+.center { text-align: center; }
+.center-div {margin-left: auto; margin-right: auto; }
+.unselectable { user-select: none; }
+
+
+
+.btnWrapper {
+    width: 250px;
+    margin: 20px auto;
+}
+
+
+.btn {
+    margin: auto;
+    margin-top: 30px;
+    padding: 6px 12px;
+    width: 95px;
+    font-size: 16px;
+    font-weight: 700;
+    text-align: center;
+    border: 1px solid #ffffff;
+    box-shadow: 1px 2px 10px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    user-select: none;
+    color: white;
+}
+
+#connectBtn {
+    background-color: rgb(8, 110, 94);
+    padding: 8px 6px;
+    width: 160px;
+    font-size: 26px;
+    font-weight: 500;
+    text-align: center;
+    border: 2px solid #ffffff;
+    box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.5);
+    border-radius: 30px;
+    cursor: pointer;
+    user-select: none;
+    background-color: rgb(63, 159, 221);
+    /*background: linear-gradient(to top right, #1e5799 0%,#2989d8 50%,#207cca 61%,#7db9e8 100%);*/
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+}
+
+#disconnectBtn {
+    background-color: rgb(189, 37, 37);
+    border-radius: 20px;
+}
+
+
+#description {
+    width: 250px;
+}
+
+#picker {
+    display: inline-block;
+    width: 220px;
+    height: 200px;
+    border: 2px solid white;
+}
+
+#slide {
+    display: inline-block;
+    width: 30px;
+    height: 200px;
+    border: 2px solid white;
+}
+
+
+#chosenColor {
+    margin: 20px auto;
+    height: 30px;
+    width: 90%;
+}
+
+.selectorWrapper {
+    display: block;
+    margin: 20px;
+    font-weight: bold;
+    clear: both;
+}
+
+.selectorLabel {
+    display: inline-block;
+    padding-top: 6px;
+}
+
+.selectorInput {
+    float: right;
+    width: 60px;
+    height: 40px;
+    margin-left: 20px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+}
