@@ -5,16 +5,23 @@
     box-sizing: border-box;
 }
 
+html {
+    min-height: 100%;
+}
+
 body {
     height: 100%;
     border-collapse:collapse;
     font-family: Hind;
-    background: linear-gradient(to top right, #231138, #0ea6b5);
+    /*background: linear-gradient(to top right, #231138, #0ea6b5);*/
     /*background: linear-gradient(to top right, #031A28, #034C78);*/
     /*background: linear-gradient(to top right, #322946, #139ed4);*/
     /*background: linear-gradient(to top right, #1b242f, #5b7e92);*/
-    background: linear-gradient(to bottom right, #000f46, #1ccee0);
     /*background: linear-gradient(to top left, #44a08d, #093637);*/
+    background: linear-gradient(to bottom right, #000f46, #1ccee0);
+    margin: 0;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 
 

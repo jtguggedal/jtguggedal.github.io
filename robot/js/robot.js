@@ -30,8 +30,7 @@ function onConnect() {
     qs("#disconnect-wrapper").style.display = "block";
     qs("h1").style.fontSize = "35px";
     qs("#header-wrapper").style.marginTop = "15px";
-    fade.in("#content-inner-wrapper");
-}
+    fade.in("#content-inner-wrapper");}
 
 var shakeEvent = new Shake({
     threshold: 15,
