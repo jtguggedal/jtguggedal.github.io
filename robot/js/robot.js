@@ -1,5 +1,7 @@
 // This script is dependent on ble.js and visual.js
 
+/*jshint esversion: 6 */
+
 var logEnabled = logEnabled | true;
 
 const serviceUUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
@@ -27,7 +29,7 @@ function onConnect() {
     qs("#connect-wrapper").style.display = "none";
     qs("#disconnect-wrapper").style.display = "block";
     qs("h1").style.fontSize = "35px";
-    qs("#header-wrapper").style.marginTop = "15px"
+    qs("#header-wrapper").style.marginTop = "15px";
     fade.in("#content-inner-wrapper");
 }
 
@@ -42,7 +44,6 @@ function onShakeEvent() {
     sendRobotAction(ROBOT_DANCE);
 }
 
-
 // Event listeners
 
 window.addEventListener('shake', onShakeEvent, false);
@@ -54,15 +55,15 @@ clickListener("#connect-btn", function() {
             onConnect();
     })
     .catch( error => {
-        console.log("Error: " + error); 
-    })
+        console.log("Error: " + error);
+    });
 });
 
 clickListener("#disconnect-btn", function() {
     ble.disconnect()
     .then( () => {
         console.log("Device disconnected gracefully");
-        window.location.reload()
+        window.location.reload();
     } );
 });
 
