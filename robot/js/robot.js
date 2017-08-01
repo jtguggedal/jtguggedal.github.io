@@ -73,17 +73,17 @@ function updateSeqNumbers() {
 }
 
 function sequenceExecute() {
-    let sumTime = 0;
+    let startTime = 0;
     qs("#sequence-info").style.display = "block";
     actionQueue.forEach((item, index) => {
         setTimeout(function() {
             doSequenceAction(item.action);
-        }, sumTime + item.time);
-        sumTime += item.time;
+        }, startTime);
+        startTime += item.time;
     });
     setTimeout(function() {
         sequenceFinished();
-    }, sumTime);
+    }, startTime);
 }
 
 function sequenceFinished() {
