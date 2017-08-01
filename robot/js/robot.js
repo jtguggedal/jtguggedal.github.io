@@ -52,9 +52,10 @@ function onConnect() {
 // Robot action sequences
 
 function addToSequence(e) {
+    console.log(e)
     if(seqNumber < 9) {
         robotActions.forEach( item => {
-            if(item.element == e.target) {
+            if(item.element == e.target || item.element == e.target.parentElement) {
                 seqNumber++;
                 item.seq.push(seqNumber);
                 actionQueue.push({action: item.action, time: item.time});
@@ -83,6 +84,7 @@ function sequenceExecute() {
         actionQueue = [];
         sequenceReset();
         console.log("All actions in queue performed, queue is empty: ", actionQueue);
+        sequenceFinished();
     }, sumTime);
 }
 
