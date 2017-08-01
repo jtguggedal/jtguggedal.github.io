@@ -152,43 +152,43 @@ clickListener("#disconnect-btn", function() {
 });
 
 clickListener("#robot-move-head-forward", (e) => {
-    if(sendSequence) sendRobotAction(MOVE_HEAD_FORWARD);
+    if(!sendSequence) sendRobotAction(MOVE_HEAD_FORWARD);
     else addToSequence(e);
 });
 clickListener("#robot-move-head-left", (e) => {
-    if(sendSequence) sendRobotAction(MOVE_HEAD_LEFT);
+    if(!sendSequence) sendRobotAction(MOVE_HEAD_LEFT);
     else addToSequence(e);
 });
 clickListener("#robot-move-head-right", (e) => {
-    if(sendSequence) sendRobotAction(MOVE_HEAD_RIGHT);
+    if(!sendSequence) sendRobotAction(MOVE_HEAD_RIGHT);
     else addToSequence(e);
 });
 clickListener("#robot-move-head-side-to-side", (e) => {
-    if(sendSequence) sendRobotAction(MOVE_HEAD_SIDE_TO_SIDE);
+    if(!sendSequence) sendRobotAction(MOVE_HEAD_SIDE_TO_SIDE);
     else addToSequence(e);
 });
 clickListener("#robot-move-right-hand-up", (e) => {
-    if(sendSequence) sendRobotAction(MOVE_RIGHT_HAND_UP);
+    if(!sendSequence) sendRobotAction(MOVE_RIGHT_HAND_UP);
     else addToSequence(e);
 });
 clickListener("#robot-move-right-hand-down", (e) => {
-    if(sendSequence) sendRobotAction(MOVE_RIGHT_HAND_DOWN);
+    if(!sendSequence) sendRobotAction(MOVE_RIGHT_HAND_DOWN);
     else addToSequence(e);
 });
 clickListener("#robot-move-left-hand-up", (e) => {
-    if(sendSequence) sendRobotAction(MOVE_LEFT_HAND_UP);
+    if(!sendSequence) sendRobotAction(MOVE_LEFT_HAND_UP);
     else addToSequence(e);
 });
 clickListener("#robot-move-left-hand-down", (e) => {
-    if(sendSequence) sendRobotAction(MOVE_LEFT_HAND_DOWN);
+    if(!sendSequence) sendRobotAction(MOVE_LEFT_HAND_DOWN);
     else addToSequence(e);
 });
 clickListener("#robot-wave-hand", (e) => {
-    if(sendSequence) sendRobotAction(WAVE_HAND);
+    if(!sendSequence) sendRobotAction(WAVE_HAND);
     else addToSequence(e);
 });
 clickListener("#robot-dance", (e) => {
-    if(sendSequence) sendRobotAction(ROBOT_DANCE);
+    if(!sendSequence) sendRobotAction(ROBOT_DANCE);
     else addToSequence(e);
 });
 // clickListener("#robot-cheer", (e) => { sendRobotAction(CHEER); });
