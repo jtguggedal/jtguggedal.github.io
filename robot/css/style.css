@@ -209,7 +209,7 @@ input[type=checkbox]{
 }
 
 input:checked + #sequence-switch-label {
-	background: #bada55;
+background-color: rgba(12, 224, 53, 0.6);
 }
 
 input:checked + #sequence-switch-label:after {
