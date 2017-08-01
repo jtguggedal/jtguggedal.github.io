@@ -20,18 +20,22 @@ const MOVE_LEFT_HAND_DOWN       = 0x08;
 const WAVE_HAND                 = 0x09;
 const ROBOT_DANCE               = 0x10;
 const CHEER                     = 0x11;
+const MOVE_HEAD_TIME            = 1000;
+const MOVE_HAND_TIME            = 1500;
+const WAVE_TIME                 = 4000;
+const DANCE_TIME                = 6000;
 
 var robotActions = [
-    {element: qs("#robot-move-head-forward"), seq: [], action: MOVE_HEAD_FORWARD, time: 1000},
-    {element: qs("#robot-move-head-left"), seq: [], action: MOVE_HEAD_LEFT, time: 1000},
-    {element: qs("#robot-move-head-right"), seq: [], action: MOVE_HEAD_RIGHT, time: 1000},
-    {element: qs("#robot-move-head-side-to-side"), seq: [], action: MOVE_HEAD_SIDE_TO_SIDE, time: 3000},
-    {element: qs("#robot-move-right-hand-up"), seq: [], action: MOVE_RIGHT_HAND_UP, time: 2000},
-    {element: qs("#robot-move-right-hand-down"), seq: [], action: MOVE_RIGHT_HAND_DOWN, time: 2000},
-    {element: qs("#robot-move-left-hand-up"), seq: [], action: MOVE_LEFT_HAND_UP, time: 2000},
-    {element: qs("#robot-move-left-hand-down"), seq: [], action: MOVE_LEFT_HAND_DOWN, time: 2000},
-    {element: qs("#robot-wave-hand"), seq: [], action: WAVE_HAND, time: 6000},
-    {element: qs("#robot-dance"), seq: [], action: ROBOT_DANCE, time: 6000}
+    {element: qs("#robot-move-head-forward"), seq: [], action: MOVE_HEAD_FORWARD, time: MOVE_HEAD_TIME},
+    {element: qs("#robot-move-head-left"), seq: [], action: MOVE_HEAD_LEFT, time: MOVE_HEAD_TIME},
+    {element: qs("#robot-move-head-right"), seq: [], action: MOVE_HEAD_RIGHT, time: MOVE_HEAD_TIME},
+    {element: qs("#robot-move-head-side-to-side"), seq: [], action: MOVE_HEAD_SIDE_TO_SIDE, time: 2 * MOVE_HEAD_TIME},
+    {element: qs("#robot-move-right-hand-up"), seq: [], action: MOVE_RIGHT_HAND_UP, time: MOVE_HAND_TIME},
+    {element: qs("#robot-move-right-hand-down"), seq: [], action: MOVE_RIGHT_HAND_DOWN, time: MOVE_HAND_TIME},
+    {element: qs("#robot-move-left-hand-up"), seq: [], action: MOVE_LEFT_HAND_UP, time: MOVE_HAND_TIME},
+    {element: qs("#robot-move-left-hand-down"), seq: [], action: MOVE_LEFT_HAND_DOWN, time: MOVE_HAND_TIME},
+    {element: qs("#robot-wave-hand"), seq: [], action: WAVE_HAND, time: WAVE_TIME},
+    {element: qs("#robot-dance"), seq: [], action: ROBOT_DANCE, time: DANCE_TIME}
 ];
 
 var actionQueue = [];
