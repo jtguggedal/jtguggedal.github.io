@@ -22,6 +22,7 @@ body {
     margin: 0;
     background-repeat: no-repeat;
     background-attachment: fixed;
+    color: white;
 }
 
 
@@ -64,6 +65,15 @@ h1 {
 
 .btn {
     border-radius: px;
+    display: inline-block;
+    padding: 3px 5px;
+    border: 1px solid #ffffff;
+    box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.5);
+    width: 70px;
+    font-size: 16px;
+    font-weight: 500;
+    text-align: center;
+    border-radius: 15px;
 }
 
 #connect-btn {
@@ -160,4 +170,71 @@ h1 {
     font-size: 14px;
     max-width: 75px;
     min-width: 0px;
+}
+
+#sequence-switch {
+    width: 220px;
+}
+
+input[type=checkbox]{
+	height: 0;
+	width: 0;
+	visibility: hidden;
+}
+
+#sequence-switch-label {
+	cursor: pointer;
+	text-indent: -9999px;
+	width: 40px;
+	height: 20px;
+	background: rgba(0, 0, 0, 0.3);
+	display: inline-block;
+	border-radius: 10px;
+	position: relative;
+	color: black;
+    box-shadow: inset 2px 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+#sequence-switch-label:after {
+	content: '';
+	position: absolute;
+	top: 5px;
+	left: 5px;
+	width: 15px;
+	height: 10px;
+	background: #fff;
+	border-radius: 90px;
+	transition: 0.3s;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.4);
+}
+
+input:checked + #sequence-switch-label {
+	background: #bada55;
+}
+
+input:checked + #sequence-switch-label:after {
+	left: calc(100% - 5px);
+	transform: translateX(-100%);
+}
+
+#sequence-switch-label:active:after {
+	width: 30px;
+}
+
+
+#sequence-controls {
+    width: 170px;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    height: 30px;
+    display: none;
+}
+
+#sequence-btn-send {
+    float: left;
+    background-color: rgba(12, 224, 53, 0.5);
+}
+#sequence-btn-reset {
+    float: right;
+    background-color: rgba(224, 12, 12, 0.6);
 }

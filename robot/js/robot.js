@@ -30,14 +30,14 @@ var robotActions = [
     {element: qs("#robot-move-right-hand-down"), seq: [], action: MOVE_RIGHT_HAND_DOWN, time: 2000},
     {element: qs("#robot-move-left-hand-up"), seq: [], action: MOVE_LEFT_HAND_UP, time: 2000},
     {element: qs("#robot-move-left-hand-down"), seq: [], action: MOVE_LEFT_HAND_DOWN, time: 2000},
-    {element: qs("#robot-wave-hand"), seq: [], action: WAVE_HAND, time: 4000},
+    {element: qs("#robot-wave-hand"), seq: [], action: WAVE_HAND, time: 6000},
     {element: qs("#robot-dance"), seq: [], action: ROBOT_DANCE, time: 6000}
 ];
 
 var actionQueue = [];
 var seqNumber = 0;
 var bleData = new Uint8Array(20);
-var sendSingleAction = true;
+var sendSequence = false;
 
 
 // BLE
@@ -52,15 +52,12 @@ function onConnect() {
 // Robot action sequences
 
 function addToSequence(e) {
-    console.log(e)
     if(seqNumber < 9) {
         robotActions.forEach( item => {
             if(item.element == e.target) {
                 seqNumber++;
                 item.seq.push(seqNumber);
-                console.log("Pushed", item);
                 actionQueue.push({action: item.action, time: item.time});
-                console.log(actionQueue);
             }
         });
         updateSeqNumbers();
@@ -74,7 +71,7 @@ function updateSeqNumbers() {
     });
 }
 
-function executeSequence() {
+function sequenceExecute() {
     let sumTime = 0;
     actionQueue.forEach((item, index) => {
         setTimeout(function() {
@@ -101,9 +98,14 @@ function sequenceReset() {
     updateSeqNumbers();
 }
 
-//clickListener("#sequence-reset-btn", function(e) { sequenceReset(); });
+function showSequenceControls() {
+    qs("#sequence-controls").style.display = "block";
+}
 
+function hideSequenceControls () {
+    qs("#sequence-controls").style.display = "none";
 
+}
 
 // Shake
 var shakeEvent = new Shake({
@@ -150,46 +152,59 @@ clickListener("#disconnect-btn", function() {
 });
 
 clickListener("#robot-move-head-forward", (e) => {
-    if(sendSingleAction) sendRobotAction(MOVE_HEAD_FORWARD);
+    if(sendSequence) sendRobotAction(MOVE_HEAD_FORWARD);
     else addToSequence(e);
 });
 clickListener("#robot-move-head-left", (e) => {
-    if(sendSingleAction) sendRobotAction(MOVE_HEAD_LEFT);
+    if(sendSequence) sendRobotAction(MOVE_HEAD_LEFT);
     else addToSequence(e);
 });
 clickListener("#robot-move-head-right", (e) => {
-    if(sendSingleAction) sendRobotAction(MOVE_HEAD_RIGHT);
+    if(sendSequence) sendRobotAction(MOVE_HEAD_RIGHT);
     else addToSequence(e);
 });
 clickListener("#robot-move-head-side-to-side", (e) => {
-    if(sendSingleAction) sendRobotAction(MOVE_HEAD_SIDE_TO_SIDE);
+    if(sendSequence) sendRobotAction(MOVE_HEAD_SIDE_TO_SIDE);
     else addToSequence(e);
 });
 clickListener("#robot-move-right-hand-up", (e) => {
-    if(sendSingleAction) sendRobotAction(MOVE_RIGHT_HAND_UP);
+    if(sendSequence) sendRobotAction(MOVE_RIGHT_HAND_UP);
     else addToSequence(e);
 });
 clickListener("#robot-move-right-hand-down", (e) => {
-    if(sendSingleAction) sendRobotAction(MOVE_RIGHT_HAND_DOWN);
+    if(sendSequence) sendRobotAction(MOVE_RIGHT_HAND_DOWN);
     else addToSequence(e);
 });
 clickListener("#robot-move-left-hand-up", (e) => {
-    if(sendSingleAction) sendRobotAction(MOVE_LEFT_HAND_UP);
+    if(sendSequence) sendRobotAction(MOVE_LEFT_HAND_UP);
     else addToSequence(e);
 });
 clickListener("#robot-move-left-hand-down", (e) => {
-    if(sendSingleAction) sendRobotAction(MOVE_LEFT_HAND_DOWN);
+    if(sendSequence) sendRobotAction(MOVE_LEFT_HAND_DOWN);
     else addToSequence(e);
 });
 clickListener("#robot-wave-hand", (e) => {
-    if(sendSingleAction) sendRobotAction(WAVE_HAND);
+    if(sendSequence) sendRobotAction(WAVE_HAND);
     else addToSequence(e);
 });
 clickListener("#robot-dance", (e) => {
-    if(sendSingleAction) sendRobotAction(ROBOT_DANCE);
+    if(sendSequence) sendRobotAction(ROBOT_DANCE);
     else addToSequence(e);
 });
 // clickListener("#robot-cheer", (e) => { sendRobotAction(CHEER); });
+
+clickListener("#sequence-switch", function() {
+	sendSequence = qs("#switch").checked;
+    if(sendSequence) {
+        showSequenceControls();
+    } else {
+        hideSequenceControls();
+    }
+
+});
+
+clickListener("#sequence-btn-send", sequenceExecute);
+clickListener("#sequence-btn-reset", sequenceReset);
 
 
 // Helper functions
