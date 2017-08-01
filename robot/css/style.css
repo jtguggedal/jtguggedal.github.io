@@ -192,7 +192,7 @@ input[type=checkbox]{
 	border-radius: 10px;
 	position: relative;
 	color: black;
-    box-shadow: inset 2px 2px 10px rgba(0, 0, 0, 0.5);
+    box-shadow: inset 2px 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 #sequence-switch-label:after {
@@ -209,7 +209,7 @@ input[type=checkbox]{
 }
 
 input:checked + #sequence-switch-label {
-background-color: rgba(12, 224, 53, 0.6);
+background-color: rgba(9, 167, 40, 1);
 }
 
 input:checked + #sequence-switch-label:after {
@@ -232,9 +232,9 @@ input:checked + #sequence-switch-label:after {
 
 #sequence-btn-send {
     float: left;
-    background-color: rgba(12, 224, 53, 0.5);
+    background-color: rgba(9, 167, 40, 1);
 }
 #sequence-btn-reset {
     float: right;
-    background-color: rgba(224, 12, 12, 0.6);
+    background: rgba(226, 19, 19, 0.94);
 }

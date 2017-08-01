@@ -94,7 +94,7 @@ function doSequenceAction(action) {
 function sequenceReset() {
     seqNumber = 0;
     robotActions.forEach(i => {i.seq = []});
-    queue = [];
+    actionQueue = [];
     updateSeqNumbers();
 }
 
