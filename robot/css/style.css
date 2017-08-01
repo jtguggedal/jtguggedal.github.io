@@ -145,3 +145,19 @@ h1 {
     box-sizing: border-box;
     border-radius: 20px;
 }
+
+.robot-action-item-label {
+    display: inline-block;
+}
+
+.sequence-number {
+    position: relative;
+    display: block;
+    float: right;
+    margin-top: -2px;
+    line-height: 1.2;
+    background-color: rgba(0, 0, 0, 0.2);
+    font-size: 14px;
+    max-width: 75px;
+    min-width: 0px;
+}
