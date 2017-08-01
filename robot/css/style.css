@@ -238,3 +238,8 @@ input:checked + #sequence-switch-label:after {
     float: right;
     background: rgba(226, 19, 19, 0.94);
 }
+
+#sequence-info {
+    width: 200px;
+    display: none;
+}

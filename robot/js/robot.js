@@ -74,6 +74,7 @@ function updateSeqNumbers() {
 
 function sequenceExecute() {
     let sumTime = 0;
+    qs("#sequence-info").style.display = "block";
     actionQueue.forEach((item, index) => {
         setTimeout(function() {
             doSequenceAction(item.action);
@@ -81,11 +82,14 @@ function sequenceExecute() {
         sumTime += item.time;
     });
     setTimeout(function() {
-        actionQueue = [];
-        sequenceReset();
-        console.log("All actions in queue performed, queue is empty: ", actionQueue);
         sequenceFinished();
     }, sumTime);
+}
+
+function sequenceFinished() {
+    sequenceReset();
+    qs("#sequence-info").style.display = "none";
+    console.log("All actions in queue performed, queue is empty: ", actionQueue);
 }
 
 function doSequenceAction(action) {
