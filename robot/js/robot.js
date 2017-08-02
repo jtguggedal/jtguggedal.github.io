@@ -46,6 +46,7 @@ var sendSequence = false;
 
 // BLE
 
+
 function onConnect() {
     qs("#connect-wrapper").style.display = "none";
     qs("#disconnect-wrapper").style.display = "block";
@@ -56,7 +57,7 @@ function onConnect() {
 // Robot action sequences
 
 function addToSequence(e) {
-    console.log(e)
+    console.log(e);
     if(seqNumber < 9) {
         robotActions.forEach( item => {
             if(item.element == e.target || item.element == e.target.parentElement) {
@@ -103,17 +104,18 @@ function doSequenceAction(action) {
 
 function sequenceReset() {
     seqNumber = 0;
-    robotActions.forEach(i => {i.seq = []});
+    robotActions.forEach(i => { i.seq = []; });
     actionQueue = [];
     updateSeqNumbers();
 }
 
-function showSequenceControls() {
+function enableSequence() {
     qs("#sequence-controls").style.display = "block";
 }
 
-function hideSequenceControls () {
+function disableSequence() {
     qs("#sequence-controls").style.display = "none";
+    sequenceReset();
 
 }
 
@@ -136,6 +138,7 @@ function sendRobotAction(action) {
     bleData[ROBOT_ACTION_BYTE_INDEX] = action;
     return ble.sendData(bleData);
 }
+
 
 
 // Event listeners
@@ -206,9 +209,9 @@ clickListener("#robot-dance", (e) => {
 clickListener("#sequence-switch", function() {
 	sendSequence = qs("#switch").checked;
     if(sendSequence) {
-        showSequenceControls();
+        enableSequence();
     } else {
-        hideSequenceControls();
+        disableSequence();
     }
 
 });
