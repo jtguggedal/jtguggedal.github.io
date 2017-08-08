@@ -1,11 +1,22 @@
 @import url('https://fonts.googleapis.com/css?family=Lato');
 
-body {
+* {
     box-sizing: border-box;
+}
+
+html {
+    margin: 0;
+    height: 100%;
+    width: 100%;
+}
+
+body {
     font-family: Lato;
 }
 
-
+html, body {
+    overflow: hidden;
+}
 h1 {
     text-align: center;
 }
@@ -17,11 +28,11 @@ input[type="range"]#pitch-value   {
 }
 
 input[type="range"]#yaw-value   {
-    margin-right: 20px;
+    margin-right: 40px;
 }
 
 #wrapper {
-    margin-left: 40px;
+
 }
 
 
@@ -54,4 +65,38 @@ input[type="range"]#yaw-value   {
 #controller-yaw-wrapper {
     float: right;
     margin-top: 70px;
+}
+
+/* Slider */
+
+input[type=range] {
+  -webkit-appearance: none;
+  width: 100%;
+  margin: 20.8px 0;
+}
+input[type=range]:focus {
+  outline: none;
+}
+input[type=range]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 8.4px;
+  cursor: pointer;
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.51), 0px 0px 1px rgba(13, 13, 13, 0.51);
+  background: rgba(167, 167, 167, 0.12);
+  border-radius: 1.3px;
+  border: 0.2px solid #010101;
+}
+input[type=range]::-webkit-slider-thumb {
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+  border: 1px solid #000000;
+  height: 50px;
+  width: 50px;
+  border-radius: 26px;
+  background: #343434;
+  cursor: pointer;
+  -webkit-appearance: none;
+  margin-top: -21px;
+}
+input[type=range]:focus::-webkit-slider-runnable-track {
+  background: rgba(25, 87, 192, 0.12);
 }

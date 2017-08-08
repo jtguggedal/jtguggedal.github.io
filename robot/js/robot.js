@@ -91,6 +91,8 @@ function sequenceExecute() {
     }, startTime);
 }
 
+
+
 function sequenceFinished() {
     sequenceReset();
     qs("#sequence-info").style.display = "none";
