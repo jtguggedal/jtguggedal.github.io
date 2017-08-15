@@ -15,9 +15,9 @@
                 </div>
             </div>
             <div id="controllers-wrapper">
-                <div id="controller-pitch-wrapper">
-                    <input type="range" id="pitch-value" min="1" max="255">
-                    <div id="pitch-value-output">0°</div>
+                <div id="controller-speed-wrapper">
+                    <input type="range" id="speed-value" min="1" max="255">
+                    <div id="speed-value-output">0</div>
                 </div>
                 <div id="controller-yaw-wrapper">
                     <input type="range" id="yaw-value" min="1" max="255">
@@ -29,11 +29,11 @@
         <script src="js/ble.js" type="text/javascript"></script>
         <script>
             const PRINT_CONTROLLER_DATA     = false;
-            const MAX_ANGLE_PITCH           = 1;
+            const MAX_ANGLE_speed           = 1;
             const MAX_YAW_RATE              = 180;
-            const PITCH_BYTE_OFFSET         = 0;
+            const SPEED_BYTE_OFFSET         = 0;
             const YAW_BYTE_OFFSET           = 1;
-            const DEFAULT_PITCH_VALUE       = 128;
+            const DEFAULT_SPEED_VALUE       = 128;
             const DEFAULT_YAW_VALUE         = 128;
 
             var connected = false;
@@ -41,8 +41,8 @@
 
             var bleDataArray = new Uint8Array(3);
 
-            var elPitchRange = document.querySelector("#pitch-value");
-            var elPitchOutput = document.querySelector('#pitch-value-output');
+            var elSpeedRange = document.querySelector("#speed-value");
+            var elSpeedOutput = document.querySelector('#speed-value-output');
             var elYawRange = document.querySelector("#yaw-value");
             var elYawOutput = document.querySelector('#yaw-value-output');
             var elConnectBtn = document.querySelector('#connectBtn');
@@ -51,9 +51,9 @@
                 connect(function(){ connected = true; })
             });
 
-            elPitchRange.addEventListener("input", function() {
-                bleDataArray[PITCH_BYTE_OFFSET] = elPitchRange.value;
-                displayPitchAngle();
+            elSpeedRange.addEventListener("input", function() {
+                bleDataArray[SPEED_BYTE_OFFSET] = elSpeedRange.value;
+                displayspeedAngle();
                 if(connected && !bleBusy) {
                     bleBusy = true;
                     sendData(bleDataArray)
@@ -66,10 +66,10 @@
 
             });
 
-            elPitchRange.addEventListener("touchend", function() {
-                elPitchRange.value = DEFAULT_PITCH_VALUE;
-                bleDataArray[PITCH_BYTE_OFFSET] = elPitchRange.value;
-                displayPitchAngle();
+            elSpeedRange.addEventListener("touchend", function() {
+                elSpeedRange.value = DEFAULT_SPEED_VALUE;
+                bleDataArray[SPEED_BYTE_OFFSET] = elSpeedRange.value;
+                displayspeedAngle();
                 if(connected && !bleBusy) {
                     bleBusy = true;
                     sendData(bleDataArray)
@@ -111,8 +111,8 @@
 
             });
 
-            function displayPitchAngle() {
-                elPitchOutput.innerHTML = (MAX_ANGLE_PITCH*(elPitchRange.value - 128)/127).toFixed(1) + "°";
+            function displayspeedAngle() {
+                elSpeedOutput.innerHTML = (MAX_SPEED*(elSpeedRange.value - 128)/127).toFixed(1);
             }
 
 
