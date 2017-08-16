@@ -21,12 +21,21 @@ var elConnectBtn = document.querySelector('#connectBtn');
 
 
 function onConnect() {
+    var h1 = document.querySelector('h1');
     elConnectBtn.style.background = "rgba(4, 113, 83, 0.8)";
+    document.querySelector('#controllers-wrapper').style.display = "block";
+    h1.style.fontSize = "30px";
+    h1.style.marginTop = "15px"
+    elConnectBtn.style.margin = "0 auto";
+    elConnectBtn.innerHTML = "Connected";
 }
 
 
 elConnectBtn.addEventListener("click", function() {
-    connect(function(){ connected = true; });
+    connect(function(){
+        connected = true;
+        onConnect();
+    });
 });
 
 elThrottleRange.addEventListener("input", function() {
@@ -81,7 +90,7 @@ elTurnRange.addEventListener("input", function() {
 
 
 elTurnRange.addEventListener("touchend", function() {
-    elThrottleRange.value = DEFAULT_TURN_VALUE;
+    elTurnRange.value = DEFAULT_TURN_VALUE;
     bleDataArray[THROTTLE_BYTE_OFFSET] = elThrottleRange.value;
     bleDataArray[TURN_BYTE_OFFSET] = elTurnRange.value;
     displayTurnRate();

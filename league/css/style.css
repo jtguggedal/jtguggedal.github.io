@@ -19,10 +19,13 @@ body {
 
 h1 {
     text-align: center;
-    margin-top: 15px;
+    margin-top: 50px;
     font-family: "Exo";
     font-weight: normal;
+    font-size: 36px;
 }
+
+
 
 
 #throttle-value   {
@@ -48,7 +51,7 @@ h1 {
 }
 
 #connectBtn {
-    margin: 0 auto;
+    margin: 60px auto;
     padding: 4px 3px;
     width: 130px;
     font-size: 20px;
@@ -66,8 +69,9 @@ h1 {
 }
 
 
-#controller-wrapper {
+#controllers-wrapper {
     margin: 0;
+    display: none;
 
 }
 
@@ -100,8 +104,8 @@ input[type=range]::-webkit-slider-runnable-track {
   border: 0.2px solid rgba(0, 0, 0, 0.2);
 }
 input[type=range]::-webkit-slider-thumb {
-  box-shadow: 1px 4px 10px rgba(0, 0, 0, 0.5), 0px 0px 1px #0d0d0d;
-  border: 0px solid #000000;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5), 0px 0px 1px #0d0d0d;
+  border: 2px solid rgba(255, 255, 255, 0.6);
   height: 60px;
   width: 60px;
   border-radius: 36px;
