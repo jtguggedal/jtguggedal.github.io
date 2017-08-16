@@ -66,6 +66,7 @@ elThrottleRange.addEventListener("touchend", function() {
     bleDataArray[THROTTLE_BYTE_OFFSET] = elThrottleRange.value;
     bleDataArray[TURN_BYTE_OFFSET] = elTurnRange.value;
     displayThrottleAngle();
+    while(bleBusy == true) {}
     if(connected && !bleBusy) {
         bleBusy = true;
         sendData(bleDataArray)
@@ -82,6 +83,7 @@ elTurnRange.addEventListener("input", function() {
     bleDataArray[THROTTLE_BYTE_OFFSET] = elThrottleRange.value;
     bleDataArray[TURN_BYTE_OFFSET] = elTurnRange.value;
     displayTurnRate();
+    while(bleBusy == true) {}
     if(connected && !bleBusy) {
         bleBusy = true;
         sendData(bleDataArray)
