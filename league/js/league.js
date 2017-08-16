@@ -25,8 +25,14 @@ function onConnect() {
     elConnectBtn.style.background = "rgba(4, 113, 83, 0.8)";
     document.querySelector('#controllers-wrapper').style.display = "block";
     h1.style.fontSize = "30px";
-    h1.style.marginTop = "15px"
+    h1.style.marginTop = "20px"
     elConnectBtn.style.margin = "0 auto";
+    elConnectBtn.style.padding = "0 1px";
+    elConnectBtn.style.width = "100px";
+    elConnectBtn.style.fontSize = "16px";
+    elConnectBtn.style.position = "absolute";
+    elConnectBtn.style.top = "10px";
+    elConnectBtn.style.right = "10px";
     elConnectBtn.innerHTML = "Connected";
 }
 
