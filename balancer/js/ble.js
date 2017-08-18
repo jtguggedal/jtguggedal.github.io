@@ -5,14 +5,15 @@ var service;
 var characteristic;
 var enableLogging = true;
 
-const serviceUUID = "6e400050-b5a3-f393-e0a9-e50e24dcca9e";
+const serviceAdvUUID = "6e400050-b5a3-f393-e0a9-e50e24dcca9e";
+const serviceUUID = "6e400002-b5a3-f393-e0a9-e50e24dcca9e";
 const characteristicUUID = "6e400002-b5a3-f393-e0a9-e50e24dcca9e";
 
 function connect(callbackOnConnect) {
     if(enableLogging)
-        console.log("Scanning for devices with service UUID " + serviceUUID );
+        console.log("Scanning for devices with advertised service UUID " + serviceAdvUUID );
     navigator.bluetooth.requestDevice(
-        {filters: [{services: [serviceUUID]}]}
+        {filters: [{services: [serviceAdvUUID]}]}
     )
     .then( d => {
         device = d;
