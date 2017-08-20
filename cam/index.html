@@ -8,7 +8,7 @@
         <link href="https://fonts.googleapis.com/css?family=Hind:400,700" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="css/style.css">
 
-        <title>Physical Web Car</title>
+        <title>Images over BLE</title>
     </head>
     <body>
         <div id="wrapper">
@@ -119,7 +119,11 @@
                         itsService.getCharacteristic(itsTxCharUUID)
                         .then(txNotificationsInit),
                         itsService.getCharacteristic(itsInfoCharUUID)
-                        .then(infoNotificationsInit)
+                        .then( (c) => {
+                            setTimeout(function() {
+                                infoNotificationsInit(c);
+                            }, 3000);
+                        })
                     ])
 
                 })
