@@ -116,6 +116,8 @@
 
         var receivedImage = new Uint8Array();
         var incomingImgSize = 0;
+        var timeRecStart;
+        var timeRecEnd;
 
         var isConnected = false;
         var logEnabled = true;
@@ -196,7 +198,6 @@
             return itsTxChar.startNotifications();
         }
 
-
         /** Function for handling notifications **/
         function txCharNotificationHandler(event) {
             'use strict';
@@ -217,6 +218,7 @@
                 receivedImage = new Uint8Array([]);
                 incomingImgSize = 0;
             }
+
         }
 
 
@@ -264,7 +266,7 @@
             var rxPhy = valueArray[6];
 
             // Update info overview
-            qs("#cam-info-phy").innerHTML = (txPhy == 1) ? ((attemptedPhy == CMD_VAL_GAP_PHY_1MBPS) ? "1 Mbps" : "1 Mbps, 2 Mbps not avail.") : "2 Mbps";
+            qs("#cam-info-phy").innerHTML = (txPhy == 1) ? ((attemptedPhy == CMD_VAL_GAP_PHY_1MBPS) ? "1 Mbps" : "1 Mbps, 2 Mbps N/A") : "2 Mbps";
             qs("#cam-info-ci").innerHTML = connectionInterval + " ms";
             qs("#cam-info-mtu").innerHTML = mtu + " bytes";
 
