@@ -1,13 +1,10 @@
-
 <!doctype html>
 <html lang="en">
     <head>
-
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="https://fonts.googleapis.com/css?family=Hind:400,700" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="css/style.css?v=1">
-
         <title>Images over BLE</title>
     </head>
     <body>
@@ -71,7 +68,6 @@
                 <img id="img" src="" />
             </div> <!-- / img-wrapper -->
         </div> <!-- / wrapper -->
-
     <script>
 
         // its = Image Transfer Service
@@ -117,12 +113,12 @@
 
         var receivedImage = new Uint8Array();
         var incomingImgSize = 0;
-        var timeRecStart;
-        var timeRecEnd;
-
+        var firstImgByte = true;
         var isConnected = false;
         var logEnabled = true;
         var attemptedPhy = CMD_VAL_GAP_PHY_1MBPS;
+        var timeRecStart;
+        var timeRecEnd;
 
         var resolutions = [
             {name: "160x120", value: CMD_VAL_RES_160x120},
@@ -136,56 +132,57 @@
         function connect () {
             if (logEnabled)
                 console.log("Scanning for devices with service UUID " + itsServiceAdvUUID);
+
             return navigator.bluetooth.requestDevice({
-                    filters: [{
-                        services: [itsServiceAdvUUID]
-                    }]
-                })
-                .then(d => {
-                    device = d;
-                    if (logEnabled)
-                        console.log("Found device " + device + ", trying to connect to GATT server");
-                    return device.gatt.connect();
-                })
-                .then(s => {
-                    server = s;
-                    if (logEnabled)
-                        console.log("Connected to server " + s + ", getting service");
-                    return server.getPrimaryService(itsServiceAdvUUID);
-                })
-                .then(sc => {
-                    itsService = sc;
-                    if (logEnabled)
-                        console.log("Found service " + itsService + ", getting characteristic");
+                filters: [{
+                    services: [itsServiceAdvUUID]
+                }]
+            })
+            .then(d => {
+                device = d;
+                if (logEnabled)
+                    console.log("Found device " + device + ", trying to connect to GATT server");
+                return device.gatt.connect();
+            })
+            .then(s => {
+                server = s;
+                if (logEnabled)
+                    console.log("Connected to server " + s + ", getting service");
+                return server.getPrimaryService(itsServiceAdvUUID);
+            })
+            .then(sc => {
+                itsService = sc;
+                if (logEnabled)
+                    console.log("Found service " + itsService + ", getting characteristic");
 
-                    return Promise.all([
-                        itsService.getCharacteristic(itsRxCharUUID)
-                        .then( c => { itsRxChar = c; }),
-                        itsService.getCharacteristic(itsTxCharUUID)
-                        .then(txNotificationsInit),
-                        itsService.getCharacteristic(itsInfoCharUUID)
-                        .then( (c) => {
-                            setTimeout(function() {
-                                infoNotificationsInit(c)
-                                .then( setDefaultParameters );
-                            }, 1000);
-                        })
-                    ])
+                return Promise.all([
+                    itsService.getCharacteristic(itsRxCharUUID)
+                    .then( c => { itsRxChar = c; }),
+                    itsService.getCharacteristic(itsTxCharUUID)
+                    .then(txNotificationsInit),
+                    itsService.getCharacteristic(itsInfoCharUUID)
+                    .then( (c) => {
+                        setTimeout(function() {
+                            // Fix to avoid weird, unspecified error on Android when starting notifications for two characteristics
+                            infoNotificationsInit(c)
+                            .then( setDefaultParameters );
+                        }, 1000);
+                    })
+                ])
 
-                })
-                .then( () => {
-                    if (logEnabled)
-                        console.log("Characteristics found and available globally");
-                    isConnected = true;
-                    onConnect();
-                })
-                .catch(error => {
-                    console.log("Error during connect: " + error);
-                });
+            })
+            .then( () => {
+                if (logEnabled)
+                    console.log("Characteristics found and available globally");
+                isConnected = true;
+                onConnect();
+            })
+            .catch(error => {
+                console.log("Error during connect: " + error);
+            });
         };
 
         function txNotificationsInit(characteristic) {
-            'use strict';
 
             // Stores the notification characteristic object to ble object for global debugging access
             itsTxChar = characteristic;
@@ -199,15 +196,12 @@
             return itsTxChar.startNotifications();
         }
 
-
-        var first = true;
         /** Function for handling Tx notifications, ie receiving image data **/
         function txCharNotificationHandler(event) {
-            'use strict';
 
-            if(first) {
+            if(firstImgByte) {
                 timeRecStart = performance.now();
-                first = false;
+                firstImgByte = false;
             }
 
             // The received notification consists of a DataView object, assigned to value
@@ -226,18 +220,20 @@
                 receivedImage = new Uint8Array([]);
 
                 timeRecEnd = performance.now();
-                var bitrate = (incomingImgSize * 8 / (timeRecEnd - timeRecStart)).toFixed(2);
-                console.log("Bit rate on image transfer: " + bitrate + " kbps");
-                qs("#cam-info-bitrate").innerHTML = bitrate + " kbps";
-                first = true;
-                incomingImgSize = 0;
-            }
+                var bitrate = ((incomingImgSize * 8 / 1000) / ((timeRecEnd - timeRecStart) / 1000)).toFixed(2);
 
+                qs("#cam-info-bitrate").innerHTML = bitrate + " kbps";
+
+                firstImgByte = true;
+                incomingImgSize = 0;
+
+                if (logEnabled)
+                    console.log("Bit rate on image transfer: " + bitrate + " kbps");
+            }
         }
 
 
         function infoNotificationsInit(characteristic) {
-            'use strict';
 
             itsInfoChar = characteristic;
             itsInfoChar.addEventListener('characteristicvaluechanged', infoCharNotificationHandler);
@@ -250,7 +246,6 @@
 
 
         function infoCharNotificationHandler(event) {
-            'use strict';
 
             // The received notification consists of a DataView object, assigned to value
             let value = event.target.value;
@@ -296,8 +291,6 @@
             itsRxChar.writeValue(new Uint8Array([cmd, value]));
             if(cmd == CMD_CHANGE_PHY)
                 attemptedPhy = value;
-            if(logEnabled)
-                console.log("Command sent: ", cmd, value);
         }
 
         function startStream() {
@@ -378,7 +371,9 @@
                 }
             }
         }
+        
 
+        // Helper functions
 
         function qs(selector) {
             return document.querySelector(selector);
