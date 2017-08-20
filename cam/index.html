@@ -6,7 +6,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="https://fonts.googleapis.com/css?family=Hind:400,700" rel="stylesheet">
-        <link rel="stylesheet" type="text/css" href="css/style.css">
+        <link rel="stylesheet" type="text/css" href="css/style.css?v=1">
 
         <title>Images over BLE</title>
     </head>
@@ -69,8 +69,6 @@
             </div> <!-- / img-wrapper -->
         </div> <!-- / wrapper -->
 
-    <script src="../common/js/ble.js"></script>
-    <script src="../common/js/helper.js"></script>
     <script>
 
         // its = Image Transfer Service
@@ -300,6 +298,7 @@
         }
 
         function displayImage(data) {
+            qs("#img-wrapper").style.display = "block";
             document.getElementById('img').src = 'data:image/png;base64,' + Uint8ToBase64(data);
         }
 
@@ -322,7 +321,6 @@
             elConnectBtn.style.right = "8px";
             elConnectBtn.innerHTML = "Connected";
             qs("#cam-info-wrapper").style.display = "block";
-            qs("#img-wrapper").style.display = "block";
         }
 
         function showResOptions() {
@@ -333,6 +331,9 @@
             sendCommand(CMD_CHANGE_RESOLUTION, res.value)
             qs("#cam-info-res").innerHTML = res.name;
         }
+
+
+        // Event liseteners
 
         clickListener("#connect-btn", connect);
         clickListener("#cam-single-capture-btn", function() { sendCommand(CMD_SINGLE_CAPTURE) });
@@ -363,6 +364,13 @@
         }
 
 
+        function qs(selector) {
+            return document.querySelector(selector);
+        }
+
+        function clickListener(el, cb) {
+            qs(el).addEventListener("click", cb);
+        }
 
         function u8tou32(arr, start, count) {
             var u32bytes = arr.buffer.slice(start, start + count);
@@ -402,6 +410,8 @@
             }
             return btoa(c.join(""));
         }
+
+
     </script>
     </body>
 </html>
