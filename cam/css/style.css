@@ -67,6 +67,7 @@ h1 {
 }
 
 #img-wrapper {
+    display: none;
     width: 320px;
     margin: 10px auto;
 }
