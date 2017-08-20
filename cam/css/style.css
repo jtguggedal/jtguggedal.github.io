@@ -1,7 +1,7 @@
 
 
 html, body {
-    width: 100%;
+    max-width: 100%;
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -10,7 +10,8 @@ html, body {
 
 #wrapper {
     width: 100%;
-    margin: 0 auto;
+    margin: 0;
+    padding: 0;
 }
 
 #header-wrapper {
@@ -22,8 +23,6 @@ html, body {
 h1 {
     font-weight: 800;
 }
-
-
 
 #connect-wrapper {
     width: 250px;
@@ -50,6 +49,7 @@ h1 {
     display: none;
     width: 300px;
     margin: 10px auto 10px auto;
+    text-align: center;
 }
 
 .btn-wrapper {
@@ -68,7 +68,7 @@ h1 {
 
 #img-wrapper {
     width: 320px;
-    margin: 40px auto;
+    margin: 10px auto;
 }
 
 
@@ -76,3 +76,72 @@ h1 {
     margin: auto;
     width: 100%;
 }
+
+#cam-info-wrapper {
+    width: 300px;
+    margin: 0 auto;
+    display: none;
+    text-align: center;
+}
+
+.cam-info-item {
+    display: block;
+    font-size: 14px;
+}
+
+.cam-info-item-label {
+    display: block;
+    width: 145px;
+    padding-right: 10px;
+    font-weight: 700;
+    text-align: right;
+    float: left;
+}
+
+
+.cam-info-item-value {
+    display: block;
+    font-size: 14px;
+    text-align: left;
+}
+
+
+
+#cam-res-display {
+    margin: 0 auto;
+    width: 200px;
+    text-align: center;
+}
+
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #FAFAFA;
+    min-width: 100px;
+    border-radius: 0 0 10px 10px;
+    overflow: hidden;
+    border: 1px solid rgb(179, 179, 179);
+    box-shadow: 2px 2px 16px 0px rgba(0,0,0,0.1);
+    z-index: 1;
+}
+
+.dropdown-content-item {
+    color: black;
+    padding: 8px 7px;
+    text-decoration: none;
+    display: block;
+}
+
+
+.dropdown-content-item:hover {
+    background-color: rgb(222, 222, 222);
+}
+
+.show { display: block; }
+.hide { display: none; }

@@ -4,7 +4,7 @@
     <head>
 
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="https://fonts.googleapis.com/css?family=Hind:400,700" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="css/style.css">
 
@@ -14,45 +14,70 @@
         <div id="wrapper">
             <div id="header-wrapper">
                 <h1>Images over BLE</h1>
-            </div>
+            </div> <!-- / header-wrapper -->
             <div id="connect-wrapper">
                 <div id="connect-btn">
                     Connect
                 </div>
-            </div>
+            </div> <!-- / connect-wrapper -->
             <div id="controllers-wrapper">
-                <div class="btn-wrapper">
-                    <span id="cam-single-capture-btn">Single capture</span>
+                <div id="cam-single-capture-btn" class="btn-wrapper">
+                    Single capture
                 </div>
-                <div class="btn-wrapper">
-                    <span id="cam-start-stream-btn">Start stream</span>
+                <div id="cam-start-stream-btn" class="btn-wrapper">
+                    Start stream
                 </div>
-                <div class="btn-wrapper">
-                    <span id="cam-stop-stream-btn">Stop stream</span>
+                <div id="cam-stop-stream-btn" class="btn-wrapper hide">
+                    Stop stream
                 </div>
-                <div class="btn-wrapper">
-                    <span id="cam-low-res-btn">Low res.</span>
+                <div id="cam-set-res-btn" class="btn-wrapper">
+                    <div class="dropdown">
+                          <div id="cam-res-dropdown" class="dropdown-content">
+                                <div class="dropdown-content-item" id="cam-res-160x120-btn">160x120</div>
+                                <div class="dropdown-content-item" id="cam-res-320x240-btn">320x240</div>
+                                <div class="dropdown-content-item" id="cam-res-640x480-btn">640x480</div>
+                                <div class="dropdown-content-item" id="cam-res-800x600-btn">800x600</div>
+                                <div class="dropdown-content-item" id="cam-res-1024x768-btn">1024x768</div>
+                                <div class="dropdown-content-item" id="cam-res-1600x1200-btn">1600x1200</div>
+                          </div>
+                    </div>
+                    Set resolution
                 </div>
-                <div class="btn-wrapper">
-                    <span id="cam-mid-res-btn">Mid. res.</span>
+                <div id="cam-req-1mbps-btn" class="btn-wrapper hide">
+                    Request 1Mbps
                 </div>
-                <div class="btn-wrapper">
-                    <span id="cam-high-res-btn">High res.</span>
+                <div id="cam-req-2mbps-btn" class="btn-wrapper">
+                    Request 2Mbps
                 </div>
-            </div>
+            </div> <!-- / controllers-wrapper -->
+            <div id="cam-info-wrapper">
+                <div class="cam-info-item">
+                    <span class="cam-info-item-label">Resolution: </span><span id="cam-info-res" class="cam-info-item-value">320x240</span>
+                </div>
+                <div class="cam-info-item">
+                    <span class="cam-info-item-label">PHY: </span><span id="cam-info-phy" class="cam-info-item-value"></span>
+                </div>
+                <div class="cam-info-item">
+                    <span class="cam-info-item-label">Conn. interval: </span><span id="cam-info-ci" class="cam-info-item-value"></span>
+                </div>
+                <div class="cam-info-item">
+                    <span class="cam-info-item-label">MTU: </span><span id="cam-info-mtu" class="cam-info-item-value"></span>
+                </div>
+            </div> <!-- / cam-info-wrapper -->
             <div id="img-wrapper">
                 <img id="img" src="" />
-            </div>
-        </div>
+            </div> <!-- / img-wrapper -->
+        </div> <!-- / wrapper -->
 
     <script src="../common/js/ble.js"></script>
     <script src="../common/js/helper.js"></script>
     <script>
 
-        const itsServiceAdvUUID = "6e400001-b5a3-f393-e0a9-e50e24dcca3e";
-        const itsRxCharUUID = "6e400002-b5a3-f393-e0a9-e50e24dcca3e";
-        const itsTxCharUUID = "6e400003-b5a3-f393-e0a9-e50e24dcca3e";
-        const itsInfoCharUUID = "6e400004-b5a3-f393-e0a9-e50e24dcca3e";
+        // its = Image Transfer Service
+        const itsServiceAdvUUID         = "6e400001-b5a3-f393-e0a9-e50e24dcca3e";
+        const itsRxCharUUID             = "6e400002-b5a3-f393-e0a9-e50e24dcca3e";
+        const itsTxCharUUID             = "6e400003-b5a3-f393-e0a9-e50e24dcca3e";
+        const itsInfoCharUUID           = "6e400004-b5a3-f393-e0a9-e50e24dcca3e";
 
         const CMD_SINGLE_CAPTURE        = 1;
         const CMD_START_STREAM          = 2;
@@ -63,6 +88,7 @@
 
         const CMD_VAL_GAP_PHY_1MBPS     = 0;
         const CMD_VAL_GAP_PHY_2MBPS     = 1;
+        const DEFAULT_PHY_VAL           = CMD_VAL_GAP_PHY_1MBPS;
 
         const CMD_VAL_RES_160x120       = 0;
         const CMD_VAL_RES_320x240       = 1;
@@ -73,6 +99,13 @@
 
         const CMD_INFO_IMG_SIZE         = 1;
         const CMD_INFO_BLE_PARAMS       = 2;
+
+        const RES_160x120               = 0;
+        const RES_320x240               = 1;
+        const RES_640x480               = 2;
+        const RES_800x600               = 3;
+        const RES_1024x768              = 4;
+        const RES_1600x1200             = 5;
 
         var device;
         var server;
@@ -86,7 +119,16 @@
 
         var isConnected = false;
         var logEnabled = true;
+        var attemptedPhy = CMD_VAL_GAP_PHY_1MBPS;
 
+        var resolutions = [
+            {name: "160x120", value: CMD_VAL_RES_160x120},
+            {name: "320x240", value: CMD_VAL_RES_320x240},
+            {name: "640x480", value: CMD_VAL_RES_640x480},
+            {name: "800x600", value: CMD_VAL_RES_800x600},
+            {name: "1024x768", value: CMD_VAL_RES_1024x768},
+            {name: "1600x1200 ", value: CMD_VAL_RES_1600x1200}
+        ];
 
         function connect () {
             if (logEnabled)
@@ -121,8 +163,9 @@
                         itsService.getCharacteristic(itsInfoCharUUID)
                         .then( (c) => {
                             setTimeout(function() {
-                                infoNotificationsInit(c);
-                            }, 3000);
+                                infoNotificationsInit(c)
+                                .then( setDefaultParameters );
+                            }, 1000);
                         })
                     ])
 
@@ -205,26 +248,130 @@
                 incomingImgSize = u8tou32(valueArray, 1, 4);
                 if (logEnabled)
                     console.log("Incoming image size: ", incomingImgSize);
+            } else if(valueArray[0] == CMD_INFO_BLE_PARAMS) {
+                updateParamsInfo(valueArray);
+            }
+        }
+
+        function setDefaultParameters() {
+            sendCommand(CMD_CHANGE_PHY, DEFAULT_PHY_VAL);
+        }
+
+        function updateParamsInfo(valueArray) {
+            var mtu = u8tou16(valueArray, 1, 2);
+            var connectionInterval = u8tou16(valueArray, 3, 2) * 1.25;
+            var txPhy = valueArray[5];
+            var rxPhy = valueArray[6];
+
+            // Update info overview
+            qs("#cam-info-phy").innerHTML = (txPhy == 1) ? ((attemptedPhy == CMD_VAL_GAP_PHY_1MBPS) ? "1 Mbps" : "1 Mbps, 2 Mbps not avail.") : "2 Mbps";
+            qs("#cam-info-ci").innerHTML = connectionInterval + " ms";
+            qs("#cam-info-mtu").innerHTML = mtu + " bytes";
+
+            if(logEnabled) {
+                console.log("MTU: ", mtu);
+                console.log("Connection interval: ", connectionInterval);
+                console.log("Tx PHY: ", (txPhy == 1) ? ((attemptedPhy == CMD_VAL_GAP_PHY_1MBPS) ? "1 Mbps" : "1 Mbps, 2 Mbps not available") : "2 Mbps");
+                console.log("Rx PHY: ", (rxPhy == 1) ? ((attemptedPhy == CMD_VAL_GAP_PHY_1MBPS) ? "1 Mbps" : "1 Mbps, 2 Mbps not available") : "2 Mbps");
             }
         }
 
         function sendCommand(cmd, value = 0) {
             itsRxChar.writeValue(new Uint8Array([cmd, value]));
+            if(cmd == CMD_CHANGE_PHY)
+                attemptedPhy = value;
             if(logEnabled)
                 console.log("Command sent: ", cmd, value);
+        }
+
+        function startStream() {
+            sendCommand(CMD_START_STREAM);
+            qs("#cam-stop-stream-btn").style.display = "inline-block";
+            qs("#cam-start-stream-btn").style.display = "none";
+        }
+
+
+        function stopStream() {
+            sendCommand(CMD_STOP_STREAM);
+            qs("#cam-stop-stream-btn").style.display = "none";
+            qs("#cam-start-stream-btn").style.display = "inline-block";
         }
 
         function displayImage(data) {
             document.getElementById('img').src = 'data:image/png;base64,' + Uint8ToBase64(data);
         }
 
+
+        var elConnectBtn = document.querySelector('#connect-btn');
+
+        function onConnect() {
+            var h1 = document.querySelector('h1');
+            elConnectBtn.style.background = "rgba(4, 113, 83, 0.8)";
+            document.querySelector('#controllers-wrapper').style.display = "block";
+            h1.style.fontSize = "30px";
+            h1.style.marginTop = "40px"
+            h1.style.marginBottom = "10px"
+            elConnectBtn.style.margin = "0 auto";
+            elConnectBtn.style.padding = "0 1px";
+            elConnectBtn.style.width = "100px";
+            elConnectBtn.style.fontSize = "14px";
+            elConnectBtn.style.position = "absolute";
+            elConnectBtn.style.top = "8px";
+            elConnectBtn.style.right = "8px";
+            elConnectBtn.innerHTML = "Connected";
+            qs("#cam-info-wrapper").style.display = "block";
+        }
+
+        function showResOptions() {
+            qs("#cam-res-dropdown").classList.toggle("show");
+        }
+
+        function setResolution(res) {
+            sendCommand(CMD_CHANGE_RESOLUTION, res.value)
+            qs("#cam-info-res").innerHTML = res.name;
+        }
+
+        clickListener("#connect-btn", connect);
+        clickListener("#cam-single-capture-btn", function() { sendCommand(CMD_SINGLE_CAPTURE) });
+        clickListener("#cam-start-stream-btn", function() { startStream() });
+        clickListener("#cam-stop-stream-btn", function() { stopStream() });
+        clickListener("#cam-set-res-btn", showResOptions);
+        clickListener("#cam-res-160x120-btn", function() { setResolution(resolutions[RES_160x120]) });
+        clickListener("#cam-res-320x240-btn", function() { setResolution(resolutions[RES_320x240]) });
+        clickListener("#cam-res-640x480-btn", function() { setResolution(resolutions[RES_640x480]) });
+        clickListener("#cam-res-800x600-btn", function() { setResolution(resolutions[RES_800x600]) });
+        clickListener("#cam-res-1024x768-btn", function() { setResolution(resolutions[RES_1024x768]) });
+        clickListener("#cam-res-1600x1200-btn", function() { setResolution(resolutions[RES_1600x1200]) });
+        clickListener("#cam-req-1mbps-btn", function() { sendCommand(CMD_CHANGE_PHY, CMD_VAL_GAP_PHY_1MBPS) });
+        clickListener("#cam-req-2mbps-btn", function() { sendCommand(CMD_CHANGE_PHY, CMD_VAL_GAP_PHY_2MBPS) });
+
+        window.onclick = function(event) {
+            if (!event.target.matches("#cam-set-res-btn")) {
+
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                var i;
+                for (i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
+
+
+
         function u8tou32(arr, start, count) {
             var u32bytes = arr.buffer.slice(start, start + count);
             return new Uint32Array(u32bytes)[0];
         }
 
+        function u8tou16(arr, start, count) {
+            var u16bytes = arr.buffer.slice(start, start + count);
+            return new Uint16Array(u16bytes)[0];
+        }
 
-        function concatTypedArrays(a, b) { // a, b TypedArray of same type
+        function concatTypedArrays(a, b) {
             var c = new (a.constructor)(a.length + b.length);
             c.set(a, 0);
             c.set(b, a.length);
@@ -252,34 +399,6 @@
             }
             return btoa(c.join(""));
         }
-
-        var elConnectBtn = document.querySelector('#connect-btn');
-
-        function onConnect() {
-            var h1 = document.querySelector('h1');
-            elConnectBtn.style.background = "rgba(4, 113, 83, 0.8)";
-            document.querySelector('#controllers-wrapper').style.display = "block";
-            h1.style.fontSize = "30px";
-            h1.style.marginTop = "40px"
-            h1.style.marginBottom = "10px"
-            elConnectBtn.style.margin = "0 auto";
-            elConnectBtn.style.padding = "0 1px";
-            elConnectBtn.style.width = "100px";
-            elConnectBtn.style.fontSize = "14px";
-            elConnectBtn.style.position = "absolute";
-            elConnectBtn.style.top = "8px";
-            elConnectBtn.style.right = "8px";
-            elConnectBtn.innerHTML = "Connected";
-        }
-
-        clickListener("#connect-btn", connect);
-        clickListener("#cam-single-capture-btn", function() { sendCommand(CMD_SINGLE_CAPTURE) });
-        clickListener("#cam-start-stream-btn", function() { sendCommand(CMD_START_STREAM) });
-        clickListener("#cam-stop-stream-btn", function() { sendCommand(CMD_STOP_STREAM) });
-        clickListener("#cam-low-res-btn", function() { sendCommand(CMD_CHANGE_RESOLUTION, CMD_VAL_RES_160x120) });
-        clickListener("#cam-mid-res-btn", function() { sendCommand(CMD_CHANGE_RESOLUTION, CMD_VAL_RES_640x480) });
-        clickListener("#cam-high-res-btn", function() { sendCommand(CMD_CHANGE_RESOLUTION, CMD_VAL_RES_1600x1200) });
-
     </script>
     </body>
 </html>
