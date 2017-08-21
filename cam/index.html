@@ -63,6 +63,9 @@
                 <div class="cam-info-item">
                     <span class="cam-info-item-label">Bit rate: </span><span id="cam-info-bitrate" class="cam-info-item-value"></span>
                 </div>
+                <div class="cam-info-item">
+                    <span class="cam-info-item-label">Frame rate: </span><span id="cam-info-framerate" class="cam-info-item-value"></span>
+                </div>
             </div> <!-- / cam-info-wrapper -->
             <div id="img-wrapper">
                 <img id="img" src="" />
@@ -215,14 +218,17 @@
 
             receivedImage = concatTypedArrays(receivedImage, valueArray);
 
+            // When the image is received
             if(receivedImage.length >= incomingImgSize) {
                 displayImage(receivedImage);
                 receivedImage = new Uint8Array([]);
 
                 timeRecEnd = performance.now();
                 var bitrate = ((incomingImgSize * 8 / 1000) / ((timeRecEnd - timeRecStart) / 1000)).toFixed(2);
+                var fps = (1 / (timeRecEnd - timeRecStart)).toFixed(1);
 
                 qs("#cam-info-bitrate").innerHTML = bitrate + " kbps";
+                qs("#cam-info-framerate").innerHTML = fps + " fps";
 
                 firstImgByte = true;
                 incomingImgSize = 0;
@@ -371,7 +377,7 @@
                 }
             }
         }
-        
+
 
         // Helper functions
 
