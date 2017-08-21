@@ -225,7 +225,7 @@
 
                 timeRecEnd = performance.now();
                 var bitrate = ((incomingImgSize * 8 / 1000) / ((timeRecEnd - timeRecStart) / 1000)).toFixed(2);
-                var fps = (1 / (timeRecEnd - timeRecStart)).toFixed(1);
+                var fps = (1 / ((timeRecEnd - timeRecStart) / 1000)).toFixed(1);
 
                 qs("#cam-info-bitrate").innerHTML = bitrate + " kbps";
                 qs("#cam-info-framerate").innerHTML = fps + " fps";
