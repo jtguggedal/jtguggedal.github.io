@@ -1,0 +1,36 @@
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+        <link rel="stylesheet" type="text/css" href="css/style.css">
+        <title>FPV test site</title>
+    </head>
+    <body>
+        <div id="wrapper">
+            <div id="header">
+                <h1>FPV alpha test</h1>
+            </div> <!-- / header -->
+            <div id="connectWrapper">
+                <div id="connectBtn">
+                    Connect
+                </div>
+            </div>
+            <div id="controllers-wrapper">
+                <div id="controller-throttle-wrapper">
+                    <input type="range" id="throttle-value" min="0" max="255" value="128">
+                    <!--<div id="throttle-value-output">128</div>-->
+                </div>
+                <div id="controller-turn-wrapper">
+                    <input type="range" id="turn-value" min="0" max="255" value="128">
+                    <!--<div id="turn-value-output">128</div>-->
+                </div>
+            </div> <!-- / controllers-wrapper -->
+        </div> <!-- / wrapper -->
+        <div id="fpv-wrapper">
+            <div id="fpv-img-container">
+                <img class="fpv-img" >
+            </div>
+        </div>
+        <script src="js/ble.js" type="text/javascript"></script>
+        <script src="js/league.js" type="text/javascript"></script>
+    </body>
+</html>
