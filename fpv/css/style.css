@@ -13,7 +13,6 @@ html, body {
 }
 
 body {
-    background: linear-gradient(to bottom right, #000f46, #1ccee0);
     user-select: none;
 }
 
@@ -94,13 +93,15 @@ h1 {
     left: 0;
     right: 0;
     z-index: -1;
-    background-color: rgba(0, 0, 0, 0.7);;
+    background-color: rgba(0, 0, 0, 1);;
 }
 
 #fpv-img-container {
-    margin: 5% auto 0 auto;
-    max-height: 80%;
     max-width: 400px;
+    min-width: 400px;
+    margin: auto;
+    height: 340px;
+    margin-top: 20px;
 }
 
 .fpv-img {
@@ -138,3 +139,59 @@ input[type=range]::-webkit-slider-thumb {
 input[type=range]:focus::-webkit-slider-runnable-track {
   background: rgba(25, 87, 192, 0.12);
 }
+
+#cam-controllers-wrapper {
+    display: none;
+    position: absolute;
+    left: 10px;
+    top: 10px;
+
+}
+
+
+.btn-wrapper {
+    cursor: pointer;
+    display: inline-block;
+    width: 110px;
+    margin: 5px;
+    user-select: none;
+    padding: 3px 5px;
+    border: 1px solid rgb(255, 255, 255);
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 30px;
+    text-align: center;
+    background-color:rgb(15, 15, 15);
+}
+
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #111111;
+    min-width: 100px;
+    border-radius: 0 0 10px 10px;
+    overflow: hidden;
+    border: 1px solid rgb(179, 179, 179);
+    box-shadow: 2px 2px 16px 0px rgba(0,0,0,0.1);
+    z-index: 1;
+}
+
+.dropdown-content-item {
+    color: white;
+    padding: 8px 7px;
+    text-decoration: none;
+    display: block;
+}
+
+
+.dropdown-content-item:hover {
+    background-color: rgb(65, 65, 65);
+}
+
+.show { display: block; }
+.hide { display: none; }

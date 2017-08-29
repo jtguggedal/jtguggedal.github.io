@@ -202,8 +202,19 @@ function onConnect() {
     //qs("#cam-info-wrapper").style.display = "block";
 }*/
 
+
+function qs(selector) {
+    return document.querySelector(selector);
+}
+
+function clickListener(el, cb) {
+    qs(el).addEventListener("click", cb);
+}
+
+
 function showResOptions() {
-    //qs("#cam-res-dropdown").classList.toggle("show");
+    qs("#cam-res-dropdown").classList.toggle("show");
+    console.log("Show dropdown");
 }
 
 function setResolution(res) {
@@ -214,19 +225,18 @@ function setResolution(res) {
 
 // Event liseteners
 
-clickListener("#connect-btn", connect);
 //clickListener("#cam-single-capture-btn", function() { sendCommand(CMD_SINGLE_CAPTURE); });
 //clickListener("#cam-start-stream-btn", function() { startStream(); });
 //clickListener("#cam-stop-stream-btn", function() { stopStream(); });
-//clickListener("#cam-set-res-btn", showResOptions);
-//clickListener("#cam-res-160x120-btn", function() { setResolution(resolutions[RES_160x120]); });
-//clickListener("#cam-res-320x240-btn", function() { setResolution(resolutions[RES_320x240]); });
-//clickListener("#cam-res-640x480-btn", function() { setResolution(resolutions[RES_640x480]); });
-//clickListener("#cam-res-800x600-btn", function() { setResolution(resolutions[RES_800x600]); });
-//clickListener("#cam-res-1024x768-btn", function() { setResolution(resolutions[RES_1024x768]); });
-//clickListener("#cam-res-1600x1200-btn", function() { setResolution(resolutions[RES_1600x1200]); });
-//clickListener("#cam-req-1mbps-btn", function() { sendCommand(CMD_CHANGE_PHY, CMD_VAL_GAP_PHY_1MBPS); });
-//clickListener("#cam-req-2mbps-btn", function() { sendCommand(CMD_CHANGE_PHY, CMD_VAL_GAP_PHY_2MBPS); });
+clickListener("#cam-set-res-btn", function() { showResOptions(); console.log("Jkl");});
+clickListener("#cam-res-160x120-btn", function() { setResolution(resolutions[RES_160x120]); });
+clickListener("#cam-res-320x240-btn", function() { setResolution(resolutions[RES_320x240]); });
+clickListener("#cam-res-640x480-btn", function() { setResolution(resolutions[RES_640x480]); });
+clickListener("#cam-res-800x600-btn", function() { setResolution(resolutions[RES_800x600]); });
+clickListener("#cam-res-1024x768-btn", function() { setResolution(resolutions[RES_1024x768]); });
+clickListener("#cam-res-1600x1200-btn", function() { setResolution(resolutions[RES_1600x1200]); });
+clickListener("#cam-req-1mbps-btn", function() { sendCommand(CMD_CHANGE_PHY, CMD_VAL_GAP_PHY_1MBPS); });
+clickListener("#cam-req-2mbps-btn", function() { sendCommand(CMD_CHANGE_PHY, CMD_VAL_GAP_PHY_2MBPS); });
 
 window.onclick = function(event) {
     if (!event.target.matches("#cam-set-res-btn")) {
@@ -244,14 +254,6 @@ window.onclick = function(event) {
 
 
 // Helper functions
-
-function qs(selector) {
-    return document.querySelector(selector);
-}
-
-function clickListener(el, cb) {
-    qs(el).addEventListener("click", cb);
-}
 
 function u8tou32(arr, start, count) {
     var u32bytes = arr.buffer.slice(start, start + count);

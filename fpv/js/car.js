@@ -1,17 +1,19 @@
 /*jshint esversion: 6 */
 
-const PRINT_CONTROLLER_DATA = false;
-const DEFAULT_THROTTLE_VALUE = 128;
-const DEFAULT_TURN_VALUE = 128;
-const MAX_THROTTLE = 255;
-const MAX_TURN_RATE = 255;
-const THROTTLE_BYTE_OFFSET = 3;
-const TURN_BYTE_OFFSET = 4;
+const PRINT_CONTROLLER_DATA     = false;
+const DEFAULT_THROTTLE_VALUE    = 128;
+const DEFAULT_TURN_VALUE        = 128;
+const MAX_THROTTLE              = 255;
+const MAX_TURN_RATE             = 255;
+const CMD_BYTE                  = 0;
+const CMD_CAR_DATA              = 100;
+const THROTTLE_BYTE_OFFSET      = 4;
+const TURN_BYTE_OFFSET          = 5;
 
-var connected = false;
+
 var bleBusy = false;
 
-var bleDataArray = new Uint8Array(3);
+var bleDataArray = new Uint8Array(10);
 
 var elThrottleRange = document.querySelector("#throttle-value");
 //var elThrottleOutput = document.querySelector('#throttle-value-output');
@@ -34,10 +36,13 @@ function onConnect() {
     elConnectBtn.style.top = "10px";
     elConnectBtn.style.right = "10px";
     elConnectBtn.innerHTML = "Connected";
+    qs("#cam-controllers-wrapper").style.display = "block";
+    startStream();
 }
 
 
 elConnectBtn.addEventListener("click", function() {
+    document.documentElement.webkitRequestFullscreen();
     connect(function(){
         connected = true;
         onConnect();
@@ -45,10 +50,11 @@ elConnectBtn.addEventListener("click", function() {
 });
 
 elThrottleRange.addEventListener("input", function() {
+    bleDataArray[CMD_BYTE] = CMD_CAR_DATA;
     bleDataArray[THROTTLE_BYTE_OFFSET] = elThrottleRange.value;
     bleDataArray[TURN_BYTE_OFFSET] = elTurnRange.value;
     displayThrottleAngle();
-    if(connected && !bleBusy) {
+    if(!bleBusy) {
         bleBusy = true;
         sendData(bleDataArray)
         .then(() => {
@@ -63,10 +69,11 @@ elThrottleRange.addEventListener("input", function() {
 
 elThrottleRange.addEventListener("touchend", function() {
     elThrottleRange.value = DEFAULT_THROTTLE_VALUE;
+    bleDataArray[CMD_BYTE] = CMD_CAR_DATA;
     bleDataArray[THROTTLE_BYTE_OFFSET] = elThrottleRange.value;
     bleDataArray[TURN_BYTE_OFFSET] = elTurnRange.value;
     displayThrottleAngle();
-    if(connected && !bleBusy) {
+    if(!bleBusy) {
         bleBusy = true;
         sendData(bleDataArray)
         .then(() => {
@@ -79,10 +86,13 @@ elThrottleRange.addEventListener("touchend", function() {
 });
 
 elTurnRange.addEventListener("input", function() {
+    bleDataArray[CMD_BYTE] = CMD_CAR_DATA;
     bleDataArray[THROTTLE_BYTE_OFFSET] = elThrottleRange.value;
     bleDataArray[TURN_BYTE_OFFSET] = elTurnRange.value;
+    if(PRINT_CONTROLLER_DATA)
+        console.log("Sent data ", bleDataArray);
     displayTurnRate();
-    if(connected && !bleBusy) {
+    if(!bleBusy) {
         bleBusy = true;
         sendData(bleDataArray)
         .then(() => {
@@ -97,10 +107,11 @@ elTurnRange.addEventListener("input", function() {
 
 elTurnRange.addEventListener("touchend", function() {
     elTurnRange.value = DEFAULT_TURN_VALUE;
+    bleDataArray[CMD_BYTE] = CMD_CAR_DATA;
     bleDataArray[THROTTLE_BYTE_OFFSET] = elThrottleRange.value;
     bleDataArray[TURN_BYTE_OFFSET] = elTurnRange.value;
     displayTurnRate();
-    if(connected && !bleBusy) {
+    if(!bleBusy) {
         bleBusy = true;
         sendData(bleDataArray)
         .then(() => {

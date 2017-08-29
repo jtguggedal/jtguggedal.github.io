@@ -69,5 +69,5 @@ function connect () {
 
 
 function sendData(dataArray) {
-    return itsRxCharUUID.writeValue(dataArray);
+    return itsRxChar.writeValue(dataArray);
 }
