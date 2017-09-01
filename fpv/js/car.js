@@ -37,7 +37,9 @@ function onConnect() {
     elConnectBtn.style.right = "10px";
     elConnectBtn.innerHTML = "Connected";
     qs("#cam-controllers-wrapper").style.display = "block";
-    startStream();
+    setTimeout(function() {
+        startStream();
+    }, 3000);
 }
 
 
