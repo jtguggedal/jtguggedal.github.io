@@ -54,7 +54,7 @@ elThrottleRange.addEventListener("input", function() {
     bleDataArray[THROTTLE_BYTE_OFFSET] = elThrottleRange.value;
     bleDataArray[TURN_BYTE_OFFSET] = elTurnRange.value;
     displayThrottleAngle();
-    if(!bleBusy) {
+    if(!bleBusy && !priorityWaiting) {
         bleBusy = true;
         sendData(bleDataArray)
         .then(() => {
@@ -72,17 +72,7 @@ elThrottleRange.addEventListener("touchend", function() {
     bleDataArray[CMD_BYTE] = CMD_CAR_DATA;
     bleDataArray[THROTTLE_BYTE_OFFSET] = elThrottleRange.value;
     bleDataArray[TURN_BYTE_OFFSET] = elTurnRange.value;
-    displayThrottleAngle();
-    if(!bleBusy) {
-        bleBusy = true;
-        sendData(bleDataArray)
-        .then(() => {
-            bleBusy = false;
-            if(PRINT_CONTROLLER_DATA)
-                console.log("Sent data ", bleDataArray);
-        });
-    }
-
+    stopCar();
 });
 
 elTurnRange.addEventListener("input", function() {
@@ -91,8 +81,7 @@ elTurnRange.addEventListener("input", function() {
     bleDataArray[TURN_BYTE_OFFSET] = elTurnRange.value;
     if(PRINT_CONTROLLER_DATA)
         console.log("Sent data ", bleDataArray);
-    displayTurnRate();
-    if(!bleBusy) {
+    if(!bleBusy && !priorityWaiting) {
         bleBusy = true;
         sendData(bleDataArray)
         .then(() => {
@@ -110,18 +99,26 @@ elTurnRange.addEventListener("touchend", function() {
     bleDataArray[CMD_BYTE] = CMD_CAR_DATA;
     bleDataArray[THROTTLE_BYTE_OFFSET] = elThrottleRange.value;
     bleDataArray[TURN_BYTE_OFFSET] = elTurnRange.value;
-    displayTurnRate();
+    stopCar();
+});
+
+function stopCar() {
     if(!bleBusy) {
         bleBusy = true;
+        priorityWaiting = false;
         sendData(bleDataArray)
         .then(() => {
             bleBusy = false;
             if(PRINT_CONTROLLER_DATA)
                 console.log("Sent data ", bleDataArray);
         });
+    } else {
+        priorityWaiting = true;
+        setTimeout(function() {
+            stopCar();
+        }, 20);
     }
-
-});
+}
 
 function displayThrottleAngle() {
     //elThrottleOutput.innerHTML = elThrottleRange.value; // (MAX_THROTTLE*(elThrottleRange.value - 128)/127).toFixed(1);

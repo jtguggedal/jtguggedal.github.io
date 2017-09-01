@@ -156,52 +156,30 @@ function updateParamsInfo(valueArray) {
 }
 
 function sendCommand(cmd, value = 0) {
-    itsRxChar.writeValue(new Uint8Array([cmd, value]));
     if(cmd == CMD_CHANGE_PHY)
         attemptedPhy = value;
+    return itsRxChar.writeValue(new Uint8Array([cmd, value]));
 }
 
 function startStream() {
-    sendCommand(CMD_START_STREAM);
-    //qs("#cam-stop-stream-btn").style.display = "inline-block";
-    //qs("#cam-start-stream-btn").style.display = "none";
+    return sendCommand(CMD_CHANGE_PHY, CMD_VAL_GAP_PHY_2MBPS)
+    .then( () => {
+        sendCommand(CMD_START_STREAM);
+    })
+    .catch( (e) => {
+        console.log(new Error(e));
+    });
 }
 
 
 function stopStream() {
     sendCommand(CMD_STOP_STREAM);
-    //qs("#cam-stop-stream-btn").style.display = "none";
-    //qs("#cam-start-stream-btn").style.display = "inline-block";
 }
 
 function displayImage(data) {
     qs("img.fpv-img").style.display = "block";
     qs("img.fpv-img").src = 'data:image/png;base64,' + Uint8ToBase64(data);
 }
-
-
-//var elConnectBtn = document.querySelector('#connect-btn');
-
-
-/*
-function onConnect() {
-    var h1 = document.querySelector('h1');
-    elConnectBtn.style.background = "rgba(4, 113, 83, 0.8)";
-    document.querySelector('#controllers-wrapper').style.display = "block";
-    h1.style.fontSize = "30px";
-    h1.style.marginTop = "40px";
-    h1.style.marginBottom = "10px";
-    elConnectBtn.style.margin = "0 auto";
-    elConnectBtn.style.padding = "0 1px";
-    elConnectBtn.style.width = "100px";
-    elConnectBtn.style.fontSize = "14px";
-    elConnectBtn.style.position = "absolute";
-    elConnectBtn.style.top = "8px";
-    elConnectBtn.style.right = "8px";
-    elConnectBtn.innerHTML = "Connected";
-    //qs("#cam-info-wrapper").style.display = "block";
-}*/
-
 
 function qs(selector) {
     return document.querySelector(selector);
