@@ -37,6 +37,7 @@ function onConnect() {
     elConnectBtn.style.right = "10px";
     elConnectBtn.innerHTML = "Connected";
     qs("#cam-controllers-wrapper").style.display = "block";
+    document.documentElement.webkitRequestFullscreen();
     setTimeout(function() {
         startStream();
     }, 3000);
@@ -44,7 +45,6 @@ function onConnect() {
 
 
 elConnectBtn.addEventListener("click", function() {
-    document.documentElement.webkitRequestFullscreen();
     connect(function(){
         connected = true;
         onConnect();
